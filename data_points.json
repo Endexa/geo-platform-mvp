@@ -1,0 +1,874 @@
+[
+  {
+    "Data Point Name":"Robots.txt - GPTBot",
+    "Description \/ Rationale":"Status of GPTBot (OpenAI) access. Crucial for ChatGPT visibility.",
+    "Measurement Method":"Python urllib.robotparser",
+    "Module":"WI",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Robots.txt - ClaudeBot",
+    "Description \/ Rationale":"Status of ClaudeBot (Anthropic) access. Essential for Claude.",
+    "Measurement Method":"Python urllib.robotparser",
+    "Module":"WI",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Robots.txt - PerplexityBot",
+    "Description \/ Rationale":"Status of PerplexityBot. Critical for Perplexity citation.",
+    "Measurement Method":"Python urllib.robotparser",
+    "Module":"WI",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Robots.txt - CCBot",
+    "Description \/ Rationale":"Status of CCBot (Common Crawl). Foundational for LLaMA\/Mistral.",
+    "Measurement Method":"Python urllib.robotparser",
+    "Module":"WI",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Robots.txt - Google-Extended",
+    "Description \/ Rationale":"Controls Google's use of data for Gemini training (distinct from Googlebot).",
+    "Measurement Method":"Python urllib.robotparser",
+    "Module":"WI",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Sitemap Lastmod",
+    "Description \/ Rationale":"Presence and accuracy of lastmod in XML sitemap. Signals freshness.",
+    "Measurement Method":"XML Parsing (Python)",
+    "Module":"WI",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Status Code - 200",
+    "Description \/ Rationale":"Server response for AI User-Agents. Must be 200 OK.",
+    "Measurement Method":"HTTP Request (Custom UA)",
+    "Module":"WI",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Response Time (TTFB)",
+    "Description \/ Rationale":"Time to First Byte for AI bots. Slow responses cause timeout.",
+    "Measurement Method":"API \/ Headless Browser",
+    "Module":"WI",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"JS Dependency",
+    "Description \/ Rationale":"% of content visible only after JS execution. AI bots may miss this.",
+    "Measurement Method":"Puppeteer (No-JS vs JS)",
+    "Module":"WI",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Dynamic Rendering",
+    "Description \/ Rationale":"Implementation of server-side rendering for bot UAs.",
+    "Measurement Method":"Header\/Source Analysis",
+    "Module":"WI",
+    "Priority":"High",
+    "Automation":"Semi"
+  },
+  {
+    "Data Point Name":"Schema - Organization",
+    "Description \/ Rationale":"Presence of Organization structured data. Establishes brand entity.",
+    "Measurement Method":"Schema Validator API",
+    "Module":"WI",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Schema - sameAs",
+    "Description \/ Rationale":"Count of valid sameAs links to authoritative nodes (Wiki, LinkedIn).",
+    "Measurement Method":"Schema Validator API",
+    "Module":"WI",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Schema - FAQPage",
+    "Description \/ Rationale":"Presence of FAQPage schema. Directly feeds AEO\/Q&A formats.",
+    "Measurement Method":"Schema Validator API",
+    "Module":"CNT",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Schema - JSON-LD Nesting",
+    "Description \/ Rationale":"Depth of JSON-LD nesting. Deeper nesting provides better context.",
+    "Measurement Method":"JSON Parser",
+    "Module":"WI",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Knowledge Graph ID",
+    "Description \/ Rationale":"Presence of a Google Knowledge Graph ID (kg_mid) for the brand.",
+    "Measurement Method":"Google KG Search API",
+    "Module":"BV",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"KG Confidence Score",
+    "Description \/ Rationale":"Google's confidence score for the brand entity (0.0 - 1.0).",
+    "Measurement Method":"Google KG Search API",
+    "Module":"BV",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Wikidata Item",
+    "Description \/ Rationale":"Existence of a Wikidata item (QID) for the brand.",
+    "Measurement Method":"Wikidata API",
+    "Module":"BV",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Wikipedia Backlinks",
+    "Description \/ Rationale":"Number of Wikipedia pages linking to the brand domain.",
+    "Measurement Method":"Ahrefs\/Semrush API",
+    "Module":"BV",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Wikipedia Page",
+    "Description \/ Rationale":"Existence of a dedicated Wikipedia page for the brand.",
+    "Measurement Method":"Wikipedia API",
+    "Module":"BV",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Common Crawl Presence",
+    "Description \/ Rationale":"Number of pages from domain in Common Crawl index.",
+    "Measurement Method":"Common Crawl Index API",
+    "Module":"WI",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Information Gain Score",
+    "Description \/ Rationale":"Unique n-grams\/entities compared to top 10 search results.",
+    "Measurement Method":"Python (NLTK\/Scikit)",
+    "Module":"CNT",
+    "Priority":"High",
+    "Automation":"Semi"
+  },
+  {
+    "Data Point Name":"Entity Density",
+    "Description \/ Rationale":"Frequency of relevant named entities per 100 words.",
+    "Measurement Method":"Python spaCy",
+    "Module":"CNT",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Vector Similarity",
+    "Description \/ Rationale":"Cosine similarity of content embeddings vs. target query embeddings.",
+    "Measurement Method":"OpenAI Embeddings API",
+    "Module":"CNT",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Perplexity Score",
+    "Description \/ Rationale":"Statistical text perplexity. Low = predictable; High = creative.",
+    "Measurement Method":"HuggingFace Transformers",
+    "Module":"CNT",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Flesch-Kincaid",
+    "Description \/ Rationale":"Readability score. AI prefers clear, structured text (Grade 8-10).",
+    "Measurement Method":"Python textstat",
+    "Module":"CNT",
+    "Priority":"Low",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Content Freshness",
+    "Description \/ Rationale":"Days since last content update. Critical for \"Recency Effect.\"",
+    "Measurement Method":"Date Extraction",
+    "Module":"CNT",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Citation Ratio",
+    "Description \/ Rationale":"Ratio of claims supported by citations\/external links.",
+    "Measurement Method":"HTML Parsing",
+    "Module":"CNT",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"H-Tag Hierarchy",
+    "Description \/ Rationale":"Logical nesting of H1-H6. Critical for DOM parsing.",
+    "Measurement Method":"HTML Parsing",
+    "Module":"WI",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"List\/Table Density",
+    "Description \/ Rationale":"Presence of <ul>, <ol>, <table>. AI prefers structured formats.",
+    "Measurement Method":"HTML Parsing",
+    "Module":"CNT",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Alt Text Coverage",
+    "Description \/ Rationale":"% of images with descriptive alt text (for multimodal models).",
+    "Measurement Method":"HTML Parsing",
+    "Module":"WI",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"WCAG Compliance",
+    "Description \/ Rationale":"Adherence to accessibility standards (AA\/AAA). Proxy for clean code.",
+    "Measurement Method":"Axe-core API",
+    "Module":"WI",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"TDM Reservation",
+    "Description \/ Rationale":"Presence of TDM Rep headers\/meta tags.",
+    "Measurement Method":"HTTP Header Check",
+    "Module":"LEG",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Privacy Policy Page",
+    "Description \/ Rationale":"Existence and accessibility of a privacy policy.",
+    "Measurement Method":"URL Crawl",
+    "Module":"LEG",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Terms of Service",
+    "Description \/ Rationale":"Existence of ToS page. Trust signal.",
+    "Measurement Method":"URL Crawl",
+    "Module":"LEG",
+    "Priority":"Low",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"SSL\/HTTPS",
+    "Description \/ Rationale":"Security protocol. Baseline trust signal.",
+    "Measurement Method":"SSL Cert Check",
+    "Module":"WI",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Core Web Vitals - LCP",
+    "Description \/ Rationale":"Largest Contentful Paint. UX signal for Google AIO.",
+    "Measurement Method":"PageSpeed Insights API",
+    "Module":"UX",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Core Web Vitals - CLS",
+    "Description \/ Rationale":"Cumulative Layout Shift. UX signal.",
+    "Measurement Method":"PageSpeed Insights API",
+    "Module":"UX",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Mobile Friendliness",
+    "Description \/ Rationale":"Mobile usability score.",
+    "Measurement Method":"Mobile-Friendly Test API",
+    "Module":"UX",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Share of Model (GPT)",
+    "Description \/ Rationale":"Frequency of citation in ChatGPT (n=50).",
+    "Measurement Method":"OpenAI API",
+    "Module":"COMP",
+    "Priority":"High",
+    "Automation":"Semi"
+  },
+  {
+    "Data Point Name":"Share of Model (Claude)",
+    "Description \/ Rationale":"Frequency of citation in Claude.",
+    "Measurement Method":"Anthropic API",
+    "Module":"COMP",
+    "Priority":"High",
+    "Automation":"Semi"
+  },
+  {
+    "Data Point Name":"Share of Model (Perplexity)",
+    "Description \/ Rationale":"Frequency of citation in Perplexity.",
+    "Measurement Method":"Perplexity API",
+    "Module":"COMP",
+    "Priority":"High",
+    "Automation":"Semi"
+  },
+  {
+    "Data Point Name":"Hallucination Rate",
+    "Description \/ Rationale":"% of factual errors in AI-generated brand summaries.",
+    "Measurement Method":"Manual\/LLM-as-Judge",
+    "Module":"BV",
+    "Priority":"Med",
+    "Automation":"Semi"
+  },
+  {
+    "Data Point Name":"Sentiment Analysis",
+    "Description \/ Rationale":"Sentiment score of brand mentions in Common Crawl\/Social.",
+    "Measurement Method":"Python NLTK\/VADER",
+    "Module":"BV",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Reddit Mention Vol",
+    "Description \/ Rationale":"Volume of brand mentions on Reddit (feeds Perplexity).",
+    "Measurement Method":"Reddit API",
+    "Module":"SEO",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Social Signal (X)",
+    "Description \/ Rationale":"Mention volume\/sentiment on X (feeds Grok).",
+    "Measurement Method":"X API",
+    "Module":"SEO",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Backlink Profile",
+    "Description \/ Rationale":"Domain Rating \/ Authority Score.",
+    "Measurement Method":"Ahrefs\/Semrush API",
+    "Module":"SEO",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Referring Domains",
+    "Description \/ Rationale":"Diversity of linking domains.",
+    "Measurement Method":"Ahrefs\/Semrush API",
+    "Module":"SEO",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Brand Search Vol",
+    "Description \/ Rationale":"Monthly search volume for brand name.",
+    "Measurement Method":"Keyword API",
+    "Module":"BV",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Zero-Click %",
+    "Description \/ Rationale":"Estimated % of searches resulting in no click.",
+    "Measurement Method":"Semrush\/Clickstream",
+    "Module":"SEO",
+    "Priority":"Med",
+    "Automation":"Semi"
+  },
+  {
+    "Data Point Name":"Navigational Intent",
+    "Description \/ Rationale":"% of traffic driven by brand name searches.",
+    "Measurement Method":"Search Console API",
+    "Module":"SEO",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Informational Intent",
+    "Description \/ Rationale":"% of traffic driven by \"How to\" queries.",
+    "Measurement Method":"Search Console API",
+    "Module":"CNT",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Commercial Intent",
+    "Description \/ Rationale":"% of traffic driven by \"Best\/Review\" queries.",
+    "Measurement Method":"Search Console API",
+    "Module":"CNT",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Dwell Time",
+    "Description \/ Rationale":"Average time on page.",
+    "Measurement Method":"Analytics API",
+    "Module":"UX",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Bounce Rate",
+    "Description \/ Rationale":"Single-page session %.",
+    "Measurement Method":"Analytics API",
+    "Module":"UX",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Scroll Depth",
+    "Description \/ Rationale":"Average vertical scroll %.",
+    "Measurement Method":"Analytics\/JS Tracking",
+    "Module":"UX",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Interaction Rate",
+    "Description \/ Rationale":"Clicks\/interactions per session.",
+    "Measurement Method":"Analytics API",
+    "Module":"UX",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Click Depth",
+    "Description \/ Rationale":"Average clicks from homepage. Flat structure is better.",
+    "Measurement Method":"Crawl Analysis",
+    "Module":"WI",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Orphan Pages",
+    "Description \/ Rationale":"Pages with no internal links.",
+    "Measurement Method":"Crawl Analysis",
+    "Module":"WI",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Internal Link Score",
+    "Description \/ Rationale":"PageRank distribution within the site.",
+    "Measurement Method":"Crawl Analysis",
+    "Module":"WI",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Broken Links (404)",
+    "Description \/ Rationale":"Internal 404s.",
+    "Measurement Method":"Crawl Analysis",
+    "Module":"WI",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Redirect Chains",
+    "Description \/ Rationale":"Long redirect chains.",
+    "Measurement Method":"Crawl Analysis",
+    "Module":"WI",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Canonical Tags",
+    "Description \/ Rationale":"Correct implementation of canonicals.",
+    "Measurement Method":"HTML Parsing",
+    "Module":"WI",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Hreflang Tags",
+    "Description \/ Rationale":"Internationalization signals.",
+    "Measurement Method":"HTML Parsing",
+    "Module":"WI",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Author Authority",
+    "Description \/ Rationale":"Presence of Person schema with sameAs.",
+    "Measurement Method":"Schema Validator",
+    "Module":"BV",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"E-E-A-T Score",
+    "Description \/ Rationale":"Composite score of Author+Brand+Citations.",
+    "Measurement Method":"Proprietary\/Heuristic",
+    "Module":"BV",
+    "Priority":"High",
+    "Automation":"Semi"
+  },
+  {
+    "Data Point Name":"Review Rating",
+    "Description \/ Rationale":"Aggregate star rating (G2, Trustpilot).",
+    "Measurement Method":"Scraper\/API",
+    "Module":"BV",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Review Volume",
+    "Description \/ Rationale":"Total count of reviews.",
+    "Measurement Method":"Scraper\/API",
+    "Module":"BV",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Video Content",
+    "Description \/ Rationale":"Presence of embedded video.",
+    "Measurement Method":"HTML Parsing",
+    "Module":"CNT",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Image Uniqueness",
+    "Description \/ Rationale":"Use of original vs. stock imagery.",
+    "Measurement Method":"Vision API",
+    "Module":"CNT",
+    "Priority":"Low",
+    "Automation":"Semi"
+  },
+  {
+    "Data Point Name":"PDF Accessibility",
+    "Description \/ Rationale":"Are PDFs tagged\/OCR'd?",
+    "Measurement Method":"PDF Parser",
+    "Module":"WI",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Podcast Mentions",
+    "Description \/ Rationale":"Brand mentions in podcast transcripts.",
+    "Measurement Method":"Audio Transcription API",
+    "Module":"BV",
+    "Priority":"Low",
+    "Automation":"Semi"
+  },
+  {
+    "Data Point Name":"YouTube Transcripts",
+    "Description \/ Rationale":"Keyword\/Entity presence in video captions.",
+    "Measurement Method":"YouTube API",
+    "Module":"CNT",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Forum Presence",
+    "Description \/ Rationale":"Activity on niche forums.",
+    "Measurement Method":"Scraper",
+    "Module":"SEO",
+    "Priority":"Low",
+    "Automation":"Semi"
+  },
+  {
+    "Data Point Name":"Influencer Mentions",
+    "Description \/ Rationale":"Citations by recognized industry experts.",
+    "Measurement Method":"Social Listening Tool",
+    "Module":"BV",
+    "Priority":"Med",
+    "Automation":"Semi"
+  },
+  {
+    "Data Point Name":"Competitor SoM",
+    "Description \/ Rationale":"Competitor's Share of Model % (Benchmark).",
+    "Measurement Method":"LLM API",
+    "Module":"COMP",
+    "Priority":"High",
+    "Automation":"Semi"
+  },
+  {
+    "Data Point Name":"Competitor Content Vol",
+    "Description \/ Rationale":"Competitor publishing frequency.",
+    "Measurement Method":"RSS\/Crawl",
+    "Module":"COMP",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Competitor Schema",
+    "Description \/ Rationale":"Gap analysis of competitor structured data.",
+    "Measurement Method":"Schema Validator",
+    "Module":"COMP",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Keyword Gap",
+    "Description \/ Rationale":"Traditional SEO keyword gap.",
+    "Measurement Method":"Ahrefs\/Semrush API",
+    "Module":"COMP",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Entity Gap",
+    "Description \/ Rationale":"Entities present in competitor content but missing in yours.",
+    "Measurement Method":"spaCy \/ NLP",
+    "Module":"COMP",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Vector Distance Gap",
+    "Description \/ Rationale":"Difference in semantic distance to query vs. competitor.",
+    "Measurement Method":"OpenAI Embeddings",
+    "Module":"COMP",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Brand Sentiment Gap",
+    "Description \/ Rationale":"Difference in sentiment score vs. competitor.",
+    "Measurement Method":"NLP Sentiment Analysis",
+    "Module":"COMP",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"TDM Policy URL",
+    "Description \/ Rationale":"Location of machine-readable TDM policy.",
+    "Measurement Method":"HTTP\/HTML Check",
+    "Module":"LEG",
+    "Priority":"Low",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"GDPR Compliance",
+    "Description \/ Rationale":"Cookie consent implementation.",
+    "Measurement Method":"Headless Browser",
+    "Module":"LEG",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"CCPA Compliance",
+    "Description \/ Rationale":"\"Do Not Sell\" link presence.",
+    "Measurement Method":"HTML Parsing",
+    "Module":"LEG",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Data Localization",
+    "Description \/ Rationale":"Server location relative to target audience.",
+    "Measurement Method":"IP Geolocation",
+    "Module":"WI",
+    "Priority":"Low",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Visual Hierarchy",
+    "Description \/ Rationale":"Use of bolding\/italics for key terms.",
+    "Measurement Method":"HTML Parsing",
+    "Module":"CNT",
+    "Priority":"Low",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Fact Check Schema",
+    "Description \/ Rationale":"use of ClaimReview schema.",
+    "Measurement Method":"Schema Validator",
+    "Module":"CNT",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"HowTo Schema",
+    "Description \/ Rationale":"use of HowTo schema.",
+    "Measurement Method":"Schema Validator",
+    "Module":"CNT",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Breadcrumb Schema",
+    "Description \/ Rationale":"Implementation of breadcrumbs.",
+    "Measurement Method":"Schema Validator",
+    "Module":"WI",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Local SEO (NAP)",
+    "Description \/ Rationale":"Consistency of Name, Address, Phone.",
+    "Measurement Method":"Local Listing API",
+    "Module":"SEO",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Map Embeds",
+    "Description \/ Rationale":"Presence of Google Maps embed.",
+    "Measurement Method":"HTML Parsing",
+    "Module":"SEO",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Favicon",
+    "Description \/ Rationale":"Presence\/optimization of favicon.",
+    "Measurement Method":"HTML Parsing",
+    "Module":"WI",
+    "Priority":"Low",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"OG Tags",
+    "Description \/ Rationale":"Open Graph tags.",
+    "Measurement Method":"HTML Parsing",
+    "Module":"SEO",
+    "Priority":"Low",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Twitter Cards",
+    "Description \/ Rationale":"Twitter card meta data.",
+    "Measurement Method":"HTML Parsing",
+    "Module":"SEO",
+    "Priority":"Low",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Content Length",
+    "Description \/ Rationale":"Word count.",
+    "Measurement Method":"Text Analysis",
+    "Module":"CNT",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Sentence Length",
+    "Description \/ Rationale":"Average sentence length.",
+    "Measurement Method":"Text Analysis",
+    "Module":"CNT",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Paragraph Length",
+    "Description \/ Rationale":"Average paragraph length.",
+    "Measurement Method":"Text Analysis",
+    "Module":"CNT",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Active Voice %",
+    "Description \/ Rationale":"Percentage of sentences in active voice.",
+    "Measurement Method":"NLP Analysis",
+    "Module":"CNT",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Unique Named Entities",
+    "Description \/ Rationale":"Count of distinct entities.",
+    "Measurement Method":"spaCy",
+    "Module":"CNT",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Brand\/Non-Brand Ratio",
+    "Description \/ Rationale":"Balance of branded vs. generic terms.",
+    "Measurement Method":"Keyword Analysis",
+    "Module":"SEO",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Crawl Depth",
+    "Description \/ Rationale":"Average clicks to reach pages.",
+    "Measurement Method":"Crawler",
+    "Module":"WI",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Rendered DOM Size",
+    "Description \/ Rationale":"Size of the DOM tree.",
+    "Measurement Method":"Headless Browser",
+    "Module":"WI",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Console Errors",
+    "Description \/ Rationale":"JS errors in browser console.",
+    "Measurement Method":"Headless Browser",
+    "Module":"WI",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Resource Blockage",
+    "Description \/ Rationale":"Blocked CSS\/JS in robots.txt.",
+    "Measurement Method":"urllib.robotparser",
+    "Module":"WI",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Redirect Loops",
+    "Description \/ Rationale":"Presence of infinite redirects.",
+    "Measurement Method":"Crawler",
+    "Module":"WI",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Duplicate Content",
+    "Description \/ Rationale":"Internal duplication %.",
+    "Measurement Method":"Shingling\/Simhash",
+    "Module":"CNT",
+    "Priority":"High",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Text-to-HTML Ratio",
+    "Description \/ Rationale":"Ratio of text content to HTML code.",
+    "Measurement Method":"HTML Parsing",
+    "Module":"WI",
+    "Priority":"Low",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Link Velocity",
+    "Description \/ Rationale":"Rate of new backlink acquisition.",
+    "Measurement Method":"Ahrefs\/Semrush API",
+    "Module":"SEO",
+    "Priority":"Med",
+    "Automation":"Full"
+  },
+  {
+    "Data Point Name":"Mention Velocity",
+    "Description \/ Rationale":"Rate of new brand mentions.",
+    "Measurement Method":"Social Listening",
+    "Module":"BV",
+    "Priority":"High",
+    "Automation":"Full"
+  }
+]
