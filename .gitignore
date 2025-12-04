@@ -1,0 +1,15 @@
+# Ignore virtual environment folder
+/backend/venv/*
+
+# Ignore Python cache files
+*/__pycache__/
+*.pyc
+
+# Ignore Node.js dependencies
+node_modules/
+
+# Ignore Nuxt build folder
+.nuxt/
+
+# Ignore environment files
+.env
