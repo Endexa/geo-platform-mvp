@@ -1,7 +1,9 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional, Dict, Any
-from jose import JWTError, jwt
-from passlib.context import CryptContext
+import jwt
+from jwt.exceptions import InvalidTokenError
+from pwdlib import PasswordHash
+from pwdlib.hashers.bcrypt import BcryptHasher
 from fastapi import HTTPException, status, Request, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
@@ -13,8 +15,8 @@ from app.core.database import get_db
 from app.models import Profile, Organization
 from loguru import logger
 
-# Password hashing
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# Password hashing (bcrypt via pwdlib)
+password_hash_ctx = PasswordHash((BcryptHasher(),))
 
 # JWT Bearer token
 security = HTTPBearer()
@@ -26,12 +28,12 @@ class SecurityManager:
     @staticmethod
     def hash_password(password: str) -> str:
         """Hash a password using bcrypt"""
-        return pwd_context.hash(password)
+        return password_hash_ctx.hash(password)
 
     @staticmethod
     def verify_password(plain_password: str, hashed_password: str) -> bool:
         """Verify a password against a hash"""
-        return pwd_context.verify(plain_password, hashed_password)
+        return password_hash_ctx.verify(plain_password, hashed_password)
 
     @staticmethod
     def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
@@ -39,13 +41,13 @@ class SecurityManager:
         to_encode = data.copy()
 
         if expires_delta:
-            expire = datetime.utcnow() + expires_delta
+            expire = datetime.now(timezone.utc) + expires_delta
         else:
-            expire = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+            expire = datetime.now(timezone.utc) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
 
         to_encode.update({
             "exp": expire,
-            "iat": datetime.utcnow(),
+            "iat": datetime.now(timezone.utc),
             "type": "access"
         })
 
@@ -56,11 +58,11 @@ class SecurityManager:
     def create_refresh_token(data: dict) -> str:
         """Create JWT refresh token (longer lived)"""
         to_encode = data.copy()
-        expire = datetime.utcnow() + timedelta(days=7)
+        expire = datetime.now(timezone.utc) + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS)
 
         to_encode.update({
             "exp": expire,
-            "iat": datetime.utcnow(),
+            "iat": datetime.now(timezone.utc),
             "type": "refresh"
         })
 
@@ -73,7 +75,7 @@ class SecurityManager:
         try:
             payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
             return payload
-        except JWTError as e:
+        except InvalidTokenError as e:
             logger.warning(f"Token verification failed: {str(e)}")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -97,7 +99,7 @@ class SecurityManager:
     @staticmethod
     def sign_request(payload: str, secret: str) -> str:
         """Sign a request payload"""
-        return hmac.new(
+        return hmac.HMAC(
             secret.encode(),
             payload.encode(),
             hashlib.sha256
@@ -144,8 +146,12 @@ async def get_current_user(
 async def get_current_active_user(
     current_user: Profile = Depends(get_current_user)
 ) -> Profile:
-    """Get current active user (add additional checks if needed)"""
-    # Add additional checks here (e.g., is_active, is_verified, etc.)
+    """Get current active user"""
+    if not current_user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Account deactivated"
+        )
     return current_user
 
 
