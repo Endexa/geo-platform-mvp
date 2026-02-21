@@ -43,8 +43,9 @@ textstat==0.7.3
 
 # Utilities
 python-dotenv==1.0.0
-python-jose[cryptography]==3.3.0
-passlib[bcrypt]==1.7.4
+PyJWT==2.10.1
+pwdlib[bcrypt]==0.2.1
+email-validator>=2.0.0
 httpx==0.26.0
 
 # Payment processing

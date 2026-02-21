@@ -4,8 +4,7 @@ from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import JSONResponse
 from app.core.config import settings
-from app.core.database import engine, Base
-from app.api import analysis, optimization, brand_voice, dashboard, integrations, geo_datapoints
+from app.api import analysis, optimization, brand_voice, dashboard, integrations, geo_datapoints, auth
 from app.core.middleware import (
     SecurityHeadersMiddleware,
     RequestLoggingMiddleware,
@@ -32,9 +31,6 @@ logger.add(
     compression="zip",
     level=settings.LOG_LEVEL
 )
-
-# Create database tables
-Base.metadata.create_all(bind=engine)
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -140,6 +136,11 @@ app.include_router(
     geo_datapoints.router,
     prefix=f"{settings.API_V1_PREFIX}/geo-datapoints",
     tags=["geo-datapoints"]
+)
+app.include_router(
+    auth.router,
+    prefix=f"{settings.API_V1_PREFIX}/auth",
+    tags=["auth"]
 )
 
 

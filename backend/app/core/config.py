@@ -30,9 +30,9 @@ class Settings(BaseSettings):
     DB_POOL_SIZE: int = 10
     DB_MAX_OVERFLOW: int = 20
 
-    # Supabase
-    SUPABASE_URL: str
-    SUPABASE_KEY: str
+    # Supabase (optional -- moving to self-managed auth)
+    SUPABASE_URL: str = ""
+    SUPABASE_KEY: str = ""
     SUPABASE_SERVICE_KEY: str = ""
 
     # Redis
@@ -100,13 +100,27 @@ class Settings(BaseSettings):
     # Encryption
     ENCRYPTION_KEY: str = ""  # For encrypting sensitive data at rest
 
+    # Audit & Cost Controls (Phase 1)
+    AUDIT_BUDGET_USD: float = 1.00  # Default per-audit budget cap
+    AI_CACHE_TTL_SECONDS: int = 86400  # 24h cache TTL
+
+    # Outbound AI Rate Limits (Phase 1)
+    OPENAI_RPM: int = 60
+    ANTHROPIC_RPM: int = 60
+    PERPLEXITY_RPM: int = 20
+    OPENAI_MAX_CONCURRENT: int = 10
+    ANTHROPIC_MAX_CONCURRENT: int = 10
+    PERPLEXITY_MAX_CONCURRENT: int = 5
+
     class Config:
         env_file = ".env"
         case_sensitive = True
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # Generate encryption key if not provided
+        # L-30 fix: raise error in production if ENCRYPTION_KEY not set
+        if self.ENVIRONMENT == "production" and not self.ENCRYPTION_KEY:
+            raise ValueError("ENCRYPTION_KEY must be set in production")
         if not self.ENCRYPTION_KEY:
             self.ENCRYPTION_KEY = secrets.token_urlsafe(32)
 
