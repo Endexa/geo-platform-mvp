@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 ## Current Position
 
 Phase: 1 of 9 (Foundation & Safety)
-Plan: 0 of 3 in current phase
-Status: Ready to plan
-Last activity: 2026-02-21 -- Roadmap created with 9 phases covering 24 requirements
+Plan: 1 of 3 in current phase
+Status: Executing
+Last activity: 2026-02-22 -- Completed 01-01 (auth foundation, dependency migration, Alembic init)
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [#░░░░░░░░░] 4%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
-- Average duration: -
-- Total execution time: 0 hours
+- Total plans completed: 1
+- Average duration: 4 min
+- Total execution time: 0.07 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 01-foundation-safety | 1 | 4 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: -
-- Trend: -
+- Last 5 plans: 01-01 (4min)
+- Trend: baseline
 
 *Updated after each plan completion*
 
@@ -45,6 +45,9 @@ Recent decisions affecting current work:
 - [Roadmap]: Auth and cost controls must be in place before any AI API code (safety-first ordering)
 - [Roadmap]: Pipeline built in vertical layers (crawl -> generate -> dispatch -> analyze -> score) not horizontal layers
 - [Roadmap]: Competitive intelligence and brand analysis depend on core audit, not on each other (phases 6 and 7 can run after phase 5)
+- [01-01]: Used explicit BcryptHasher instead of PasswordHash.recommended() to avoid argon2 dependency
+- [01-01]: Created Alembic migration manually since no local DB for autogenerate
+- [01-01]: Made SUPABASE_URL/KEY optional for self-managed auth transition
 
 ### Pending Todos
 
@@ -59,6 +62,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-21
-Stopped at: Roadmap created, ready for Phase 1 planning
-Resume file: None
+Last session: 2026-02-22
+Stopped at: Completed 01-01-PLAN.md (auth foundation)
+Resume file: .planning/phases/01-foundation-safety/01-01-SUMMARY.md
