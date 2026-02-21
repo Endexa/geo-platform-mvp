@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 ## Current Position
 
 Phase: 1 of 9 (Foundation & Safety)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: Executing
-Last activity: 2026-02-22 -- Completed 01-01 (auth foundation, dependency migration, Alembic init)
+Last activity: 2026-02-22 -- Completed 01-02 (cost tracking, Celery init)
 
-Progress: [#░░░░░░░░░] 4%
+Progress: [##░░░░░░░░] 7%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
-- Average duration: 4 min
-- Total execution time: 0.07 hours
+- Total plans completed: 2
+- Average duration: 3 min
+- Total execution time: 0.10 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-foundation-safety | 1 | 4 min | 4 min |
+| 01-foundation-safety | 2 | 6 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (4min)
-- Trend: baseline
+- Last 5 plans: 01-01 (4min), 01-02 (2min)
+- Trend: improving
 
 *Updated after each plan completion*
 
@@ -48,6 +48,9 @@ Recent decisions affecting current work:
 - [01-01]: Used explicit BcryptHasher instead of PasswordHash.recommended() to avoid argon2 dependency
 - [01-01]: Created Alembic migration manually since no local DB for autogenerate
 - [01-01]: Made SUPABASE_URL/KEY optional for self-managed auth transition
+- [01-02]: Created migration 002 manually (no local DB for autogenerate)
+- [01-02]: audit_id is plain UUID (no FK) -- audits table comes in Phase 2
+- [01-02]: Celery module path matches docker-compose: celery -A app.tasks.celery_app
 
 ### Pending Todos
 
@@ -63,5 +66,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 01-01-PLAN.md (auth foundation)
-Resume file: .planning/phases/01-foundation-safety/01-01-SUMMARY.md
+Stopped at: Completed 01-02-PLAN.md (cost tracking & Celery init)
+Resume file: .planning/phases/01-foundation-safety/01-02-SUMMARY.md
