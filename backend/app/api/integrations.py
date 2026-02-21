@@ -28,8 +28,7 @@ class CreateJiraTicketRequest(SecureJiraRequest):
 async def create_jira_ticket(
     request: CreateJiraTicketRequest,
     db: Session = Depends(get_db),
-    # Uncomment when authentication is enabled:
-    # current_user: Profile = Depends(get_current_active_user)
+    current_user: Profile = Depends(get_current_active_user),
 ):
     """
     Create a Jira ticket for a recommendation.
@@ -38,9 +37,7 @@ async def create_jira_ticket(
     - Rate limited: 20 integrations per minute
     - Input validation: UUID and project key validated
     - Audit logged: All Jira ticket creations logged
-
-    **Authentication:** Currently optional for MVP.
-    In production, this requires authentication and org membership verification.
+    - Authentication required
     """
     logger.info(f"Jira ticket creation requested: recommendation={request.recommendation_id}, project={request.project_key}")
 
@@ -96,8 +93,7 @@ class CreateCheckoutSessionRequest(SecureBaseModel):
 async def create_checkout_session(
     request: CreateCheckoutSessionRequest,
     db: Session = Depends(get_db),
-    # Uncomment when authentication is enabled:
-    # current_user: Profile = Depends(get_current_active_user)
+    current_user: Profile = Depends(get_current_active_user),
 ):
     """
     Create a Stripe checkout session for subscription upgrade.
@@ -106,9 +102,7 @@ async def create_checkout_session(
     - Rate limited: 20 integrations per minute
     - Input validation: Org ID and tier validated
     - Audit logged: All payment session creations logged
-
-    **Authentication:** Currently optional for MVP.
-    In production, this requires authentication and org admin permissions.
+    - Authentication required
 
     **IMPORTANT:** In production, verify that current_user is an admin
     of the organization before allowing payment operations.

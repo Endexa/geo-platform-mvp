@@ -37,9 +37,7 @@ async def create_analysis(
     request: AnalyzeRequest,
     background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
-    # Uncomment when authentication is enabled:
-    # current_user: Profile = Depends(get_current_active_user),
-    # org: Organization = Depends(OrganizationChecker())
+    current_user: Profile = Depends(get_current_active_user),
 ):
     """
     Initiate a new website analysis.
@@ -48,9 +46,7 @@ async def create_analysis(
     - Rate limited: 3 analyses per 5 minutes
     - Input validation: URL and keywords sanitized
     - Audit logged: All requests logged
-
-    **Authentication:** Currently optional for MVP.
-    Uncomment dependencies to require authentication.
+    - Authentication required
 
     Returns analysis_id for polling.
     """
@@ -101,7 +97,8 @@ async def create_analysis(
 @router.get("/{analysis_id}", response_model=AnalysisResponse)
 async def get_analysis(
     analysis_id: UUID,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: Profile = Depends(get_current_active_user),
 ):
     """
     Get analysis status and results.
@@ -126,7 +123,8 @@ async def get_analysis(
 @router.get("/{analysis_id}/recommendations")
 async def get_recommendations(
     analysis_id: UUID,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: Profile = Depends(get_current_active_user),
 ):
     """
     Get AI-generated recommendations for an analysis.

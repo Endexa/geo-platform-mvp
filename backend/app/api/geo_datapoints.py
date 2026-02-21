@@ -21,7 +21,9 @@ sys.path.append(str(geo_data_points_path))
 
 from app.core.database import get_db
 from app.core.rate_limiter import standard_rate_limit, analysis_rate_limit
+from app.core.security import get_current_active_user
 from app.core.validators import SecureBaseModel
+from app.models import Profile
 from loguru import logger
 
 # Import GEO data points components
@@ -52,7 +54,8 @@ class RunGeoAnalysisRequest(SecureBaseModel):
 @router.post("/run", dependencies=[Depends(analysis_rate_limit)])
 async def run_geo_analysis(
     request: RunGeoAnalysisRequest,
-    background_tasks: BackgroundTasks
+    background_tasks: BackgroundTasks,
+    current_user: Profile = Depends(get_current_active_user),
 ):
     """
     Trigger GEO data points analysis for a URL.
@@ -119,7 +122,10 @@ async def run_geo_analysis(
 
 
 @router.get("/{analysis_id}", dependencies=[Depends(standard_rate_limit)])
-async def get_geo_analysis(analysis_id: UUID):
+async def get_geo_analysis(
+    analysis_id: UUID,
+    current_user: Profile = Depends(get_current_active_user),
+):
     """
     Get GEO analysis results by ID.
 
@@ -187,7 +193,10 @@ async def get_geo_analysis(analysis_id: UUID):
 
 
 @router.get("/{analysis_id}/summary", dependencies=[Depends(standard_rate_limit)])
-async def get_geo_analysis_summary(analysis_id: UUID):
+async def get_geo_analysis_summary(
+    analysis_id: UUID,
+    current_user: Profile = Depends(get_current_active_user),
+):
     """
     Get GEO analysis summary with aggregated scores by module.
 
@@ -273,7 +282,11 @@ async def get_geo_analysis_summary(analysis_id: UUID):
 
 
 @router.get("/{analysis_id}/module/{module}", dependencies=[Depends(standard_rate_limit)])
-async def get_geo_analysis_by_module(analysis_id: UUID, module: str):
+async def get_geo_analysis_by_module(
+    analysis_id: UUID,
+    module: str,
+    current_user: Profile = Depends(get_current_active_user),
+):
     """
     Get GEO analysis results filtered by module.
 

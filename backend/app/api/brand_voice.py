@@ -51,8 +51,7 @@ class CheckVoiceRequest(SecureBrandVoiceCheck):
 async def create_config(
     request: CreateConfigRequest,
     db: Session = Depends(get_db),
-    # Uncomment when authentication is enabled:
-    # current_user: Profile = Depends(get_current_active_user)
+    current_user: Profile = Depends(get_current_active_user),
 ):
     """
     Create a new brand voice configuration.
@@ -61,9 +60,7 @@ async def create_config(
     - Rate limited: 100 requests per minute
     - Input validation: Name and description sanitized
     - Audit logged: All config creations logged
-
-    **Authentication:** Currently optional for MVP.
-    Uncomment dependencies to require authentication.
+    - Authentication required
     """
     logger.info(f"Brand voice config creation requested: {request.name}")
 
@@ -94,8 +91,7 @@ async def upload_knowledge_base(
     config_id: UUID,
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
-    # Uncomment when authentication is enabled:
-    # current_user: Profile = Depends(get_current_active_user)
+    current_user: Profile = Depends(get_current_active_user),
 ):
     """
     Upload text/PDF to the Golden Knowledge Base.
@@ -161,8 +157,7 @@ async def add_rule(
     config_id: UUID,
     request: AddRuleRequest,
     db: Session = Depends(get_db),
-    # Uncomment when authentication is enabled:
-    # current_user: Profile = Depends(get_current_active_user)
+    current_user: Profile = Depends(get_current_active_user),
 ):
     """
     Add a rule to the brand voice config.
@@ -201,8 +196,7 @@ async def add_rule(
 async def check_voice(
     request: CheckVoiceRequest,
     db: Session = Depends(get_db),
-    # Uncomment when authentication is enabled:
-    # current_user: Profile = Depends(get_current_active_user)
+    current_user: Profile = Depends(get_current_active_user),
 ):
     """
     Check content against brand voice.
@@ -243,14 +237,14 @@ async def check_voice(
 async def get_config(
     config_id: UUID,
     db: Session = Depends(get_db),
-    # Uncomment when authentication is enabled:
-    # current_user: Profile = Depends(get_current_active_user)
+    current_user: Profile = Depends(get_current_active_user),
 ):
     """
     Get brand voice configuration details.
 
     **Security Features:**
     - Rate limited: 100 requests per minute
+    - Authentication required
     """
     config = db.query(BrandVoiceConfig).filter(BrandVoiceConfig.id == config_id).first()
 

@@ -23,8 +23,7 @@ async def generate_recommendations(
     request: GenerateRecommendationsRequest,
     background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
-    # Uncomment when authentication is enabled:
-    # current_user: Profile = Depends(get_current_active_user)
+    current_user: Profile = Depends(get_current_active_user),
 ):
     """
     Generate AI-powered recommendations for an analysis.
@@ -34,9 +33,7 @@ async def generate_recommendations(
     - Rate limited: 10 optimizations per minute
     - Input validation: UUID format validated
     - Audit logged: All requests logged
-
-    **Authentication:** Currently optional for MVP.
-    Uncomment dependencies to require authentication.
+    - Authentication required
     """
     logger.info(f"Recommendation generation requested for analysis: {request.analysis_id}")
 
@@ -81,8 +78,7 @@ async def generate_recommendations(
 async def optimize_content(
     recommendation_id: UUID,
     db: Session = Depends(get_db),
-    # Uncomment when authentication is enabled:
-    # current_user: Profile = Depends(get_current_active_user)
+    current_user: Profile = Depends(get_current_active_user),
 ):
     """
     Get optimized content for a specific recommendation.
@@ -91,6 +87,7 @@ async def optimize_content(
     **Security Features:**
     - Rate limited: 10 optimizations per minute
     - Audit logged: All optimizations logged
+    - Authentication required
     """
     logger.info(f"Content optimization requested for recommendation: {recommendation_id}")
 
@@ -118,8 +115,7 @@ async def optimize_content(
 async def mark_as_implemented(
     recommendation_id: UUID,
     db: Session = Depends(get_db),
-    # Uncomment when authentication is enabled:
-    # current_user: Profile = Depends(get_current_active_user)
+    current_user: Profile = Depends(get_current_active_user),
 ):
     """
     Mark a recommendation as implemented.
@@ -127,6 +123,7 @@ async def mark_as_implemented(
     **Security Features:**
     - Rate limited: 100 requests per minute
     - Audit logged: Implementation status changes logged
+    - Authentication required
     """
     logger.info(f"Marking recommendation as implemented: {recommendation_id}")
 

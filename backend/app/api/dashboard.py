@@ -14,18 +14,15 @@ router = APIRouter()
 @router.get("/stats", dependencies=[Depends(standard_rate_limit)])
 async def get_dashboard_stats(
     db: Session = Depends(get_db),
-    # Uncomment when authentication is enabled:
-    # current_user: Profile = Depends(get_current_active_user)
+    current_user: Profile = Depends(get_current_active_user),
 ):
     """
     Get aggregated statistics for dashboard.
 
     **Security Features:**
     - Rate limited: 100 requests per minute
-    - Read-only operation (safe for public access in MVP)
-
-    **Authentication:** Currently optional for MVP.
-    In production, this would filter data by organization.
+    - Read-only operation
+    - Authentication required
     """
     logger.info("Dashboard stats requested")
 
@@ -83,8 +80,7 @@ async def get_dashboard_stats(
 async def get_analysis_history(
     days: int = 30,
     db: Session = Depends(get_db),
-    # Uncomment when authentication is enabled:
-    # current_user: Profile = Depends(get_current_active_user)
+    current_user: Profile = Depends(get_current_active_user),
 ):
     """
     Get analysis history for charts.
@@ -92,10 +88,8 @@ async def get_analysis_history(
     **Security Features:**
     - Rate limited: 100 requests per minute
     - Input validation: Days parameter validated
-    - Read-only operation (safe for public access in MVP)
-
-    **Authentication:** Currently optional for MVP.
-    In production, this would filter data by organization.
+    - Read-only operation
+    - Authentication required
     """
     # Validate days parameter
     if days < 1 or days > 365:
