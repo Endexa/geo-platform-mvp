@@ -1,7 +1,7 @@
-# Requirements: GEO Platform — AI Brand Visibility Auditor
+# Requirements: GEO Platform -- AI Brand Visibility Auditor
 
 **Defined:** 2026-02-21
-**Core Value:** Show brands exactly how AI engines see them — with real quotes from real AI responses, not just theoretical scores.
+**Core Value:** Show brands exactly how AI engines see them -- with real quotes from real AI responses, not just theoretical scores.
 
 ## v1 Requirements
 
@@ -89,36 +89,36 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FOUND-01 | — | Pending |
-| FOUND-02 | — | Pending |
-| FOUND-03 | — | Pending |
-| FOUND-04 | — | Pending |
-| AUDIT-01 | — | Pending |
-| AUDIT-02 | — | Pending |
-| AUDIT-03 | — | Pending |
-| AUDIT-04 | — | Pending |
-| AUDIT-05 | — | Pending |
-| AUDIT-06 | — | Pending |
-| AUDIT-07 | — | Pending |
-| COMP-01 | — | Pending |
-| COMP-02 | — | Pending |
-| COMP-03 | — | Pending |
-| COMP-04 | — | Pending |
-| BRAND-01 | — | Pending |
-| BRAND-02 | — | Pending |
-| BRAND-03 | — | Pending |
-| INSIGHT-01 | — | Pending |
-| INSIGHT-02 | — | Pending |
-| INSIGHT-03 | — | Pending |
-| REPORT-01 | — | Pending |
-| REPORT-02 | — | Pending |
-| REPORT-03 | — | Pending |
+| FOUND-01 | Phase 1: Foundation & Safety | Pending |
+| FOUND-02 | Phase 1: Foundation & Safety | Pending |
+| FOUND-03 | Phase 1: Foundation & Safety | Pending |
+| FOUND-04 | Phase 1: Foundation & Safety | Pending |
+| AUDIT-01 | Phase 5: Audit Experience | Pending |
+| AUDIT-02 | Phase 2: Site Crawl & Query Generation | Pending |
+| AUDIT-03 | Phase 2: Site Crawl & Query Generation | Pending |
+| AUDIT-04 | Phase 3: AI Engine Dispatch | Pending |
+| AUDIT-05 | Phase 4: Mention Detection & Scoring | Pending |
+| AUDIT-06 | Phase 4: Mention Detection & Scoring | Pending |
+| AUDIT-07 | Phase 5: Audit Experience | Pending |
+| COMP-01 | Phase 6: Competitive Intelligence | Pending |
+| COMP-02 | Phase 6: Competitive Intelligence | Pending |
+| COMP-03 | Phase 6: Competitive Intelligence | Pending |
+| COMP-04 | Phase 6: Competitive Intelligence | Pending |
+| BRAND-01 | Phase 7: Brand Signature Analysis | Pending |
+| BRAND-02 | Phase 7: Brand Signature Analysis | Pending |
+| BRAND-03 | Phase 7: Brand Signature Analysis | Pending |
+| INSIGHT-01 | Phase 8: Insights & Dashboard | Pending |
+| INSIGHT-02 | Phase 8: Insights & Dashboard | Pending |
+| INSIGHT-03 | Phase 8: Insights & Dashboard | Pending |
+| REPORT-01 | Phase 9: Reporting & Scale | Pending |
+| REPORT-02 | Phase 9: Reporting & Scale | Pending |
+| REPORT-03 | Phase 9: Reporting & Scale | Pending |
 
 **Coverage:**
 - v1 requirements: 24 total
-- Mapped to phases: 0
-- Unmapped: 24
+- Mapped to phases: 24
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-21*
-*Last updated: 2026-02-21 after initial definition*
+*Last updated: 2026-02-21 after roadmap creation*
