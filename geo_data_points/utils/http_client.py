@@ -352,3 +352,19 @@ def check_robots_txt_allows(url: str, user_agent: str, use_cache: bool = True) -
 
     except Exception:
         return None
+
+
+def get_base_url(url: str) -> str:
+    """
+    Extract base URL from a given URL.
+
+    Args:
+        url: Full URL
+
+    Returns:
+        Base URL (scheme://netloc)
+    """
+    from urllib.parse import urlparse
+
+    parsed = urlparse(url)
+    return f"{parsed.scheme}://{parsed.netloc}"

@@ -14,7 +14,7 @@ WORLD-CLASS ENGINEERING STANDARDS:
 - Industry-grade reliability
 """
 
-from typing import Dict, Any, Optional, Tuple
+from typing import Dict, Any, Optional, Tuple, List
 from geo_data_points.base import BaseMeasurement
 from loguru import logger
 from datetime import datetime

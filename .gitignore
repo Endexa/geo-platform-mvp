@@ -1,15 +1,39 @@
-# Ignore virtual environment folder
-/backend/venv/*
+# Virtual environments
+venv/
+/backend/venv/
+.venv/
 
-# Ignore Python cache files
+# Python cache
 */__pycache__/
 *.pyc
+*.pyo
 
-# Ignore Node.js dependencies
+# Node.js
 node_modules/
 
-# Ignore Nuxt build folder
+# Nuxt build
 .nuxt/
+.output/
 
-# Ignore environment files
+# Environment files
 .env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+geo_data_points/logs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Nested git repos (subagent plugin)
+.claude/awesome-claude-code-subagents/.git/
