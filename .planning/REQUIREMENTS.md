@@ -11,8 +11,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **FOUND-01**: User authentication with JWT (enable existing scaffolding)
 - [x] **FOUND-02**: Per-audit cost tracking with budget caps to prevent API cost explosion
-- [ ] **FOUND-03**: Redis caching for AI engine responses (24h TTL)
-- [ ] **FOUND-04**: Outbound rate limiting per AI engine API
+- [x] **FOUND-03**: Redis caching for AI engine responses (24h TTL)
+- [x] **FOUND-04**: Outbound rate limiting per AI engine API
 
 ### Core Audit
 
@@ -91,8 +91,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 |-------------|-------|--------|
 | FOUND-01 | Phase 1: Foundation & Safety | Complete |
 | FOUND-02 | Phase 1: Foundation & Safety | Complete |
-| FOUND-03 | Phase 1: Foundation & Safety | Pending |
-| FOUND-04 | Phase 1: Foundation & Safety | Pending |
+| FOUND-03 | Phase 1: Foundation & Safety | Complete |
+| FOUND-04 | Phase 1: Foundation & Safety | Complete |
 | AUDIT-01 | Phase 5: Audit Experience | Pending |
 | AUDIT-02 | Phase 2: Site Crawl & Query Generation | Pending |
 | AUDIT-03 | Phase 2: Site Crawl & Query Generation | Pending |

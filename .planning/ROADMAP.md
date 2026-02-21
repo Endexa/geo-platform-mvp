@@ -12,7 +12,7 @@ This roadmap transforms the existing FastAPI + Nuxt 3 + PostgreSQL codebase from
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation & Safety** - Enable auth, cost tracking, response caching, and outbound rate limiting before any AI API code
+- [x] **Phase 1: Foundation & Safety** - Enable auth, cost tracking, response caching, and outbound rate limiting before any AI API code
 - [ ] **Phase 2: Site Crawl & Query Generation** - Crawl user URLs for AI-readiness signals and auto-generate industry-relevant queries from content
 - [ ] **Phase 3: AI Engine Dispatch** - Query ChatGPT, Claude, and Perplexity APIs with generated queries via LiteLLM
 - [ ] **Phase 4: Mention Detection & Scoring** - Detect brand mentions in AI responses with verbatim quotes and compute visibility scores
@@ -37,9 +37,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md -- Dependency migration (PyJWT, pwdlib), Alembic setup, auth endpoints (FOUND-01)
-- [ ] 01-02-PLAN.md -- Cost tracking model, service, and Celery initialization (FOUND-02)
-- [ ] 01-03-PLAN.md -- Redis AI cache service, outbound rate limiter, enable auth on endpoints (FOUND-03, FOUND-04)
+- [x] 01-01-PLAN.md -- Dependency migration (PyJWT, pwdlib), Alembic setup, auth endpoints (FOUND-01)
+- [x] 01-02-PLAN.md -- Cost tracking model, service, and Celery initialization (FOUND-02)
+- [x] 01-03-PLAN.md -- Redis AI cache service, outbound rate limiter, enable auth on endpoints (FOUND-03, FOUND-04)
 
 ### Phase 2: Site Crawl & Query Generation
 **Goal**: The system can take any URL, extract AI-readiness signals from the site, and generate a set of industry-relevant queries that a real user would ask an AI engine about that brand's domain
@@ -171,7 +171,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Safety | 0/3 | Planned | - |
+| 1. Foundation & Safety | 3/3 | Complete | 2026-02-22 |
 | 2. Site Crawl & Query Generation | 0/2 | Not started | - |
 | 3. AI Engine Dispatch | 0/2 | Not started | - |
 | 4. Mention Detection & Scoring | 0/2 | Not started | - |
