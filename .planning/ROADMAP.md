@@ -34,12 +34,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Identical AI queries return cached responses from Redis within the 24-hour TTL window instead of making new API calls
   4. Outbound requests to each AI engine API are throttled to stay within provider rate limits, with back-pressure when limits are hit
   5. Unauthenticated requests to any audit-related endpoint receive a 401 response
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
-- [ ] 01-03: TBD
+- [ ] 01-01-PLAN.md -- Dependency migration (PyJWT, pwdlib), Alembic setup, auth endpoints (FOUND-01)
+- [ ] 01-02-PLAN.md -- Cost tracking model, service, and Celery initialization (FOUND-02)
+- [ ] 01-03-PLAN.md -- Redis AI cache service, outbound rate limiter, enable auth on endpoints (FOUND-03, FOUND-04)
 
 ### Phase 2: Site Crawl & Query Generation
 **Goal**: The system can take any URL, extract AI-readiness signals from the site, and generate a set of industry-relevant queries that a real user would ask an AI engine about that brand's domain
@@ -171,7 +171,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Safety | 0/3 | Not started | - |
+| 1. Foundation & Safety | 0/3 | Planned | - |
 | 2. Site Crawl & Query Generation | 0/2 | Not started | - |
 | 3. AI Engine Dispatch | 0/2 | Not started | - |
 | 4. Mention Detection & Scoring | 0/2 | Not started | - |
