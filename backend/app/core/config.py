@@ -104,6 +104,11 @@ class Settings(BaseSettings):
     AUDIT_BUDGET_USD: float = 1.00  # Default per-audit budget cap
     AI_CACHE_TTL_SECONDS: int = 86400  # 24h cache TTL
 
+    # Query Generation (Phase 2)
+    QUERY_GEN_MODEL: str = "gpt-4o"  # LLM model for query generation (configurable)
+    QUERY_GEN_TEMPERATURE: float = 0.7  # Some creativity for diverse queries
+    QUERY_GEN_MAX_CONTENT_WORDS: int = 2000  # Truncation limit for crawl content in LLM prompt
+
     # Outbound AI Rate Limits (Phase 1)
     OPENAI_RPM: int = 60
     ANTHROPIC_RPM: int = 60
