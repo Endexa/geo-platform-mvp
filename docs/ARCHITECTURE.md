@@ -84,7 +84,8 @@
 | `brand_voice_configs` | Brand voice configuration + rules |
 | `brand_voice_knowledge` | Stored vectors for brand voice similarity |
 | `organizations` | Multi-tenant org records |
-| `profiles` | User profiles |
+| `profiles` | User profiles (email, password_hash, is_active for auth) |
+| `audit_cost_ledger` | Per-API-call cost tracking (engine, model, tokens, cost_usd) |
 
 ### Key Relationships
 
@@ -93,6 +94,7 @@ organizations 1──N profiles
 organizations 1──N websites
 websites      1──N analyses
 analyses      1──N recommendations
+analyses      1──N audit_cost_ledger
 organizations 1──N brand_voice_configs
 brand_voice_configs 1──N brand_voice_knowledge
 ```
@@ -128,13 +130,48 @@ Applied in order (outermost → innermost):
 
 ## Rate Limiting
 
+### Inbound (per-user)
+
 | Tier | Limit | Intended For |
 |------|-------|-------------|
 | Free | 3 analyses/day | Trial users |
 | Pro | 100 analyses/day | Paying customers |
 | Enterprise | 1000 analyses/day | Large agencies |
 
-Implemented in `backend/app/core/rate_limiter.py`. Currently disabled (auth not enabled).
+Implemented in `backend/app/core/rate_limiter.py`. Auth is now enabled on all protected endpoints.
+
+### Outbound (per-AI-provider)
+
+Prevents exceeding AI engine API rate limits. Implemented in `backend/app/core/outbound_limiter.py`.
+
+| Provider | RPM | Max Concurrent |
+|----------|-----|----------------|
+| OpenAI | 60 | 10 |
+| Anthropic | 60 | 10 |
+| Perplexity | 20 | 5 |
+
+Uses asyncio.Semaphore for concurrency control + token bucket for RPM pacing. Callers block (back-pressure) until capacity is available.
+
+---
+
+## Cost Tracking
+
+Implemented in `backend/app/services/cost_service.py` with `backend/app/models/audit_cost.py`.
+
+- Every outbound AI API call records: engine, model, prompt_tokens, completion_tokens, cost_usd (Numeric 10,6), cached flag
+- Per-audit budget enforcement: `CostTrackingService.check_budget()` returns False when spend exceeds cap
+- Default budget: $1.00 per audit (configurable via `settings.AUDIT_BUDGET_USD`)
+
+---
+
+## AI Response Caching
+
+Implemented in `backend/app/services/cache_service.py`.
+
+- Redis-based async cache for AI API responses
+- Deterministic SHA-256 cache keys from (engine, model, messages, temperature)
+- TTL: 24 hours (configurable via `settings.AI_CACHE_TTL_SECONDS`)
+- Fail-open design: Redis outage logs a warning but does not block AI calls
 
 ---
 
@@ -261,12 +298,26 @@ voice_rules
 
 ---
 
+## Authentication
+
+Implemented in `backend/app/core/security.py`, `backend/app/api/auth.py`, `backend/app/services/auth_service.py`.
+
+- **Library:** PyJWT (JWT creation/verification) + pwdlib (bcrypt password hashing)
+- **Endpoints:** POST /register, POST /login, GET /me
+- **Enforcement:** All audit-related endpoints require `Depends(get_current_active_user)`
+- **Public endpoints:** /health, /, /security-info, /api/v1/auth/register, /api/v1/auth/login
+- **Password policy:** Min 12 chars, requires uppercase + lowercase + digit + special character
+- **Token expiry:** Access tokens 30 min, Refresh tokens 7 days
+
+---
+
 ## Security Details
 
 Full security documentation: `docs/SECURITY.md`
 
 Key features:
-- JWT authentication (disabled for MVP)
+- JWT authentication with PyJWT (enabled on all protected endpoints)
+- Password hashing with pwdlib (bcrypt)
 - Password policy: 12+ chars, uppercase, lowercase, digits, special
 - SQL injection protection via ORM + middleware
 - XSS protection via Pydantic validation
