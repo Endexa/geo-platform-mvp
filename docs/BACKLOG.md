@@ -95,13 +95,18 @@ Layers 1 (rules) and 3 (pgvector similarity) already work. Build the missing lay
 
 ---
 
-## Priority 4 — Enable Authentication
+## ~~Priority 4 — Enable Authentication~~ DONE (Phase 1)
 
-- [ ] Uncomment JWT auth in API endpoints
-- [ ] Enable Supabase Auth or use existing JWT logic in `backend/app/core/security.py`
-- [ ] Add `org_id` scoping to analysis queries
-- [ ] Protect all API routes (except health/docs)
-- [ ] Add login/signup flow to frontend
+Auth fully enabled via GSD Phase 1 (Foundation & Safety):
+- PyJWT + pwdlib replace python-jose + passlib
+- Register/login/me endpoints at `/api/v1/auth/*`
+- All protected endpoints require `Depends(get_current_active_user)` — returns 401 for unauthenticated requests
+- AuditCostLedger model + CostTrackingService with $1.00/audit budget cap
+- Redis AI response cache (24h TTL, fail-open)
+- Outbound rate limiter per AI provider (asyncio semaphore + token bucket)
+- Celery app initialized with Redis broker
+- Alembic migrations infrastructure with 2 migrations
+- Remaining: `org_id` scoping for queries, frontend login/signup flow
 
 ---
 
