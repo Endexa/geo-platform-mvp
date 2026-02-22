@@ -64,11 +64,11 @@ Plans:
   2. Engine queries execute in parallel with per-engine semaphores respecting rate limits, and a single engine failure does not block the others
   3. Every AI response is stored with its full text, model version identifier, cost metadata, and timestamp
   4. Cached responses are served for duplicate query+engine combinations within the 24h TTL
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
+- [ ] 03-01-PLAN.md -- EngineResponse model, migration 004, dispatch config, DispatchService with parallel engine dispatch (AUDIT-04)
+- [ ] 03-02-PLAN.md -- Extend Celery pipeline with dispatch stage, update audit API/schemas for engine responses (AUDIT-04)
 
 ### Phase 4: Mention Detection & Scoring
 **Goal**: The system can analyze AI responses to detect whether and how a brand is mentioned, extract verbatim quotes, and compute a meaningful visibility score
@@ -172,7 +172,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Safety | 3/3 | Complete | 2026-02-22 |
-| 2. Site Crawl & Query Generation | 0/2 | Not started | - |
+| 2. Site Crawl & Query Generation | 2/2 | Complete | 2026-02-22 |
 | 3. AI Engine Dispatch | 0/2 | Not started | - |
 | 4. Mention Detection & Scoring | 0/2 | Not started | - |
 | 5. Audit Experience | 0/3 | Not started | - |
