@@ -41,7 +41,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **COMP-02**: App ranks discovered entities by mention frequency across all queries and engines to identify the user's real AI competitors (who AI mentions instead of you)
 - [x] **COMP-03**: User sees a competitor leaderboard showing which brands AI mentions most for their industry queries, with share-of-voice percentages
 - [x] **COMP-04**: App crawls top competitor sites (top 3-5 by mention frequency) using the same crawl pipeline as the user's site
-- [ ] **COMP-05**: App compares competitor technical setup against user's site (their schema types vs yours, their content structure scores vs yours, their robots.txt AI directives vs yours, their llms.txt vs yours)
+- [x] **COMP-05**: App compares competitor technical setup against user's site (their schema types vs yours, their content structure scores vs yours, their robots.txt AI directives vs yours, their llms.txt vs yours)
 - [x] **COMP-06**: User can add/edit/remove custom queries alongside auto-generated ones before or after an audit runs
 - [x] **COMP-07**: For AI responses that cite sources (especially Perplexity), the app extracts and displays which URLs/sources each engine references
 
@@ -132,7 +132,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | COMP-02 | Phase 7: Auto-Competitor Discovery | Complete |
 | COMP-03 | Phase 7: Auto-Competitor Discovery | Complete |
 | COMP-04 | Phase 7: Auto-Competitor Discovery | Complete |
-| COMP-05 | Phase 7: Auto-Competitor Discovery | Pending |
+| COMP-05 | Phase 7: Auto-Competitor Discovery | Complete |
 | COMP-06 | Phase 7: Auto-Competitor Discovery | Complete |
 | COMP-07 | Phase 7: Auto-Competitor Discovery | Complete |
 | REC-01 | Phase 8: Actionable Recommendations | Pending |

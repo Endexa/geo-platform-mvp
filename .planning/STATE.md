@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Show brands exactly how AI engines see them -- with real quotes from real AI responses, not just theoretical scores.
-**Current focus:** Phase 7 IN PROGRESS: Auto-Competitor Discovery (Plan 3 of 4 complete)
+**Current focus:** Phase 7 COMPLETE: Auto-Competitor Discovery (4 of 4 plans complete)
 
 ## Current Position
 
-Phase: 7 of 9 (Auto-Competitor Discovery) -- IN PROGRESS
-Plan: 3 of 4 in current phase (3 complete)
-Status: Completed 07-02 and 07-03 (Wave 2)
-Last activity: 2026-02-22 -- Completed Wave 2 (07-02 + 07-03 in parallel)
+Phase: 7 of 9 (Auto-Competitor Discovery) -- COMPLETE
+Plan: 4 of 4 in current phase (4 complete)
+Status: Phase 7 complete. Ready for Phase 8 (Recommendations).
+Last activity: 2026-02-22 -- Completed 07-04 (Competitor Frontend Experience)
 
-Progress: [####################] 79%
+Progress: [######################] 83%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 19
+- Total plans completed: 20
 - Average duration: 4 min
-- Total execution time: 1.5 hours
+- Total execution time: 1.6 hours
 
 **By Phase:**
 
@@ -33,11 +33,11 @@ Progress: [####################] 79%
 | 04-mention-detection-scoring | 2 | 6 min | 3 min |
 | 05-audit-experience | 2 | 6 min | 3 min |
 | 06-site-ai-readiness-scoring | 5 | 32 min | 6 min |
-| 07-auto-competitor-discovery | 3 | 14 min | 5 min |
+| 07-auto-competitor-discovery | 4 | 19 min | 5 min |
 
 **Recent Trend:**
-- Last 5 plans: 06-03 (5min), 06-05 (49min), 07-01 (6min), 07-02 (5min), 07-03 (3min)
-- Trend: Wave 2 parallel (07-02 + 07-03) efficient; 06-05 was outlier (full-stack)
+- Last 5 plans: 06-05 (49min), 07-01 (6min), 07-02 (5min), 07-03 (3min), 07-04 (5min)
+- Trend: Phase 7 consistently fast (3-6min per plan); 06-05 was outlier (full-stack)
 
 *Updated after each plan completion*
 | Phase 02 P01 | 4min | 2 tasks | 9 files |
@@ -53,6 +53,7 @@ Progress: [####################] 79%
 | Phase 07 P01 | 6min | 2 tasks | 12 files |
 | Phase 07 P02 | 5min | 2 tasks | 5 files |
 | Phase 07 P03 | 3min | 2 tasks | 4 files |
+| Phase 07 P04 | 5min | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -124,6 +125,10 @@ Recent decisions affecting current work:
 - [07-03]: Dispatched queries return 409 Conflict on delete (not silent ignore)
 - [07-03]: is_custom added to AuditQueryResponse schema for frontend query type distinction
 - [07-03]: QueryEditor visible on completed and pending status (add before/between runs)
+- [07-04]: Competitor preview limited to top 5 on audit page; link to full /competitors view
+- [07-04]: Competitor data loading is fail-silent on audit page (try/catch with null fallback)
+- [07-04]: SourceCitations falls back to URL regex extraction when citations field is absent
+- [07-04]: Score gaps sorted by deficit size descending for actionability
 
 ### Pending Todos
 
@@ -139,5 +144,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed Wave 2 (07-02 + 07-03 in parallel)
-Resume file: .planning/phases/07-auto-competitor-discovery/07-03-SUMMARY.md
+Stopped at: Completed 07-04-PLAN.md (Phase 7 complete)
+Resume file: .planning/phases/07-auto-competitor-discovery/07-04-SUMMARY.md
