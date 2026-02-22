@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Show brands exactly how AI engines see them -- with real quotes from real AI responses, not just theoretical scores.
-**Current focus:** Phase 7 IN PROGRESS: Auto-Competitor Discovery (Plan 1 of 4 complete)
+**Current focus:** Phase 7 IN PROGRESS: Auto-Competitor Discovery (Plan 3 of 4 complete)
 
 ## Current Position
 
 Phase: 7 of 9 (Auto-Competitor Discovery) -- IN PROGRESS
-Plan: 1 of 4 in current phase (1 complete)
-Status: Completed 07-01 (Entity Extraction Foundation)
-Last activity: 2026-02-22 -- Completed 07-01 (Entity Extraction Foundation)
+Plan: 3 of 4 in current phase (3 complete)
+Status: Completed 07-03 (Custom Query Management)
+Last activity: 2026-02-22 -- Completed 07-03 (Custom Query Management)
 
-Progress: [##################] 71%
+Progress: [####################] 79%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 17
+- Total plans completed: 18
 - Average duration: 4 min
-- Total execution time: 1.3 hours
+- Total execution time: 1.35 hours
 
 **By Phase:**
 
@@ -33,11 +33,11 @@ Progress: [##################] 71%
 | 04-mention-detection-scoring | 2 | 6 min | 3 min |
 | 05-audit-experience | 2 | 6 min | 3 min |
 | 06-site-ai-readiness-scoring | 5 | 32 min | 6 min |
-| 07-auto-competitor-discovery | 1 | 6 min | 6 min |
+| 07-auto-competitor-discovery | 2 | 9 min | 5 min |
 
 **Recent Trend:**
-- Last 5 plans: 06-01 (5min), 06-02 (4min), 06-03 (5min), 06-05 (49min), 07-01 (6min)
-- Trend: 07-01 normal pace; 06-05 was outlier (full-stack)
+- Last 5 plans: 06-02 (4min), 06-03 (5min), 06-05 (49min), 07-01 (6min), 07-03 (3min)
+- Trend: 07-03 fast (API+frontend CRUD); 06-05 was outlier (full-stack)
 
 *Updated after each plan completion*
 | Phase 02 P01 | 4min | 2 tasks | 9 files |
@@ -51,6 +51,7 @@ Progress: [##################] 71%
 | Phase 06 P01 | 5min | 2 tasks | 14 files |
 | Phase 06 P05 | 49min | 2 tasks | 14 files |
 | Phase 07 P01 | 6min | 2 tasks | 12 files |
+| Phase 07 P03 | 3min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -113,6 +114,10 @@ Recent decisions affecting current work:
 - [07-01]: Corporate suffixes stripped before rapidfuzz deduplication (85% threshold)
 - [07-01]: competitor_audits table created first for FK reference from discovered_competitors
 - [07-01]: Citations captured from both Perplexity API metadata and inline URL regex for all engines
+- [07-03]: Custom queries sorted first in QueryEditor for user visibility
+- [07-03]: Dispatched queries return 409 Conflict on delete (not silent ignore)
+- [07-03]: is_custom added to AuditQueryResponse schema for frontend query type distinction
+- [07-03]: QueryEditor visible on completed and pending status (add before/between runs)
 
 ### Pending Todos
 
@@ -128,5 +133,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 07-01-PLAN.md (Entity Extraction Foundation)
-Resume file: .planning/phases/07-auto-competitor-discovery/07-01-SUMMARY.md
+Stopped at: Completed 07-03-PLAN.md (Custom Query Management)
+Resume file: .planning/phases/07-auto-competitor-discovery/07-03-SUMMARY.md
