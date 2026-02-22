@@ -247,7 +247,7 @@ Plans:
 - [ ] 06-02-PLAN.md -- CrawlabilityScorer: 12 criteria for AI bot access, SSR detection, TTFB, status codes, resource blockage (READY-01)
 - [ ] 06-03-PLAN.md -- ContentStructureScorer: 13 criteria for headings, answer-first, paragraphs, data density, FAQ, readability, citations, freshness, statistics, quotes, entities, sentence variety (READY-02)
 - [ ] 06-04-PLAN.md -- StructuredDataScorer: 13 criteria for schema.org types, tier classification, JSON-LD validation, FAQPage, llms.txt (READY-03)
-- [ ] 06-05-PLAN.md -- AuthorityScorer (15 criteria), Optimization Score computation, audit API extension, frontend scoring display with category breakdown and criterion drill-down (READY-04, READY-05, READY-06)
+- [ ] 06-05-PLAN.md -- AuthorityScorer (23 criteria: 8 E-E-A-T + 15 SEO), Optimization Score in API, frontend scoring display with category breakdown and criterion drill-down (READY-04, READY-05, READY-06)
 
 ### Phase 7: Auto-Competitor Discovery
 **Goal**: The system automatically discovers competitors from AI engine responses (who AI mentions instead of you), crawls their sites, and compares their technical setup against the user's site
@@ -355,11 +355,11 @@ Some algorithm ideas from the legacy scripts may inspire implementations (e.g., 
 
 ### Criteria Counts
 
-Phase 6 implements **53 criteria** across 4 scoring categories:
+Phase 6 implements **61 criteria** across 4 scoring categories:
 - Crawlability: 12 criteria (robots.txt parsing, SSR detection, response metrics)
 - Content Structure: 13 criteria (HTML analysis + NLP)
 - Structured Data: 13 criteria (JSON-LD parsing + validation)
-- Authority/SEO: 15 criteria (E-E-A-T markers + SEO fundamentals)
+- Authority/SEO: 23 criteria (8 E-E-A-T markers + 15 SEO fundamentals)
 
 Each criterion produces a 0-100 score with a human-readable explanation. Category scores are weighted averages of their criteria, and the Optimization Score is the weighted sum of category scores.
 
