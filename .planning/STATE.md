@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Show brands exactly how AI engines see them -- with real quotes from real AI responses, not just theoretical scores.
-**Current focus:** Phase 4: Response Analysis
+**Current focus:** Phase 5: Audit Experience
 
 ## Current Position
 
-Phase: 4 of 9 (Mention Detection & Scoring) -- COMPLETE
-Plan: 2 of 2 in current phase
-Status: Phase 4 Complete -- Ready for Phase 5
-Last activity: 2026-02-22 -- Completed 04-02 (Pipeline integration and API schema extension)
+Phase: 5 of 9 (Audit Experience)
+Plan: 1 of 2 in current phase
+Status: Plan 05-01 complete -- executing 05-02 next
+Last activity: 2026-02-22 -- Completed 05-01 (Frontend auth foundation)
 
-Progress: [#########░] 45%
+Progress: [##########░] 50%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9
+- Total plans completed: 10
 - Average duration: 3 min
-- Total execution time: 0.48 hours
+- Total execution time: 0.53 hours
 
 **By Phase:**
 
@@ -31,9 +31,10 @@ Progress: [#########░] 45%
 | 02-site-crawl-query-generation | 2 | 8 min | 4 min |
 | 03-ai-engine-dispatch | 2 | 5 min | 3 min |
 | 04-mention-detection-scoring | 2 | 6 min | 3 min |
+| 05-audit-experience | 1 | 3 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-02 (4min), 03-01 (3min), 03-02 (2min), 04-01 (4min), 04-02 (2min)
+- Last 5 plans: 03-01 (3min), 03-02 (2min), 04-01 (4min), 04-02 (2min), 05-01 (3min)
 - Trend: stable
 
 *Updated after each plan completion*
@@ -43,6 +44,7 @@ Progress: [#########░] 45%
 | Phase 03 P02 | 2min | 2 tasks | 3 files |
 | Phase 04 P01 | 4min | 3 tasks | 9 files |
 | Phase 04 P02 | 2min | 2 tasks | 3 files |
+| Phase 05 P01 | 3min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -84,6 +86,10 @@ Recent decisions affecting current work:
 - [04-02]: QueryGeneratorService instantiated in Stage 4 for brand name re-extraction (instance method, not static)
 - [04-02]: Backref visibility_score handled as list with isinstance check for forward-compatible access
 - [04-02]: ANALYZING status added to dispatch_summary computation filter
+- [05-01]: Removed @nuxtjs/supabase entirely -- self-managed JWT auth via useCookie
+- [05-01]: useCookie('access_token') for token persistence (SSR-safe, persistent across reloads)
+- [05-01]: useState for user state (shared across components, survives unmount)
+- [05-01]: Login success redirects to /audit (primary Phase 5 feature page)
 
 ### Pending Todos
 
@@ -99,5 +105,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 04-02-PLAN.md (Pipeline integration and API schema extension) -- Phase 4 COMPLETE
-Resume file: .planning/phases/04-mention-detection-scoring/04-02-SUMMARY.md
+Stopped at: Completed 05-01-PLAN.md (Frontend auth foundation)
+Resume file: .planning/phases/05-audit-experience/05-01-SUMMARY.md

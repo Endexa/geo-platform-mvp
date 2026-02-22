@@ -16,7 +16,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Core Audit
 
-- [ ] **AUDIT-01**: User can enter a URL and trigger a complete AI brand visibility audit
+- [x] **AUDIT-01**: User can enter a URL and trigger a complete AI brand visibility audit
 - [x] **AUDIT-02**: App crawls the site and extracts AI-readiness signals (schema.org, robots.txt AI directives, structured data, content structure)
 - [x] **AUDIT-03**: App auto-generates industry-relevant queries from crawled site content
 - [x] **AUDIT-04**: App queries ChatGPT, Claude, and Perplexity APIs with generated queries
@@ -93,7 +93,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FOUND-02 | Phase 1: Foundation & Safety | Complete |
 | FOUND-03 | Phase 1: Foundation & Safety | Complete |
 | FOUND-04 | Phase 1: Foundation & Safety | Complete |
-| AUDIT-01 | Phase 5: Audit Experience | Pending |
+| AUDIT-01 | Phase 5: Audit Experience | Complete |
 | AUDIT-02 | Phase 2: Site Crawl & Query Generation | Complete |
 | AUDIT-03 | Phase 2: Site Crawl & Query Generation | Complete |
 | AUDIT-04 | Phase 3: AI Engine Dispatch | Complete |
