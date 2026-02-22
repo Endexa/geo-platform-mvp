@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Optional
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class AuditCreate(BaseModel):
@@ -145,3 +145,36 @@ class AuditDetailResponse(AuditResponse):
     visibility_score: Optional[VisibilityScoreSchema] = None
     optimization_score: Optional[OptimizationScoreSchema] = None
     page_scores: list[PageScoreSchema] = []
+
+
+# --- Custom Query CRUD Schemas ---
+
+
+class CreateCustomQueryRequest(BaseModel):
+    """Request schema for creating a custom query on an audit."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    query_text: str = Field(..., min_length=10, max_length=500)
+    category: str = Field(default="custom")
+
+
+class UpdateCustomQueryRequest(BaseModel):
+    """Request schema for updating a custom query."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    query_text: Optional[str] = Field(None, min_length=10, max_length=500)
+    category: Optional[str] = None
+
+
+class CustomQueryResponse(BaseModel):
+    """Response schema for a custom query."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: UUID
+    query_text: str
+    category: str
+    is_custom: bool
+    created_at: datetime

@@ -21,8 +21,11 @@ from app.schemas.audit import (
     AuditCreate,
     AuditDetailResponse,
     AuditResponse,
+    CreateCustomQueryRequest,
+    CustomQueryResponse,
     DispatchSummary,
     OptimizationScoreSchema,
+    UpdateCustomQueryRequest,
     VisibilityScoreSchema,
 )
 from app.tasks.audit_tasks import run_crawl_and_generate
@@ -222,3 +225,172 @@ def get_audit(
         response_data["visibility_score"] = score_obj
 
     return AuditDetailResponse.model_validate(response_data, from_attributes=True)
+
+
+# --- Custom Query CRUD Endpoints ---
+
+
+def _get_audit_for_user(
+    audit_id: str,
+    db: Session,
+    current_user: Profile,
+) -> Audit:
+    """Fetch an audit record and verify it belongs to the current user."""
+    audit = db.query(Audit).filter(Audit.id == audit_id).first()
+    if not audit or audit.user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Audit not found",
+        )
+    return audit
+
+
+@router.get("/{audit_id}/queries", response_model=list[CustomQueryResponse])
+def list_audit_queries(
+    audit_id: str,
+    db: Session = Depends(get_db),
+    current_user: Profile = Depends(get_current_active_user),
+):
+    """List all queries for an audit, ordered by creation date.
+
+    Returns both auto-generated and custom queries, distinguishable by is_custom flag.
+    """
+    _get_audit_for_user(audit_id, db, current_user)
+
+    queries = (
+        db.query(AuditQuery)
+        .filter(AuditQuery.audit_id == audit_id)
+        .order_by(AuditQuery.created_at)
+        .all()
+    )
+    return queries
+
+
+@router.post(
+    "/{audit_id}/queries",
+    response_model=CustomQueryResponse,
+    status_code=status.HTTP_201_CREATED,
+)
+def create_custom_query(
+    audit_id: str,
+    request: CreateCustomQueryRequest,
+    db: Session = Depends(get_db),
+    current_user: Profile = Depends(get_current_active_user),
+):
+    """Create a custom query for an audit.
+
+    Custom queries are stored with is_custom=True and dispatched alongside
+    auto-generated queries on the next audit run.
+    """
+    _get_audit_for_user(audit_id, db, current_user)
+
+    query = AuditQuery(
+        audit_id=audit_id,
+        query_text=request.query_text,
+        category=request.category,
+        is_custom=True,
+        is_editable=True,
+    )
+    db.add(query)
+    db.commit()
+    db.refresh(query)
+
+    logger.info("Custom query {} created for audit {}", query.id, audit_id)
+    return query
+
+
+@router.put("/{audit_id}/queries/{query_id}", response_model=CustomQueryResponse)
+def update_custom_query(
+    audit_id: str,
+    query_id: str,
+    request: UpdateCustomQueryRequest,
+    db: Session = Depends(get_db),
+    current_user: Profile = Depends(get_current_active_user),
+):
+    """Update a custom query's text and/or category.
+
+    Only custom queries (is_custom=True) can be edited. Returns 403 for
+    auto-generated queries.
+    """
+    _get_audit_for_user(audit_id, db, current_user)
+
+    query = (
+        db.query(AuditQuery)
+        .filter(AuditQuery.id == query_id, AuditQuery.audit_id == audit_id)
+        .first()
+    )
+    if not query:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Query not found",
+        )
+
+    if not query.is_custom:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only custom queries can be edited",
+        )
+
+    if request.query_text is not None:
+        query.query_text = request.query_text
+    if request.category is not None:
+        query.category = request.category
+
+    db.commit()
+    db.refresh(query)
+
+    logger.info("Custom query {} updated for audit {}", query_id, audit_id)
+    return query
+
+
+@router.delete(
+    "/{audit_id}/queries/{query_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+def delete_custom_query(
+    audit_id: str,
+    query_id: str,
+    db: Session = Depends(get_db),
+    current_user: Profile = Depends(get_current_active_user),
+):
+    """Delete a custom query from an audit.
+
+    Only custom queries (is_custom=True) can be deleted. Returns 403 for
+    auto-generated queries. Returns 409 if the query has already been
+    dispatched (has engine responses).
+    """
+    _get_audit_for_user(audit_id, db, current_user)
+
+    query = (
+        db.query(AuditQuery)
+        .filter(AuditQuery.id == query_id, AuditQuery.audit_id == audit_id)
+        .first()
+    )
+    if not query:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Query not found",
+        )
+
+    if not query.is_custom:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only custom queries can be deleted",
+        )
+
+    # Check if query has been dispatched (has engine responses)
+    response_count = (
+        db.query(EngineResponse)
+        .filter(EngineResponse.audit_query_id == query.id)
+        .count()
+    )
+    if response_count > 0:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Cannot delete a dispatched query. Re-run audit to include updated queries.",
+        )
+
+    db.delete(query)
+    db.commit()
+
+    logger.info("Custom query {} deleted from audit {}", query_id, audit_id)
