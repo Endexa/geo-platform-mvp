@@ -13,7 +13,7 @@ This roadmap transforms the existing FastAPI + Nuxt 3 + PostgreSQL codebase from
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & Safety** - Enable auth, cost tracking, response caching, and outbound rate limiting before any AI API code
-- [ ] **Phase 2: Site Crawl & Query Generation** - Crawl user URLs for AI-readiness signals and auto-generate industry-relevant queries from content
+- [x] **Phase 2: Site Crawl & Query Generation** - Crawl user URLs for AI-readiness signals and auto-generate industry-relevant queries from content
 - [ ] **Phase 3: AI Engine Dispatch** - Query ChatGPT, Claude, and Perplexity APIs with generated queries via LiteLLM
 - [ ] **Phase 4: Mention Detection & Scoring** - Detect brand mentions in AI responses with verbatim quotes and compute visibility scores
 - [ ] **Phase 5: Audit Experience** - Users can trigger an audit from URL entry to scored results with per-query drill-down
@@ -52,8 +52,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 02-01-PLAN.md -- Audit/AuditQuery models, Alembic migration 003, CrawlerService with AI-readiness signal extraction (AUDIT-02)
-- [ ] 02-02-PLAN.md -- QueryGeneratorService with LiteLLM structured output, Celery audit pipeline, audit API endpoints (AUDIT-03)
+- [x] 02-01-PLAN.md -- Audit/AuditQuery models, Alembic migration 003, CrawlerService with AI-readiness signal extraction (AUDIT-02)
+- [x] 02-02-PLAN.md -- QueryGeneratorService with LiteLLM structured output, Celery audit pipeline, audit API endpoints (AUDIT-03)
 
 ### Phase 3: AI Engine Dispatch
 **Goal**: The system can send generated queries to ChatGPT, Claude, and Perplexity in parallel and store their responses reliably, with graceful degradation if one engine fails
