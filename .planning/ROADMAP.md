@@ -266,13 +266,13 @@ Plans:
   5. User sees a comparison: their scores vs competitor scores per category (crawlability, content structure, schema, authority)
   6. User can add, edit, or remove custom queries alongside auto-generated ones before or after an audit runs
   7. For AI responses that cite sources (especially Perplexity), the system extracts and displays which URLs/sources each engine references
-**Plans**: TBD (estimate 3-4 plans)
+**Plans**: 4 plans
 
 Plans:
-- [ ] 07-01: NER entity extraction from AI responses, entity ranking by frequency, competitor leaderboard (COMP-01, COMP-02, COMP-03)
-- [ ] 07-02: Auto-crawl top competitors, run Phase 6 scoring pipeline on competitor pages (COMP-04)
-- [ ] 07-03: Comparison view -- user vs competitor scores per category, source citation extraction (COMP-05, COMP-07)
-- [ ] 07-04: Custom query management -- add/edit/remove queries alongside auto-generated ones (COMP-06)
+- [ ] 07-01-PLAN.md -- Competitor/CompetitorAudit models, migration 007, EntityExtractorService (spaCy NER + citation extraction + SOV), Perplexity citations capture, DISCOVERING_COMPETITORS pipeline stage (COMP-01, COMP-02, COMP-07)
+- [ ] 07-02-PLAN.md -- CompetitorService (URL resolution + crawl + score pipeline), competitor API endpoints (leaderboard, crawl trigger, detail), wire competitor crawling into audit pipeline (COMP-03, COMP-04)
+- [ ] 07-03-PLAN.md -- Custom query CRUD API endpoints (add/edit/remove), QueryEditor frontend component with inline editing (COMP-06)
+- [ ] 07-04-PLAN.md -- Competitors page, CompetitorLeaderboard + CompetitorComparison + SourceCitations frontend components, sidebar nav, audit page integration (COMP-05, COMP-07)
 
 ### Phase 8: Actionable Recommendations
 **Goal**: The system generates page-specific, evidence-based recommendations by comparing user site scores against competitor scores and research-backed best practices, with each recommendation showing the evidence, the gap, and the estimated impact
