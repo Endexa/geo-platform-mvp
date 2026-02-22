@@ -5,26 +5,13 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
-    '@nuxtjs/supabase'
   ],
-
-  supabase: {
-    // Disable authentication redirect for MVP
-    redirect: false,
-    redirectOptions: {
-      login: '/login',
-      callback: '/confirm',
-      exclude: ['/', '/login', '/analyze', '/dashboard', '/optimization', '/brand-voice', '/settings'],
-    }
-  },
 
   css: ['~/assets/css/main.css'],
 
   runtimeConfig: {
     public: {
-      apiUrl: process.env.NUXT_PUBLIC_API_URL || 'http://localhost:8000',
-      supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL,
-      supabaseKey: process.env.NUXT_PUBLIC_SUPABASE_KEY
+      apiUrl: process.env.NUXT_PUBLIC_API_URL || 'http://localhost:8000'
     }
   },
 
