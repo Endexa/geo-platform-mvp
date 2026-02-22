@@ -126,6 +126,11 @@ class Settings(BaseSettings):
     MENTION_SHORT_NAME_THRESHOLD: int = 90  # Higher threshold for brand names < 4 chars
     MENTION_CONTEXT_WINDOW_CHARS: int = 200  # Character window for context extraction
 
+    # Auto-Competitor Discovery (Phase 7)
+    COMPETITOR_CRAWL_CAP: int = 5  # Max pages per competitor site
+    COMPETITOR_MAX_COUNT: int = 5  # Max competitors to auto-crawl
+    COMPETITOR_URL_RESOLVE_TIMEOUT: float = 5.0  # Timeout for URL resolution HTTP checks
+
     # Site AI-Readiness Scoring (Phase 6)
     SCORING_CRAWL_CAP: int = 25  # Max pages per audit for scoring
     SCORING_STAGE_TIMEOUT_SECONDS: int = 600  # 10 min timeout for scoring stage

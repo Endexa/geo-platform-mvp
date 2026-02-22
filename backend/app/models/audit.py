@@ -16,6 +16,7 @@ class AuditStatus(str, enum.Enum):
     DISPATCHING = "dispatching"
     ANALYZING = "analyzing"
     SCORING = "scoring"
+    DISCOVERING_COMPETITORS = "discovering_competitors"
     COMPLETED = "completed"
     FAILED = "failed"
 

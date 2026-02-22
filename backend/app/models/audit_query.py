@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
@@ -21,6 +21,8 @@ class AuditQuery(Base):
     category = Column(String, nullable=False)  # industry, brand_direct, comparison, problem, recommendation
     query_text = Column(String, nullable=False)
     sort_order = Column(Integer, default=0)
+    is_custom = Column(Boolean, default=False)  # True for user-added queries
+    is_editable = Column(Boolean, default=True)  # False for auto-generated queries after dispatch
     created_at = Column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
     )

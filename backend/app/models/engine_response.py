@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime, timezone
 
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, Numeric, String, Text
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import relationship
 
 from app.core.database import Base
@@ -25,6 +25,7 @@ class EngineResponse(Base):
     completion_tokens = Column(Integer, nullable=False, default=0)
     cost_usd = Column(Numeric(10, 6), nullable=False, default=0)
     cached = Column(Boolean, default=False)
+    citations = Column(JSONB, nullable=True)  # list of source URLs from Perplexity/inline
     error_message = Column(String, nullable=True)  # non-null if engine failed
     created_at = Column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)

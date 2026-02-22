@@ -11,7 +11,7 @@ pgvector==0.2.4
 
 # Supabase
 supabase==2.3.0
-postgrest-py==0.13.0
+postgrest-py==0.10.6
 
 # Pydantic for validation
 pydantic==2.5.3
@@ -38,10 +38,14 @@ lxml==5.1.0
 requests==2.31.0
 
 # Text processing
-python-readability==0.3.0
+python-readability==0.1.3
 textstat==0.7.3
 nltk>=3.8.0
 rapidfuzz>=3.14.0
+
+# Named Entity Recognition (Phase 7)
+# Note: en_core_web_sm model downloaded at Docker build time via: python -m spacy download en_core_web_sm
+spacy>=3.7
 
 # Utilities
 python-dotenv==1.0.0

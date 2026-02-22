@@ -12,6 +12,7 @@ from app.models.brand_mention import BrandMention
 from app.models.visibility_score import VisibilityScore
 from app.models.page_score import PageScore
 from app.models.criterion_result import CriterionResult
+from app.models.competitor import DiscoveredCompetitor, CompetitorAudit
 
 __all__ = [
     "Organization",
@@ -31,4 +32,6 @@ __all__ = [
     "VisibilityScore",
     "PageScore",
     "CriterionResult",
+    "DiscoveredCompetitor",
+    "CompetitorAudit",
 ]
