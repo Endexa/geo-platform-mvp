@@ -21,6 +21,10 @@
 
 | Date | Task | Area | Details |
 |------|------|------|---------|
+| 2026-02-22 | Phase 6: AuthorityScorer + Optimization Score UI (06-05) | Full-stack | AuthorityScorer with 23 criteria (8 E-E-A-T + 15 SEO fundamentals), external API integration (Knowledge Graph, Wikidata, Wikipedia, PageSpeed), audit API returns OptimizationScoreSchema with page_scores and criterion drill-down, frontend dual-score display (Visibility + Optimization), CategoryBreakdown, CriterionDrilldown, SCORING step in progress stepper. Phase 6 complete: 61 criteria across 4 categories |
+| 2026-02-22 | Phase 6: StructuredDataScorer (06-04) | Backend | StructuredDataScorer with 13 schema.org criteria (SD1-SD13) |
+| 2026-02-22 | Phase 6: ContentStructureScorer (06-03) | Backend | ContentStructureScorer with 13 content analysis criteria (CS1-CS13) |
+| 2026-02-22 | Phase 6: CrawlabilityScorer (06-02) | Backend | CrawlabilityScorer with 12 AI crawler access criteria (C1-C12) |
 | 2026-02-22 | Phase 6: Scoring pipeline foundation (06-01) | Backend | PageScore/CriterionResult models, migration 006, BaseScorer ABC, ScoringOrchestrator with weakest-link aggregation, CrawlerService.crawl_multiple, SCORING Celery stage, config settings (SCORING_CRAWL_CAP, GOOGLE_API_KEY) |
 | 2026-02-22 | Phase 1: Auth foundation (01-01) | Backend | Replaced python-jose→PyJWT, passlib→pwdlib. Fixed SQLAlchemy declarative_base import. Initialized Alembic migrations. Added email/password_hash/is_active to Profile. Created register/login/me endpoints |
 | 2026-02-22 | Phase 1: Cost tracking & Celery (01-02) | Backend | Created AuditCostLedger model (Numeric 10,6 precision), CostTrackingService with budget enforcement ($1.00 default), Celery app with Redis broker and task routing |

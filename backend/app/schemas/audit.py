@@ -76,6 +76,52 @@ class VisibilityScoreSchema(BaseModel):
     algorithm_version: str
 
 
+class CriterionResultSchema(BaseModel):
+    """Schema for an individual scoring criterion result."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    criterion_id: str
+    criterion_name: str
+    category: str
+    score: int
+    max_score: int = 100
+    is_binary: bool = False
+    human_summary: str
+    technical_detail: str
+    evidence: Optional[dict] = None
+    checked: bool = True
+
+
+class PageScoreSchema(BaseModel):
+    """Schema for a scored page within an audit."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    page_url: str
+    page_title: Optional[str] = None
+    crawlability_score: Optional[int] = None
+    content_structure_score: Optional[int] = None
+    structured_data_score: Optional[int] = None
+    authority_score: Optional[int] = None
+    overall_page_score: Optional[int] = None
+    internal_link_count: int = 0
+    was_scored: bool = True
+    criterion_results: list[CriterionResultSchema] = []
+
+
+class OptimizationScoreSchema(BaseModel):
+    """Schema for the audit's optimization score with category breakdown."""
+
+    overall_score: int
+    crawlability_avg: int = 0
+    content_structure_avg: int = 0
+    structured_data_avg: int = 0
+    authority_avg: int = 0
+    pages_scored: int = 0
+    pages_discovered: int = 0
+
+
 class AuditResponse(BaseModel):
     """Response schema for audit listing / summary."""
 
@@ -91,10 +137,11 @@ class AuditResponse(BaseModel):
 
 
 class AuditDetailResponse(AuditResponse):
-    """Response schema for audit detail view (includes crawl data, queries, dispatch summary, visibility score, and optimization score)."""
+    """Response schema for audit detail view (includes crawl data, queries, dispatch summary, visibility score, optimization score, and page scores)."""
 
     crawl_data: Optional[dict] = None
     queries: list[AuditQueryResponse] = []
     dispatch_summary: Optional[DispatchSummary] = None
     visibility_score: Optional[VisibilityScoreSchema] = None
-    optimization_score: Optional[int] = None
+    optimization_score: Optional[OptimizationScoreSchema] = None
+    page_scores: list[PageScoreSchema] = []

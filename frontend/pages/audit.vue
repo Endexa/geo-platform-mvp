@@ -1,6 +1,5 @@
 <template>
-  <NuxtLayout name="dashboard">
-    <div class="max-w-5xl mx-auto space-y-6">
+  <div class="max-w-5xl mx-auto space-y-6">
       <div>
         <h1 class="text-3xl font-bold text-gray-900">AI Brand Visibility Audit</h1>
         <p class="text-gray-600 mt-1">See how AI engines perceive and mention your brand</p>
@@ -32,13 +31,13 @@
         <p class="text-sm text-red-700">{{ apiError }}</p>
       </div>
     </div>
-  </NuxtLayout>
 </template>
 
 <script setup lang="ts">
 import { useIntervalFn } from '@vueuse/core'
 
 definePageMeta({
+  layout: 'dashboard',
   middleware: ['auth'],
 })
 
@@ -54,6 +53,15 @@ interface AuditDetail {
     mention_count: number
     query_mention_rate: number
     algorithm_version: string
+  } | null
+  optimization_score: {
+    overall_score: number
+    crawlability_avg: number
+    content_structure_avg: number
+    structured_data_avg: number
+    authority_avg: number
+    pages_scored: number
+    pages_discovered: number
   } | null
   queries: Array<{
     id: string
@@ -82,6 +90,29 @@ interface AuditDetail {
     total_failures: number
     engines_used: string[]
   } | null
+  page_scores: Array<{
+    page_url: string
+    page_title: string | null
+    crawlability_score: number | null
+    content_structure_score: number | null
+    structured_data_score: number | null
+    authority_score: number | null
+    overall_page_score: number | null
+    internal_link_count: number
+    was_scored: boolean
+    criterion_results: Array<{
+      criterion_id: string
+      criterion_name: string
+      category: string
+      score: number
+      max_score: number
+      is_binary: boolean
+      human_summary: string
+      technical_detail: string
+      evidence: Record<string, unknown> | null
+      checked: boolean
+    }>
+  }>
 }
 
 const auditId = ref<string | null>(null)
@@ -122,7 +153,7 @@ async function startAudit(url: string) {
       body: { url },
     })
     auditId.value = data.id
-    audit.value = { id: data.id, url, domain: '', status: 'pending', error_message: null, visibility_score: null, queries: [], dispatch_summary: null }
+    audit.value = { id: data.id, url, domain: '', status: 'pending', error_message: null, visibility_score: null, optimization_score: null, queries: [], dispatch_summary: null, page_scores: [] }
     resume()
   } catch (err: any) {
     apiError.value = err.data?.detail || err.message || 'Failed to start audit'

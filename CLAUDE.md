@@ -21,6 +21,7 @@
 | Dashboard Stats | Working | Queries DB, displays results |
 | GEO Data Points (5/108) | Working | GPTBot, ClaudeBot, Schema Org, Response Time, Title Tag |
 | GEO Data Points (103 remaining) | Scripts exist, return 0 | Need real implementation |
+| AI-Readiness Scoring (Phase 6) | **Working** | 61 criteria across 4 categories, dual-score UI (Visibility + Optimization), criterion drill-down |
 | Recommendation Engine | Stub | Optimizer service exists but no LLM integration |
 | Brand Signature Engine | Partial | 2 of 4 layers working (rules + pgvector similarity). Missing: statistical fingerprint + LLM deep analysis. See architecture below. |
 | Stripe Payments | Stub | Endpoints exist, untested |
@@ -233,14 +234,31 @@ User enters URL + keywords on /analyze
 
 ## Scoring System
 
-### Current (Simplified MVP)
+### Dual-Score Architecture (Phase 6 Complete)
+
+The audit produces two complementary scores:
+
+- **Visibility Score (0-100):** AI mention-based analysis from phases 4-5. Measures how often AI engines mention your brand when asked industry-relevant queries. Per-engine breakdown (ChatGPT, Claude, Perplexity, Gemini).
+
+- **Optimization Score (0-100):** Page-level criteria scoring from phase 6. Evaluates how AI-ready your site is across 61 criteria in 4 categories. Uses research-backed weights and strict grading (most sites score 30-60).
+
+**Weighted Formula:** Crawlability 25% + Content Structure 25% + Structured Data 20% + Authority 15% + AI Visibility 15%
+
+**Categories:**
+| Category | Criteria | Weight | Key Signals |
+|----------|----------|--------|-------------|
+| Crawlability | C1-C12 | 25% | AI bot access (robots.txt), SSR, TTFB, HTTP status |
+| Content Structure | CS1-CS13 | 25% | Headings, lists, word count, readability, citations |
+| Structured Data | SD1-SD13 | 20% | JSON-LD, FAQPage, HowTo, schema types, llms.txt |
+| Authority | A1-A8, S1-S15 | 15% | E-E-A-T (author, dates, KG, Wikidata), SEO fundamentals |
+
+**Aggregation:** Weakest-link: 0.6 * mean + 0.4 * min across pages, penalizing inconsistency.
+
+### Legacy (Original MVP)
 - **Visibility:** keywords found in H1/H2 / total keywords * 100
 - **Readability:** Flesch-Kincaid score (0-100)
-- **Authority:** Mock — .edu/.gov = 85, others = random 40-70
+- **Authority:** Mock -- .edu/.gov = 85, others = random 40-70
 - **GEO Score:** (Visibility * 0.4) + (Readability * 0.3) + (Authority * 0.3)
-
-### Target (Full 108-point system)
-7 modules, 108 measurements, each scoring 0-100. See `docs/GEO-DATA-POINTS.md`.
 
 ## Brand Signature Engine (4-Layer Architecture)
 

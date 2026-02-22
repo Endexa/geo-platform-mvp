@@ -81,6 +81,7 @@ const STEPS = [
   { key: 'generating_queries', label: 'Generating queries', description: 'Creating industry-relevant AI queries' },
   { key: 'dispatching', label: 'Querying AI engines', description: 'Sending queries to ChatGPT, Claude, Perplexity' },
   { key: 'analyzing', label: 'Analyzing mentions', description: 'Detecting brand mentions and scoring' },
+  { key: 'scoring', label: 'Scoring pages', description: 'Evaluating AI-readiness across 61 criteria' },
   { key: 'completed', label: 'Audit complete', description: 'Results are ready' },
 ] as const
 
