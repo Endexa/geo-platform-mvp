@@ -26,7 +26,7 @@
       <div class="p-4 m-4 bg-gradient-to-r from-primary-600 to-primary-700 rounded-lg text-white">
         <h3 class="font-semibold mb-1">Upgrade to Pro</h3>
         <p class="text-xs text-primary-100 mb-3">Unlock advanced features</p>
-        <button class="w-full px-3 py-2 bg-white text-primary-600 rounded-md text-sm font-medium hover:bg-primary-50 transition-colors">
+        <button class="w-full px-3 py-2 bg-white text-primary-600 rounded-md text-sm font-medium hover:bg-primary-50 transition-colors cursor-pointer">
           Upgrade Now
         </button>
       </div>
@@ -46,13 +46,15 @@
 
           <!-- User Menu -->
           <div class="flex items-center space-x-4">
-            <div class="badge badge-success">
-              3 Credits Remaining
-            </div>
-            <div class="flex items-center space-x-3">
-              <div class="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-                <span class="text-sm font-medium text-primary-700">U</span>
-              </div>
+            <span class="text-sm text-gray-600">{{ user?.email }}</span>
+            <button
+              @click="logout"
+              class="text-sm text-gray-500 hover:text-gray-700 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-500 rounded px-2 py-1"
+            >
+              Sign Out
+            </button>
+            <div class="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
+              <span class="text-sm font-medium text-primary-700">{{ userInitial }}</span>
             </div>
           </div>
         </div>
@@ -70,16 +72,32 @@
 import {
   HomeIcon,
   MagnifyingGlassIcon,
+  ShieldCheckIcon,
   LightBulbIcon,
   MicrophoneIcon,
   Cog6ToothIcon
 } from '@heroicons/vue/24/outline'
+
+const { isLoggedIn, user, logout, fetchUser } = useAuth()
+
+// Redirect if not logged in
+if (!isLoggedIn.value) {
+  navigateTo('/login')
+}
+
+// Fetch user info on mount if we have token but no user
+onMounted(async () => {
+  if (isLoggedIn.value && !user.value) {
+    await fetchUser()
+  }
+})
 
 const route = useRoute()
 
 const navigation = [
   { path: '/dashboard', label: 'Dashboard', icon: HomeIcon },
   { path: '/analyze', label: 'Analyze', icon: MagnifyingGlassIcon },
+  { path: '/audit', label: 'AI Audit', icon: ShieldCheckIcon },
   { path: '/optimization', label: 'Optimization', icon: LightBulbIcon },
   { path: '/brand-voice', label: 'Brand Voice', icon: MicrophoneIcon },
   { path: '/settings', label: 'Settings', icon: Cog6ToothIcon },
@@ -92,5 +110,11 @@ const isActive = (path: string) => {
 const currentPageTitle = computed(() => {
   const item = navigation.find(n => isActive(n.path))
   return item?.label || 'Dashboard'
+})
+
+const userInitial = computed(() => {
+  if (user.value?.full_name) return user.value.full_name[0].toUpperCase()
+  if (user.value?.email) return user.value.email[0].toUpperCase()
+  return 'U'
 })
 </script>
