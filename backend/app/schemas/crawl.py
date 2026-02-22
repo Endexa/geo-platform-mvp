@@ -28,6 +28,7 @@ class CrawlResult(BaseModel):
     domain: str
     title: str
     meta_description: str
+    html: str = ""  # Raw HTML for downstream scorers (content structure, structured data)
     main_content: str
     headings: dict[str, list[str]]  # {"h1": [...], "h2": [...], "h3": [...]}
     schema_org: list[dict]  # JSON-LD structured data from extruct

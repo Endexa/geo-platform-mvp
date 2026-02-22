@@ -69,6 +69,7 @@ def get_provider_limiter(provider: str) -> ProviderRateLimiter:
             "openai": (settings.OPENAI_RPM, settings.OPENAI_MAX_CONCURRENT),
             "anthropic": (settings.ANTHROPIC_RPM, settings.ANTHROPIC_MAX_CONCURRENT),
             "perplexity": (settings.PERPLEXITY_RPM, settings.PERPLEXITY_MAX_CONCURRENT),
+            "gemini": (settings.GEMINI_RPM, settings.GEMINI_MAX_CONCURRENT),
         }
         rpm, max_conc = config.get(provider, (60, 10))  # safe defaults
         _limiters[provider] = ProviderRateLimiter(provider, rpm, max_conc)

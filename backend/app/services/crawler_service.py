@@ -198,6 +198,7 @@ class CrawlerService:
             domain=domain,
             title=self._extract_title(soup),
             meta_description=self._extract_meta_description(soup),
+            html=html,
             main_content=main_content,
             headings=self._extract_headings(soup),
             schema_org=schema_org,

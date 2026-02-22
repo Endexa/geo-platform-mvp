@@ -80,6 +80,9 @@ class QueryGeneratorService:
         user_prompt = self._build_prompt(crawl_data, brand_name)
 
         try:
+            # Resolve API key based on the model provider
+            api_key = self._get_api_key_for_model(settings.QUERY_GEN_MODEL)
+
             response = completion(
                 model=settings.QUERY_GEN_MODEL,
                 messages=[
@@ -88,6 +91,7 @@ class QueryGeneratorService:
                 ],
                 response_format=GeneratedQuerySet,
                 temperature=settings.QUERY_GEN_TEMPERATURE,
+                api_key=api_key,
             )
 
             result = GeneratedQuerySet.model_validate_json(
@@ -124,6 +128,19 @@ class QueryGeneratorService:
             raise RuntimeError(
                 f"Query generation failed for brand '{brand_name}': {e}"
             ) from e
+
+    @staticmethod
+    def _get_api_key_for_model(model: str) -> str | None:
+        """Resolve the API key for a LiteLLM model string."""
+        model_lower = model.lower()
+        if model_lower.startswith("gemini/"):
+            return settings.GEMINI_API_KEY or None
+        if model_lower.startswith("anthropic/") or "claude" in model_lower:
+            return settings.ANTHROPIC_API_KEY or None
+        if model_lower.startswith("perplexity/"):
+            return settings.PERPLEXITYAI_API_KEY or None
+        # Default to OpenAI
+        return settings.OPENAI_API_KEY or None
 
     def _build_prompt(self, crawl_data: dict, brand_name: str) -> str:
         """Build a structured user prompt from crawl data for the LLM.

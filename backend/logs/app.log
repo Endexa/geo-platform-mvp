@@ -8066,3 +8066,1511 @@
 2025-12-03 23:03:29.188 | INFO     | app.core.middleware:dispatch:88 - Request completed
 2025-12-03 23:03:30.203 | INFO     | app.core.middleware:dispatch:67 - Request started
 2025-12-03 23:03:30.205 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:25:21.154 | INFO     | app.main:startup_event:154 - Starting GEO Platform API v1.0.0
+2026-02-22 14:25:21.155 | INFO     | app.main:startup_event:155 - Environment: development
+2026-02-22 14:25:21.155 | INFO     | app.main:startup_event:156 - Debug mode: True
+2026-02-22 14:25:21.155 | INFO     | app.main:startup_event:157 - Security features enabled: headers=True, audit=True
+2026-02-22 14:28:08.797 | INFO     | app.main:shutdown_event:163 - Shutting down application
+2026-02-22 14:28:22.690 | INFO     | app.main:startup_event:154 - Starting GEO Platform API v1.0.0
+2026-02-22 14:28:22.690 | INFO     | app.main:startup_event:155 - Environment: development
+2026-02-22 14:28:22.691 | INFO     | app.main:startup_event:156 - Debug mode: True
+2026-02-22 14:28:22.691 | INFO     | app.main:startup_event:157 - Security features enabled: headers=True, audit=True
+2026-02-22 14:28:50.106 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:28:50.114 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:28:53.239 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:28:53.242 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:28:56.936 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:28:56.939 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:29:05.996 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:29:05.999 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:29:09.283 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:29:09.300 | ERROR    | app.core.middleware:dispatch:261 - Unhandled exception
+2026-02-22 14:29:09.301 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:29:16.717 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:29:16.719 | ERROR    | app.core.middleware:dispatch:261 - Unhandled exception
+2026-02-22 14:29:16.720 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:30:12.492 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:30:12.494 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:30:13.526 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:30:13.527 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:30:31.888 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:30:31.890 | ERROR    | app.core.middleware:dispatch:261 - Unhandled exception
+2026-02-22 14:30:31.891 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:30:45.160 | INFO     | app.main:shutdown_event:163 - Shutting down application
+2026-02-22 14:30:48.588 | INFO     | app.main:startup_event:154 - Starting GEO Platform API v1.0.0
+2026-02-22 14:30:48.588 | INFO     | app.main:startup_event:155 - Environment: development
+2026-02-22 14:30:48.588 | INFO     | app.main:startup_event:156 - Debug mode: True
+2026-02-22 14:30:48.588 | INFO     | app.main:startup_event:157 - Security features enabled: headers=True, audit=True
+2026-02-22 14:30:49.191 | INFO     | app.main:shutdown_event:163 - Shutting down application
+2026-02-22 14:30:52.088 | INFO     | app.main:startup_event:154 - Starting GEO Platform API v1.0.0
+2026-02-22 14:30:52.088 | INFO     | app.main:startup_event:155 - Environment: development
+2026-02-22 14:30:52.088 | INFO     | app.main:startup_event:156 - Debug mode: True
+2026-02-22 14:30:52.088 | INFO     | app.main:startup_event:157 - Security features enabled: headers=True, audit=True
+2026-02-22 14:31:14.844 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:31:15.118 | INFO     | app.services.auth_service:register:38 - User registered: e8d0c18a-1d3e-4105-a062-14dcaa902fa4 (test@test.com)
+2026-02-22 14:31:15.119 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:31:37.608 | INFO     | app.main:shutdown_event:163 - Shutting down application
+2026-02-22 14:32:14.412 | INFO     | app.main:startup_event:154 - Starting GEO Platform API v1.0.0
+2026-02-22 14:32:14.412 | INFO     | app.main:startup_event:155 - Environment: development
+2026-02-22 14:32:14.412 | INFO     | app.main:startup_event:156 - Debug mode: True
+2026-02-22 14:32:14.412 | INFO     | app.main:startup_event:157 - Security features enabled: headers=True, audit=True
+2026-02-22 14:32:46.018 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:32:46.025 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:32:50.410 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:32:50.677 | INFO     | app.services.auth_service:register:38 - User registered: 6e289479-d05f-4650-8b8e-5d5b5a09335b (lakhalsalim@hotmail.com)
+2026-02-22 14:32:50.678 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:32:50.683 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:32:50.684 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:32:55.809 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:32:55.814 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:33:54.224 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:33:54.445 | INFO     | app.services.auth_service:register:38 - User registered: 1c8e206c-3978-4782-a533-bb4fc289f260 (test2@test.com)
+2026-02-22 14:33:54.446 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:33:54.464 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:33:54.467 | INFO     | app.core.security:get_current_user:141 - User 1c8e206c-3978-4782-a533-bb4fc289f260 authenticated successfully
+2026-02-22 14:33:54.468 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:34:31.716 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:34:31.926 | INFO     | app.services.auth_service:authenticate:58 - User authenticated: 6e289479-d05f-4650-8b8e-5d5b5a09335b (lakhalsalim@hotmail.com)
+2026-02-22 14:34:31.928 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:34:31.973 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:34:31.974 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:34:34.732 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:34:34.941 | INFO     | app.services.auth_service:authenticate:58 - User authenticated: 6e289479-d05f-4650-8b8e-5d5b5a09335b (lakhalsalim@hotmail.com)
+2026-02-22 14:34:34.942 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:34:34.947 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:34:34.948 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:34:52.918 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:34:53.133 | INFO     | app.services.auth_service:register:38 - User registered: 74b5427b-8728-4f88-9b01-e46a11b11537 (lakhalslim@hotmail.com)
+2026-02-22 14:34:53.134 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:34:53.138 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:34:53.139 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:35:02.520 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:35:02.526 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:35:11.162 | INFO     | app.main:shutdown_event:163 - Shutting down application
+2026-02-22 14:35:50.503 | INFO     | app.main:startup_event:154 - Starting GEO Platform API v1.0.0
+2026-02-22 14:35:50.504 | INFO     | app.main:startup_event:155 - Environment: development
+2026-02-22 14:35:50.504 | INFO     | app.main:startup_event:156 - Debug mode: True
+2026-02-22 14:35:50.504 | INFO     | app.main:startup_event:157 - Security features enabled: headers=True, audit=True
+2026-02-22 14:36:21.538 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:36:21.803 | INFO     | app.services.auth_service:register:38 - User registered: 31c0071f-6df2-4c45-bdbd-fd45eb18f970 (lakhaslim@hotmail.com)
+2026-02-22 14:36:21.804 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:36:21.810 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:36:21.811 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:39:16.366 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:39:16.596 | INFO     | app.services.auth_service:register:38 - User registered: 053bafc6-8988-42eb-a106-38eb74411d35 (lalslim@hotmail.com)
+2026-02-22 14:39:16.600 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:39:16.606 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:39:16.607 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:39:25.729 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:39:25.733 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:42:22.856 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:42:22.862 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:42:27.874 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:42:28.083 | INFO     | app.services.auth_service:authenticate:58 - User authenticated: 053bafc6-8988-42eb-a106-38eb74411d35 (lalslim@hotmail.com)
+2026-02-22 14:42:28.084 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:42:28.088 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:42:28.089 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:42:29.928 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:42:30.133 | INFO     | app.services.auth_service:authenticate:58 - User authenticated: 053bafc6-8988-42eb-a106-38eb74411d35 (lalslim@hotmail.com)
+2026-02-22 14:42:30.135 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:42:30.139 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:42:30.140 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:42:30.916 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:42:31.122 | INFO     | app.services.auth_service:authenticate:58 - User authenticated: 053bafc6-8988-42eb-a106-38eb74411d35 (lalslim@hotmail.com)
+2026-02-22 14:42:31.123 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:42:31.127 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:42:31.128 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:42:37.581 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:42:37.790 | INFO     | app.services.auth_service:authenticate:58 - User authenticated: 053bafc6-8988-42eb-a106-38eb74411d35 (lalslim@hotmail.com)
+2026-02-22 14:42:37.791 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:42:37.798 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:42:37.799 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:42:55.292 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:42:55.506 | INFO     | app.services.auth_service:register:38 - User registered: 80181ccd-b0a6-4de4-ab65-40aac415f0d9 (lalm@hotmail.com)
+2026-02-22 14:42:55.507 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:42:55.515 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:42:55.516 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:44:11.277 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:44:11.490 | INFO     | app.services.auth_service:authenticate:58 - User authenticated: 80181ccd-b0a6-4de4-ab65-40aac415f0d9 (lalm@hotmail.com)
+2026-02-22 14:44:11.494 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:44:11.582 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:44:11.585 | INFO     | app.core.security:get_current_user:141 - User 80181ccd-b0a6-4de4-ab65-40aac415f0d9 authenticated successfully
+2026-02-22 14:44:11.586 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:44:15.482 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:44:15.485 | INFO     | app.core.security:get_current_user:141 - User 80181ccd-b0a6-4de4-ab65-40aac415f0d9 authenticated successfully
+2026-02-22 14:44:15.486 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:44:28.643 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:44:28.855 | INFO     | app.services.auth_service:authenticate:58 - User authenticated: 80181ccd-b0a6-4de4-ab65-40aac415f0d9 (lalm@hotmail.com)
+2026-02-22 14:44:28.856 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:44:28.864 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:44:28.867 | INFO     | app.core.security:get_current_user:141 - User 80181ccd-b0a6-4de4-ab65-40aac415f0d9 authenticated successfully
+2026-02-22 14:44:28.867 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:44:41.949 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:44:42.165 | INFO     | app.services.auth_service:register:38 - User registered: 721d5c12-c363-4869-b0fa-9ccc9ec93898 (halslim@hotmail.com)
+2026-02-22 14:44:42.166 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:44:42.214 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:44:42.217 | INFO     | app.core.security:get_current_user:141 - User 721d5c12-c363-4869-b0fa-9ccc9ec93898 authenticated successfully
+2026-02-22 14:44:42.218 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:45:16.333 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:45:16.337 | INFO     | app.core.security:get_current_user:141 - User 721d5c12-c363-4869-b0fa-9ccc9ec93898 authenticated successfully
+2026-02-22 14:45:16.403 | INFO     | app.api.audit:create_audit:72 - Audit 6b4273ec-fb48-4d94-8af4-9e9d02e8c5a4 created for URL https://fr.louisvuitton.com/fra-fr/homepage by user 721d5c12-c363-4869-b0fa-9ccc9ec93898
+2026-02-22 14:45:16.406 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:45:19.501 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:45:19.503 | INFO     | app.core.security:get_current_user:141 - User 721d5c12-c363-4869-b0fa-9ccc9ec93898 authenticated successfully
+2026-02-22 14:45:19.519 | ERROR    | app.core.middleware:dispatch:261 - Unhandled exception
+2026-02-22 14:45:19.519 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:45:19.564 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:45:19.568 | INFO     | app.core.security:get_current_user:141 - User 721d5c12-c363-4869-b0fa-9ccc9ec93898 authenticated successfully
+2026-02-22 14:45:19.571 | ERROR    | app.core.middleware:dispatch:261 - Unhandled exception
+2026-02-22 14:45:19.571 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:48:24.330 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:48:24.568 | INFO     | app.services.auth_service:register:38 - User registered: 8f608210-ccfd-4f05-97cc-8a361ed0fa2d (test99@test.com)
+2026-02-22 14:48:24.570 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:48:34.354 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:48:34.567 | INFO     | app.services.auth_service:register:38 - User registered: 9e24f9cf-8e68-4386-9ee1-31590a4f3de0 (debug@test.com)
+2026-02-22 14:48:34.568 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:48:34.583 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:48:34.586 | INFO     | app.core.security:get_current_user:141 - User 9e24f9cf-8e68-4386-9ee1-31590a4f3de0 authenticated successfully
+2026-02-22 14:48:34.594 | INFO     | app.api.audit:create_audit:72 - Audit e8f6c9a4-55b4-4f63-b733-434127ee5f7e created for URL https://stripe.com by user 9e24f9cf-8e68-4386-9ee1-31590a4f3de0
+2026-02-22 14:48:34.598 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:48:56.946 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:48:56.947 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:49:26.468 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:49:26.686 | INFO     | app.services.auth_service:authenticate:58 - User authenticated: 9e24f9cf-8e68-4386-9ee1-31590a4f3de0 (debug@test.com)
+2026-02-22 14:49:26.687 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:49:26.702 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:49:26.705 | INFO     | app.core.security:get_current_user:141 - User 9e24f9cf-8e68-4386-9ee1-31590a4f3de0 authenticated successfully
+2026-02-22 14:49:26.710 | ERROR    | app.core.middleware:dispatch:261 - Unhandled exception
+2026-02-22 14:49:26.711 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:49:42.386 | INFO     | app.main:shutdown_event:163 - Shutting down application
+2026-02-22 14:49:46.056 | INFO     | app.main:startup_event:154 - Starting GEO Platform API v1.0.0
+2026-02-22 14:49:46.056 | INFO     | app.main:startup_event:155 - Environment: development
+2026-02-22 14:49:46.056 | INFO     | app.main:startup_event:156 - Debug mode: True
+2026-02-22 14:49:46.056 | INFO     | app.main:startup_event:157 - Security features enabled: headers=True, audit=True
+2026-02-22 14:49:54.188 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:49:54.462 | INFO     | app.services.auth_service:authenticate:58 - User authenticated: 9e24f9cf-8e68-4386-9ee1-31590a4f3de0 (debug@test.com)
+2026-02-22 14:49:54.464 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:49:54.480 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:49:54.484 | INFO     | app.core.security:get_current_user:141 - User 9e24f9cf-8e68-4386-9ee1-31590a4f3de0 authenticated successfully
+2026-02-22 14:49:54.528 | INFO     | app.api.audit:create_audit:72 - Audit 782cc096-4941-4381-b3d0-8db68e19a3be created for URL https://stripe.com by user 9e24f9cf-8e68-4386-9ee1-31590a4f3de0
+2026-02-22 14:49:54.529 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:49:56.545 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:49:56.548 | INFO     | app.core.security:get_current_user:141 - User 9e24f9cf-8e68-4386-9ee1-31590a4f3de0 authenticated successfully
+2026-02-22 14:49:56.559 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:50:16.215 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:50:16.430 | INFO     | app.services.auth_service:authenticate:58 - User authenticated: 9e24f9cf-8e68-4386-9ee1-31590a4f3de0 (debug@test.com)
+2026-02-22 14:50:16.431 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:50:16.444 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:50:16.447 | INFO     | app.core.security:get_current_user:141 - User 9e24f9cf-8e68-4386-9ee1-31590a4f3de0 authenticated successfully
+2026-02-22 14:50:16.450 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:51:13.090 | INFO     | app.main:shutdown_event:163 - Shutting down application
+2026-02-22 14:51:31.996 | INFO     | app.main:startup_event:154 - Starting GEO Platform API v1.0.0
+2026-02-22 14:51:31.996 | INFO     | app.main:startup_event:155 - Environment: development
+2026-02-22 14:51:31.997 | INFO     | app.main:startup_event:156 - Debug mode: True
+2026-02-22 14:51:31.997 | INFO     | app.main:startup_event:157 - Security features enabled: headers=True, audit=True
+2026-02-22 14:53:44.340 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:53:44.341 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:55:03.071 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:55:03.332 | INFO     | app.services.auth_service:register:38 - User registered: de09d6bb-ee1b-4755-8e06-59d37ca660c7 (e2e-1771768501975@test.com)
+2026-02-22 14:55:03.333 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:55:03.339 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:55:03.342 | INFO     | app.core.security:get_current_user:141 - User de09d6bb-ee1b-4755-8e06-59d37ca660c7 authenticated successfully
+2026-02-22 14:55:03.343 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:55:05.120 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:55:05.337 | INFO     | app.services.auth_service:register:38 - User registered: 9885e444-f699-453d-a72a-808e69ab8774 (login-1771768505106@test.com)
+2026-02-22 14:55:05.338 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:55:05.350 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:55:05.564 | INFO     | app.services.auth_service:register:38 - User registered: 2195e593-1d89-456e-86db-c37f38885c53 (login-1771768505347@test.com)
+2026-02-22 14:55:05.565 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:55:06.006 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:55:06.220 | INFO     | app.services.auth_service:authenticate:58 - User authenticated: 2195e593-1d89-456e-86db-c37f38885c53 (login-1771768505347@test.com)
+2026-02-22 14:55:06.221 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:55:06.228 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:55:06.230 | INFO     | app.core.security:get_current_user:141 - User 2195e593-1d89-456e-86db-c37f38885c53 authenticated successfully
+2026-02-22 14:55:06.231 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:55:33.392 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:55:33.621 | INFO     | app.services.auth_service:register:38 - User registered: ae7fcc3f-b347-4389-ac75-50b830f65391 (e2e-1771768532811@test.com)
+2026-02-22 14:55:33.622 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:55:33.628 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:55:33.632 | INFO     | app.core.security:get_current_user:141 - User ae7fcc3f-b347-4389-ac75-50b830f65391 authenticated successfully
+2026-02-22 14:55:33.632 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:55:33.800 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:55:33.804 | INFO     | app.core.security:get_current_user:141 - User ae7fcc3f-b347-4389-ac75-50b830f65391 authenticated successfully
+2026-02-22 14:55:33.840 | INFO     | app.api.audit:create_audit:72 - Audit 6019bb0c-824c-4e32-97c5-d52064a9c7b4 created for URL https://stripe.com by user ae7fcc3f-b347-4389-ac75-50b830f65391
+2026-02-22 14:55:33.841 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:55:36.848 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:55:36.851 | INFO     | app.core.security:get_current_user:141 - User ae7fcc3f-b347-4389-ac75-50b830f65391 authenticated successfully
+2026-02-22 14:55:36.862 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:55:38.973 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:55:39.187 | INFO     | app.services.auth_service:register:38 - User registered: 02ba43f3-f853-4721-a6c3-39c1524866a8 (login-1771768538962@test.com)
+2026-02-22 14:55:39.188 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:55:39.199 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:55:39.416 | INFO     | app.services.auth_service:register:38 - User registered: 0732de10-abd8-425b-8936-8458d8c7264c (login-1771768539196@test.com)
+2026-02-22 14:55:39.417 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:55:39.920 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:55:40.126 | INFO     | app.services.auth_service:authenticate:58 - User authenticated: 0732de10-abd8-425b-8936-8458d8c7264c (login-1771768539196@test.com)
+2026-02-22 14:55:40.127 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:55:40.134 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:55:40.136 | INFO     | app.core.security:get_current_user:141 - User 0732de10-abd8-425b-8936-8458d8c7264c authenticated successfully
+2026-02-22 14:55:40.137 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:57:16.400 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:57:16.404 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:57:24.739 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:57:24.950 | INFO     | app.services.auth_service:register:38 - User registered: a47650cc-63f9-47ac-80c6-215f411ddb9c (lak@hotmail.com)
+2026-02-22 14:57:24.951 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:57:25.039 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:57:25.041 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:57:25.042 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:57:28.599 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:57:28.603 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:57:33.375 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:57:33.380 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:57:33.381 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:58:13.110 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:58:13.113 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:58:13.119 | INFO     | app.api.audit:create_audit:72 - Audit 1f247cab-f332-46b5-8356-111a67404491 created for URL https://fr.louisvuitton.com/fra-fr/homepage by user a47650cc-63f9-47ac-80c6-215f411ddb9c
+2026-02-22 14:58:13.120 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:58:16.180 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:58:16.182 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:58:16.185 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:58:19.242 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:58:19.245 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:58:19.248 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:58:22.244 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:58:22.247 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:58:22.250 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:58:25.244 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:58:25.247 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:58:25.250 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:58:28.245 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:58:28.248 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:58:28.251 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:58:31.244 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:58:31.247 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:58:31.249 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:58:34.244 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:58:34.247 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:58:34.249 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:58:37.395 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:58:37.398 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:58:37.400 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:58:40.395 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:58:40.398 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:58:40.401 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:58:43.401 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:58:43.404 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:58:43.406 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:58:46.405 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:58:46.407 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:58:46.410 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:58:49.409 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:58:49.411 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:58:49.414 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:58:52.409 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:58:52.411 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:58:52.413 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:58:55.408 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:58:55.411 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:58:55.414 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:58:58.409 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:58:58.412 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:58:58.415 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:59:01.410 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:59:01.413 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:59:01.415 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:59:04.409 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:59:04.412 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:59:04.415 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:59:07.410 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:59:07.412 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:59:07.415 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:59:10.411 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:59:10.413 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:59:10.416 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:59:13.434 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:59:13.450 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:59:13.453 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:59:16.433 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:59:16.436 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:59:16.438 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:59:19.434 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:59:19.437 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:59:19.439 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:59:22.435 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:59:22.438 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:59:22.441 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:59:25.436 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:59:25.438 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:59:25.441 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:59:28.437 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:59:28.439 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:59:28.442 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:59:31.436 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:59:31.438 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:59:31.441 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:59:34.557 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:59:34.559 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:59:34.562 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:59:37.557 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:59:37.560 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:59:37.563 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:59:40.557 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:59:40.560 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:59:40.563 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:59:43.558 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:59:43.560 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:59:43.563 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:59:46.557 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:59:46.560 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:59:46.563 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:59:49.557 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:59:49.561 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:59:49.563 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:59:52.785 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:59:52.788 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:59:52.791 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:59:55.785 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:59:55.801 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:59:55.804 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 14:59:58.785 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 14:59:58.788 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 14:59:58.791 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:00:01.795 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:00:01.798 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:00:01.800 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:00:04.797 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:00:04.800 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:00:04.802 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:00:07.796 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:00:07.799 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:00:07.802 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:00:10.796 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:00:10.799 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:00:10.802 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:00:13.796 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:00:13.799 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:00:13.801 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:00:16.796 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:00:16.800 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:00:16.802 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:00:19.845 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:00:19.848 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:00:19.850 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:00:22.848 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:00:22.851 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:00:22.854 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:00:25.848 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:00:25.851 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:00:25.853 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:00:28.848 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:00:28.851 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:00:28.853 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:00:31.848 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:00:31.851 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:00:31.853 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:00:34.849 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:00:34.852 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:00:34.854 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:00:37.849 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:00:37.851 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:00:37.854 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:00:40.849 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:00:40.851 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:00:40.854 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:00:43.848 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:00:43.851 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:00:43.853 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:00:46.856 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:00:46.859 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:00:46.862 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:00:49.850 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:00:49.853 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:00:49.856 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:00:52.873 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:00:52.876 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:00:52.878 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:00:55.874 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:00:55.877 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:00:55.879 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:00:58.873 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:00:58.876 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:00:58.879 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:01:01.874 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:01:01.877 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:01:01.880 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:01:04.877 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:01:04.879 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:01:04.882 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:01:07.877 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:01:07.879 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:01:07.882 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:01:10.875 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:01:10.877 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:01:10.881 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:01:13.875 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:01:13.878 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:01:13.881 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:01:16.896 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:01:16.899 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:01:16.902 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:01:19.899 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:01:19.902 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:01:19.905 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:01:22.899 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:01:22.903 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:01:22.905 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:01:25.901 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:01:25.903 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:01:25.906 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:01:28.901 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:01:28.904 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:01:28.908 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:01:31.912 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:01:31.915 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:01:31.919 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:01:34.911 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:01:34.915 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:01:34.918 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:01:37.913 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:01:37.916 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:01:37.918 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:01:40.912 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:01:40.915 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:01:40.918 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:01:43.911 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:01:43.914 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:01:43.916 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:01:46.926 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:01:46.929 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:01:46.932 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:01:49.925 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:01:49.927 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:01:49.930 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:01:52.925 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:01:52.927 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:01:52.929 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:01:55.925 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:01:55.928 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:01:55.930 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:01:58.926 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:01:58.928 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:01:58.931 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:02:01.926 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:02:01.928 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:02:01.931 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:02:04.927 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:02:04.930 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:02:04.932 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:02:07.929 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:02:07.931 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:02:07.934 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:02:10.947 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:02:10.949 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:02:10.952 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:02:13.951 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:02:13.954 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:02:13.957 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:02:16.954 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:02:16.957 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:02:16.959 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:02:19.957 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:02:19.973 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:02:19.975 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:02:22.958 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:02:22.960 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:02:22.963 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:02:25.957 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:02:25.960 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:02:25.963 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:02:28.958 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:02:28.961 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:02:28.963 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:02:31.958 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:02:31.960 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:02:31.963 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:02:34.958 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:02:34.961 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:02:34.964 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:02:37.959 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:02:37.962 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:02:37.964 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:02:40.958 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:02:40.961 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:02:40.964 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:02:43.959 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:02:43.961 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:02:43.965 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:02:47.005 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:02:47.007 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:02:47.010 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:02:50.006 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:02:50.009 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:02:50.012 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:02:53.010 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:02:53.013 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:02:53.016 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:02:56.012 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:02:56.014 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:02:56.017 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:02:59.011 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:02:59.014 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:02:59.017 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:03:02.011 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:03:02.014 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:03:02.016 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:03:05.012 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:03:05.014 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:03:05.017 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:03:08.013 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:03:08.015 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:03:08.019 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:03:11.032 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:03:11.034 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:03:11.038 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:03:14.039 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:03:14.042 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:03:14.045 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:03:17.032 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:03:17.034 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:03:17.037 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:03:20.032 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:03:20.035 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:03:20.038 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:03:23.032 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:03:23.035 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:03:23.038 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:03:26.033 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:03:26.035 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:03:26.038 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:03:29.077 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:03:29.080 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:03:29.082 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:03:32.079 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:03:32.082 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:03:32.084 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:03:35.079 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:03:35.081 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:03:35.084 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:03:38.078 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:03:38.081 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:03:38.085 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:03:41.078 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:03:41.080 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:03:41.083 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:03:44.078 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:03:44.080 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:03:44.083 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:03:47.078 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:03:47.081 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:03:47.083 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:03:50.077 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:03:50.080 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:03:50.083 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:03:53.078 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:03:53.081 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:03:53.083 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:03:56.079 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:03:56.081 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:03:56.083 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:03:59.078 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:03:59.080 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:03:59.083 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:04:02.079 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:04:02.081 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:04:02.084 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:04:05.080 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:04:05.083 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:04:05.086 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:04:08.080 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:04:08.082 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:04:08.085 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:04:11.122 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:04:11.125 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:04:11.128 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:04:14.130 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:04:14.132 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:04:14.134 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:04:17.127 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:04:17.130 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:04:17.132 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:04:20.127 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:04:20.130 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:04:20.132 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:04:23.127 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:04:23.130 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:04:23.133 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:04:26.138 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:04:26.141 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:04:26.143 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:04:29.139 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:04:29.142 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:04:29.144 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:04:32.138 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:04:32.140 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:04:32.143 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:04:35.139 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:04:35.142 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:04:35.145 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:04:38.139 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:04:38.142 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:04:38.144 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:04:41.139 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:04:41.141 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:04:41.144 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:04:44.139 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:04:44.141 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:04:44.145 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:04:47.140 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:04:47.142 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:04:47.145 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:04:50.159 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:04:50.161 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:04:50.164 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:04:53.159 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:04:53.161 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:04:53.164 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:04:56.159 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:04:56.161 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:04:56.164 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:04:59.161 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:04:59.164 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:04:59.168 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:05:02.159 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:05:02.162 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:05:02.166 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:05:05.159 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:05:05.162 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:05:05.164 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:05:08.160 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:05:08.163 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:05:08.167 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:05:11.178 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:05:11.181 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:05:11.183 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:05:14.184 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:05:14.187 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:05:14.190 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:05:17.185 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:05:17.187 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:05:17.190 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:05:20.183 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:05:20.187 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:05:20.190 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:05:23.184 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:05:23.186 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:05:23.189 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:05:26.183 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:05:26.186 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:05:26.189 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:05:28.166 | INFO     | app.main:shutdown_event:163 - Shutting down application
+2026-02-22 15:05:31.450 | INFO     | app.main:startup_event:154 - Starting GEO Platform API v1.0.0
+2026-02-22 15:05:31.450 | INFO     | app.main:startup_event:155 - Environment: development
+2026-02-22 15:05:31.450 | INFO     | app.main:startup_event:156 - Debug mode: True
+2026-02-22 15:05:31.450 | INFO     | app.main:startup_event:157 - Security features enabled: headers=True, audit=True
+2026-02-22 15:05:31.456 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:05:31.511 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:05:31.527 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:05:32.184 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:05:32.187 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:05:32.190 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:05:33.959 | INFO     | app.main:shutdown_event:163 - Shutting down application
+2026-02-22 15:05:37.158 | INFO     | app.main:startup_event:154 - Starting GEO Platform API v1.0.0
+2026-02-22 15:05:37.158 | INFO     | app.main:startup_event:155 - Environment: development
+2026-02-22 15:05:37.158 | INFO     | app.main:startup_event:156 - Debug mode: True
+2026-02-22 15:05:37.158 | INFO     | app.main:startup_event:157 - Security features enabled: headers=True, audit=True
+2026-02-22 15:05:37.163 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:05:37.206 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:05:37.218 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:05:38.184 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:05:38.187 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:05:38.189 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:05:39.469 | INFO     | app.main:shutdown_event:163 - Shutting down application
+2026-02-22 15:05:42.503 | INFO     | app.main:startup_event:154 - Starting GEO Platform API v1.0.0
+2026-02-22 15:05:42.503 | INFO     | app.main:startup_event:155 - Environment: development
+2026-02-22 15:05:42.503 | INFO     | app.main:startup_event:156 - Debug mode: True
+2026-02-22 15:05:42.503 | INFO     | app.main:startup_event:157 - Security features enabled: headers=True, audit=True
+2026-02-22 15:05:42.507 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:05:42.547 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:05:42.560 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:05:44.252 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:05:44.256 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:05:44.260 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:05:44.912 | INFO     | app.main:shutdown_event:163 - Shutting down application
+2026-02-22 15:05:48.827 | INFO     | app.main:startup_event:154 - Starting GEO Platform API v1.0.0
+2026-02-22 15:05:48.828 | INFO     | app.main:startup_event:155 - Environment: development
+2026-02-22 15:05:48.828 | INFO     | app.main:startup_event:156 - Debug mode: True
+2026-02-22 15:05:48.828 | INFO     | app.main:startup_event:157 - Security features enabled: headers=True, audit=True
+2026-02-22 15:05:48.833 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:05:48.886 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:05:48.900 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:05:50.252 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:05:50.256 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:05:50.261 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:05:51.440 | INFO     | app.main:shutdown_event:163 - Shutting down application
+2026-02-22 15:05:54.710 | INFO     | app.main:startup_event:154 - Starting GEO Platform API v1.0.0
+2026-02-22 15:05:54.710 | INFO     | app.main:startup_event:155 - Environment: development
+2026-02-22 15:05:54.711 | INFO     | app.main:startup_event:156 - Debug mode: True
+2026-02-22 15:05:54.711 | INFO     | app.main:startup_event:157 - Security features enabled: headers=True, audit=True
+2026-02-22 15:05:54.715 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:05:54.756 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:05:54.769 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:05:56.287 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:05:56.290 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:05:56.293 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:05:59.286 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:05:59.289 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:05:59.291 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:06:02.288 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:06:02.291 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:06:02.296 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:06:05.287 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:06:05.290 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:06:05.293 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:06:08.288 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:06:08.291 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:06:08.294 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:06:11.288 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:06:11.290 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:06:11.293 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:06:14.287 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:06:14.290 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:06:14.292 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:06:17.290 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:06:17.293 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:06:17.296 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:06:20.289 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:06:20.291 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:06:20.293 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:06:23.289 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:06:23.291 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:06:23.294 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:06:26.289 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:06:26.291 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:06:26.293 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:06:29.288 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:06:29.291 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:06:29.294 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:06:32.289 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:06:32.292 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:06:32.295 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:06:35.289 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:06:35.291 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:06:35.293 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:06:38.290 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:06:38.292 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:06:38.294 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:06:41.332 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:06:41.335 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:06:41.337 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:06:44.333 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:06:44.337 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:06:44.339 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:06:47.334 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:06:47.337 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:06:47.340 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:06:50.333 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:06:50.335 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:06:50.339 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:06:53.332 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:06:53.335 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:06:53.337 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:06:56.332 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:06:56.334 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:06:56.337 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:06:59.334 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:06:59.336 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:06:59.339 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:07:02.351 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:07:02.354 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:07:02.357 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:07:05.351 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:07:05.354 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:07:05.357 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:07:08.351 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:07:08.354 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:07:08.357 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:07:11.360 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:07:11.363 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:07:11.365 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:07:14.365 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:07:14.367 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:07:14.370 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:07:17.370 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:07:17.373 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:07:17.375 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:07:20.370 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:07:20.372 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:07:20.375 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:07:23.370 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:07:23.372 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:07:23.375 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:07:26.371 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:07:26.373 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:07:26.376 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:07:29.384 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:07:29.386 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:07:29.389 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:07:32.383 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:07:32.385 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:07:32.388 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:07:35.384 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:07:35.386 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:07:35.388 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:07:38.384 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:07:38.386 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:07:38.389 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:07:41.384 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:07:41.387 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:07:41.389 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:07:44.385 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:07:44.388 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:07:44.390 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:07:47.386 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:07:47.389 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:07:47.392 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:07:50.385 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:07:50.388 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:07:50.391 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:07:53.408 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:07:53.411 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:07:53.414 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:07:56.409 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:07:56.412 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:07:56.415 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:07:59.416 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:07:59.419 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:07:59.422 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:08:02.417 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:08:02.420 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:08:02.422 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:08:05.423 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:08:05.427 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:08:05.430 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:08:08.428 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:08:08.431 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:08:08.434 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:08:11.429 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:08:11.432 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:08:11.435 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:08:14.430 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:08:14.432 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:08:14.435 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:08:14.808 | INFO     | app.main:shutdown_event:163 - Shutting down application
+2026-02-22 15:08:17.898 | INFO     | app.main:startup_event:154 - Starting GEO Platform API v1.0.0
+2026-02-22 15:08:17.899 | INFO     | app.main:startup_event:155 - Environment: development
+2026-02-22 15:08:17.899 | INFO     | app.main:startup_event:156 - Debug mode: True
+2026-02-22 15:08:17.899 | INFO     | app.main:startup_event:157 - Security features enabled: headers=True, audit=True
+2026-02-22 15:08:17.903 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:08:17.942 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:08:17.954 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:08:20.451 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:08:20.454 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:08:20.457 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:08:23.451 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:08:23.453 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:08:23.456 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:08:26.460 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:08:26.463 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:08:26.465 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:08:29.469 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:08:29.471 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:08:29.473 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:08:32.472 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:08:32.475 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:08:32.478 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:08:35.473 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:08:35.475 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:08:35.478 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:08:38.473 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:08:38.476 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:08:38.478 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:08:41.481 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:08:41.483 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:08:41.486 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:08:44.482 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:08:44.484 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:08:44.486 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:08:47.482 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:08:47.485 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:08:47.488 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:08:50.482 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:08:50.485 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:08:50.487 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:08:53.482 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:08:53.485 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:08:53.487 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:08:56.482 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:08:56.486 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:08:56.489 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:08:59.483 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:08:59.486 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:08:59.488 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:09:02.483 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:09:02.485 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:09:02.488 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:09:04.429 | INFO     | app.main:shutdown_event:163 - Shutting down application
+2026-02-22 15:09:07.412 | INFO     | app.main:startup_event:154 - Starting GEO Platform API v1.0.0
+2026-02-22 15:09:07.412 | INFO     | app.main:startup_event:155 - Environment: development
+2026-02-22 15:09:07.412 | INFO     | app.main:startup_event:156 - Debug mode: True
+2026-02-22 15:09:07.413 | INFO     | app.main:startup_event:157 - Security features enabled: headers=True, audit=True
+2026-02-22 15:09:10.637 | INFO     | app.main:startup_event:154 - Starting GEO Platform API v1.0.0
+2026-02-22 15:09:10.637 | INFO     | app.main:startup_event:155 - Environment: development
+2026-02-22 15:09:10.637 | INFO     | app.main:startup_event:156 - Debug mode: True
+2026-02-22 15:09:10.637 | INFO     | app.main:startup_event:157 - Security features enabled: headers=True, audit=True
+2026-02-22 15:09:10.641 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:09:10.681 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:09:10.693 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:09:10.697 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:09:10.700 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:09:10.704 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:09:11.511 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:09:11.513 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:09:11.516 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:09:12.846 | INFO     | app.main:shutdown_event:163 - Shutting down application
+2026-02-22 15:09:15.760 | INFO     | app.main:startup_event:154 - Starting GEO Platform API v1.0.0
+2026-02-22 15:09:15.760 | INFO     | app.main:startup_event:155 - Environment: development
+2026-02-22 15:09:15.760 | INFO     | app.main:startup_event:156 - Debug mode: True
+2026-02-22 15:09:15.761 | INFO     | app.main:startup_event:157 - Security features enabled: headers=True, audit=True
+2026-02-22 15:09:15.765 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:09:15.810 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:09:15.824 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:09:17.515 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:09:17.519 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:09:17.522 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:09:20.516 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:09:20.519 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:09:20.523 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:09:23.517 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:09:23.520 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:09:23.523 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:09:26.517 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:09:26.521 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:09:26.524 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:09:29.516 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:09:29.520 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:09:29.522 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:09:32.516 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:09:32.519 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:09:32.522 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:09:35.517 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:09:35.520 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:09:35.522 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:09:38.539 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:09:38.542 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:09:38.544 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:09:41.541 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:09:41.543 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:09:41.546 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:09:44.541 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:09:44.543 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:09:44.545 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:09:47.541 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:09:47.543 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:09:47.546 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:09:50.541 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:09:50.543 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:09:50.546 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:09:53.541 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:09:53.543 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:09:53.546 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:09:56.542 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:09:56.544 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:09:56.547 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:09:59.542 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:09:59.545 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:09:59.547 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:10:02.542 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:10:02.544 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:10:02.547 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:10:05.546 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:10:05.549 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:10:05.552 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:10:08.571 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:10:08.573 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:10:08.576 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:10:11.572 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:10:11.575 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:10:11.578 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:10:14.577 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:10:14.580 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:10:14.582 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:10:17.581 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:10:17.584 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:10:17.586 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:10:20.585 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:10:20.587 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:10:20.590 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:10:23.588 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:10:23.590 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:10:23.593 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:10:26.588 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:10:26.591 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:10:26.594 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:10:29.589 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:10:29.591 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:10:29.594 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:10:32.589 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:10:32.591 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:10:32.594 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:10:35.589 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:10:35.592 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:10:35.595 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:10:38.634 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:10:38.637 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:10:38.640 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:10:41.635 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:10:41.638 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:10:41.642 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:10:44.634 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:10:44.636 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:10:44.639 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:10:47.634 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:10:47.637 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:10:47.639 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:10:50.634 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:10:50.636 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:10:50.639 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:10:53.635 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:10:53.638 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:10:53.640 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:10:56.634 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:10:56.637 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:10:56.640 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:10:59.634 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:10:59.637 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:10:59.639 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:11:02.635 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:11:02.637 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:11:02.640 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:11:05.635 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:11:05.637 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:11:05.640 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:11:08.635 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:11:08.637 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:11:08.640 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:11:11.677 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:11:11.680 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:11:11.683 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:11:14.678 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:11:14.681 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:11:14.684 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:11:17.678 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:11:17.681 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:11:17.684 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:11:19.407 | INFO     | app.main:shutdown_event:163 - Shutting down application
+2026-02-22 15:11:22.508 | INFO     | app.main:startup_event:154 - Starting GEO Platform API v1.0.0
+2026-02-22 15:11:22.508 | INFO     | app.main:startup_event:155 - Environment: development
+2026-02-22 15:11:22.508 | INFO     | app.main:startup_event:156 - Debug mode: True
+2026-02-22 15:11:22.508 | INFO     | app.main:startup_event:157 - Security features enabled: headers=True, audit=True
+2026-02-22 15:11:25.637 | INFO     | app.main:startup_event:154 - Starting GEO Platform API v1.0.0
+2026-02-22 15:11:25.637 | INFO     | app.main:startup_event:155 - Environment: development
+2026-02-22 15:11:25.637 | INFO     | app.main:startup_event:156 - Debug mode: True
+2026-02-22 15:11:25.637 | INFO     | app.main:startup_event:157 - Security features enabled: headers=True, audit=True
+2026-02-22 15:11:25.641 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:11:25.681 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:11:25.694 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:11:25.698 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:11:25.700 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:11:25.703 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:11:26.678 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:11:26.681 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:11:26.683 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:11:29.678 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:11:29.680 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:11:29.683 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:11:32.679 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:11:32.682 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:11:32.684 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:11:35.679 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:11:35.682 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:11:35.685 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:11:38.679 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:11:38.681 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:11:38.684 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:11:41.707 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:11:41.710 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:11:41.712 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:11:44.708 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:11:44.711 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:11:44.713 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:11:47.707 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:11:47.710 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:11:47.712 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:11:50.708 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:11:50.711 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:11:50.713 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:11:53.721 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:11:53.723 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:11:53.726 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:11:56.721 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:11:56.724 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:11:56.726 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:11:59.728 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:11:59.731 | INFO     | app.core.security:get_current_user:141 - User a47650cc-63f9-47ac-80c6-215f411ddb9c authenticated successfully
+2026-02-22 15:11:59.734 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:12:00.138 | INFO     | app.main:shutdown_event:163 - Shutting down application
+2026-02-22 15:12:19.943 | INFO     | app.main:startup_event:154 - Starting GEO Platform API v1.0.0
+2026-02-22 15:12:19.943 | INFO     | app.main:startup_event:155 - Environment: development
+2026-02-22 15:12:19.943 | INFO     | app.main:startup_event:156 - Debug mode: True
+2026-02-22 15:12:19.943 | INFO     | app.main:startup_event:157 - Security features enabled: headers=True, audit=True
+2026-02-22 15:12:41.300 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:12:41.563 | INFO     | app.services.auth_service:register:38 - User registered: 9ca9e817-40b4-4c41-9095-6424d386fede (test-gemini-1771769561@test.com)
+2026-02-22 15:12:41.564 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:12:41.567 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:12:41.570 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:12:41.603 | INFO     | app.api.audit:create_audit:72 - Audit 06a041e9-63ae-4c59-863c-53964e145031 created for URL https://stripe.com by user 9ca9e817-40b4-4c41-9095-6424d386fede
+2026-02-22 15:12:41.604 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:12:46.608 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:12:46.610 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:12:46.621 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:12:51.624 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:12:51.626 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:12:51.630 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:12:56.635 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:12:56.637 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:12:56.640 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:13:01.643 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:13:01.646 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:13:01.650 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:13:06.653 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:13:06.657 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:13:06.660 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:13:11.663 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:13:11.666 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:13:11.669 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:13:16.673 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:13:16.676 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:13:16.679 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:13:21.683 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:13:21.685 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:13:21.688 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:13:26.692 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:13:26.694 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:13:26.697 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:13:31.700 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:13:31.703 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:13:31.705 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:13:36.709 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:13:36.712 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:13:36.714 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:13:41.718 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:13:41.720 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:13:41.722 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:13:46.726 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:13:46.728 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:13:46.732 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:13:51.735 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:13:51.737 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:13:51.739 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:13:56.743 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:13:56.746 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:13:56.748 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:14:01.752 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:14:01.754 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:14:01.757 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:14:06.760 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:14:06.763 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:14:06.766 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:14:11.770 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:14:11.775 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:14:11.780 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:14:16.786 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:14:16.789 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:14:16.792 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:14:21.796 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:14:21.798 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:14:21.801 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:14:26.804 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:14:26.807 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:14:26.810 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:14:31.814 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:14:31.817 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:14:31.819 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:14:36.823 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:14:36.825 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:14:36.828 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:14:41.831 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:14:41.834 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:14:41.837 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:14:46.840 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:14:46.844 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:14:46.847 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:14:51.851 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:14:51.854 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:14:51.857 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:14:56.860 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:14:56.863 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:14:56.865 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:15:01.870 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:15:01.872 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:15:01.874 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:15:06.878 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:15:06.881 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:15:06.884 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:15:11.888 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:15:11.891 | INFO     | app.core.security:get_current_user:141 - User 9ca9e817-40b4-4c41-9095-6424d386fede authenticated successfully
+2026-02-22 15:15:11.910 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:19:41.133 | INFO     | app.main:shutdown_event:163 - Shutting down application
+2026-02-22 15:19:44.462 | INFO     | app.main:startup_event:154 - Starting GEO Platform API v1.0.0
+2026-02-22 15:19:44.463 | INFO     | app.main:startup_event:155 - Environment: development
+2026-02-22 15:19:44.463 | INFO     | app.main:startup_event:156 - Debug mode: True
+2026-02-22 15:19:44.463 | INFO     | app.main:startup_event:157 - Security features enabled: headers=True, audit=True
+2026-02-22 15:21:17.433 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:21:17.709 | INFO     | app.services.auth_service:register:38 - User registered: 49e60d97-4df9-44c0-9834-647982beff0a (gemini-e2e-1771770077@test.com)
+2026-02-22 15:21:17.710 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:21:17.714 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:21:17.718 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:21:17.757 | INFO     | app.api.audit:create_audit:72 - Audit cce4f3a0-1b2b-4e38-9f89-41702dd9a1bc created for URL https://stripe.com by user 49e60d97-4df9-44c0-9834-647982beff0a
+2026-02-22 15:21:17.759 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:21:22.763 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:21:22.765 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:21:22.776 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:21:27.780 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:21:27.783 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:21:27.786 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:21:32.789 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:21:32.792 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:21:32.800 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:21:37.805 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:21:37.808 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:21:37.815 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:21:42.819 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:21:42.822 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:21:42.829 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:21:47.834 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:21:47.836 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:21:47.844 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:21:52.848 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:21:52.851 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:21:52.860 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:21:57.865 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:21:57.868 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:21:57.875 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:22:02.881 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:22:02.883 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:22:02.890 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:22:07.895 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:22:07.897 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:22:07.905 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:22:12.911 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:22:12.913 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:22:12.921 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:22:17.927 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:22:17.929 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:22:17.937 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:22:22.941 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:22:22.944 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:22:22.952 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:22:27.958 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:22:27.960 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:22:27.970 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:22:32.976 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:22:32.979 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:22:32.989 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:22:37.995 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:22:37.997 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:22:38.006 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:22:43.011 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:22:43.013 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:22:43.022 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:22:48.027 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:22:48.030 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:22:48.039 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:22:53.045 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:22:53.048 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:22:53.058 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:22:58.064 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:22:58.067 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:22:58.077 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:23:03.084 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:23:03.086 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:23:03.097 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:23:08.104 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:23:08.107 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:23:08.119 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:23:13.128 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:23:13.131 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:23:13.143 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:23:18.150 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:23:18.152 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:23:18.165 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:23:23.173 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:23:23.176 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:23:23.188 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:23:28.195 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:23:28.199 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:23:28.211 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:23:33.219 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:23:33.221 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:23:33.233 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:23:38.240 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:23:38.243 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:23:38.255 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:23:43.262 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:23:43.264 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:23:43.276 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:23:48.283 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:23:48.286 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:23:48.297 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:23:53.306 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:23:53.308 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:23:53.320 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:23:58.327 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:23:58.329 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:23:58.341 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:24:03.349 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:24:03.351 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:24:03.364 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:24:08.373 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:24:08.376 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:24:08.390 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:24:13.398 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:24:13.401 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:24:13.413 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:24:18.423 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:24:18.425 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:24:18.437 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:24:23.445 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:24:23.448 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:24:23.460 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:24:28.469 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:24:28.471 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:24:28.484 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:24:33.494 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:24:33.496 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:24:33.510 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:24:38.519 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:24:38.521 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:24:38.535 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:24:43.544 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:24:43.547 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:24:43.560 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:24:48.569 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:24:48.572 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:24:48.585 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:24:53.595 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:24:53.597 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:24:53.611 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:24:58.620 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:24:58.622 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:24:58.636 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:25:03.647 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:25:03.649 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:25:03.663 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:25:08.672 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:25:08.675 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:25:08.689 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:25:13.699 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:25:13.702 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:25:13.717 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:25:18.727 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:25:18.729 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:25:18.745 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:25:23.755 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:25:23.757 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:25:23.773 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:25:28.784 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:25:28.786 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:25:28.801 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:25:33.812 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:25:33.815 | INFO     | app.core.security:get_current_user:141 - User 49e60d97-4df9-44c0-9834-647982beff0a authenticated successfully
+2026-02-22 15:25:33.857 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:27:46.276 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:27:46.329 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:27:51.607 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:27:51.834 | INFO     | app.services.auth_service:register:38 - User registered: b49d1904-f5b8-46d8-8781-62a2c5fd7556 (lk@hotmail.com)
+2026-02-22 15:27:51.840 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:27:51.953 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:27:51.956 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:27:51.956 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:28:04.918 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:28:04.933 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:28:04.968 | INFO     | app.api.audit:create_audit:72 - Audit 261a6c01-d667-43e6-a320-e54f6e48496d created for URL https://stripe.com by user b49d1904-f5b8-46d8-8781-62a2c5fd7556
+2026-02-22 15:28:04.971 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:28:08.401 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:28:08.405 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:28:08.412 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:28:11.679 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:28:11.712 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:28:11.724 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:28:14.480 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:28:14.503 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:28:14.511 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:28:17.543 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:28:17.548 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:28:17.552 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:28:20.586 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:28:20.589 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:28:20.597 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:28:23.587 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:28:23.591 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:28:23.597 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:28:26.587 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:28:26.590 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:28:26.597 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:28:29.594 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:28:29.596 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:28:29.603 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:28:32.594 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:28:32.597 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:28:32.604 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:28:35.604 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:28:35.607 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:28:35.614 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:28:38.600 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:28:38.603 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:28:38.610 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:28:41.601 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:28:41.603 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:28:41.610 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:28:44.600 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:28:44.603 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:28:44.611 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:28:47.600 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:28:47.603 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:28:47.613 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:28:50.714 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:28:50.717 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:28:50.735 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:28:54.120 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:28:54.122 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:28:54.133 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:28:57.198 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:28:57.200 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:28:57.210 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:29:00.197 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:29:00.199 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:29:00.209 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:29:03.196 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:29:03.199 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:29:03.209 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:29:06.308 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:29:06.311 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:29:06.321 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:29:09.311 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:29:09.314 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:29:09.326 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:29:12.342 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:29:12.345 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:29:12.357 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:29:15.373 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:29:15.376 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:29:15.389 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:29:18.370 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:29:18.372 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:29:18.385 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:29:21.369 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:29:21.372 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:29:21.386 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:29:24.369 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:29:24.372 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:29:24.385 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:29:27.369 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:29:27.371 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:29:27.388 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:29:30.369 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:29:30.372 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:29:30.390 | INFO     | app.core.middleware:dispatch:88 - Request completed
+2026-02-22 15:29:33.373 | INFO     | app.core.middleware:dispatch:67 - Request started
+2026-02-22 15:29:33.375 | INFO     | app.core.security:get_current_user:141 - User b49d1904-f5b8-46d8-8781-62a2c5fd7556 authenticated successfully
+2026-02-22 15:29:33.392 | INFO     | app.core.middleware:dispatch:88 - Request completed

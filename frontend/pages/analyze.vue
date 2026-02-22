@@ -1,6 +1,5 @@
 <template>
-  <NuxtLayout name="dashboard">
-    <div class="max-w-4xl mx-auto space-y-6">
+  <div class="max-w-4xl mx-auto space-y-6">
       <!-- Header -->
       <div>
         <h1 class="text-3xl font-bold text-gray-900">Analyze Website</h1>
@@ -126,10 +125,10 @@
         </div>
       </div>
     </div>
-  </NuxtLayout>
 </template>
 
 <script setup lang="ts">
+definePageMeta({ layout: 'dashboard' })
 const config = useRuntimeConfig()
 const url = ref('')
 const keywordsInput = ref('')

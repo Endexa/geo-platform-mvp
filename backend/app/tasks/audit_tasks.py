@@ -257,6 +257,31 @@ def run_crawl_and_generate(self, audit_id: str, url: str):
             sum(1 for c in competitors if not c.is_user_brand),
         )
 
+        # After entity extraction: resolve URLs and crawl top competitors
+        # Non-fatal: competitor crawl failure should not fail the audit
+        try:
+            from app.services.competitor_service import CompetitorService
+
+            competitor_svc = CompetitorService(db)
+            loop = asyncio.new_event_loop()
+            try:
+                competitor_audits = loop.run_until_complete(
+                    competitor_svc.crawl_top_competitors(audit_id)
+                )
+                logger.info(
+                    "Audit {}: crawled {} competitor sites",
+                    audit_id,
+                    len(competitor_audits),
+                )
+            finally:
+                loop.close()
+        except Exception as e:
+            logger.error(
+                "Audit {}: competitor crawling failed: {}",
+                audit_id,
+                str(e),
+            )
+
         # Stage 7: Mark as completed
         audit.status = AuditStatus.COMPLETED.value
         audit.completed_at = datetime.now(timezone.utc)

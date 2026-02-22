@@ -11,17 +11,17 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 
 Phase: 7 of 9 (Auto-Competitor Discovery) -- IN PROGRESS
 Plan: 3 of 4 in current phase (3 complete)
-Status: Completed 07-03 (Custom Query Management)
-Last activity: 2026-02-22 -- Completed 07-03 (Custom Query Management)
+Status: Completed 07-02 and 07-03 (Wave 2)
+Last activity: 2026-02-22 -- Completed Wave 2 (07-02 + 07-03 in parallel)
 
 Progress: [####################] 79%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 18
+- Total plans completed: 19
 - Average duration: 4 min
-- Total execution time: 1.35 hours
+- Total execution time: 1.5 hours
 
 **By Phase:**
 
@@ -33,11 +33,11 @@ Progress: [####################] 79%
 | 04-mention-detection-scoring | 2 | 6 min | 3 min |
 | 05-audit-experience | 2 | 6 min | 3 min |
 | 06-site-ai-readiness-scoring | 5 | 32 min | 6 min |
-| 07-auto-competitor-discovery | 2 | 9 min | 5 min |
+| 07-auto-competitor-discovery | 3 | 14 min | 5 min |
 
 **Recent Trend:**
-- Last 5 plans: 06-02 (4min), 06-03 (5min), 06-05 (49min), 07-01 (6min), 07-03 (3min)
-- Trend: 07-03 fast (API+frontend CRUD); 06-05 was outlier (full-stack)
+- Last 5 plans: 06-03 (5min), 06-05 (49min), 07-01 (6min), 07-02 (5min), 07-03 (3min)
+- Trend: Wave 2 parallel (07-02 + 07-03) efficient; 06-05 was outlier (full-stack)
 
 *Updated after each plan completion*
 | Phase 02 P01 | 4min | 2 tasks | 9 files |
@@ -51,6 +51,7 @@ Progress: [####################] 79%
 | Phase 06 P01 | 5min | 2 tasks | 14 files |
 | Phase 06 P05 | 49min | 2 tasks | 14 files |
 | Phase 07 P01 | 6min | 2 tasks | 12 files |
+| Phase 07 P02 | 5min | 2 tasks | 5 files |
 | Phase 07 P03 | 3min | 2 tasks | 4 files |
 
 ## Accumulated Context
@@ -114,6 +115,11 @@ Recent decisions affecting current work:
 - [07-01]: Corporate suffixes stripped before rapidfuzz deduplication (85% threshold)
 - [07-01]: competitor_audits table created first for FK reference from discovered_competitors
 - [07-01]: Citations captured from both Perplexity API metadata and inline URL regex for all engines
+- [07-02]: Layered URL resolution: citation URL > domain heuristic > Knowledge Graph API (graceful degradation)
+- [07-02]: Competitors scored via direct scorer invocation, not ScoringOrchestrator.score_audit() (avoids PageScore/CriterionResult DB records)
+- [07-02]: Competitor crawling is non-fatal in audit pipeline (try/except wrapping)
+- [07-02]: Sequential competitor crawling to avoid rate limiting external sites
+- [07-02]: Synchronous crawl endpoint (not Celery) since 3-5 competitors take ~30-60s
 - [07-03]: Custom queries sorted first in QueryEditor for user visibility
 - [07-03]: Dispatched queries return 409 Conflict on delete (not silent ignore)
 - [07-03]: is_custom added to AuditQueryResponse schema for frontend query type distinction
@@ -133,5 +139,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 07-03-PLAN.md (Custom Query Management)
+Stopped at: Completed Wave 2 (07-02 + 07-03 in parallel)
 Resume file: .planning/phases/07-auto-competitor-discovery/07-03-SUMMARY.md

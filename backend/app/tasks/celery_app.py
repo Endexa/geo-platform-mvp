@@ -22,4 +22,5 @@ celery_app.conf.update(
         "app.tasks.audit.*": {"queue": "audit"},
         "app.tasks.analysis.*": {"queue": "analysis"},
     },
+    include=["app.tasks.audit_tasks"],
 )

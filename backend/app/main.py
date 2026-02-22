@@ -4,7 +4,7 @@ from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import JSONResponse
 from app.core.config import settings
-from app.api import analysis, optimization, brand_voice, dashboard, integrations, geo_datapoints, auth, audit
+from app.api import analysis, optimization, brand_voice, dashboard, integrations, geo_datapoints, auth, audit, competitors
 from app.core.middleware import (
     SecurityHeadersMiddleware,
     RequestLoggingMiddleware,
@@ -146,6 +146,7 @@ app.include_router(
     audit.router,
     prefix=settings.API_V1_PREFIX,
 )
+app.include_router(competitors.router)
 
 
 @app.on_event("startup")

@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <NuxtLayout name="dashboard">
-      <div class="space-y-6">
+  <div class="space-y-6">
         <!-- Header -->
         <div>
           <h1 class="text-3xl font-bold text-gray-900">Settings</h1>
@@ -98,10 +96,10 @@
           </div>
         </div>
       </div>
-    </NuxtLayout>
-  </div>
 </template>
 
 <script setup lang="ts">
+definePageMeta({ layout: 'dashboard' })
+
 const config = useRuntimeConfig()
 </script>

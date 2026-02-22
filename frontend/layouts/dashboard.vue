@@ -80,14 +80,13 @@ import {
 
 const { isLoggedIn, user, logout, fetchUser } = useAuth()
 
-// Redirect if not logged in
-if (!isLoggedIn.value) {
-  navigateTo('/login')
-}
-
 // Fetch user info on mount if we have token but no user
 onMounted(async () => {
-  if (isLoggedIn.value && !user.value) {
+  if (!isLoggedIn.value) {
+    await navigateTo('/login', { replace: true })
+    return
+  }
+  if (!user.value) {
     await fetchUser()
   }
 })

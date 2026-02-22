@@ -64,7 +64,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: geo-celery
-    command: celery -A app.tasks.celery_app worker --loglevel=info
+    command: celery -A app.tasks.celery_app worker --loglevel=info -Q geo_platform,audit,analysis
     environment:
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/geo_platform
       REDIS_URL: redis://redis:6379/0

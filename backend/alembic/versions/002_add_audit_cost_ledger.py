@@ -24,7 +24,7 @@ def upgrade() -> None:
     op.create_table(
         "audit_cost_ledger",
         sa.Column("id", postgresql.UUID(as_uuid=True), primary_key=True),
-        sa.Column("audit_id", postgresql.UUID(as_uuid=True), nullable=False, index=True),
+        sa.Column("audit_id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("engine", sa.String(), nullable=False),
         sa.Column("model", sa.String(), nullable=False),
         sa.Column("prompt_tokens", sa.Integer(), nullable=False),

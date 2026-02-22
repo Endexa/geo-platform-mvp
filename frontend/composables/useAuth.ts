@@ -5,6 +5,18 @@ interface User {
   role: string
 }
 
+function setTokenCookie(value: string) {
+  if (!import.meta.server) {
+    document.cookie = `access_token=${encodeURIComponent(value)}; path=/; max-age=${30 * 60}; SameSite=Lax`
+  }
+}
+
+function clearTokenCookie() {
+  if (!import.meta.server) {
+    document.cookie = 'access_token=; path=/; max-age=0'
+  }
+}
+
 export const useAuth = () => {
   const token = useCookie('access_token')
   const user = useState<User | null>('auth_user', () => null)
@@ -16,6 +28,7 @@ export const useAuth = () => {
       body: { email, password },
     })
     token.value = data.access_token
+    setTokenCookie(data.access_token)
     await fetchUser()
   }
 
@@ -25,6 +38,7 @@ export const useAuth = () => {
       body: { email, password, full_name: fullName || null },
     })
     token.value = data.access_token
+    setTokenCookie(data.access_token)
     await fetchUser()
   }
 
@@ -39,6 +53,7 @@ export const useAuth = () => {
 
   const logout = () => {
     token.value = null
+    clearTokenCookie()
     user.value = null
     navigateTo('/login')
   }

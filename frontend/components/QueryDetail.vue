@@ -94,6 +94,7 @@ function engineDisplayName(engine: string): string {
     openai: 'ChatGPT',
     anthropic: 'Claude',
     perplexity: 'Perplexity',
+    gemini: 'Gemini',
   }
   return names[engine] || engine
 }
