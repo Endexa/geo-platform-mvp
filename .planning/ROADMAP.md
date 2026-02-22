@@ -49,11 +49,11 @@ Plans:
   1. Given a URL, the system crawls the site and extracts structured data (schema.org, robots.txt AI directives, content structure, authority markers)
   2. From crawled content, the system generates 10-15 categorized queries (industry, brand-direct, comparison, problem, recommendation) that reflect how real users would ask AI about that domain
   3. Generated queries are stored and associated with an audit record for downstream processing
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
+- [ ] 02-01-PLAN.md -- Audit/AuditQuery models, Alembic migration 003, CrawlerService with AI-readiness signal extraction (AUDIT-02)
+- [ ] 02-02-PLAN.md -- QueryGeneratorService with LiteLLM structured output, Celery audit pipeline, audit API endpoints (AUDIT-03)
 
 ### Phase 3: AI Engine Dispatch
 **Goal**: The system can send generated queries to ChatGPT, Claude, and Perplexity in parallel and store their responses reliably, with graceful degradation if one engine fails
