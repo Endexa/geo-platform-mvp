@@ -9,19 +9,19 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 
 ## Current Position
 
-Phase: 4 of 9 (Mention Detection & Scoring)
-Plan: 1 of 2 in current phase
-Status: Executing Phase 4
-Last activity: 2026-02-22 -- Completed 04-01 (Mention detection models and services)
+Phase: 4 of 9 (Mention Detection & Scoring) -- COMPLETE
+Plan: 2 of 2 in current phase
+Status: Phase 4 Complete -- Ready for Phase 5
+Last activity: 2026-02-22 -- Completed 04-02 (Pipeline integration and API schema extension)
 
-Progress: [########░░] 40%
+Progress: [#########░] 45%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
-- Average duration: 4 min
-- Total execution time: 0.45 hours
+- Total plans completed: 9
+- Average duration: 3 min
+- Total execution time: 0.48 hours
 
 **By Phase:**
 
@@ -30,10 +30,10 @@ Progress: [########░░] 40%
 | 01-foundation-safety | 3 | 11 min | 4 min |
 | 02-site-crawl-query-generation | 2 | 8 min | 4 min |
 | 03-ai-engine-dispatch | 2 | 5 min | 3 min |
-| 04-mention-detection-scoring | 1 | 4 min | 4 min |
+| 04-mention-detection-scoring | 2 | 6 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-01 (4min), 02-02 (4min), 03-01 (3min), 03-02 (2min), 04-01 (4min)
+- Last 5 plans: 02-02 (4min), 03-01 (3min), 03-02 (2min), 04-01 (4min), 04-02 (2min)
 - Trend: stable
 
 *Updated after each plan completion*
@@ -42,6 +42,7 @@ Progress: [########░░] 40%
 | Phase 03 P01 | 3min | 2 tasks | 7 files |
 | Phase 03 P02 | 2min | 2 tasks | 3 files |
 | Phase 04 P01 | 4min | 3 tasks | 9 files |
+| Phase 04 P02 | 2min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -80,6 +81,9 @@ Recent decisions affecting current work:
 - [04-01]: Deduplication by exact offset match, not 50-char window -- prevents collapsing legitimate separate mentions
 - [04-01]: Short brand names (<4 chars) use case-sensitive matching to avoid false positives
 - [04-01]: Fuzzy pass requires both token_set_ratio AND partial_ratio above threshold for dual validation
+- [04-02]: QueryGeneratorService instantiated in Stage 4 for brand name re-extraction (instance method, not static)
+- [04-02]: Backref visibility_score handled as list with isinstance check for forward-compatible access
+- [04-02]: ANALYZING status added to dispatch_summary computation filter
 
 ### Pending Todos
 
@@ -95,5 +99,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 04-01-PLAN.md (Mention detection models and services)
-Resume file: .planning/phases/04-mention-detection-scoring/04-01-SUMMARY.md
+Stopped at: Completed 04-02-PLAN.md (Pipeline integration and API schema extension) -- Phase 4 COMPLETE
+Resume file: .planning/phases/04-mention-detection-scoring/04-02-SUMMARY.md
