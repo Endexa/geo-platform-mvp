@@ -7,6 +7,7 @@ from app.models.brand_voice import BrandVoiceConfig, VoiceVector, VoiceRule
 from app.models.audit_cost import AuditCostLedger
 from app.models.audit import Audit, AuditStatus
 from app.models.audit_query import AuditQuery
+from app.models.engine_response import EngineResponse
 
 __all__ = [
     "Organization",
@@ -21,4 +22,5 @@ __all__ = [
     "Audit",
     "AuditStatus",
     "AuditQuery",
+    "EngineResponse",
 ]

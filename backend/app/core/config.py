@@ -109,6 +109,16 @@ class Settings(BaseSettings):
     QUERY_GEN_TEMPERATURE: float = 0.7  # Some creativity for diverse queries
     QUERY_GEN_MAX_CONTENT_WORDS: int = 2000  # Truncation limit for crawl content in LLM prompt
 
+    # AI Engine Dispatch (Phase 3)
+    PERPLEXITYAI_API_KEY: str = ""  # LiteLLM expects this exact env var name
+    DISPATCH_MODEL_OPENAI: str = "gpt-4o-mini"
+    DISPATCH_MODEL_ANTHROPIC: str = "anthropic/claude-haiku-4-5"
+    DISPATCH_MODEL_PERPLEXITY: str = "perplexity/sonar"
+    DISPATCH_TEMPERATURE: float = 0.0  # Reproducibility for Phase 4
+    DISPATCH_TIMEOUT_SECONDS: int = 60  # Per-engine call timeout
+    DISPATCH_MAX_WORKERS: int = 6  # ThreadPoolExecutor pool size
+    PERPLEXITY_REQUEST_SURCHARGE: float = 0.005  # Per-request surcharge for Perplexity search fees
+
     # Outbound AI Rate Limits (Phase 1)
     OPENAI_RPM: int = 60
     ANTHROPIC_RPM: int = 60

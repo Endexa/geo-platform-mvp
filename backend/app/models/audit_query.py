@@ -27,3 +27,6 @@ class AuditQuery(Base):
 
     # Relationships
     audit = relationship("Audit", back_populates="queries")
+    engine_responses = relationship(
+        "EngineResponse", back_populates="audit_query", cascade="all, delete-orphan"
+    )

@@ -19,6 +19,7 @@ from app.models.brand_voice import BrandVoiceConfig, VoiceVector, VoiceRule  # n
 from app.models.audit_cost import AuditCostLedger  # noqa: F401
 from app.models.audit import Audit, AuditStatus  # noqa: F401
 from app.models.audit_query import AuditQuery  # noqa: F401
+from app.models.engine_response import EngineResponse  # noqa: F401
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
