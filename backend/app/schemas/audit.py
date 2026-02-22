@@ -11,6 +11,20 @@ class AuditCreate(BaseModel):
     url: str
 
 
+class BrandMentionSchema(BaseModel):
+    """Schema for an individual brand mention."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: UUID
+    matched_text: str
+    match_type: str  # "exact" or "fuzzy"
+    confidence: int  # 0-100
+    char_offset: int
+    context_quote: str
+    created_at: datetime
+
+
 class EngineResponseSchema(BaseModel):
     """Response schema for an individual engine response."""
 
@@ -26,6 +40,7 @@ class EngineResponseSchema(BaseModel):
     cached: bool
     error_message: Optional[str] = None
     created_at: datetime
+    mentions: list[BrandMentionSchema] = []
 
 
 class AuditQueryResponse(BaseModel):
@@ -49,6 +64,18 @@ class DispatchSummary(BaseModel):
     engines_used: list[str]
 
 
+class VisibilityScoreSchema(BaseModel):
+    """Schema for the audit's visibility score."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    overall_score: int  # 0-100
+    per_engine_scores: dict  # {"openai": 75, "anthropic": 60, ...}
+    mention_count: int
+    query_mention_rate: float  # percentage
+    algorithm_version: str
+
+
 class AuditResponse(BaseModel):
     """Response schema for audit listing / summary."""
 
@@ -64,8 +91,9 @@ class AuditResponse(BaseModel):
 
 
 class AuditDetailResponse(AuditResponse):
-    """Response schema for audit detail view (includes crawl data, queries, and dispatch summary)."""
+    """Response schema for audit detail view (includes crawl data, queries, dispatch summary, and visibility score)."""
 
     crawl_data: Optional[dict] = None
     queries: list[AuditQueryResponse] = []
     dispatch_summary: Optional[DispatchSummary] = None
+    visibility_score: Optional[VisibilityScoreSchema] = None

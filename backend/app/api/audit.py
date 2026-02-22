@@ -15,11 +15,13 @@ from app.core.security import get_current_active_user
 from app.models import Profile
 from app.models.audit import Audit, AuditStatus
 from app.models.audit_query import AuditQuery
+from app.models.engine_response import EngineResponse
 from app.schemas.audit import (
     AuditCreate,
     AuditDetailResponse,
     AuditResponse,
     DispatchSummary,
+    VisibilityScoreSchema,
 )
 from app.tasks.audit_tasks import run_crawl_and_generate
 
@@ -106,16 +108,20 @@ def get_audit(
     db: Session = Depends(get_db),
     current_user: Profile = Depends(get_current_active_user),
 ):
-    """Get audit details including generated queries and engine responses.
+    """Get audit details including generated queries, engine responses, mentions, and visibility score.
 
     Only returns audits owned by the authenticated user.
-    Eager-loads associated AuditQuery records and their EngineResponse records
-    to avoid N+1 query issues. Computes a dispatch summary when available.
+    Eager-loads associated AuditQuery records, their EngineResponse records with
+    BrandMention data, and the VisibilityScore to avoid N+1 query issues.
+    Computes a dispatch summary when available.
     """
     audit = (
         db.query(Audit)
         .options(
-            joinedload(Audit.queries).joinedload(AuditQuery.engine_responses)
+            joinedload(Audit.queries)
+            .joinedload(AuditQuery.engine_responses)
+            .joinedload(EngineResponse.mentions),
+            joinedload(Audit.visibility_score),
         )
         .filter(Audit.id == audit_id)
         .first()
@@ -129,7 +135,11 @@ def get_audit(
 
     # Compute dispatch summary if audit has engine responses
     dispatch_summary = None
-    if audit.status in (AuditStatus.COMPLETED.value, AuditStatus.DISPATCHING.value):
+    if audit.status in (
+        AuditStatus.COMPLETED.value,
+        AuditStatus.DISPATCHING.value,
+        AuditStatus.ANALYZING.value,
+    ):
         all_responses = []
         for q in audit.queries:
             all_responses.extend(q.engine_responses)
@@ -143,7 +153,14 @@ def get_audit(
                 engines_used=sorted(engines_used),
             )
 
-    # Build response with dispatch summary
+    # Build response with dispatch summary and visibility score
     response = AuditDetailResponse.model_validate(audit)
     response.dispatch_summary = dispatch_summary
+
+    # Attach visibility score (backref returns a list)
+    vs = audit.visibility_score
+    if vs:
+        score_obj = vs[0] if isinstance(vs, list) else vs
+        response.visibility_score = VisibilityScoreSchema.model_validate(score_obj)
+
     return response
