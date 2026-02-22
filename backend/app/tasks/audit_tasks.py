@@ -1,4 +1,4 @@
-"""Celery task for the audit pipeline: crawl URL -> generate queries -> dispatch -> complete.
+"""Celery task for the audit pipeline: crawl URL -> generate queries -> dispatch -> analyze -> complete.
 
 Orchestrates the complete audit pipeline as a background task triggered by the audit API.
 Updates audit status at each stage and handles errors gracefully.
@@ -7,7 +7,8 @@ Pipeline stages:
     1. CRAWLING — Fetch URL, extract structured data and AI-readiness signals
     2. GENERATING_QUERIES — Extract brand name, call LLM to generate 10-15 queries
     3. DISPATCHING — Dispatch queries to AI engines (OpenAI, Anthropic, Perplexity)
-    4. COMPLETED — All stages finished successfully
+    4. ANALYZING — Detect brand mentions in responses and compute visibility score
+    5. COMPLETED — All stages finished successfully
 """
 
 import asyncio
@@ -18,10 +19,13 @@ from loguru import logger
 from app.core.database import SessionLocal
 from app.models.audit import Audit, AuditStatus
 from app.models.audit_query import AuditQuery
+from app.models.brand_mention import BrandMention
 from app.models.engine_response import EngineResponse
 from app.services.crawler_service import CrawlerService
 from app.services.dispatch_service import DispatchService
+from app.services.mention_detector import MentionDetectorService
 from app.services.query_generator import QueryGeneratorService
+from app.services.scoring_service import ScoringService
 from app.tasks.celery_app import celery_app
 
 
@@ -32,13 +36,14 @@ from app.tasks.celery_app import celery_app
     default_retry_delay=30,
 )
 def run_crawl_and_generate(self, audit_id: str, url: str):
-    """Crawl a URL, extract brand signals, generate queries, dispatch to AI engines.
+    """Crawl a URL, extract brand signals, generate queries, dispatch to AI engines, analyze mentions.
 
     Pipeline stages:
         1. CRAWLING: Fetch URL, extract structured data and AI-readiness signals
         2. GENERATING_QUERIES: Extract brand name, call LLM to generate 10-15 queries
         3. DISPATCHING: Dispatch queries to AI engines (OpenAI, Anthropic, Perplexity)
-        4. COMPLETED: All stages finished successfully
+        4. ANALYZING: Detect brand mentions in responses and compute visibility score
+        5. COMPLETED: All stages finished successfully
 
     Args:
         audit_id: UUID string of the Audit record to process.
@@ -116,7 +121,69 @@ def run_crawl_and_generate(self, audit_id: str, url: str):
             dispatch_result.budget_exceeded,
         )
 
-        # Stage 4: Mark as completed
+        # Stage 4: Analyze mentions and compute visibility score
+        logger.info("Audit {}: starting mention analysis", audit_id)
+        audit.status = AuditStatus.ANALYZING.value
+        db.commit()
+
+        # Extract brand name from crawl data (same extraction used in Stage 2)
+        query_gen_for_brand = QueryGeneratorService()
+        brand_name = query_gen_for_brand.extract_brand_name(audit.crawl_data)
+
+        # Generate brand variants
+        detector = MentionDetectorService()
+        brand_variants = detector.generate_brand_variants(brand_name)
+        logger.info(
+            "Audit {}: analyzing mentions for brand '{}' ({} variants)",
+            audit_id,
+            brand_name,
+            len(brand_variants),
+        )
+
+        # Load successful engine responses for analysis
+        responses = (
+            db.query(EngineResponse)
+            .join(AuditQuery)
+            .filter(AuditQuery.audit_id == audit_id)
+            .filter(EngineResponse.error_message.is_(None))
+            .all()
+        )
+
+        # Detect mentions in each response
+        total_mentions = 0
+        for response in responses:
+            mentions = detector.detect_mentions(
+                response_text=response.response_text,
+                brand_name=brand_name,
+                brand_variants=brand_variants,
+            )
+            for mention_data in mentions:
+                mention = BrandMention(
+                    engine_response_id=response.id,
+                    **mention_data,
+                )
+                db.add(mention)
+                total_mentions += 1
+        db.commit()
+        logger.info(
+            "Audit {}: detected {} mentions across {} responses",
+            audit_id,
+            total_mentions,
+            len(responses),
+        )
+
+        # Compute visibility score
+        scorer = ScoringService(db)
+        score = scorer.compute_audit_score(
+            audit_id=audit_id, total_queries=len(queries)
+        )
+        db.add(score)
+        db.commit()
+        logger.info(
+            "Audit {}: visibility score = {}/100", audit_id, score.overall_score
+        )
+
+        # Stage 5: Mark as completed
         audit.status = AuditStatus.COMPLETED.value
         audit.completed_at = datetime.now(timezone.utc)
         db.commit()
