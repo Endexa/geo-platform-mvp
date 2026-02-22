@@ -297,12 +297,13 @@ Plans:
   3. Recommendations are prioritized by estimated impact: High (>25% citation improvement), Medium (10-25%), Low (<10%) based on research data
   4. The system classifies sentiment of AI mentions (positive, negative, neutral) and surfaces sentiment patterns per engine
   5. Content gaps are identified: topics where competitors are mentioned but the user is not, linked to specific pages the user could create or improve
-**Plans**: 3 plans
+**Plans**: 4 plans
 
 Plans:
-- [ ] 08-01-PLAN.md -- Recommendation engine + sentiment service: AuditRecommendation/MentionSentiment models, migration 008, RecommendationEngine gap analysis, SentimentService LLM classification, RECOMMENDING Celery stage (REC-01, REC-02, REC-03, REC-04)
-- [ ] 08-02-PLAN.md -- Content gaps + API + export: content gap identification with mini briefs, recommendation CRUD endpoints, sentiment summary API, Markdown fix plan export (REC-01, REC-02, REC-03, REC-04, REC-05)
-- [ ] 08-03-PLAN.md -- Frontend recommendations experience: RecommendationCard (two-tier), RecommendationProgress, SentimentBreakdown, ContentGapCard components, recommendations page with tabs/filters/export, sidebar nav, audit page preview (REC-01, REC-02, REC-03, REC-04, REC-05)
+- [x] 08-01-PLAN.md -- Recommendation engine + sentiment service: AuditRecommendation/MentionSentiment models, migration 008, RecommendationEngine gap analysis, SentimentService LLM classification, RECOMMENDING Celery stage (REC-01, REC-02, REC-03, REC-04)
+- [x] 08-02-PLAN.md -- Content gaps + API + export: content gap identification with mini briefs, recommendation CRUD endpoints, sentiment summary API, Markdown fix plan export (REC-01, REC-02, REC-03, REC-04, REC-05)
+- [x] 08-03-PLAN.md -- Frontend recommendations experience: RecommendationCard (two-tier), RecommendationProgress, SentimentBreakdown, ContentGapCard components, recommendations page with tabs/filters/export, sidebar nav, audit page preview (REC-01, REC-02, REC-03, REC-04, REC-05)
+- [ ] 08-04-PLAN.md -- Gap closure: Wire identify_content_gaps() and save_content_gaps() into RECOMMENDING pipeline stage (REC-05)
 
 ### Phase 9: Dashboard & Reporting
 **Goal**: Users see a single-screen dashboard with their combined GEO Score (Visibility + Optimization), competitive position, top issues, and can export complete reports and track changes over time
