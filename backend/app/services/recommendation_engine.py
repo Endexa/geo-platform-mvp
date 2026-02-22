@@ -4,11 +4,15 @@ Compares per-criterion user scores against competitor category averages and
 research-backed benchmarks. Produces prioritized AuditRecommendation records
 with evidence, competitor comparison data, and code snippets.
 
+Also provides content gap identification (queries where competitors are mentioned
+but user is not) and Markdown fix plan export.
+
 Not LLM-based: all gap analysis logic is deterministic. Only sentiment
 classification (separate service) uses LLM calls.
 """
 
 import hashlib
+from datetime import datetime, timezone
 from typing import Optional
 from urllib.parse import urlparse
 
@@ -16,9 +20,12 @@ from loguru import logger
 from sqlalchemy.orm import Session
 
 from app.models.audit import Audit
+from app.models.audit_query import AuditQuery
 from app.models.audit_recommendation import AuditRecommendation
-from app.models.competitor import CompetitorAudit
+from app.models.brand_mention import BrandMention
+from app.models.competitor import CompetitorAudit, DiscoveredCompetitor
 from app.models.criterion_result import CriterionResult
+from app.models.engine_response import EngineResponse
 from app.models.mention_sentiment import MentionSentiment
 from app.models.page_score import PageScore
 
@@ -623,3 +630,323 @@ class RecommendationEngine:
         )
 
         return steps
+
+    # ------------------------------------------------------------------
+    # Content gap identification
+    # ------------------------------------------------------------------
+
+    def identify_content_gaps(self, audit_id: str) -> list[dict]:
+        """Find queries where competitors appear in AI responses but user does not.
+
+        Algorithm:
+            1. Load all AuditQuery records for this audit
+            2. Find queries where user brand was mentioned (BrandMention join chain)
+            3. Load DiscoveredCompetitor records (non-user-brand)
+            4. Build query_id -> [competitor names] index from queries_mentioned_in
+            5. Gap = queries where competitor appears but user does not
+            6. Generate template-based mini brief per gap
+
+        Returns:
+            list of dicts with query_id, query_text, competitors_mentioned, brief
+        """
+        # 1. All queries for this audit
+        all_queries = {
+            str(q.id): q.query_text
+            for q in self.db.query(AuditQuery)
+            .filter(AuditQuery.audit_id == audit_id)
+            .all()
+        }
+
+        if not all_queries:
+            return []
+
+        # 2. Queries where user brand was mentioned
+        user_mentioned_rows = (
+            self.db.query(AuditQuery.id)
+            .join(EngineResponse, EngineResponse.audit_query_id == AuditQuery.id)
+            .join(BrandMention, BrandMention.engine_response_id == EngineResponse.id)
+            .filter(AuditQuery.audit_id == audit_id)
+            .distinct()
+            .all()
+        )
+        user_mentioned_query_ids = {str(row[0]) for row in user_mentioned_rows}
+
+        # 3. Load non-user-brand competitors
+        competitors = (
+            self.db.query(DiscoveredCompetitor)
+            .filter(DiscoveredCompetitor.audit_id == audit_id)
+            .filter(DiscoveredCompetitor.is_user_brand.is_(False))
+            .all()
+        )
+
+        # 4. Build query_id -> [competitor names] index
+        query_to_competitors: dict[str, list[str]] = {}
+        for comp in competitors:
+            for qid in comp.queries_mentioned_in or []:
+                query_to_competitors.setdefault(str(qid), []).append(
+                    comp.entity_name
+                )
+
+        # 5. Find gaps: competitor mentioned, user not mentioned
+        gaps: list[dict] = []
+        for query_id, query_text in all_queries.items():
+            if (
+                query_id not in user_mentioned_query_ids
+                and query_id in query_to_competitors
+            ):
+                competitors_mentioned = query_to_competitors[query_id]
+                brief = self._template_brief(query_text, competitors_mentioned)
+                gaps.append(
+                    {
+                        "query_id": query_id,
+                        "query_text": query_text,
+                        "competitors_mentioned": competitors_mentioned,
+                        "brief": brief,
+                    }
+                )
+
+        logger.info(
+            "Audit {}: identified {} content gaps from {} queries",
+            audit_id,
+            len(gaps),
+            len(all_queries),
+        )
+        return gaps
+
+    def save_content_gaps(self, audit_id: str, gaps: list[dict]) -> None:
+        """Persist content gaps to the Audit record's JSONB column."""
+        audit = self.db.query(Audit).filter(Audit.id == audit_id).first()
+        if audit:
+            audit.content_gaps = gaps
+            self.db.flush()
+
+    def _template_brief(
+        self, query_text: str, competitors: list[str]
+    ) -> dict:
+        """Generate a template-based mini content brief for a content gap.
+
+        Returns:
+            dict with title, key_points, and target_queries
+        """
+        return {
+            "title": f"Complete Guide: {query_text.rstrip('?').capitalize()}",
+            "key_points": [
+                f"Answer the question: {query_text}",
+                "Include statistics and data tables to support claims "
+                "(+40% visibility, 4.1x citations)",
+                "Add FAQPage schema with the most common related questions "
+                "(+28% AI citations)",
+                "Cite authoritative sources for E-E-A-T signals",
+                f"Address what {', '.join(competitors[:3])} cover that you "
+                "currently miss",
+            ],
+            "target_queries": [query_text],
+        }
+
+    # ------------------------------------------------------------------
+    # Markdown fix plan export
+    # ------------------------------------------------------------------
+
+    def export_markdown(
+        self, audit_id: str, page_url: str | None = None
+    ) -> str:
+        """Generate a structured Markdown fix plan from audit recommendations.
+
+        The format is inspired by GSD PLAN.md structure: clear tasks, evidence,
+        code changes, and acceptance criteria.
+
+        Args:
+            audit_id: The audit UUID.
+            page_url: Optional filter for single-page export.
+
+        Returns:
+            Complete Markdown string.
+        """
+        # Load audit for domain name
+        audit = self.db.query(Audit).filter(Audit.id == audit_id).first()
+        if not audit:
+            return "# Error: Audit not found"
+
+        # Load recommendations
+        query = self.db.query(AuditRecommendation).filter(
+            AuditRecommendation.audit_id == audit_id
+        )
+        if page_url:
+            query = query.filter(AuditRecommendation.page_url == page_url)
+
+        recs = query.order_by(
+            AuditRecommendation.priority,
+            AuditRecommendation.gap_score.desc(),
+        ).all()
+
+        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        domain = audit.domain
+
+        # Count by priority
+        high_count = sum(1 for r in recs if r.priority == "high")
+        medium_count = sum(1 for r in recs if r.priority == "medium")
+        low_count = sum(1 for r in recs if r.priority == "low")
+
+        lines: list[str] = []
+
+        # Header
+        if page_url:
+            parsed = urlparse(page_url)
+            path_display = parsed.path or "/"
+            lines.append(f"# GEO Fix Plan: {domain} ({path_display}) - {today}")
+        else:
+            lines.append(f"# GEO Fix Plan: {domain} - {today}")
+
+        lines.append("")
+
+        # Summary
+        lines.append("## Summary")
+        lines.append("")
+        lines.append(
+            f"{high_count} high-priority fixes | "
+            f"{medium_count} medium | {low_count} low"
+        )
+        if recs:
+            max_impact_recs = [
+                r for r in recs if r.impact_pct is not None
+            ]
+            if max_impact_recs:
+                max_impact = max(r.impact_pct for r in max_impact_recs)
+                lines.append(
+                    f"Addressing these fixes is estimated to improve "
+                    f"your AI citation rate by up to {max_impact}%."
+                )
+        lines.append("")
+
+        if not recs:
+            lines.append("No recommendations found for this audit.")
+            return "\n".join(lines)
+
+        # Group by priority if full site, or by page then priority
+        if page_url:
+            # Single page: group by priority
+            self._append_priority_groups(lines, recs)
+        else:
+            # Full site: group by page then priority
+            pages: dict[str | None, list[AuditRecommendation]] = {}
+            for rec in recs:
+                pages.setdefault(rec.page_url, []).append(rec)
+
+            for page, page_recs in pages.items():
+                if page:
+                    parsed = urlparse(page)
+                    lines.append(f"## Page: {parsed.path or '/'}")
+                else:
+                    lines.append("## Site-wide Recommendations")
+                lines.append("")
+                self._append_priority_groups(lines, page_recs)
+
+        # Content gaps section
+        content_gaps = audit.content_gaps
+        if content_gaps:
+            lines.append("## Content Gaps")
+            lines.append("")
+            lines.append(
+                "Topics where competitors are mentioned but you are not:"
+            )
+            lines.append("")
+
+            for gap in content_gaps:
+                query_text = gap.get("query_text", "Unknown topic")
+                competitors_mentioned = gap.get("competitors_mentioned", [])
+                brief = gap.get("brief", {})
+
+                lines.append(f"### {query_text}")
+                lines.append(
+                    f"**Competitors mentioned:** "
+                    f"{', '.join(competitors_mentioned)}"
+                )
+                if brief:
+                    lines.append(
+                        f"**Suggested content:** {brief.get('title', 'N/A')}"
+                    )
+                    key_points = brief.get("key_points", [])
+                    if key_points:
+                        lines.append("**Key points to cover:**")
+                        for point in key_points:
+                            lines.append(f"- {point}")
+                lines.append("")
+
+        return "\n".join(lines)
+
+    def _append_priority_groups(
+        self,
+        lines: list[str],
+        recs: list[AuditRecommendation],
+    ) -> None:
+        """Append recommendations grouped by priority to the lines list."""
+        priority_labels = {
+            "high": "High Priority Fixes",
+            "medium": "Medium Priority Fixes",
+            "low": "Low Priority Fixes",
+        }
+
+        fix_num = 1
+        for priority in ("high", "medium", "low"):
+            priority_recs = [r for r in recs if r.priority == priority]
+            if not priority_recs:
+                continue
+
+            lines.append(f"### {priority_labels[priority]}")
+            lines.append("")
+
+            for rec in priority_recs:
+                page_display = rec.page_url or "Site-wide"
+                if rec.page_url:
+                    parsed = urlparse(rec.page_url)
+                    page_display = parsed.path or "/"
+
+                lines.append(
+                    f"#### Fix {fix_num}: {rec.criterion_name} "
+                    f"-- {page_display}"
+                )
+                lines.append(
+                    f"**Evidence:** {rec.impact_label} "
+                    f"({rec.evidence_source})"
+                )
+
+                comp_avg_display = (
+                    f"{rec.competitor_avg}" if rec.competitor_avg is not None
+                    else "N/A"
+                )
+                lines.append(
+                    f"**Your score:** {rec.user_score}/100 | "
+                    f"**Competitor avg:** {comp_avg_display}/100 | "
+                    f"**Gap:** {rec.gap_score} points"
+                )
+                lines.append(f"**Status:** {rec.status}")
+                lines.append("")
+
+                # Action steps
+                if rec.action_steps:
+                    lines.append("**Steps:**")
+                    for i, step in enumerate(rec.action_steps, 1):
+                        lines.append(f"{i}. {step}")
+                    lines.append("")
+
+                # Code snippet
+                if rec.code_snippet:
+                    lines.append("```")
+                    lines.append(rec.code_snippet)
+                    lines.append("```")
+                    lines.append("")
+
+                # Acceptance criteria
+                threshold = CRITERION_RESEARCH_MAP.get(
+                    rec.criterion_id, DEFAULT_BENCHMARK
+                ).get("threshold", 60)
+                lines.append("**Acceptance criteria:**")
+                lines.append("- [ ] Re-run audit to verify improvement")
+                lines.append(
+                    f"- [ ] {rec.criterion_name} score > {threshold}"
+                )
+                lines.append("")
+                lines.append("---")
+                lines.append("")
+
+                fix_num += 1
