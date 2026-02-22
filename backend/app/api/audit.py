@@ -14,7 +14,13 @@ from app.core.database import get_db
 from app.core.security import get_current_active_user
 from app.models import Profile
 from app.models.audit import Audit, AuditStatus
-from app.schemas.audit import AuditCreate, AuditDetailResponse, AuditResponse
+from app.models.audit_query import AuditQuery
+from app.schemas.audit import (
+    AuditCreate,
+    AuditDetailResponse,
+    AuditResponse,
+    DispatchSummary,
+)
 from app.tasks.audit_tasks import run_crawl_and_generate
 
 router = APIRouter(prefix="/audit", tags=["audit"])
@@ -100,14 +106,17 @@ def get_audit(
     db: Session = Depends(get_db),
     current_user: Profile = Depends(get_current_active_user),
 ):
-    """Get audit details including generated queries.
+    """Get audit details including generated queries and engine responses.
 
     Only returns audits owned by the authenticated user.
-    Eager-loads associated AuditQuery records.
+    Eager-loads associated AuditQuery records and their EngineResponse records
+    to avoid N+1 query issues. Computes a dispatch summary when available.
     """
     audit = (
         db.query(Audit)
-        .options(joinedload(Audit.queries))
+        .options(
+            joinedload(Audit.queries).joinedload(AuditQuery.engine_responses)
+        )
         .filter(Audit.id == audit_id)
         .first()
     )
@@ -118,4 +127,23 @@ def get_audit(
             detail="Audit not found",
         )
 
-    return audit
+    # Compute dispatch summary if audit has engine responses
+    dispatch_summary = None
+    if audit.status in (AuditStatus.COMPLETED.value, AuditStatus.DISPATCHING.value):
+        all_responses = []
+        for q in audit.queries:
+            all_responses.extend(q.engine_responses)
+        if all_responses:
+            engines_used = list(set(r.engine for r in all_responses))
+            failures = sum(1 for r in all_responses if r.error_message is not None)
+            dispatch_summary = DispatchSummary(
+                total_queries=len(audit.queries),
+                total_responses=len(all_responses) - failures,
+                total_failures=failures,
+                engines_used=sorted(engines_used),
+            )
+
+    # Build response with dispatch summary
+    response = AuditDetailResponse.model_validate(audit)
+    response.dispatch_summary = dispatch_summary
+    return response

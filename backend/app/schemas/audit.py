@@ -11,6 +11,23 @@ class AuditCreate(BaseModel):
     url: str
 
 
+class EngineResponseSchema(BaseModel):
+    """Response schema for an individual engine response."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: UUID
+    engine: str
+    model_version: str
+    response_text: str
+    prompt_tokens: int
+    completion_tokens: int
+    cost_usd: float
+    cached: bool
+    error_message: Optional[str] = None
+    created_at: datetime
+
+
 class AuditQueryResponse(BaseModel):
     """Response schema for an individual audit query."""
 
@@ -20,6 +37,16 @@ class AuditQueryResponse(BaseModel):
     category: str
     query_text: str
     sort_order: int
+    engine_responses: list[EngineResponseSchema] = []
+
+
+class DispatchSummary(BaseModel):
+    """Summary of dispatch results for an audit."""
+
+    total_queries: int
+    total_responses: int
+    total_failures: int
+    engines_used: list[str]
 
 
 class AuditResponse(BaseModel):
@@ -37,7 +64,8 @@ class AuditResponse(BaseModel):
 
 
 class AuditDetailResponse(AuditResponse):
-    """Response schema for audit detail view (includes crawl data and queries)."""
+    """Response schema for audit detail view (includes crawl data, queries, and dispatch summary)."""
 
     crawl_data: Optional[dict] = None
     queries: list[AuditQueryResponse] = []
+    dispatch_summary: Optional[DispatchSummary] = None
