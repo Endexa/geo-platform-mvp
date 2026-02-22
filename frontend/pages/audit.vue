@@ -14,6 +14,16 @@
       <!-- Phase 3: Results (audit complete) -->
       <AuditResults v-else-if="isCompleted && audit" :audit="audit" />
 
+      <!-- Query Editor: visible when completed or pending -->
+      <QueryEditor
+        v-if="audit && auditId && (isCompleted || isPending)"
+        :audit-id="auditId"
+        :queries="audit.queries"
+        @query-added="refreshAudit"
+        @query-updated="refreshAudit"
+        @query-deleted="refreshAudit"
+      />
+
       <!-- Error State -->
       <div v-else-if="isFailed" class="bg-white rounded-lg border border-gray-200 p-8 text-center">
         <p class="text-red-600 font-medium">Audit failed</p>
@@ -68,6 +78,7 @@ interface AuditDetail {
     category: string
     query_text: string
     sort_order: number
+    is_custom: boolean
     engine_responses: Array<{
       id: string
       engine: string
@@ -126,6 +137,7 @@ const isRunning = computed(() => {
 })
 
 const isCompleted = computed(() => audit.value?.status === 'completed')
+const isPending = computed(() => audit.value?.status === 'pending')
 const isFailed = computed(() => audit.value?.status === 'failed')
 
 // Polling with useIntervalFn -- called at top level for proper cleanup
@@ -159,6 +171,16 @@ async function startAudit(url: string) {
     apiError.value = err.data?.detail || err.message || 'Failed to start audit'
   } finally {
     creating.value = false
+  }
+}
+
+async function refreshAudit() {
+  if (!auditId.value) return
+  try {
+    const data = await useApiFetch<AuditDetail>(`/audit/${auditId.value}`)
+    audit.value = data
+  } catch (err: any) {
+    console.error('Refresh error:', err)
   }
 }
 

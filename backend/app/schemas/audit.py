@@ -52,6 +52,7 @@ class AuditQueryResponse(BaseModel):
     category: str
     query_text: str
     sort_order: int
+    is_custom: bool = False
     engine_responses: list[EngineResponseSchema] = []
 
 
