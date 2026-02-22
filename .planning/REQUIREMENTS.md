@@ -19,7 +19,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **AUDIT-01**: User can enter a URL and trigger a complete AI brand visibility audit
 - [x] **AUDIT-02**: App crawls the site and extracts AI-readiness signals (schema.org, robots.txt AI directives, structured data, content structure)
 - [x] **AUDIT-03**: App auto-generates industry-relevant queries from crawled site content
-- [ ] **AUDIT-04**: App queries ChatGPT, Claude, and Perplexity APIs with generated queries
+- [x] **AUDIT-04**: App queries ChatGPT, Claude, and Perplexity APIs with generated queries
 - [ ] **AUDIT-05**: App detects brand mentions in AI responses with verbatim quotes
 - [ ] **AUDIT-06**: User sees a visibility score (0-100) with per-engine breakdown
 - [ ] **AUDIT-07**: User can drill down into each query to see the full AI response with mentions highlighted
@@ -96,7 +96,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AUDIT-01 | Phase 5: Audit Experience | Pending |
 | AUDIT-02 | Phase 2: Site Crawl & Query Generation | Complete |
 | AUDIT-03 | Phase 2: Site Crawl & Query Generation | Complete |
-| AUDIT-04 | Phase 3: AI Engine Dispatch | Pending |
+| AUDIT-04 | Phase 3: AI Engine Dispatch | Complete |
 | AUDIT-05 | Phase 4: Mention Detection & Scoring | Pending |
 | AUDIT-06 | Phase 4: Mention Detection & Scoring | Pending |
 | AUDIT-07 | Phase 5: Audit Experience | Pending |
