@@ -17,6 +17,7 @@ class AuditStatus(str, enum.Enum):
     ANALYZING = "analyzing"
     SCORING = "scoring"
     DISCOVERING_COMPETITORS = "discovering_competitors"
+    RECOMMENDING = "recommending"
     COMPLETED = "completed"
     FAILED = "failed"
 
@@ -34,6 +35,7 @@ class Audit(Base):
     crawl_data = Column(JSONB, nullable=True)
     error_message = Column(String, nullable=True)
     optimization_score = Column(Integer, nullable=True)  # Final 0-100 score after scoring
+    content_gaps = Column(JSONB, nullable=True)  # List of content gap dicts from gap analysis
     created_at = Column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
     )
