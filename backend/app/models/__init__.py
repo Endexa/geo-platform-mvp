@@ -5,6 +5,8 @@ from app.models.analysis import Analysis
 from app.models.recommendation import Recommendation
 from app.models.brand_voice import BrandVoiceConfig, VoiceVector, VoiceRule
 from app.models.audit_cost import AuditCostLedger
+from app.models.audit import Audit, AuditStatus
+from app.models.audit_query import AuditQuery
 
 __all__ = [
     "Organization",
@@ -16,4 +18,7 @@ __all__ = [
     "VoiceVector",
     "VoiceRule",
     "AuditCostLedger",
+    "Audit",
+    "AuditStatus",
+    "AuditQuery",
 ]
