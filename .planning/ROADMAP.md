@@ -26,7 +26,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 4: Mention Detection & Scoring** - Detect brand mentions in AI responses with verbatim quotes and compute visibility scores
 - [x] **Phase 5: Audit Experience** - Users can trigger an audit from URL entry to scored results with per-query drill-down
 - [ ] **Phase 6: Site AI-Readiness Scoring** - Score each page against research-backed SEO+GEO criteria with purpose-built scoring services, producing an Optimization Score alongside the Visibility Score
-- [ ] **Phase 7: Auto-Competitor Discovery** - Extract competitors from AI responses, crawl their sites, and compare technical setup
+- [x] **Phase 7: Auto-Competitor Discovery** - Extract competitors from AI responses, crawl their sites, and compare technical setup (completed 2026-02-22)
 - [ ] **Phase 8: Actionable Recommendations** - Generate page-specific, evidence-based fix recommendations with impact estimates
 - [ ] **Phase 9: Dashboard & Reporting** - Combined GEO Score dashboard, competitive position map, PDF/CSV export, audit history
 - [ ] **Phase 10: Scale & Agency** - Multi-brand management with per-brand audit history and cross-brand comparison
@@ -376,7 +376,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 4. Mention Detection & Scoring | 2/2 | Complete | 2026-02-22 |
 | 5. Audit Experience | 2/2 | Complete | 2026-02-22 |
 | 6. Site AI-Readiness Scoring | 0/5 | Not started | - |
-| 7. Auto-Competitor Discovery | 2/4 | In Progress|  |
+| 7. Auto-Competitor Discovery | 2/4 | Complete    | 2026-02-22 |
 | 8. Actionable Recommendations | 0/3 | Not started | - |
 | 9. Dashboard & Reporting | 0/4 | Not started | - |
 | 10. Scale & Agency | 0/2 | Not started | - |
