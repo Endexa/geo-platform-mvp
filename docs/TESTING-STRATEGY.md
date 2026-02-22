@@ -73,6 +73,10 @@ curl http://localhost:8000/api/v1/analysis/<id> | jq '.status'
 | Database schema (models/ or migrations) | Build | - | `alembic upgrade head` | Full flow |
 | Docker config | - | - | `docker-compose up --build` | Full flow |
 | Middleware (backend/app/core/middleware.py) | Build | pytest | curl with headers | - |
+| Auth (backend/app/api/auth.py, security.py) | Build | pytest (register, login, me) | curl with JWT | Protected endpoint access |
+| Cost tracking (services/cost_service.py) | Build | pytest (record, budget check) | - | - |
+| Cache (services/cache_service.py) | Build | pytest (get/set/key gen) | Redis key verification | Cache hit/miss cycle |
+| Rate limiter (core/outbound_limiter.py) | Build | pytest (acquire/release) | - | Concurrent load test |
 | Config change (.env, config.py) | Build | - | Docker restart | Health checks |
 
 ---
@@ -99,6 +103,7 @@ curl http://localhost:8000/api/v1/analysis/<id> | jq '.status'
 
 | Operation | Expected Time |
 |-----------|--------------|
+| Auth register/login | < 500ms |
 | Dashboard load | < 500ms |
 | Start analysis (return analysis_id) | < 200ms |
 | Analysis completion | 10-30s |
@@ -106,3 +111,6 @@ curl http://localhost:8000/api/v1/analysis/<id> | jq '.status'
 | Full 108-point orchestrator | < 120s |
 | Recommendation generation | 5-15s (when LLM integrated) |
 | Brand voice check | 2-5s |
+| AI cache hit (Redis) | < 10ms |
+| AI cache miss + API call | Varies by provider |
+| Cost budget check (DB query) | < 50ms |
