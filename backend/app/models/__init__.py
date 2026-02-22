@@ -10,6 +10,8 @@ from app.models.audit_query import AuditQuery
 from app.models.engine_response import EngineResponse
 from app.models.brand_mention import BrandMention
 from app.models.visibility_score import VisibilityScore
+from app.models.page_score import PageScore
+from app.models.criterion_result import CriterionResult
 
 __all__ = [
     "Organization",
@@ -27,4 +29,6 @@ __all__ = [
     "EngineResponse",
     "BrandMention",
     "VisibilityScore",
+    "PageScore",
+    "CriterionResult",
 ]

@@ -2,7 +2,7 @@ import enum
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import Column, DateTime, ForeignKey, String
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import relationship
 
@@ -15,6 +15,7 @@ class AuditStatus(str, enum.Enum):
     GENERATING_QUERIES = "generating_queries"
     DISPATCHING = "dispatching"
     ANALYZING = "analyzing"
+    SCORING = "scoring"
     COMPLETED = "completed"
     FAILED = "failed"
 
@@ -31,6 +32,7 @@ class Audit(Base):
     status = Column(String, default=AuditStatus.PENDING, nullable=False)
     crawl_data = Column(JSONB, nullable=True)
     error_message = Column(String, nullable=True)
+    optimization_score = Column(Integer, nullable=True)  # Final 0-100 score after scoring
     created_at = Column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
     )

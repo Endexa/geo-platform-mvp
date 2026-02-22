@@ -22,6 +22,8 @@ from app.models.audit_query import AuditQuery  # noqa: F401
 from app.models.engine_response import EngineResponse  # noqa: F401
 from app.models.brand_mention import BrandMention  # noqa: F401
 from app.models.visibility_score import VisibilityScore  # noqa: F401
+from app.models.page_score import PageScore  # noqa: F401
+from app.models.criterion_result import CriterionResult  # noqa: F401
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
