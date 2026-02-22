@@ -79,11 +79,11 @@ Plans:
   2. Each detected mention includes a verbatim quote of the surrounding context from the AI response
   3. A visibility score (0-100) is computed with a per-engine breakdown showing which engines mention the brand and how prominently
   4. Score computation uses temperature=0 on all queries and logs model version for reproducibility
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 04-01: TBD
-- [ ] 04-02: TBD
+- [ ] 04-01-PLAN.md -- BrandMention/VisibilityScore models, migration 005, MentionDetectorService, ScoringService (AUDIT-05, AUDIT-06)
+- [ ] 04-02-PLAN.md -- Celery ANALYZING pipeline stage, audit API/schemas for mentions and scores (AUDIT-05, AUDIT-06)
 
 ### Phase 5: Audit Experience
 **Goal**: A user can enter a URL on the frontend, trigger a complete audit, watch it progress, and explore the scored results with full AI response drill-down
