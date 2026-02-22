@@ -51,7 +51,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **REC-02**: Each recommendation includes evidence: the research-backed impact data, the specific competitor comparison, and the exact gap identified
 - [x] **REC-03**: Recommendations are prioritized by estimated impact (High/Medium/Low) based on research data (schema impact 2.3-2.5x, answer-first format +40%, statistics +40%, FAQ schema +28%)
 - [x] **REC-04**: App classifies sentiment of AI mentions (positive, negative, neutral) and surfaces sentiment patterns (e.g., "Perplexity describes you positively but ChatGPT is neutral")
-- [ ] **REC-05**: App identifies content gaps: topics where competitors are mentioned but the user is not, linked to specific pages the user could create or improve
+- [x] **REC-05**: App identifies content gaps: topics where competitors are mentioned but the user is not, linked to specific pages the user could create or improve
 
 ### Dashboard & Reporting
 
@@ -139,7 +139,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | REC-02 | Phase 8: Actionable Recommendations | Complete |
 | REC-03 | Phase 8: Actionable Recommendations | Complete |
 | REC-04 | Phase 8: Actionable Recommendations | Complete |
-| REC-05 | Phase 8: Actionable Recommendations | Pending |
+| REC-05 | Phase 8: Actionable Recommendations | Complete |
 | DASH-01 | Phase 9: Dashboard & Reporting | Pending |
 | DASH-02 | Phase 9: Dashboard & Reporting | Pending |
 | DASH-03 | Phase 9: Dashboard & Reporting | Pending |

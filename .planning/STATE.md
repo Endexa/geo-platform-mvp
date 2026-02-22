@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Show brands exactly how AI engines see them -- with real quotes from real AI responses, not just theoretical scores.
-**Current focus:** Phase 8 IN PROGRESS: Actionable Recommendations (1 of 3 plans complete)
+**Current focus:** Phase 8 IN PROGRESS: Actionable Recommendations (2 of 3 plans complete)
 
 ## Current Position
 
 Phase: 8 of 9 (Actionable Recommendations)
-Plan: 1 of 3 in current phase (1 complete)
-Status: 08-01 complete (recommendation engine backend). Next: 08-02 (API + frontend).
-Last activity: 2026-02-23 -- Completed 08-01 (Recommendation Engine Backend)
+Plan: 2 of 3 in current phase (2 complete)
+Status: 08-02 complete (recommendation API + content gaps). Next: 08-03 (frontend).
+Last activity: 2026-02-23 -- Completed 08-02 (Recommendation API + Content Gaps + Export)
 
-Progress: [########################] 87%
+Progress: [#########################] 91%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 21
+- Total plans completed: 22
 - Average duration: 4 min
-- Total execution time: 1.7 hours
+- Total execution time: 1.75 hours
 
 **By Phase:**
 
@@ -34,11 +34,11 @@ Progress: [########################] 87%
 | 05-audit-experience | 2 | 6 min | 3 min |
 | 06-site-ai-readiness-scoring | 5 | 32 min | 6 min |
 | 07-auto-competitor-discovery | 4 | 19 min | 5 min |
-| 08-actionable-recommendations | 1 | 5 min | 5 min |
+| 08-actionable-recommendations | 2 | 8 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: 07-01 (6min), 07-02 (5min), 07-03 (3min), 07-04 (5min), 08-01 (5min)
-- Trend: Consistently fast (3-6min per plan)
+- Last 5 plans: 07-02 (5min), 07-03 (3min), 07-04 (5min), 08-01 (5min), 08-02 (3min)
+- Trend: Consistently fast (3-5min per plan)
 
 *Updated after each plan completion*
 | Phase 02 P01 | 4min | 2 tasks | 9 files |
@@ -56,6 +56,7 @@ Progress: [########################] 87%
 | Phase 07 P03 | 3min | 2 tasks | 4 files |
 | Phase 07 P04 | 5min | 2 tasks | 6 files |
 | Phase 08 P01 | 5min | 2 tasks | 10 files |
+| Phase 08 P02 | 3min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -136,6 +137,11 @@ Recent decisions affecting current work:
 - [08-01]: Negative sentiments generate site-wide recommendations (criterion_id=SENTIMENT, page_url=None)
 - [08-01]: RECOMMENDING pipeline stage is non-fatal (try/except) matching competitor discovery pattern
 - [08-01]: Sentiment fallback: neutral/50 when no GEMINI_API_KEY configured
+- [08-02]: Content gaps use deterministic query cross-reference (no LLM): compare user brand mentions vs competitor mentions per AuditQuery
+- [08-02]: Template-based mini briefs (zero cost, instant) with 5 research-backed key points per gap
+- [08-02]: Markdown export generates dynamically from DB on each request (no file storage)
+- [08-02]: Recommendation list returns unfiltered progress stats alongside filtered results
+- [08-02]: Audit ownership returns 403 Forbidden when user_id mismatch (not 404)
 
 ### Pending Todos
 
@@ -151,5 +157,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-23
-Stopped at: Completed 08-01-PLAN.md
-Resume file: .planning/phases/08-actionable-recommendations/08-01-SUMMARY.md
+Stopped at: Completed 08-02-PLAN.md
+Resume file: .planning/phases/08-actionable-recommendations/08-02-SUMMARY.md
