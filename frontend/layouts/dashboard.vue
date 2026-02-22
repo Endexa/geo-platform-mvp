@@ -73,6 +73,7 @@ import {
   HomeIcon,
   MagnifyingGlassIcon,
   ShieldCheckIcon,
+  UsersIcon,
   LightBulbIcon,
   MicrophoneIcon,
   Cog6ToothIcon
@@ -97,6 +98,7 @@ const navigation = [
   { path: '/dashboard', label: 'Dashboard', icon: HomeIcon },
   { path: '/analyze', label: 'Analyze', icon: MagnifyingGlassIcon },
   { path: '/audit', label: 'AI Audit', icon: ShieldCheckIcon },
+  { path: '/competitors', label: 'Competitors', icon: UsersIcon },
   { path: '/optimization', label: 'Optimization', icon: LightBulbIcon },
   { path: '/brand-voice', label: 'Brand Voice', icon: MicrophoneIcon },
   { path: '/settings', label: 'Settings', icon: Cog6ToothIcon },

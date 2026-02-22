@@ -14,6 +14,32 @@
       <!-- Phase 3: Results (audit complete) -->
       <AuditResults v-else-if="isCompleted && audit" :audit="audit" />
 
+      <!-- Competitor Preview (shown when audit completed and competitors discovered) -->
+      <div v-if="isCompleted && competitorLeaderboard && competitorLeaderboard.competitors.length > 0" class="bg-white rounded-lg border border-gray-200">
+        <div class="p-6 border-b border-gray-200 flex items-center justify-between">
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900">Discovered Competitors</h3>
+            <p class="text-sm text-gray-500 mt-1">Top brands mentioned by AI alongside yours</p>
+          </div>
+          <NuxtLink
+            :to="`/competitors?audit_id=${auditId}`"
+            class="text-sm text-primary-600 hover:text-primary-700 font-medium cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-500 rounded px-2 py-1"
+          >
+            View All Competitors
+          </NuxtLink>
+        </div>
+        <CompetitorLeaderboard
+          :competitors="topCompetitors"
+          :user-brand-name="competitorLeaderboard.user_brand_name"
+        />
+      </div>
+
+      <!-- Source Citations from engine responses -->
+      <SourceCitations
+        v-if="isCompleted && audit && allEngineResponses.length > 0"
+        :engine-responses="allEngineResponses"
+      />
+
       <!-- Query Editor: visible when completed or pending -->
       <QueryEditor
         v-if="audit && auditId && (isCompleted || isPending)"
@@ -126,10 +152,46 @@ interface AuditDetail {
   }>
 }
 
+interface CompetitorLeaderboardEntry {
+  entity_name: string
+  entity_type: string
+  mention_count: number
+  share_of_voice: number
+  engines_mentioned_in: Record<string, number>
+  queries_mentioned_in: string[]
+  resolved_url: string | null
+  is_crawled: boolean
+  is_user_brand: boolean
+  competitor_audit_id: string | null
+}
+
+interface CompetitorAuditSummary {
+  id: string
+  competitor_name: string
+  competitor_url: string
+  optimization_score: number | null
+  crawlability_avg: number | null
+  content_structure_avg: number | null
+  structured_data_avg: number | null
+  authority_avg: number | null
+  pages_scored: number
+  status: string
+  created_at: string
+}
+
+interface LeaderboardResponse {
+  audit_id: string
+  user_brand_name: string
+  total_entities: number
+  competitors: CompetitorLeaderboardEntry[]
+  competitor_audits: CompetitorAuditSummary[]
+}
+
 const auditId = ref<string | null>(null)
 const audit = ref<AuditDetail | null>(null)
 const creating = ref(false)
 const apiError = ref('')
+const competitorLeaderboard = ref<LeaderboardResponse | null>(null)
 
 const isRunning = computed(() => {
   const s = audit.value?.status
@@ -140,6 +202,38 @@ const isCompleted = computed(() => audit.value?.status === 'completed')
 const isPending = computed(() => audit.value?.status === 'pending')
 const isFailed = computed(() => audit.value?.status === 'failed')
 
+// Top 5 competitors for preview on audit page
+const topCompetitors = computed(() => {
+  if (!competitorLeaderboard.value) return []
+  return competitorLeaderboard.value.competitors.slice(0, 5)
+})
+
+// All engine responses across all queries for SourceCitations
+const allEngineResponses = computed(() => {
+  if (!audit.value) return []
+  const responses: Array<{
+    id: string
+    engine: string
+    model_version: string
+    response_text: string
+    error_message: string | null
+    mentions: Array<{
+      id: string
+      matched_text: string
+      match_type: string
+      confidence: number
+      char_offset: number
+      context_quote: string
+    }>
+  }> = []
+  for (const query of audit.value.queries) {
+    for (const resp of query.engine_responses) {
+      responses.push(resp)
+    }
+  }
+  return responses
+})
+
 // Polling with useIntervalFn -- called at top level for proper cleanup
 const { pause, resume } = useIntervalFn(async () => {
   if (!auditId.value) return
@@ -148,6 +242,9 @@ const { pause, resume } = useIntervalFn(async () => {
     audit.value = data
     if (data.status === 'completed' || data.status === 'failed') {
       pause()
+      if (data.status === 'completed') {
+        loadCompetitors(auditId.value!)
+      }
     }
   } catch (err: any) {
     console.error('Polling error:', err)
@@ -174,11 +271,24 @@ async function startAudit(url: string) {
   }
 }
 
+async function loadCompetitors(id: string) {
+  try {
+    const data = await useApiFetch<LeaderboardResponse>(`/competitors/${id}/leaderboard`)
+    competitorLeaderboard.value = data
+  } catch {
+    // Competitor data is supplementary -- do not block audit experience
+    competitorLeaderboard.value = null
+  }
+}
+
 async function refreshAudit() {
   if (!auditId.value) return
   try {
     const data = await useApiFetch<AuditDetail>(`/audit/${auditId.value}`)
     audit.value = data
+    if (data.status === 'completed') {
+      loadCompetitors(auditId.value!)
+    }
   } catch (err: any) {
     console.error('Refresh error:', err)
   }
