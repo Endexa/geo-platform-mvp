@@ -1,4 +1,4 @@
-"""Celery task for the audit pipeline: crawl -> generate -> dispatch -> analyze -> score -> discover -> complete.
+"""Celery task for the audit pipeline: crawl -> generate -> dispatch -> analyze -> score -> discover -> recommend -> complete.
 
 Orchestrates the complete audit pipeline as a background task triggered by the audit API.
 Updates audit status at each stage and handles errors gracefully.
@@ -10,7 +10,8 @@ Pipeline stages:
     4. ANALYZING — Detect brand mentions in responses and compute visibility score
     5. SCORING — Multi-page crawl, per-page scoring, weakest-link aggregation
     6. DISCOVERING_COMPETITORS — Extract entities from AI responses, compute share-of-voice
-    7. COMPLETED — All stages finished successfully
+    7. RECOMMENDING — Generate evidence-based recommendations and classify mention sentiments
+    8. COMPLETED — All stages finished successfully
 """
 
 import asyncio
@@ -38,7 +39,7 @@ from app.tasks.celery_app import celery_app
     default_retry_delay=30,
 )
 def run_crawl_and_generate(self, audit_id: str, url: str):
-    """Crawl a URL, extract brand signals, generate queries, dispatch, analyze, score, discover competitors.
+    """Crawl a URL, extract brand signals, generate queries, dispatch, analyze, score, discover competitors, recommend.
 
     Pipeline stages:
         1. CRAWLING: Fetch URL, extract structured data and AI-readiness signals
@@ -47,7 +48,8 @@ def run_crawl_and_generate(self, audit_id: str, url: str):
         4. ANALYZING: Detect brand mentions in responses and compute visibility score
         5. SCORING: Multi-page crawl, per-page scoring, weakest-link aggregation
         6. DISCOVERING_COMPETITORS: Extract entities from AI responses, compute share-of-voice
-        7. COMPLETED: All stages finished successfully
+        7. RECOMMENDING: Generate evidence-based recommendations and classify mention sentiments
+        8. COMPLETED: All stages finished successfully
 
     Args:
         audit_id: UUID string of the Audit record to process.
@@ -282,7 +284,46 @@ def run_crawl_and_generate(self, audit_id: str, url: str):
                 str(e),
             )
 
-        # Stage 7: Mark as completed
+        # Stage 7: Generate recommendations and sentiment analysis
+        # Non-fatal: recommendation generation failure should not fail the audit
+        try:
+            logger.info("Audit {}: starting recommendation generation", audit_id)
+            audit.status = AuditStatus.RECOMMENDING.value
+            db.commit()
+
+            from app.services.sentiment_service import SentimentService
+            from app.services.recommendation_engine import RecommendationEngine
+
+            # Sentiment analysis first (recommendations may reference negative sentiments)
+            sentiment_svc = SentimentService(db)
+            sentiments = sentiment_svc.analyze_audit_sentiments(audit_id=audit_id)
+            logger.info(
+                "Audit {}: classified {} mention sentiments",
+                audit_id,
+                len(sentiments),
+            )
+
+            # Generate recommendations from gap analysis
+            rec_engine = RecommendationEngine(db)
+            recs = rec_engine.generate_recommendations(
+                audit_id=audit_id,
+                user_id=str(audit.user_id),
+            )
+            logger.info(
+                "Audit {}: generated {} recommendations",
+                audit_id,
+                len(recs),
+            )
+
+            db.commit()
+        except Exception as e:
+            logger.error(
+                "Audit {}: recommendation generation failed: {}",
+                audit_id,
+                str(e),
+            )
+
+        # Stage 8: Mark as completed
         audit.status = AuditStatus.COMPLETED.value
         audit.completed_at = datetime.now(timezone.utc)
         db.commit()
