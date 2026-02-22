@@ -99,7 +99,7 @@ const navigation = [
   { path: '/analyze', label: 'Analyze', icon: MagnifyingGlassIcon },
   { path: '/audit', label: 'AI Audit', icon: ShieldCheckIcon },
   { path: '/competitors', label: 'Competitors', icon: UsersIcon },
-  { path: '/optimization', label: 'Optimization', icon: LightBulbIcon },
+  { path: '/recommendations', label: 'Recommendations', icon: LightBulbIcon },
   { path: '/brand-voice', label: 'Brand Voice', icon: MicrophoneIcon },
   { path: '/settings', label: 'Settings', icon: Cog6ToothIcon },
 ]

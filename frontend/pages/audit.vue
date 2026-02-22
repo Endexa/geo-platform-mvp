@@ -34,6 +34,47 @@
         />
       </div>
 
+      <!-- Recommendation Preview (shown when audit completed and recommendations exist) -->
+      <div v-if="isCompleted && recProgress && recProgress.total > 0" class="bg-white rounded-lg border border-gray-200">
+        <div class="p-6 border-b border-gray-200 flex items-center justify-between">
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900">Recommendations</h3>
+            <p class="text-sm text-gray-500 mt-1">Top fixes to improve your AI visibility</p>
+          </div>
+          <NuxtLink
+            :to="`/recommendations?auditId=${auditId}`"
+            class="text-sm text-primary-600 hover:text-primary-700 font-medium cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-500 rounded px-2 py-1"
+          >
+            View All
+          </NuxtLink>
+        </div>
+        <div class="p-6 space-y-4">
+          <RecommendationProgress
+            :progress="recProgress"
+            :by-priority="recOpenByPriority"
+          />
+          <div v-if="topRecommendations.length > 0" class="space-y-3">
+            <div
+              v-for="rec in topRecommendations"
+              :key="rec.id"
+              class="border border-gray-200 rounded-lg p-4"
+            >
+              <div class="flex items-center gap-2 mb-1">
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-red-100 text-red-700">
+                  HIGH
+                </span>
+                <span class="text-sm font-semibold text-gray-900 truncate">{{ rec.criterion_name }}</span>
+              </div>
+              <p class="text-sm text-gray-600">{{ rec.summary }}</p>
+              <div class="mt-1 flex items-center gap-3 text-xs text-gray-500">
+                <span>Impact: {{ rec.impact_label }}</span>
+                <span>Gap: {{ rec.gap_score }}pts</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Source Citations from engine responses -->
       <SourceCitations
         v-if="isCompleted && audit && allEngineResponses.length > 0"
@@ -187,11 +228,31 @@ interface LeaderboardResponse {
   competitor_audits: CompetitorAuditSummary[]
 }
 
+interface RecommendationPreview {
+  id: string
+  criterion_name: string
+  summary: string
+  impact_label: string
+  gap_score: number
+  priority: string
+  status: string
+}
+
+interface RecListResponse {
+  recommendations: RecommendationPreview[]
+  total: number
+  by_priority: Record<string, number>
+  progress: { done: number; dismissed: number; open: number; total: number }
+}
+
 const auditId = ref<string | null>(null)
 const audit = ref<AuditDetail | null>(null)
 const creating = ref(false)
 const apiError = ref('')
 const competitorLeaderboard = ref<LeaderboardResponse | null>(null)
+const recProgress = ref<{ done: number; dismissed: number; open: number; total: number } | null>(null)
+const topRecommendations = ref<RecommendationPreview[]>([])
+const recOpenByPriority = ref<{ high: number; medium: number; low: number } | undefined>(undefined)
 
 const isRunning = computed(() => {
   const s = audit.value?.status
@@ -244,6 +305,7 @@ const { pause, resume } = useIntervalFn(async () => {
       pause()
       if (data.status === 'completed') {
         loadCompetitors(auditId.value!)
+        loadRecommendations(auditId.value!)
       }
     }
   } catch (err: any) {
@@ -281,6 +343,31 @@ async function loadCompetitors(id: string) {
   }
 }
 
+async function loadRecommendations(id: string) {
+  try {
+    const data = await useApiFetch<RecListResponse>(`/recommendations/${id}`)
+    recProgress.value = data.progress
+
+    // Compute open counts per priority
+    const openCounts = { high: 0, medium: 0, low: 0 }
+    for (const rec of data.recommendations) {
+      if (rec.status === 'open' && openCounts[rec.priority as keyof typeof openCounts] !== undefined) {
+        openCounts[rec.priority as keyof typeof openCounts]++
+      }
+    }
+    recOpenByPriority.value = openCounts
+
+    // Top 5 high-priority open recommendations for preview
+    topRecommendations.value = data.recommendations
+      .filter(r => r.priority === 'high' && r.status === 'open')
+      .slice(0, 5)
+  } catch {
+    // Recommendation data is supplementary -- do not block audit experience
+    recProgress.value = null
+    topRecommendations.value = []
+  }
+}
+
 async function refreshAudit() {
   if (!auditId.value) return
   try {
@@ -288,6 +375,7 @@ async function refreshAudit() {
     audit.value = data
     if (data.status === 'completed') {
       loadCompetitors(auditId.value!)
+      loadRecommendations(auditId.value!)
     }
   } catch (err: any) {
     console.error('Refresh error:', err)
