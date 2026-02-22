@@ -25,7 +25,12 @@
 | Brand Signature Engine | Partial | 2 of 4 layers working (rules + pgvector similarity). Missing: statistical fingerprint + LLM deep analysis. See architecture below. |
 | Stripe Payments | Stub | Endpoints exist, untested |
 | Jira Integration | Stub | Endpoints exist, needs recommendations to function |
-| Authentication | Disabled | JWT code ready, needs enabling |
+| Authentication | **Enabled** | PyJWT + pwdlib, register/login/me endpoints, all protected endpoints enforced |
+| Cost Tracking | **Working** | AuditCostLedger model, $1.00/audit budget cap, per-call cost recording |
+| AI Response Cache | **Working** | Redis-based, SHA-256 keys, 24h TTL, fail-open |
+| Outbound Rate Limiter | **Working** | Per-AI-provider (asyncio semaphore + token bucket) |
+| Celery Task Queue | **Working** | Redis broker, JSON serialization, task routing |
+| Alembic Migrations | **Working** | 2 migrations (auth fields, cost ledger) |
 
 ## Git & Commit Rules
 
@@ -62,7 +67,7 @@
 | Backend | FastAPI (Python 3.11+) |
 | ORM | SQLAlchemy + Alembic migrations |
 | Validation | Pydantic v2 |
-| Auth | JWT (python-jose, passlib) — currently disabled |
+| Auth | JWT (PyJWT, pwdlib/bcrypt) — enabled on all protected endpoints |
 | Task Queue | Celery + Redis |
 | LLM | LiteLLM / OpenAI (recommendations + brand signature Layer 4 — not yet integrated) |
 | Embeddings | OpenAI text-embedding-3-small (1536 dims) via pgvector |
@@ -285,6 +290,98 @@ See `docs/ARCHITECTURE.md` for the full design.
 - **4-layer brand signature** — Rules + stats + vectors + LLM. Layers 1-3 are real-time, Layer 4 is on-demand.
 - **Docker Compose** — Single command to run everything. PostgreSQL, Redis, Backend, Celery, Frontend.
 - **FastAPI** — Async-first, auto-generates OpenAPI docs, Pydantic validation.
+
+## Installed Development Tools
+
+Three tools are installed that enforce quality and accelerate development. **Read this section carefully — these tools change how you work.**
+
+### 1. Superpowers (Workflow Enforcement)
+
+**What it is:** A skills library that auto-enforces brainstorming → planning → TDD → code review into every session. Installed as a Claude Code plugin — activates automatically on session start.
+
+**How it works:** On every session start, the `using-superpowers` skill loads into your context. Before writing any code, you MUST:
+1. **Brainstorm first** — explore context, ask clarifying questions, propose 2-3 approaches
+2. **Write a plan** — save to `docs/plans/YYYY-MM-DD-<feature>-design.md` with exact file paths and code
+3. **Use TDD** — write the failing test first, verify it fails, then write minimal code to pass
+4. **Request code review** — spec compliance check, then code quality check
+
+**Iron Laws (non-negotiable):**
+- NO production code without a failing test first. If code was written before the test: delete it, start over.
+- NO completion claims without fresh verification evidence. Run the command, read the output, THEN claim the result.
+- NO skipping the design phase. Design doc must be saved before implementation begins.
+
+**Available skills:** `brainstorming`, `writing-plans`, `test-driven-development`, `subagent-driven-development`, `executing-plans`, `systematic-debugging`, `verification-before-completion`, `requesting-code-review`, `receiving-code-review`, `using-git-worktrees`, `finishing-a-development-branch`, `dispatching-parallel-agents`, `writing-skills`
+
+**Location:** `~/.claude/plugins/cache/superpowers/superpowers/unknown/skills/`
+
+### 2. GSD — Get Shit Done (Spec-Driven Development)
+
+**What it is:** A spec-driven development framework that interviews the user, builds a phased plan with requirements tracking, then executes phase by phase with verification. Installed as Claude Code slash commands.
+
+**When to use it:** For any non-trivial feature or redesign. Especially for:
+- The 108 data points pipeline redesign (Gatherer → Artifact → Auditor)
+- New features spanning multiple files
+- Any task requiring architectural decisions
+
+**Key commands:**
+- `/gsd:new-project` — Full interview → research → requirements → roadmap → phases
+- `/gsd:map-codebase` — Analyze existing code for brownfield projects
+- `/gsd:discuss-phase N` — Lock in user preferences before planning
+- `/gsd:plan-phase N` — Generate executable plans with frontmatter contracts
+- `/gsd:execute-phase N` — Wave-based parallel execution with verification
+- `/gsd:verify-work N` — UAT session + auto gap closure
+- `/gsd:debug` — Structured debugging workflow
+- `/gsd:quick` — Lightweight plan for small tasks
+- `/gsd:help` — Full command reference
+
+**Key patterns:**
+- **REQ-IDs** track every requirement from definition → plan → implementation → verification
+- **Goal-backward verification:** Check "does it score correctly?" not just "does the file exist?"
+- **3-level artifact check:** (1) File exists, (2) Substantive (not a stub), (3) Wired (imported and used)
+- **Vertical slices:** Build one complete pipeline end-to-end before starting the next
+- **Wave-based execution:** Independent tasks run in parallel, dependent tasks wait
+
+**Artifacts location:** `.planning/` directory (created on first use)
+
+### 3. UI/UX Pro Max (Design System)
+
+**What it is:** An AI design intelligence skill with 67 UI styles, 96 color palettes, 57 font pairings, 99 UX rules, and stack-specific guidelines for Nuxt 3 + Tailwind CSS. Auto-activates when you work on UI/frontend code.
+
+**How it works:** When any UI/frontend task is detected, the skill auto-activates and:
+1. Detects project type (analytics dashboard) and applies the matching design reasoning rule
+2. Selects appropriate style, colors, typography from its CSV databases
+3. Enforces the design system from `design-system/endexa-geo-platform/MASTER.md`
+4. Checks against the pre-delivery checklist (contrast, cursors, hover states, focus rings, etc.)
+
+**Our design system** (already generated):
+- **Style:** Data-Dense Dashboard
+- **Colors:** Primary `#1E40AF`, Secondary `#3B82F6`, CTA `#F59E0B`, Background `#F8FAFC`, Text `#1E3A8A`
+- **Typography:** Fira Code (headings/data) + Fira Sans (body/UI)
+- **Reference:** `design-system/endexa-geo-platform/MASTER.md`
+
+**Manual search commands:**
+```bash
+# Generate page-specific design
+python3 .claude/skills/ui-ux-pro-max/scripts/search.py "dashboard data visualization" --design-system --persist -p "Endexa GEO Platform" --page "dashboard"
+
+# Get Nuxt 3 guidelines
+python3 .claude/skills/ui-ux-pro-max/scripts/search.py "data fetching SSR composables" --stack nuxtjs
+
+# Get Tailwind guidelines
+python3 .claude/skills/ui-ux-pro-max/scripts/search.py "responsive cards grid dark mode" --stack html-tailwind
+```
+
+**Anti-patterns enforced:**
+- No emoji icons — use Heroicons/Lucide SVG only
+- No `z-[9999]` — use defined z-index scale (z-10, z-20, z-30, z-50)
+- No `duration-1000` transitions — cap at 300ms
+- No missing `cursor-pointer` on clickable elements
+- No missing focus rings — use `focus-visible:ring-2`
+- Minimum 4.5:1 contrast ratio for all text
+
+**Location:** `.claude/skills/ui-ux-pro-max/`
+
+---
 
 ## Available Subagents
 
