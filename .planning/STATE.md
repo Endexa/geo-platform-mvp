@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Show brands exactly how AI engines see them -- with real quotes from real AI responses, not just theoretical scores.
-**Current focus:** Phase 7 COMPLETE: Auto-Competitor Discovery (4 of 4 plans complete)
+**Current focus:** Phase 8 IN PROGRESS: Actionable Recommendations (1 of 3 plans complete)
 
 ## Current Position
 
-Phase: 7 of 9 (Auto-Competitor Discovery) -- COMPLETE
-Plan: 4 of 4 in current phase (4 complete)
-Status: Phase 7 complete. Ready for Phase 8 (Recommendations).
-Last activity: 2026-02-22 -- Completed 07-04 (Competitor Frontend Experience)
+Phase: 8 of 9 (Actionable Recommendations)
+Plan: 1 of 3 in current phase (1 complete)
+Status: 08-01 complete (recommendation engine backend). Next: 08-02 (API + frontend).
+Last activity: 2026-02-23 -- Completed 08-01 (Recommendation Engine Backend)
 
-Progress: [######################] 83%
+Progress: [########################] 87%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 20
+- Total plans completed: 21
 - Average duration: 4 min
-- Total execution time: 1.6 hours
+- Total execution time: 1.7 hours
 
 **By Phase:**
 
@@ -34,10 +34,11 @@ Progress: [######################] 83%
 | 05-audit-experience | 2 | 6 min | 3 min |
 | 06-site-ai-readiness-scoring | 5 | 32 min | 6 min |
 | 07-auto-competitor-discovery | 4 | 19 min | 5 min |
+| 08-actionable-recommendations | 1 | 5 min | 5 min |
 
 **Recent Trend:**
-- Last 5 plans: 06-05 (49min), 07-01 (6min), 07-02 (5min), 07-03 (3min), 07-04 (5min)
-- Trend: Phase 7 consistently fast (3-6min per plan); 06-05 was outlier (full-stack)
+- Last 5 plans: 07-01 (6min), 07-02 (5min), 07-03 (3min), 07-04 (5min), 08-01 (5min)
+- Trend: Consistently fast (3-6min per plan)
 
 *Updated after each plan completion*
 | Phase 02 P01 | 4min | 2 tasks | 9 files |
@@ -54,6 +55,7 @@ Progress: [######################] 83%
 | Phase 07 P02 | 5min | 2 tasks | 5 files |
 | Phase 07 P03 | 3min | 2 tasks | 4 files |
 | Phase 07 P04 | 5min | 2 tasks | 6 files |
+| Phase 08 P01 | 5min | 2 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -129,6 +131,11 @@ Recent decisions affecting current work:
 - [07-04]: Competitor data loading is fail-silent on audit page (try/catch with null fallback)
 - [07-04]: SourceCitations falls back to URL regex extraction when citations field is absent
 - [07-04]: Score gaps sorted by deficit size descending for actionability
+- [08-01]: 13 research-backed criteria in CRITERION_RESEARCH_MAP (Princeton GEO, BrightEdge, Surfer SEO, Frase.io, Ahrefs)
+- [08-01]: Recommendation hash (SHA-256 of criterion_id|normalized_url, 16 chars) for cross-audit status carry-over
+- [08-01]: Negative sentiments generate site-wide recommendations (criterion_id=SENTIMENT, page_url=None)
+- [08-01]: RECOMMENDING pipeline stage is non-fatal (try/except) matching competitor discovery pattern
+- [08-01]: Sentiment fallback: neutral/50 when no GEMINI_API_KEY configured
 
 ### Pending Todos
 
@@ -143,6 +150,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-22
-Stopped at: Completed 07-04-PLAN.md (Phase 7 complete)
-Resume file: .planning/phases/07-auto-competitor-discovery/07-04-SUMMARY.md
+Last session: 2026-02-23
+Stopped at: Completed 08-01-PLAN.md
+Resume file: .planning/phases/08-actionable-recommendations/08-01-SUMMARY.md
