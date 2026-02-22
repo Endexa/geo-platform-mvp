@@ -10,7 +10,7 @@
 Browser (Nuxt 3)
   └─> FastAPI Backend (:8000)
         ├─> PostgreSQL + pgvector (:5432)
-        ├─> Redis (:6379) — cache + Celery broker
+        ├─> Redis (:6379) — AI response cache + Celery broker + rate limiting
         ├─> OpenAI API — LLM for recommendations (not yet integrated)
         ├─> Stripe API — payments (stub)
         └─> Jira API — ticket creation (stub)
@@ -47,6 +47,8 @@ docker-compose exec postgres psql -U postgres -d geo_platform -c "\dt"
 
 ## 3. Redis
 
+Used for: AI response caching (`AICacheService`), Celery task broker/backend, inbound rate limiting.
+
 ```bash
 # Via Docker
 docker-compose exec redis redis-cli ping
@@ -54,9 +56,18 @@ docker-compose exec redis redis-cli ping
 
 # Check Celery broker
 docker-compose exec redis redis-cli info clients
+
+# Check AI cache keys
+docker-compose exec redis redis-cli keys "ai_cache:*" | head -5
+# Expected: cache key hashes (if any cached responses exist)
+
+# Check cache key count
+docker-compose exec redis redis-cli dbsize
 ```
 
 ## 4. Celery Worker
+
+Configured in `backend/app/tasks/celery_app.py`. Uses Redis as broker and backend. JSON serialization, late acks, task routing for `audit` and `analysis` queues.
 
 ```bash
 # Check worker is running
