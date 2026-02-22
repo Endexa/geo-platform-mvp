@@ -9,19 +9,19 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 
 ## Current Position
 
-Phase: 5 of 9 (Audit Experience)
-Plan: 1 of 2 in current phase
-Status: Plan 05-01 complete -- executing 05-02 next
-Last activity: 2026-02-22 -- Completed 05-01 (Frontend auth foundation)
+Phase: 5 of 9 (Audit Experience) -- COMPLETE
+Plan: 2 of 2 in current phase (all complete)
+Status: Phase 05 complete -- ready for Phase 06
+Last activity: 2026-02-22 -- Completed 05-02 (Audit experience page)
 
-Progress: [##########░] 50%
+Progress: [############] 55%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 10
+- Total plans completed: 11
 - Average duration: 3 min
-- Total execution time: 0.53 hours
+- Total execution time: 0.58 hours
 
 **By Phase:**
 
@@ -31,10 +31,10 @@ Progress: [##########░] 50%
 | 02-site-crawl-query-generation | 2 | 8 min | 4 min |
 | 03-ai-engine-dispatch | 2 | 5 min | 3 min |
 | 04-mention-detection-scoring | 2 | 6 min | 3 min |
-| 05-audit-experience | 1 | 3 min | 3 min |
+| 05-audit-experience | 2 | 6 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-01 (3min), 03-02 (2min), 04-01 (4min), 04-02 (2min), 05-01 (3min)
+- Last 5 plans: 03-02 (2min), 04-01 (4min), 04-02 (2min), 05-01 (3min), 05-02 (3min)
 - Trend: stable
 
 *Updated after each plan completion*
@@ -45,6 +45,7 @@ Progress: [##########░] 50%
 | Phase 04 P01 | 4min | 3 tasks | 9 files |
 | Phase 04 P02 | 2min | 2 tasks | 3 files |
 | Phase 05 P01 | 3min | 2 tasks | 7 files |
+| Phase 05 P02 | 3min | 3 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -90,6 +91,10 @@ Recent decisions affecting current work:
 - [05-01]: useCookie('access_token') for token persistence (SSR-safe, persistent across reloads)
 - [05-01]: useState for user state (shared across components, survives unmount)
 - [05-01]: Login success redirects to /audit (primary Phase 5 feature page)
+- [05-02]: useIntervalFn called at top level of script setup for proper Vue lifecycle cleanup
+- [05-02]: HighlightMentions uses offset-based slicing only -- no string re-matching for fuzzy match accuracy
+- [05-02]: Overlapping mentions handled by skipping mentions whose char_offset falls before cursor
+- [05-02]: Polling interval 3 seconds with immediate:false to prevent polling on mount
 
 ### Pending Todos
 
@@ -105,5 +110,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 05-01-PLAN.md (Frontend auth foundation)
-Resume file: .planning/phases/05-audit-experience/05-01-SUMMARY.md
+Stopped at: Completed 05-02-PLAN.md (Audit experience page)
+Resume file: .planning/phases/05-audit-experience/05-02-SUMMARY.md

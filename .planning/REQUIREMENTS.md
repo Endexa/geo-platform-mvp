@@ -22,7 +22,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **AUDIT-04**: App queries ChatGPT, Claude, and Perplexity APIs with generated queries
 - [x] **AUDIT-05**: App detects brand mentions in AI responses with verbatim quotes
 - [x] **AUDIT-06**: User sees a visibility score (0-100) with per-engine breakdown
-- [ ] **AUDIT-07**: User can drill down into each query to see the full AI response with mentions highlighted
+- [x] **AUDIT-07**: User can drill down into each query to see the full AI response with mentions highlighted
 
 ### Competitive Intelligence
 
@@ -99,7 +99,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AUDIT-04 | Phase 3: AI Engine Dispatch | Complete |
 | AUDIT-05 | Phase 4: Mention Detection & Scoring | Complete |
 | AUDIT-06 | Phase 4: Mention Detection & Scoring | Complete |
-| AUDIT-07 | Phase 5: Audit Experience | Pending |
+| AUDIT-07 | Phase 5: Audit Experience | Complete |
 | COMP-01 | Phase 6: Competitive Intelligence | Pending |
 | COMP-02 | Phase 6: Competitive Intelligence | Pending |
 | COMP-03 | Phase 6: Competitive Intelligence | Pending |
