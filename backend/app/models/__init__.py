@@ -8,6 +8,8 @@ from app.models.audit_cost import AuditCostLedger
 from app.models.audit import Audit, AuditStatus
 from app.models.audit_query import AuditQuery
 from app.models.engine_response import EngineResponse
+from app.models.brand_mention import BrandMention
+from app.models.visibility_score import VisibilityScore
 
 __all__ = [
     "Organization",
@@ -23,4 +25,6 @@ __all__ = [
     "AuditStatus",
     "AuditQuery",
     "EngineResponse",
+    "BrandMention",
+    "VisibilityScore",
 ]

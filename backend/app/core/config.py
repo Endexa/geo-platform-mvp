@@ -119,6 +119,11 @@ class Settings(BaseSettings):
     DISPATCH_MAX_WORKERS: int = 6  # ThreadPoolExecutor pool size
     PERPLEXITY_REQUEST_SURCHARGE: float = 0.005  # Per-request surcharge for Perplexity search fees
 
+    # Mention Detection & Scoring (Phase 4)
+    MENTION_FUZZY_THRESHOLD: int = 80  # RapidFuzz score threshold (0-100)
+    MENTION_SHORT_NAME_THRESHOLD: int = 90  # Higher threshold for brand names < 4 chars
+    MENTION_CONTEXT_WINDOW_CHARS: int = 200  # Character window for context extraction
+
     # Outbound AI Rate Limits (Phase 1)
     OPENAI_RPM: int = 60
     ANTHROPIC_RPM: int = 60
