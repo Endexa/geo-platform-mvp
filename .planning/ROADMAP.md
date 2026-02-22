@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & Safety** - Enable auth, cost tracking, response caching, and outbound rate limiting before any AI API code
 - [x] **Phase 2: Site Crawl & Query Generation** - Crawl user URLs for AI-readiness signals and auto-generate industry-relevant queries from content
-- [ ] **Phase 3: AI Engine Dispatch** - Query ChatGPT, Claude, and Perplexity APIs with generated queries via LiteLLM
+- [x] **Phase 3: AI Engine Dispatch** - Query ChatGPT, Claude, and Perplexity APIs with generated queries via LiteLLM
 - [ ] **Phase 4: Mention Detection & Scoring** - Detect brand mentions in AI responses with verbatim quotes and compute visibility scores
 - [ ] **Phase 5: Audit Experience** - Users can trigger an audit from URL entry to scored results with per-query drill-down
 - [ ] **Phase 6: Competitive Intelligence** - Compare brand visibility against competitors with gap analysis and custom queries
@@ -67,8 +67,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 03-01-PLAN.md -- EngineResponse model, migration 004, dispatch config, DispatchService with parallel engine dispatch (AUDIT-04)
-- [ ] 03-02-PLAN.md -- Extend Celery pipeline with dispatch stage, update audit API/schemas for engine responses (AUDIT-04)
+- [x] 03-01-PLAN.md -- EngineResponse model, migration 004, dispatch config, DispatchService with parallel engine dispatch (AUDIT-04)
+- [x] 03-02-PLAN.md -- Extend Celery pipeline with dispatch stage, update audit API/schemas for engine responses (AUDIT-04)
 
 ### Phase 4: Mention Detection & Scoring
 **Goal**: The system can analyze AI responses to detect whether and how a brand is mentioned, extract verbatim quotes, and compute a meaningful visibility score
@@ -173,7 +173,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 |-------|----------------|--------|-----------|
 | 1. Foundation & Safety | 3/3 | Complete | 2026-02-22 |
 | 2. Site Crawl & Query Generation | 2/2 | Complete | 2026-02-22 |
-| 3. AI Engine Dispatch | 0/2 | Not started | - |
+| 3. AI Engine Dispatch | 2/2 | Complete | 2026-02-22 |
 | 4. Mention Detection & Scoring | 0/2 | Not started | - |
 | 5. Audit Experience | 0/3 | Not started | - |
 | 6. Competitive Intelligence | 0/3 | Not started | - |
