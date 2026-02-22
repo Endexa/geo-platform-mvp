@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Show brands exactly how AI engines see them -- with real quotes from real AI responses, not just theoretical scores.
-**Current focus:** Phase 6: Site AI-Readiness Scoring
+**Current focus:** Phase 6 COMPLETE. Ready for Phase 7: Auto-Competitor Discovery
 
 ## Current Position
 
-Phase: 6 of 9 (Site AI-Readiness Scoring) -- IN PROGRESS
-Plan: 1 of 5 in current phase (1 complete)
-Status: Completed 06-01 (Scoring pipeline foundation) -- ready for 06-02
-Last activity: 2026-02-22 -- Completed 06-01 (Scoring pipeline foundation)
+Phase: 6 of 9 (Site AI-Readiness Scoring) -- COMPLETE
+Plan: 5 of 5 in current phase (5 complete)
+Status: Completed 06-05 (AuthorityScorer + Optimization Score UI) -- Phase 6 done
+Last activity: 2026-02-22 -- Completed 06-05 (AuthorityScorer + Optimization Score UI)
 
-Progress: [#############] 60%
+Progress: [################] 67%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 12
-- Average duration: 3 min
-- Total execution time: 0.66 hours
+- Total plans completed: 16
+- Average duration: 4 min
+- Total execution time: 1.2 hours
 
 **By Phase:**
 
@@ -32,11 +32,11 @@ Progress: [#############] 60%
 | 03-ai-engine-dispatch | 2 | 5 min | 3 min |
 | 04-mention-detection-scoring | 2 | 6 min | 3 min |
 | 05-audit-experience | 2 | 6 min | 3 min |
-| 06-site-ai-readiness-scoring | 1 | 5 min | 5 min |
+| 06-site-ai-readiness-scoring | 5 | 32 min | 6 min |
 
 **Recent Trend:**
-- Last 5 plans: 04-01 (4min), 04-02 (2min), 05-01 (3min), 05-02 (3min), 06-01 (5min)
-- Trend: stable
+- Last 5 plans: 05-02 (3min), 06-01 (5min), 06-02 (4min), 06-03 (5min), 06-05 (49min)
+- Trend: 06-05 larger due to full-stack (23-criteria scorer + API + frontend)
 
 *Updated after each plan completion*
 | Phase 02 P01 | 4min | 2 tasks | 9 files |
@@ -48,6 +48,7 @@ Progress: [#############] 60%
 | Phase 05 P01 | 3min | 2 tasks | 7 files |
 | Phase 05 P02 | 3min | 3 tasks | 6 files |
 | Phase 06 P01 | 5min | 2 tasks | 14 files |
+| Phase 06 P05 | 49min | 2 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -101,6 +102,10 @@ Recent decisions affecting current work:
 - [06-01]: Conditional scorer imports (try/except ImportError) allow pipeline to work with 0-4 scorers
 - [06-01]: ScoringCriterionResult dataclass separate from CriterionResult SQLAlchemy model
 - [06-01]: SKIP_URL_PATTERNS excludes login, admin, assets, static files from link discovery
+- [06-05]: External APIs (Knowledge Graph, Wikidata, Wikipedia, PageSpeed) degrade gracefully -- _not_checked on failure, not score=0
+- [06-05]: Backlink criteria (S9, S10) use proxy signals (internal links, sameAs, outbound authority links) instead of paid APIs
+- [06-05]: PageSpeed API only called for homepage, cached per domain -- avoids rate limits on 25-page crawls
+- [06-05]: CWV and sitemap results cached per domain to avoid redundant API calls across pages
 
 ### Pending Todos
 
@@ -116,5 +121,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 06-01-PLAN.md (Scoring pipeline foundation)
-Resume file: .planning/phases/06-site-ai-readiness-scoring/06-01-SUMMARY.md
+Stopped at: Completed 06-05-PLAN.md (AuthorityScorer + Optimization Score UI) -- Phase 6 COMPLETE
+Resume file: .planning/phases/06-site-ai-readiness-scoring/06-05-SUMMARY.md

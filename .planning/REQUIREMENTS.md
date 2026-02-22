@@ -28,10 +28,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Site AI-Readiness Scoring
 
-- [ ] **READY-01**: App scores crawlability of each page (SSR detection: render with and without JS, compare content; AI bot access via robots.txt directives for GPTBot, ClaudeBot, PerplexityBot, OAI-SearchBot, Claude-SearchBot)
-- [ ] **READY-02**: App scores content structure of each page (answer-first format detection, heading hierarchy quality H1>H2>H3, paragraph length analysis, data density -- tables/lists/statistics, FAQ section presence)
-- [ ] **READY-03**: App scores structured data quality (schema.org types present and their tier -- Foundation/Content/Supplementary, JSON-LD validation, completeness checks per schema type, FAQPage presence gets bonus weight)
-- [ ] **READY-04**: App scores authority and SEO signals (E-E-A-T markers: author bios, dates, citations to sources; llms.txt presence and format validation; llms-full.txt presence; multi-platform entity signals via sameAs links; SEO fundamentals: backlink profile, referring domains, Core Web Vitals, meta title/description, canonical tags, SSL, mobile friendliness, internal linking, URL structure)
+- [x] **READY-01**: App scores crawlability of each page (SSR detection: render with and without JS, compare content; AI bot access via robots.txt directives for GPTBot, ClaudeBot, PerplexityBot, OAI-SearchBot, Claude-SearchBot)
+- [x] **READY-02**: App scores content structure of each page (answer-first format detection, heading hierarchy quality H1>H2>H3, paragraph length analysis, data density -- tables/lists/statistics, FAQ section presence)
+- [x] **READY-03**: App scores structured data quality (schema.org types present and their tier -- Foundation/Content/Supplementary, JSON-LD validation, completeness checks per schema type, FAQPage presence gets bonus weight)
+- [x] **READY-04**: App scores authority and SEO signals (E-E-A-T markers: author bios, dates, citations to sources; llms.txt presence and format validation; llms-full.txt presence; multi-platform entity signals via sameAs links; SEO fundamentals: backlink profile, referring domains, Core Web Vitals, meta title/description, canonical tags, SSL, mobile friendliness, internal linking, URL structure)
 - [x] **READY-05**: App produces an Optimization Score (0-100) using weighted formula: Crawlability 25% + Content Structure 25% + Schema 20% + Authority 15% + AI Visibility 15% -- displayed alongside the existing Visibility Score
 - [x] **READY-06**: User sees a page-level breakdown of AI-readiness scores with per-factor drill-down (which pages score well, which score poorly, and why)
 
@@ -122,10 +122,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AUDIT-05 | Phase 4: Mention Detection & Scoring | Complete |
 | AUDIT-06 | Phase 4: Mention Detection & Scoring | Complete |
 | AUDIT-07 | Phase 5: Audit Experience | Complete |
-| READY-01 | Phase 6: Site AI-Readiness Scoring | Pending |
-| READY-02 | Phase 6: Site AI-Readiness Scoring | Pending |
-| READY-03 | Phase 6: Site AI-Readiness Scoring | Pending |
-| READY-04 | Phase 6: Site AI-Readiness Scoring | Pending |
+| READY-01 | Phase 6: Site AI-Readiness Scoring | Complete |
+| READY-02 | Phase 6: Site AI-Readiness Scoring | Complete |
+| READY-03 | Phase 6: Site AI-Readiness Scoring | Complete |
+| READY-04 | Phase 6: Site AI-Readiness Scoring | Complete |
 | READY-05 | Phase 6: Site AI-Readiness Scoring | Complete |
 | READY-06 | Phase 6: Site AI-Readiness Scoring | Complete |
 | COMP-01 | Phase 7: Auto-Competitor Discovery | Pending |
