@@ -23,8 +23,11 @@ The GEO Platform API has been hardened with enterprise-grade security features t
 
 ### ✅ Implemented Security Layers
 
-1. **Authentication & Authorization**
-   - JWT-based authentication with access and refresh tokens
+1. **Authentication & Authorization** (Enabled in Phase 1)
+   - JWT-based authentication via PyJWT (replaced python-jose)
+   - Password hashing via pwdlib/bcrypt (replaced passlib)
+   - Auth endpoints: POST /register, POST /login, GET /me
+   - All protected endpoints enforce `Depends(get_current_active_user)`
    - Role-Based Access Control (RBAC)
    - API key authentication support
    - Organization-level multi-tenancy
@@ -71,10 +74,16 @@ The GEO Platform API has been hardened with enterprise-grade security features t
    - Payment operation audit logging
 
 8. **Password Security**
-   - Bcrypt hashing with salt
+   - Bcrypt hashing via pwdlib (replaced passlib)
    - Strong password policy (12+ chars, mixed case, digits, special)
-   - Password strength validation
+   - Password strength validation via Pydantic field_validator
    - Common password blocking
+
+9. **Cost & Rate Controls** (Added in Phase 1)
+   - Per-audit cost tracking with AuditCostLedger (Numeric 10,6 USD precision)
+   - Budget enforcement: $1.00 default cap per audit, configurable
+   - Outbound rate limiter per AI provider (asyncio semaphore + token bucket)
+   - AI response caching (Redis, 24h TTL) to prevent redundant API spend
 
 ---
 
@@ -586,85 +595,30 @@ curl http://localhost:8000/security-info
 
 ---
 
-## Enabling Authentication in Production
+## Authentication (Enabled)
 
-### Step 1: Update API Endpoints
+> **Status:** Authentication was enabled in Phase 1 (Foundation & Safety). All protected endpoints now require JWT tokens.
 
-All endpoints have commented authentication dependencies. Uncomment them:
+### Auth Endpoints (implemented in `app/api/auth.py`)
 
-```python
-# BEFORE (MVP - no auth required)
-@router.post("/analyze")
-async def create_analysis(
-    request: AnalyzeRequest,
-    db: Session = Depends(get_db),
-    # Uncomment when authentication is enabled:
-    # current_user: Profile = Depends(get_current_active_user)
-):
-    pass
+- `POST /api/v1/auth/register` — Create account with email/password, returns JWT
+- `POST /api/v1/auth/login` — Authenticate, returns access + refresh tokens
+- `GET /api/v1/auth/me` — Get current user info (requires valid token)
 
-# AFTER (Production - auth required)
-@router.post("/analyze")
-async def create_analysis(
-    request: AnalyzeRequest,
-    db: Session = Depends(get_db),
-    current_user: Profile = Depends(get_current_active_user)
-):
-    # Now current_user is available
-    logger.info(f"Analysis created by user {current_user.id}")
-    pass
-```
+### Auth Service (`app/services/auth_service.py`)
 
-### Step 2: Create Authentication Endpoints
+- `register()` — Creates user with bcrypt-hashed password, returns Profile
+- `authenticate()` — Validates credentials, checks is_active, returns Profile
 
-Create `app/api/auth.py`:
+### Security Module (`app/core/security.py`)
 
-```python
-from fastapi import APIRouter, Depends, HTTPException
-from app.core.security import SecurityManager, get_current_user
-from pydantic import BaseModel
+- **JWT:** PyJWT (replaced python-jose) — `create_access_token()`, `verify_token()`
+- **Passwords:** pwdlib/bcrypt (replaced passlib) — `hash_password()`, `verify_password()`
+- **Dependency:** `get_current_active_user` — extracts user from JWT, checks is_active
 
-router = APIRouter()
+### Remaining Steps for Full Production
 
-class LoginRequest(BaseModel):
-    email: str
-    password: str
-
-@router.post("/login")
-async def login(request: LoginRequest, db: Session = Depends(get_db)):
-    # Verify credentials
-    user = authenticate_user(db, request.email, request.password)
-    if not user:
-        raise HTTPException(status_code=401, detail="Invalid credentials")
-
-    # Create tokens
-    access_token = SecurityManager.create_access_token({
-        "sub": str(user.id),
-        "role": user.role,
-        "org_id": str(user.org_id)
-    })
-    refresh_token = SecurityManager.create_refresh_token({
-        "sub": str(user.id)
-    })
-
-    return {
-        "access_token": access_token,
-        "refresh_token": refresh_token,
-        "token_type": "bearer"
-    }
-
-@router.post("/refresh")
-async def refresh(refresh_token: str):
-    # Verify refresh token and issue new access token
-    pass
-
-@router.post("/logout")
-async def logout(current_user: Profile = Depends(get_current_user)):
-    # Implement token blacklisting if needed
-    pass
-```
-
-### Step 3: Add Organization Filters
+### Step 1: Add Organization Filters
 
 Update queries to filter by organization:
 
@@ -1101,5 +1055,5 @@ This security implementation follows industry best practices and is provided as-
 
 ---
 
-**Last Updated:** December 3, 2025
-**Version:** 1.0.0
+**Last Updated:** February 22, 2026
+**Version:** 1.1.0 (Phase 1 — auth enabled, cost tracking, caching, rate limiting)
