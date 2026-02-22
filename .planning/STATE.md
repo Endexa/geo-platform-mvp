@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Show brands exactly how AI engines see them -- with real quotes from real AI responses, not just theoretical scores.
-**Current focus:** Phase 6 COMPLETE. Ready for Phase 7: Auto-Competitor Discovery
+**Current focus:** Phase 7 IN PROGRESS: Auto-Competitor Discovery (Plan 1 of 4 complete)
 
 ## Current Position
 
-Phase: 6 of 9 (Site AI-Readiness Scoring) -- COMPLETE
-Plan: 5 of 5 in current phase (5 complete)
-Status: Completed 06-05 (AuthorityScorer + Optimization Score UI) -- Phase 6 done
-Last activity: 2026-02-22 -- Completed 06-05 (AuthorityScorer + Optimization Score UI)
+Phase: 7 of 9 (Auto-Competitor Discovery) -- IN PROGRESS
+Plan: 1 of 4 in current phase (1 complete)
+Status: Completed 07-01 (Entity Extraction Foundation)
+Last activity: 2026-02-22 -- Completed 07-01 (Entity Extraction Foundation)
 
-Progress: [################] 67%
+Progress: [##################] 71%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 16
+- Total plans completed: 17
 - Average duration: 4 min
-- Total execution time: 1.2 hours
+- Total execution time: 1.3 hours
 
 **By Phase:**
 
@@ -33,10 +33,11 @@ Progress: [################] 67%
 | 04-mention-detection-scoring | 2 | 6 min | 3 min |
 | 05-audit-experience | 2 | 6 min | 3 min |
 | 06-site-ai-readiness-scoring | 5 | 32 min | 6 min |
+| 07-auto-competitor-discovery | 1 | 6 min | 6 min |
 
 **Recent Trend:**
-- Last 5 plans: 05-02 (3min), 06-01 (5min), 06-02 (4min), 06-03 (5min), 06-05 (49min)
-- Trend: 06-05 larger due to full-stack (23-criteria scorer + API + frontend)
+- Last 5 plans: 06-01 (5min), 06-02 (4min), 06-03 (5min), 06-05 (49min), 07-01 (6min)
+- Trend: 07-01 normal pace; 06-05 was outlier (full-stack)
 
 *Updated after each plan completion*
 | Phase 02 P01 | 4min | 2 tasks | 9 files |
@@ -49,6 +50,7 @@ Progress: [################] 67%
 | Phase 05 P02 | 3min | 3 tasks | 6 files |
 | Phase 06 P01 | 5min | 2 tasks | 14 files |
 | Phase 06 P05 | 49min | 2 tasks | 14 files |
+| Phase 07 P01 | 6min | 2 tasks | 12 files |
 
 ## Accumulated Context
 
@@ -106,6 +108,11 @@ Recent decisions affecting current work:
 - [06-05]: Backlink criteria (S9, S10) use proxy signals (internal links, sameAs, outbound authority links) instead of paid APIs
 - [06-05]: PageSpeed API only called for homepage, cached per domain -- avoids rate limits on 25-page crawls
 - [06-05]: CWV and sitemap results cached per domain to avoid redundant API calls across pages
+- [07-01]: spaCy en_core_web_sm loaded lazily at class level to avoid startup cost
+- [07-01]: Entities require at least 2 appearances to filter NER noise (per research pitfall 2)
+- [07-01]: Corporate suffixes stripped before rapidfuzz deduplication (85% threshold)
+- [07-01]: competitor_audits table created first for FK reference from discovered_competitors
+- [07-01]: Citations captured from both Perplexity API metadata and inline URL regex for all engines
 
 ### Pending Todos
 
@@ -121,5 +128,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 06-05-PLAN.md (AuthorityScorer + Optimization Score UI) -- Phase 6 COMPLETE
-Resume file: .planning/phases/06-site-ai-readiness-scoring/06-05-SUMMARY.md
+Stopped at: Completed 07-01-PLAN.md (Entity Extraction Foundation)
+Resume file: .planning/phases/07-auto-competitor-discovery/07-01-SUMMARY.md
