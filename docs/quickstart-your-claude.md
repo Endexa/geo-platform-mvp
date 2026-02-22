@@ -111,13 +111,82 @@ See `CLAUDE.md` > "Available Subagents" for the full agent catalog.
 
 ---
 
-## 6. Testing
+## 6. Development Tools Workflow
+
+Three tools are installed that change how you work. Read `CLAUDE.md` > "Installed Development Tools" for full details. Here's the practical workflow:
+
+### For a large feature or redesign:
+
+Use **GSD** (Get Shit Done) — it handles the full lifecycle:
+
+```
+/gsd:new-project          # Interview → Research → Requirements → Roadmap
+/gsd:discuss-phase 1      # Lock in preferences before planning
+/gsd:plan-phase 1         # Generate executable plans with verification
+/gsd:execute-phase 1      # Wave-based execution with subagents
+/gsd:verify-work 1        # UAT + auto gap closure
+```
+
+GSD creates a `.planning/` directory with all artifacts. Plans are saved as `.planning/phases/NN-name/NN-MM-PLAN.md`.
+
+### For a medium task (single feature, few files):
+
+Use **Superpowers** — it activates automatically and enforces:
+
+1. **Brainstorm** — Ask questions, propose approaches, get approval
+2. **Write plan** — Save to `docs/plans/YYYY-MM-DD-<feature>-design.md`
+3. **TDD** — Failing test first, then minimal code, then refactor
+4. **Code review** — Spec compliance, then code quality
+
+The Superpowers skills activate automatically based on what you're doing. You don't need to invoke them manually.
+
+### For any frontend/UI work:
+
+**UI/UX Pro Max** activates automatically when it detects UI work. It will:
+- Consult `design-system/endexa-geo-platform/MASTER.md` for our design system
+- Apply the Data-Dense Dashboard style with our color palette
+- Enforce accessibility (contrast, focus rings, touch targets)
+- Use Nuxt 3 + Tailwind best practices from its CSV databases
+
+If you need page-specific design guidance:
+```bash
+python3 .claude/skills/ui-ux-pro-max/scripts/search.py "your page description" --design-system --persist -p "Endexa GEO Platform" --page "page-name"
+```
+
+### For a small/quick fix:
+
+Use `/gsd:quick` for lightweight planning, or just follow the golden rules in section 4.
+
+### Decision tree:
+
+```
+Is this a large multi-phase feature or redesign?
+  → YES → /gsd:new-project (full GSD workflow)
+  → NO →
+    Is this a medium task (new endpoint, new component, etc.)?
+      → YES → Let Superpowers guide you (brainstorm → plan → TDD → review)
+      → NO →
+        Is this a quick bug fix or small change?
+          → YES → /gsd:quick or just do it directly
+```
+
+---
+
+## 7. Testing
 
 ### Quick smoke test:
 
 ```bash
-curl http://localhost:8000/health                    # Backend up
-curl http://localhost:8000/api/v1/dashboard/stats    # API working
+curl http://localhost:8000/health                    # Backend up (public endpoint)
+
+# Auth is enabled — get a token first:
+TOKEN=$(curl -s -X POST http://localhost:8000/api/v1/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"email": "test@example.com", "password": "TestPass123!"}' | python3 -c "import sys,json; print(json.load(sys.stdin)['access_token'])")
+
+curl http://localhost:8000/api/v1/dashboard/stats \
+  -H "Authorization: Bearer $TOKEN"                  # API working (requires auth)
+
 cd frontend && npm run build                         # Frontend builds
 ```
 
@@ -149,13 +218,13 @@ npm run test
 
 ---
 
-## 7. Deployment
+## 8. Deployment
 
 See `CLAUDE.md` > "Commands" for all deployment commands. See `docs/DEPLOYMENTS.md` for the log (update after every deploy).
 
 ---
 
-## 8. Autopilot Checklist
+## 9. Autopilot Checklist
 
 When operating autonomously, follow this loop:
 
@@ -175,7 +244,7 @@ When operating autonomously, follow this loop:
 
 ---
 
-## 9. Documentation Maintenance Rules
+## 10. Documentation Maintenance Rules
 
 Keep docs lean so every new session onboards fast. Zero information loss — always archive, never delete.
 
