@@ -91,9 +91,10 @@ class AuditResponse(BaseModel):
 
 
 class AuditDetailResponse(AuditResponse):
-    """Response schema for audit detail view (includes crawl data, queries, dispatch summary, and visibility score)."""
+    """Response schema for audit detail view (includes crawl data, queries, dispatch summary, visibility score, and optimization score)."""
 
     crawl_data: Optional[dict] = None
     queries: list[AuditQueryResponse] = []
     dispatch_summary: Optional[DispatchSummary] = None
     visibility_score: Optional[VisibilityScoreSchema] = None
+    optimization_score: Optional[int] = None

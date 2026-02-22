@@ -21,6 +21,7 @@
 
 | Date | Task | Area | Details |
 |------|------|------|---------|
+| 2026-02-22 | Phase 6: Scoring pipeline foundation (06-01) | Backend | PageScore/CriterionResult models, migration 006, BaseScorer ABC, ScoringOrchestrator with weakest-link aggregation, CrawlerService.crawl_multiple, SCORING Celery stage, config settings (SCORING_CRAWL_CAP, GOOGLE_API_KEY) |
 | 2026-02-22 | Phase 1: Auth foundation (01-01) | Backend | Replaced python-jose→PyJWT, passlib→pwdlib. Fixed SQLAlchemy declarative_base import. Initialized Alembic migrations. Added email/password_hash/is_active to Profile. Created register/login/me endpoints |
 | 2026-02-22 | Phase 1: Cost tracking & Celery (01-02) | Backend | Created AuditCostLedger model (Numeric 10,6 precision), CostTrackingService with budget enforcement ($1.00 default), Celery app with Redis broker and task routing |
 | 2026-02-22 | Phase 1: Cache, rate limiter, auth enforcement (01-03) | Backend | AICacheService (Redis, SHA-256 keys, 24h TTL, fail-open). ProviderRateLimiter (asyncio semaphore + token bucket per AI engine). Auth enabled on all 20+ protected endpoints |

@@ -3,8 +3,11 @@
 Fetches a page, parses structured data (JSON-LD, Open Graph, microdata),
 checks robots.txt for AI bot directives, and extracts content structure
 (headings, main content, keywords, industry signals, authority markers).
+
+Supports multi-page crawling via crawl_multiple() for scoring pipeline.
 """
 
+import asyncio
 import logging
 import re
 from collections import Counter
@@ -107,6 +110,44 @@ INDUSTRY_KEYWORDS: dict[str, list[str]] = {
 
 class CrawlerService:
     """Crawls a URL and extracts AI-readiness signals."""
+
+    async def crawl_multiple(
+        self,
+        start_url: str,
+        urls: list[str],
+        max_concurrent: int = 5,
+    ) -> list[CrawlResult]:
+        """Crawl multiple URLs concurrently with controlled parallelism.
+
+        Args:
+            start_url: The initial URL (already crawled, for reference only).
+            urls: Additional URLs to crawl.
+            max_concurrent: Maximum concurrent crawl requests.
+
+        Returns:
+            List of CrawlResult for successfully crawled URLs.
+            URLs that fail are logged and skipped (graceful degradation).
+        """
+        semaphore = asyncio.Semaphore(max_concurrent)
+        results: list[CrawlResult] = []
+
+        async def _crawl_one(url: str) -> CrawlResult | None:
+            async with semaphore:
+                try:
+                    return await self.crawl(url)
+                except Exception as e:
+                    logger.warning(
+                        "Failed to crawl %s: %s (skipping)", url, str(e)
+                    )
+                    return None
+
+        tasks = [_crawl_one(url) for url in urls]
+        completed = await asyncio.gather(*tasks)
+        for result in completed:
+            if result is not None:
+                results.append(result)
+
+        return results
 
     async def crawl(self, url: str) -> CrawlResult:
         """Fetch a URL and extract structured AI-readiness signals.

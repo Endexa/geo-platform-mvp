@@ -1,4 +1,4 @@
-"""Celery task for the audit pipeline: crawl URL -> generate queries -> dispatch -> analyze -> complete.
+"""Celery task for the audit pipeline: crawl -> generate -> dispatch -> analyze -> score -> complete.
 
 Orchestrates the complete audit pipeline as a background task triggered by the audit API.
 Updates audit status at each stage and handles errors gracefully.
@@ -6,9 +6,10 @@ Updates audit status at each stage and handles errors gracefully.
 Pipeline stages:
     1. CRAWLING — Fetch URL, extract structured data and AI-readiness signals
     2. GENERATING_QUERIES — Extract brand name, call LLM to generate 10-15 queries
-    3. DISPATCHING — Dispatch queries to AI engines (OpenAI, Anthropic, Perplexity)
+    3. DISPATCHING — Dispatch queries to AI engines (OpenAI, Anthropic, Perplexity, Gemini)
     4. ANALYZING — Detect brand mentions in responses and compute visibility score
-    5. COMPLETED — All stages finished successfully
+    5. SCORING — Multi-page crawl, per-page scoring, weakest-link aggregation
+    6. COMPLETED — All stages finished successfully
 """
 
 import asyncio
@@ -36,14 +37,15 @@ from app.tasks.celery_app import celery_app
     default_retry_delay=30,
 )
 def run_crawl_and_generate(self, audit_id: str, url: str):
-    """Crawl a URL, extract brand signals, generate queries, dispatch to AI engines, analyze mentions.
+    """Crawl a URL, extract brand signals, generate queries, dispatch, analyze, score.
 
     Pipeline stages:
         1. CRAWLING: Fetch URL, extract structured data and AI-readiness signals
         2. GENERATING_QUERIES: Extract brand name, call LLM to generate 10-15 queries
-        3. DISPATCHING: Dispatch queries to AI engines (OpenAI, Anthropic, Perplexity)
+        3. DISPATCHING: Dispatch queries to AI engines (OpenAI, Anthropic, Perplexity, Gemini)
         4. ANALYZING: Detect brand mentions in responses and compute visibility score
-        5. COMPLETED: All stages finished successfully
+        5. SCORING: Multi-page crawl, per-page scoring, weakest-link aggregation
+        6. COMPLETED: All stages finished successfully
 
     Args:
         audit_id: UUID string of the Audit record to process.
@@ -183,7 +185,55 @@ def run_crawl_and_generate(self, audit_id: str, url: str):
             "Audit {}: visibility score = {}/100", audit_id, score.overall_score
         )
 
-        # Stage 5: Mark as completed
+        # Stage 5: SCORING -- multi-page crawl, per-page scoring, aggregation
+        logger.info("Audit {}: starting scoring stage", audit_id)
+        audit.status = AuditStatus.SCORING.value
+        db.commit()
+
+        from app.services.scoring.scoring_orchestrator import ScoringOrchestrator
+
+        orchestrator = ScoringOrchestrator(db)
+
+        # Register all available scorers -- conditional imports allow
+        # the pipeline to work as scorers are built incrementally
+        try:
+            from app.services.scoring.crawlability_scorer import CrawlabilityScorer
+            orchestrator.register_scorer("crawlability", CrawlabilityScorer())
+        except ImportError:
+            logger.warning("CrawlabilityScorer not yet available, skipping")
+        try:
+            from app.services.scoring.content_structure_scorer import ContentStructureScorer
+            orchestrator.register_scorer("content_structure", ContentStructureScorer())
+        except ImportError:
+            logger.warning("ContentStructureScorer not yet available, skipping")
+        try:
+            from app.services.scoring.structured_data_scorer import StructuredDataScorer
+            orchestrator.register_scorer("structured_data", StructuredDataScorer())
+        except ImportError:
+            logger.warning("StructuredDataScorer not yet available, skipping")
+        try:
+            from app.services.scoring.authority_scorer import AuthorityScorer
+            orchestrator.register_scorer("authority", AuthorityScorer())
+        except ImportError:
+            logger.warning("AuthorityScorer not yet available, skipping")
+
+        visibility_score_value = score.overall_score if score else 0
+        scoring_result = asyncio.run(
+            orchestrator.score_audit(audit_id, audit.crawl_data, visibility_score_value)
+        )
+
+        # Persist the optimization score on the Audit row
+        audit.optimization_score = scoring_result["optimization_score"]
+        db.commit()
+        logger.info(
+            "Audit {}: optimization_score={}, pages_scored={}, pages_discovered={}",
+            audit_id,
+            scoring_result["optimization_score"],
+            scoring_result["pages_scored"],
+            scoring_result["pages_discovered"],
+        )
+
+        # Stage 6: Mark as completed
         audit.status = AuditStatus.COMPLETED.value
         audit.completed_at = datetime.now(timezone.utc)
         db.commit()

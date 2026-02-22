@@ -39,9 +39,10 @@ class Settings(BaseSettings):
     REDIS_URL: str = "redis://localhost:6379/0"
     REDIS_MAX_CONNECTIONS: int = 50
 
-    # OpenAI
-    OPENAI_API_KEY: str
+    # AI Provider Keys
+    OPENAI_API_KEY: str = ""
     ANTHROPIC_API_KEY: str = ""
+    GEMINI_API_KEY: str = ""
 
     # Stripe
     STRIPE_SECRET_KEY: str = ""
@@ -105,7 +106,7 @@ class Settings(BaseSettings):
     AI_CACHE_TTL_SECONDS: int = 86400  # 24h cache TTL
 
     # Query Generation (Phase 2)
-    QUERY_GEN_MODEL: str = "gpt-4o"  # LLM model for query generation (configurable)
+    QUERY_GEN_MODEL: str = "gemini/gemini-2.5-flash"  # LLM model for query generation (configurable)
     QUERY_GEN_TEMPERATURE: float = 0.7  # Some creativity for diverse queries
     QUERY_GEN_MAX_CONTENT_WORDS: int = 2000  # Truncation limit for crawl content in LLM prompt
 
@@ -114,6 +115,7 @@ class Settings(BaseSettings):
     DISPATCH_MODEL_OPENAI: str = "gpt-4o-mini"
     DISPATCH_MODEL_ANTHROPIC: str = "anthropic/claude-haiku-4-5"
     DISPATCH_MODEL_PERPLEXITY: str = "perplexity/sonar"
+    DISPATCH_MODEL_GEMINI: str = "gemini/gemini-2.5-flash"
     DISPATCH_TEMPERATURE: float = 0.0  # Reproducibility for Phase 4
     DISPATCH_TIMEOUT_SECONDS: int = 60  # Per-engine call timeout
     DISPATCH_MAX_WORKERS: int = 6  # ThreadPoolExecutor pool size
@@ -124,13 +126,20 @@ class Settings(BaseSettings):
     MENTION_SHORT_NAME_THRESHOLD: int = 90  # Higher threshold for brand names < 4 chars
     MENTION_CONTEXT_WINDOW_CHARS: int = 200  # Character window for context extraction
 
+    # Site AI-Readiness Scoring (Phase 6)
+    SCORING_CRAWL_CAP: int = 25  # Max pages per audit for scoring
+    SCORING_STAGE_TIMEOUT_SECONDS: int = 600  # 10 min timeout for scoring stage
+    GOOGLE_API_KEY: str = ""  # Optional, for PageSpeed Insights and Knowledge Graph
+
     # Outbound AI Rate Limits (Phase 1)
     OPENAI_RPM: int = 60
     ANTHROPIC_RPM: int = 60
     PERPLEXITY_RPM: int = 20
+    GEMINI_RPM: int = 15
     OPENAI_MAX_CONCURRENT: int = 10
     ANTHROPIC_MAX_CONCURRENT: int = 10
     PERPLEXITY_MAX_CONCURRENT: int = 5
+    GEMINI_MAX_CONCURRENT: int = 5
 
     class Config:
         env_file = ".env"
