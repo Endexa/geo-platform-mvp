@@ -9,19 +9,19 @@ See: .planning/PROJECT.md (updated 2026-02-21)
 
 ## Current Position
 
-Phase: 4 of 9 (Response Analysis)
-Plan: 0 of ? in current phase
-Status: Phase 3 Complete
-Last activity: 2026-02-22 -- Completed 03-02 (Celery dispatch pipeline, audit API integration)
+Phase: 4 of 9 (Mention Detection & Scoring)
+Plan: 1 of 2 in current phase
+Status: Executing Phase 4
+Last activity: 2026-02-22 -- Completed 04-01 (Mention detection models and services)
 
-Progress: [#######░░░] 35%
+Progress: [########░░] 40%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
+- Total plans completed: 8
 - Average duration: 4 min
-- Total execution time: 0.38 hours
+- Total execution time: 0.45 hours
 
 **By Phase:**
 
@@ -30,9 +30,10 @@ Progress: [#######░░░] 35%
 | 01-foundation-safety | 3 | 11 min | 4 min |
 | 02-site-crawl-query-generation | 2 | 8 min | 4 min |
 | 03-ai-engine-dispatch | 2 | 5 min | 3 min |
+| 04-mention-detection-scoring | 1 | 4 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-03 (5min), 02-01 (4min), 02-02 (4min), 03-01 (3min), 03-02 (2min)
+- Last 5 plans: 02-01 (4min), 02-02 (4min), 03-01 (3min), 03-02 (2min), 04-01 (4min)
 - Trend: stable
 
 *Updated after each plan completion*
@@ -40,6 +41,7 @@ Progress: [#######░░░] 35%
 | Phase 02 P02 | 4min | 2 tasks | 5 files |
 | Phase 03 P01 | 3min | 2 tasks | 7 files |
 | Phase 03 P02 | 2min | 2 tasks | 3 files |
+| Phase 04 P01 | 4min | 3 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -75,6 +77,9 @@ Recent decisions affecting current work:
 - [03-01]: Perplexity surcharge added post-call since LiteLLM does not track Perplexity search fees
 - [03-02]: DispatchSummary computed server-side from engine_responses (not stored in DB)
 - [03-02]: model_validate + manual dispatch_summary assignment for response construction
+- [04-01]: Deduplication by exact offset match, not 50-char window -- prevents collapsing legitimate separate mentions
+- [04-01]: Short brand names (<4 chars) use case-sensitive matching to avoid false positives
+- [04-01]: Fuzzy pass requires both token_set_ratio AND partial_ratio above threshold for dual validation
 
 ### Pending Todos
 
@@ -90,5 +95,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 03-02-PLAN.md (Celery dispatch pipeline, audit API integration)
-Resume file: .planning/phases/03-ai-engine-dispatch/03-02-SUMMARY.md
+Stopped at: Completed 04-01-PLAN.md (Mention detection models and services)
+Resume file: .planning/phases/04-mention-detection-scoring/04-01-SUMMARY.md
