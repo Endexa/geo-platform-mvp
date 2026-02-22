@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Show brands exactly how AI engines see them -- with real quotes from real AI responses, not just theoretical scores.
-**Current focus:** Phase 5: Audit Experience
+**Current focus:** Phase 6: Site AI-Readiness Scoring
 
 ## Current Position
 
-Phase: 5 of 9 (Audit Experience) -- COMPLETE
-Plan: 2 of 2 in current phase (all complete)
-Status: Phase 05 complete -- ready for Phase 06
-Last activity: 2026-02-22 -- Completed 05-02 (Audit experience page)
+Phase: 6 of 9 (Site AI-Readiness Scoring) -- IN PROGRESS
+Plan: 1 of 5 in current phase (1 complete)
+Status: Completed 06-01 (Scoring pipeline foundation) -- ready for 06-02
+Last activity: 2026-02-22 -- Completed 06-01 (Scoring pipeline foundation)
 
-Progress: [############] 55%
+Progress: [#############] 60%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 11
+- Total plans completed: 12
 - Average duration: 3 min
-- Total execution time: 0.58 hours
+- Total execution time: 0.66 hours
 
 **By Phase:**
 
@@ -32,9 +32,10 @@ Progress: [############] 55%
 | 03-ai-engine-dispatch | 2 | 5 min | 3 min |
 | 04-mention-detection-scoring | 2 | 6 min | 3 min |
 | 05-audit-experience | 2 | 6 min | 3 min |
+| 06-site-ai-readiness-scoring | 1 | 5 min | 5 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-02 (2min), 04-01 (4min), 04-02 (2min), 05-01 (3min), 05-02 (3min)
+- Last 5 plans: 04-01 (4min), 04-02 (2min), 05-01 (3min), 05-02 (3min), 06-01 (5min)
 - Trend: stable
 
 *Updated after each plan completion*
@@ -46,6 +47,7 @@ Progress: [############] 55%
 | Phase 04 P02 | 2min | 2 tasks | 3 files |
 | Phase 05 P01 | 3min | 2 tasks | 7 files |
 | Phase 05 P02 | 3min | 3 tasks | 6 files |
+| Phase 06 P01 | 5min | 2 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -95,6 +97,10 @@ Recent decisions affecting current work:
 - [05-02]: HighlightMentions uses offset-based slicing only -- no string re-matching for fuzzy match accuracy
 - [05-02]: Overlapping mentions handled by skipping mentions whose char_offset falls before cursor
 - [05-02]: Polling interval 3 seconds with immediate:false to prevent polling on mount
+- [06-01]: Weakest-link aggregation: 0.6 * mean + 0.4 * min across pages penalizes inconsistency
+- [06-01]: Conditional scorer imports (try/except ImportError) allow pipeline to work with 0-4 scorers
+- [06-01]: ScoringCriterionResult dataclass separate from CriterionResult SQLAlchemy model
+- [06-01]: SKIP_URL_PATTERNS excludes login, admin, assets, static files from link discovery
 
 ### Pending Todos
 
@@ -110,5 +116,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-22
-Stopped at: Completed 05-02-PLAN.md (Audit experience page)
-Resume file: .planning/phases/05-audit-experience/05-02-SUMMARY.md
+Stopped at: Completed 06-01-PLAN.md (Scoring pipeline foundation)
+Resume file: .planning/phases/06-site-ai-readiness-scoring/06-01-SUMMARY.md
