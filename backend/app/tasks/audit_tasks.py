@@ -315,6 +315,15 @@ def run_crawl_and_generate(self, audit_id: str, url: str):
                 len(recs),
             )
 
+            # Identify content gaps (topics where competitors mentioned but user is not)
+            gaps = rec_engine.identify_content_gaps(audit_id=audit_id)
+            rec_engine.save_content_gaps(audit_id=audit_id, gaps=gaps)
+            logger.info(
+                "Audit {}: identified {} content gaps",
+                audit_id,
+                len(gaps),
+            )
+
             db.commit()
         except Exception as e:
             logger.error(
