@@ -2,15 +2,67 @@
 
 > All endpoints under `/api/v1/`. Full interactive docs at `http://localhost:8000/api/v1/docs` (dev mode only).
 
+**Authentication:** All audit-related endpoints require a JWT Bearer token. Obtain one via `/api/v1/auth/register` or `/api/v1/auth/login`. Pass as `Authorization: Bearer <token>`.
+
+---
+
+## Authentication (`/api/v1/auth/`)
+
+| Method | Path | Description | Auth |
+|--------|------|-------------|------|
+| POST | `/register` | Create account | No |
+| POST | `/login` | Authenticate and get JWT | No |
+| GET | `/me` | Get current user info | Yes |
+
+### POST /register
+
+```bash
+curl -X POST http://localhost:8000/api/v1/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"email": "user@example.com", "password": "SecurePass123!", "full_name": "John Doe"}'
+```
+
+**Password policy:** Min 12 chars, requires uppercase + lowercase + digit + special character.
+
+**Response:**
+```json
+{"access_token": "eyJ...", "refresh_token": null, "token_type": "bearer"}
+```
+
+### POST /login
+
+```bash
+curl -X POST http://localhost:8000/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email": "user@example.com", "password": "SecurePass123!"}'
+```
+
+**Response:**
+```json
+{"access_token": "eyJ...", "refresh_token": "eyJ...", "token_type": "bearer"}
+```
+
+### GET /me
+
+```bash
+curl http://localhost:8000/api/v1/auth/me \
+  -H "Authorization: Bearer <access_token>"
+```
+
+**Response:**
+```json
+{"id": "uuid", "email": "user@example.com", "full_name": "John Doe", "role": "user"}
+```
+
 ---
 
 ## Analysis (`/api/v1/analysis/`)
 
 | Method | Path | Description | Auth |
 |--------|------|-------------|------|
-| POST | `/analyze` | Start URL analysis | No (MVP) |
-| GET | `/{analysis_id}` | Get analysis results | No (MVP) |
-| GET | `/history` | Get analysis history | No (MVP) |
+| POST | `/analyze` | Start URL analysis | Yes |
+| GET | `/{analysis_id}` | Get analysis results | Yes |
+| GET | `/history` | Get analysis history | Yes |
 
 ### POST /analyze
 
@@ -46,10 +98,10 @@ curl -X POST http://localhost:8000/api/v1/analysis/analyze \
 
 | Method | Path | Description | Auth |
 |--------|------|-------------|------|
-| POST | `/run` | Run 108-point measurement | No (MVP) |
-| GET | `/{analysis_id}` | Get full results | No (MVP) |
-| GET | `/{analysis_id}/summary` | Get summary scores | No (MVP) |
-| GET | `/{analysis_id}/module/{module}` | Get module detail | No (MVP) |
+| POST | `/run` | Run 108-point measurement | Yes |
+| GET | `/{analysis_id}` | Get full results | Yes |
+| GET | `/{analysis_id}/summary` | Get summary scores | Yes |
+| GET | `/{analysis_id}/module/{module}` | Get module detail | Yes |
 
 ### POST /run
 
@@ -65,8 +117,8 @@ curl -X POST http://localhost:8000/api/v1/geo-datapoints/run \
 
 | Method | Path | Description | Auth |
 |--------|------|-------------|------|
-| POST | `/generate` | Generate recommendations | No (MVP) |
-| GET | `/recommendations/{analysis_id}` | Get recommendations | No (MVP) |
+| POST | `/generate` | Generate recommendations | Yes |
+| GET | `/recommendations/{analysis_id}` | Get recommendations | Yes |
 
 > **Note:** Currently a stub. Returns empty/mock data until LLM integration is complete (BACKLOG Priority 1).
 
@@ -78,12 +130,12 @@ curl -X POST http://localhost:8000/api/v1/geo-datapoints/run \
 
 | Method | Path | Description | Auth |
 |--------|------|-------------|------|
-| POST | `/config` | Create brand signature config | No (MVP) |
-| GET | `/config/{id}` | Get config details + stats | No (MVP) |
-| POST | `/config/{id}/upload` | Upload knowledge base (TXT) | No (MVP) |
-| POST | `/config/{id}/rule` | Add rule (forbidden_word, required_phrase, tone_directive) | No (MVP) |
-| POST | `/check` | Check content — fast mode (layers 1-3) | No (MVP) |
-| POST | `/explain` | Deep analysis — all 4 layers (planned) | No (MVP) |
+| POST | `/config` | Create brand signature config | Yes |
+| GET | `/config/{id}` | Get config details + stats | Yes |
+| POST | `/config/{id}/upload` | Upload knowledge base (TXT) | Yes |
+| POST | `/config/{id}/rule` | Add rule (forbidden_word, required_phrase, tone_directive) | Yes |
+| POST | `/check` | Check content — fast mode (layers 1-3) | Yes |
+| POST | `/explain` | Deep analysis — all 4 layers (planned) | Yes |
 
 ### POST /check (Fast Mode — Layers 1-3)
 
@@ -114,8 +166,8 @@ curl -X POST http://localhost:8000/api/v1/voice/check \
 
 | Method | Path | Description | Auth |
 |--------|------|-------------|------|
-| GET | `/stats` | Dashboard metrics | No (MVP) |
-| GET | `/recent` | Recent analyses | No (MVP) |
+| GET | `/stats` | Dashboard metrics | Yes |
+| GET | `/recent` | Recent analyses | Yes |
 
 ---
 
@@ -124,7 +176,8 @@ curl -X POST http://localhost:8000/api/v1/voice/check \
 | Method | Path | Description | Auth |
 |--------|------|-------------|------|
 | POST | `/stripe/webhook` | Stripe payment webhook | Stripe signature |
-| POST | `/jira/create-issue` | Create Jira ticket | No (MVP) |
+| POST | `/stripe/checkout` | Create Stripe checkout session | Yes |
+| POST | `/jira/create-issue` | Create Jira ticket | Yes |
 
 > **Note:** Both are stubs until payment and recommendation features are complete.
 
@@ -140,7 +193,7 @@ curl -X POST http://localhost:8000/api/v1/voice/check \
 
 ---
 
-## Rate Limits (when auth is enabled)
+## Rate Limits
 
 | Tier | Limit |
 |------|-------|
@@ -166,7 +219,7 @@ All errors follow this format:
 | Status | Meaning |
 |--------|---------|
 | 400 | Bad request (validation error) |
-| 401 | Unauthorized (when auth enabled) |
+| 401 | Unauthorized (missing or invalid JWT) |
 | 404 | Resource not found |
 | 429 | Rate limit exceeded |
 | 500 | Internal server error |
