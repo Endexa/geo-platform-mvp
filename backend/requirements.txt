@@ -40,6 +40,7 @@ requests==2.31.0
 # Text processing
 python-readability==0.3.0
 textstat==0.7.3
+nltk>=3.8.0
 rapidfuzz>=3.14.0
 
 # Utilities
