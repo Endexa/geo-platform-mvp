@@ -26,6 +26,25 @@ docker-compose restart backend
 
 ## Backend / FastAPI
 
+### 401 Unauthorized on all endpoints after Phase 1
+**When:** After Phase 1 deployment, all API calls return 401.
+**Root cause:** Auth is now enabled on all protected endpoints. A valid JWT token is required.
+**Fix:** Register and log in first to get a token:
+```bash
+# Register
+curl -X POST http://localhost:8000/api/v1/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"email": "user@example.com", "password": "SecurePass123!"}'
+# Use the returned access_token in subsequent requests:
+curl http://localhost:8000/api/v1/dashboard/stats \
+  -H "Authorization: Bearer <access_token>"
+```
+
+### `ImportError: cannot import name 'CryptContext' from 'passlib'`
+**When:** Running old code that imports passlib.
+**Root cause:** Phase 1 replaced passlib with pwdlib. python-jose replaced with PyJWT.
+**Fix:** Use `from pwdlib import PasswordHash` instead of `from passlib.context import CryptContext`. Use `import jwt` instead of `from jose import jwt`.
+
 ### CORS errors from frontend
 **When:** Frontend shows "Failed to fetch" or network errors.
 **Root cause:** CORS origins not matching frontend URL.
