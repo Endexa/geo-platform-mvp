@@ -94,12 +94,11 @@ Plans:
   2. The audit runs asynchronously (Celery) with the frontend polling and displaying progress through crawl, query generation, AI dispatch, analysis, and scoring stages
   3. User sees final results: visibility score, per-engine breakdown, and list of queries with mention/no-mention indicators
   4. User can drill down into any individual query to see the full AI response from each engine with brand mentions highlighted in context
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 05-01: TBD
-- [ ] 05-02: TBD
-- [ ] 05-03: TBD
+- [ ] 05-01-PLAN.md -- Frontend auth foundation: remove Supabase, useApiFetch/useAuth composables, login page rewrite, auth-aware layout (AUDIT-01)
+- [ ] 05-02-PLAN.md -- Audit page with URL form, progress polling, results display, query drill-down with highlighted mentions (AUDIT-01, AUDIT-07)
 
 ### Phase 6: Competitive Intelligence
 **Goal**: Users can compare their brand visibility against competitors and discover what competitors get mentioned for that they do not
@@ -175,7 +174,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | 2. Site Crawl & Query Generation | 2/2 | Complete | 2026-02-22 |
 | 3. AI Engine Dispatch | 2/2 | Complete | 2026-02-22 |
 | 4. Mention Detection & Scoring | 0/2 | Not started | - |
-| 5. Audit Experience | 0/3 | Not started | - |
+| 5. Audit Experience | 0/2 | Not started | - |
 | 6. Competitive Intelligence | 0/3 | Not started | - |
 | 7. Brand Signature Analysis | 0/2 | Not started | - |
 | 8. Insights & Dashboard | 0/3 | Not started | - |
