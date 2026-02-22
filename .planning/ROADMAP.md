@@ -303,7 +303,7 @@ Plans:
 - [x] 08-01-PLAN.md -- Recommendation engine + sentiment service: AuditRecommendation/MentionSentiment models, migration 008, RecommendationEngine gap analysis, SentimentService LLM classification, RECOMMENDING Celery stage (REC-01, REC-02, REC-03, REC-04)
 - [x] 08-02-PLAN.md -- Content gaps + API + export: content gap identification with mini briefs, recommendation CRUD endpoints, sentiment summary API, Markdown fix plan export (REC-01, REC-02, REC-03, REC-04, REC-05)
 - [x] 08-03-PLAN.md -- Frontend recommendations experience: RecommendationCard (two-tier), RecommendationProgress, SentimentBreakdown, ContentGapCard components, recommendations page with tabs/filters/export, sidebar nav, audit page preview (REC-01, REC-02, REC-03, REC-04, REC-05)
-- [ ] 08-04-PLAN.md -- Gap closure: Wire identify_content_gaps() and save_content_gaps() into RECOMMENDING pipeline stage (REC-05)
+- [x] 08-04-PLAN.md -- Gap closure: Wire identify_content_gaps() and save_content_gaps() into RECOMMENDING pipeline stage (REC-05)
 
 ### Phase 9: Dashboard & Reporting
 **Goal**: Users see a single-screen dashboard with their combined GEO Score (Visibility + Optimization), competitive position, top issues, and can export complete reports and track changes over time
@@ -313,20 +313,19 @@ Plans:
 **Combined GEO Score**: The dashboard presents two primary scores:
 - **Visibility Score** (0-100): From the AI mention-based analysis (phases 4-5)
 - **Optimization Score** (0-100): From the page-level criteria scoring (phase 6)
-- **Combined GEO Score**: Weighted blend displayed as the headline metric
+- **Combined GEO Score**: 50/50 weighted blend displayed as the headline metric
 
 **Success Criteria** (what must be TRUE):
   1. Dashboard shows a single-screen overview: combined GEO Score, per-engine visibility breakdown, top 5 issues to fix, competitive position summary
   2. Competitive position map shows user vs discovered competitors across key metrics (visibility score, optimization score, share of voice)
   3. User can export a complete audit report as PDF or CSV including: scores, per-criteria breakdowns, mentions with quotes, gaps identified, recommendations with evidence, and competitor comparison
   4. Audit history is stored so users can see how their scores and mention patterns change across re-audits over time (trend charts)
-**Plans**: TBD (estimate 3-4 plans)
+**Plans**: 3 plans
 
 Plans:
-- [ ] 09-01: Dashboard page with combined GEO Score, per-engine breakdown, top issues, competitive summary (DASH-01)
-- [ ] 09-02: Competitive position map -- scatter/radar chart, user vs competitors on key metrics (DASH-02)
-- [ ] 09-03: PDF/CSV export service with complete audit data (DASH-03)
-- [ ] 09-04: Audit history storage, trend charts showing score evolution across re-audits (DASH-04)
+- [ ] 09-01-PLAN.md -- Backend: DashboardService aggregation, dashboard API (overview, history, PDF/CSV export), Pydantic schemas, Jinja2 PDF template, WeasyPrint dependency (DASH-01, DASH-02, DASH-03, DASH-04)
+- [ ] 09-02-PLAN.md -- Frontend: Dashboard page rewrite with DashboardHero scores, CompetitorRadar chart, ExportActions, per-engine breakdown, top issues, audit selector (DASH-01, DASH-02, DASH-03)
+- [ ] 09-03-PLAN.md -- Frontend: TrendChart line chart for audit history, chartjs-adapter-date-fns install, dashboard history integration (DASH-04)
 
 ### Phase 10: Scale & Agency
 **Goal**: Agency users can manage multiple brands under one account with separate audit histories and a cross-brand comparison dashboard
@@ -378,10 +377,10 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 5. Audit Experience | 2/2 | Complete | 2026-02-22 |
 | 6. Site AI-Readiness Scoring | 0/5 | Not started | - |
 | 7. Auto-Competitor Discovery | 2/4 | Complete    | 2026-02-22 |
-| 8. Actionable Recommendations | 0/3 | Planned | - |
-| 9. Dashboard & Reporting | 0/4 | Not started | - |
+| 8. Actionable Recommendations | 4/4 | Complete | 2026-02-23 |
+| 9. Dashboard & Reporting | 0/3 | Planned | - |
 | 10. Scale & Agency | 0/2 | Not started | - |
 
 ---
 *Roadmap created: 2026-02-21*
-*Last updated: 2026-02-22 (phases 6-10 redesigned from research, scoring built from scratch, legacy data points system not used)*
+*Last updated: 2026-02-23 (Phase 9 planned: 3 plans in 2 waves)*
