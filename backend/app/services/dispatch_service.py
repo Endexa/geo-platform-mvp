@@ -15,6 +15,7 @@ Key design choices:
 
 import asyncio
 import concurrent.futures
+import re
 from dataclasses import dataclass
 from decimal import Decimal
 from uuid import UUID
@@ -50,6 +51,11 @@ ENGINE_CONFIG = {
         "model_setting": "DISPATCH_MODEL_PERPLEXITY",
         "provider": "perplexity",
         "api_key_setting": "PERPLEXITYAI_API_KEY",
+    },
+    "gemini": {
+        "model_setting": "DISPATCH_MODEL_GEMINI",
+        "provider": "gemini",
+        "api_key_setting": "GEMINI_API_KEY",
     },
 }
 
@@ -204,6 +210,7 @@ class DispatchService:
                     completion_tokens=cached_data.get("completion_tokens", 0),
                     cost_usd=Decimal("0"),
                     cached=True,
+                    citations=cached_data.get("citations"),
                 )
                 thread_db.add(response_obj)
                 thread_db.commit()
@@ -237,6 +244,7 @@ class DispatchService:
                     messages=messages,
                     temperature=settings.DISPATCH_TEMPERATURE,
                     timeout=settings.DISPATCH_TIMEOUT_SECONDS,
+                    api_key=api_key,
                 )
 
                 # Extract metadata
@@ -247,6 +255,27 @@ class DispatchService:
                 cost = response._hidden_params.get("response_cost", 0.0)
                 model_version = response.model or model
 
+                # Extract Perplexity citations from API response
+                citations_list = None
+                if engine_name == "perplexity":
+                    citations_list = getattr(response, "citations", None)
+                    if citations_list is None:
+                        citations_list = response._hidden_params.get("citations", None)
+                    if citations_list:
+                        logger.info(
+                            f"Captured {len(citations_list)} citations from Perplexity "
+                            f"for query={query.id}"
+                        )
+
+                # For non-Perplexity engines, extract inline URLs as citations
+                if engine_name != "perplexity" and response_text:
+                    url_pattern = re.compile(
+                        r'https?://[^\s\)\]\},\"\']+', re.IGNORECASE
+                    )
+                    inline_urls = url_pattern.findall(response_text)
+                    if inline_urls:
+                        citations_list = sorted(set(inline_urls))
+
                 # Perplexity surcharge
                 if engine_name == "perplexity":
                     cost += settings.PERPLEXITY_REQUEST_SURCHARGE
@@ -254,12 +283,13 @@ class DispatchService:
                         f"Added Perplexity surcharge: +${settings.PERPLEXITY_REQUEST_SURCHARGE}"
                     )
 
-                # Cache the response
+                # Cache the response (include citations)
                 cache_payload = {
                     "response_text": response_text,
                     "model_version": model_version,
                     "prompt_tokens": prompt_tokens,
                     "completion_tokens": completion_tokens,
+                    "citations": citations_list,
                 }
                 loop.run_until_complete(
                     cache.set(
@@ -297,6 +327,7 @@ class DispatchService:
                     completion_tokens=completion_tokens,
                     cost_usd=cost_decimal,
                     cached=False,
+                    citations=citations_list,
                 )
                 thread_db.add(response_obj)
                 thread_db.commit()
