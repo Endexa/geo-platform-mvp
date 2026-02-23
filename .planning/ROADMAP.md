@@ -323,9 +323,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 09-01-PLAN.md -- Backend: DashboardService aggregation, dashboard API (overview, history, PDF/CSV export), Pydantic schemas, Jinja2 PDF template, WeasyPrint dependency (DASH-01, DASH-02, DASH-03, DASH-04)
-- [ ] 09-02-PLAN.md -- Frontend: Dashboard page rewrite with DashboardHero scores, CompetitorRadar chart, ExportActions, per-engine breakdown, top issues, audit selector (DASH-01, DASH-02, DASH-03)
-- [ ] 09-03-PLAN.md -- Frontend: TrendChart line chart for audit history, chartjs-adapter-date-fns install, dashboard history integration (DASH-04)
+- [x] 09-01-PLAN.md -- Backend: DashboardService aggregation, dashboard API (overview, history, PDF/CSV export), Pydantic schemas, Jinja2 PDF template, WeasyPrint dependency (DASH-01, DASH-02, DASH-03, DASH-04)
+- [x] 09-02-PLAN.md -- Frontend: Dashboard page rewrite with DashboardHero scores, CompetitorRadar chart, ExportActions, per-engine breakdown, top issues, audit selector (DASH-01, DASH-02, DASH-03)
+- [x] 09-03-PLAN.md -- Frontend: TrendChart line chart for audit history, chartjs-adapter-date-fns install, dashboard history integration (DASH-04)
 
 ### Phase 10: Scale & Agency
 **Goal**: Agency users can manage multiple brands under one account with separate audit histories and a cross-brand comparison dashboard
@@ -335,11 +335,11 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. Agency users can create and manage multiple brands under one account, each with its own URL, audit history, and score tracking
   2. Multi-brand view shows a summary dashboard comparing GEO scores, visibility scores, optimization scores, and top issues across all managed brands
-**Plans**: TBD (estimate 2 plans)
+**Plans**: 2 plans
 
 Plans:
-- [ ] 10-01: Brand model, multi-brand management API, per-brand audit association (SCALE-01)
-- [ ] 10-02: Multi-brand dashboard with cross-brand comparison metrics (SCALE-02)
+- [ ] 10-01-PLAN.md -- Brand model, migration 009, BrandService with CRUD + retroactive association, brand API endpoints, auto-association in audit creation (SCALE-01)
+- [ ] 10-02-PLAN.md -- Multi-brand overview API, frontend brands page with BrandCard + BrandComparison chart, sidebar nav update (SCALE-02)
 
 ## Scoring Approach
 
@@ -378,9 +378,9 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 6. Site AI-Readiness Scoring | 0/5 | Not started | - |
 | 7. Auto-Competitor Discovery | 2/4 | Complete    | 2026-02-22 |
 | 8. Actionable Recommendations | 4/4 | Complete | 2026-02-23 |
-| 9. Dashboard & Reporting | 0/3 | Planned | - |
+| 9. Dashboard & Reporting | 3/3 | Complete | 2026-02-23 |
 | 10. Scale & Agency | 0/2 | Not started | - |
 
 ---
 *Roadmap created: 2026-02-21*
-*Last updated: 2026-02-23 (Phase 9 planned: 3 plans in 2 waves)*
+*Last updated: 2026-02-23 (Phase 9 complete: 3 plans, 3 waves)*
