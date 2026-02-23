@@ -62,7 +62,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Scale & Agency
 
-- [ ] **SCALE-01**: Agency users can create and manage multiple brands under one account, each with separate audit history and tracking
+- [x] **SCALE-01**: Agency users can create and manage multiple brands under one account, each with separate audit history and tracking
 - [ ] **SCALE-02**: Multi-brand view shows a summary dashboard comparing scores across all managed brands
 
 ## v2 Requirements
@@ -144,7 +144,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DASH-02 | Phase 9: Dashboard & Reporting | Pending |
 | DASH-03 | Phase 9: Dashboard & Reporting | Pending |
 | DASH-04 | Phase 9: Dashboard & Reporting | Pending |
-| SCALE-01 | Phase 10: Scale & Agency | Pending |
+| SCALE-01 | Phase 10: Scale & Agency | Complete |
 | SCALE-02 | Phase 10: Scale & Agency | Pending |
 
 **Coverage:**

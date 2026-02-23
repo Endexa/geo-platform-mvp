@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Show brands exactly how AI engines see them -- with real quotes from real AI responses, not just theoretical scores.
-**Current focus:** Phase 8 COMPLETE: Actionable Recommendations (4 of 4 plans complete, including gap closure). Next: Phase 9.
+**Current focus:** Phase 10 IN PROGRESS: Scale & Agency (1 of 2 plans complete). Brand model + CRUD API built.
 
 ## Current Position
 
-Phase: 8 of 9 (Actionable Recommendations) -- COMPLETE
-Plan: 4 of 4 in current phase (4 complete)
-Status: Phase 8 complete (including gap closure plan 04). Next: Phase 9 (Dashboard & Reporting).
-Last activity: 2026-02-23 -- Completed 08-04 (Content Gap Pipeline Wiring)
+Phase: 10 of 10 (Scale & Agency)
+Plan: 1 of 2 in current phase (1 complete)
+Status: Plan 10-01 complete. Brand model, migration, CRUD API, auto-association built. Next: Plan 10-02.
+Last activity: 2026-02-23 -- Completed 10-01 (Multi-Brand Model & CRUD)
 
-Progress: [###########################] 96%
+Progress: [#############################] 99%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 24
+- Total plans completed: 28
 - Average duration: 4 min
-- Total execution time: 1.82 hours
+- Total execution time: ~2 hours
 
 **By Phase:**
 
@@ -35,10 +35,12 @@ Progress: [###########################] 96%
 | 06-site-ai-readiness-scoring | 5 | 32 min | 6 min |
 | 07-auto-competitor-discovery | 4 | 19 min | 5 min |
 | 08-actionable-recommendations | 4 | 13 min | 3 min |
+| 09-dashboard-reporting | 3 | 9 min | 3 min |
+| 10-scale-agency | 1 | 3 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 07-04 (5min), 08-01 (5min), 08-02 (3min), 08-03 (4min), 08-04 (1min)
-- Trend: Consistently fast (1-5min per plan)
+- Last 5 plans: 08-04 (1min), 09-01 (4min), 09-02 (3min), 09-03 (2min), 10-01 (3min)
+- Trend: Consistently fast (1-4min per plan)
 
 *Updated after each plan completion*
 | Phase 02 P01 | 4min | 2 tasks | 9 files |
@@ -59,6 +61,10 @@ Progress: [###########################] 96%
 | Phase 08 P02 | 3min | 2 tasks | 4 files |
 | Phase 08 P03 | 4min | 2 tasks | 7 files |
 | Phase 08 P04 | 1min | 1 tasks | 1 files |
+| Phase 09 P01 | 4min | 2 tasks | 6 files |
+| Phase 09 P02 | 3min | 2 tasks | 4 files |
+| Phase 09 P03 | 2min | 2 tasks | 2 files |
+| Phase 10 P01 | 3min | 2 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -149,6 +155,17 @@ Recent decisions affecting current work:
 - [08-03]: Sentiment/content-gap API calls fail-silent (.catch(() => null)) -- supplementary data
 - [08-03]: Recommendation preview limited to top 5 high-priority open items on audit page
 - [08-04]: No new decisions needed -- followed plan exactly as specified (3-line addition)
+- [09-01]: Combined GEO Score = round(visibility * 0.5 + optimization * 0.5)
+- [09-01]: PDF/CSV export endpoints are sync (FastAPI auto-threadpools, prevents event loop blocking)
+- [09-01]: History endpoint filters by domain AND user_id (prevents cross-user data leakage)
+- [09-01]: Content gaps read from audit.content_gaps JSONB (populated by Phase 8)
+- [09-02]: Proactively wired TrendChart + history API into dashboard.vue (saved Plan 03 modification)
+- [09-02]: Raw $fetch for file downloads (useApiFetch expects JSON, not binary blobs)
+- [09-03]: chartjs-adapter-date-fns required before Chart.js time scale works (pitfall 3)
+- [09-03]: History fetch is fail-silent (supplementary data, does not block dashboard)
+- [10-01]: Domain variant matching: retroactive association matches both "example.com" and "www.example.com"
+- [10-01]: Router pattern: brands.py defines own prefix (/api/v1/brands) following competitors/recommendations pattern
+- [10-01]: normalize_domain in schemas/brand.py: shared between brand creation and audit auto-association
 
 ### Pending Todos
 
@@ -164,5 +181,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-23
-Stopped at: Completed 08-04-PLAN.md (Phase 8 gap closure complete)
-Resume file: .planning/phases/08-actionable-recommendations/08-04-SUMMARY.md
+Stopped at: Completed 10-01-PLAN.md
+Resume file: .planning/phases/10-scale-agency/10-01-SUMMARY.md
