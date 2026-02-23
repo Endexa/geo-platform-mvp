@@ -1,4 +1,4 @@
-"""Pydantic v2 schemas for brand CRUD operations."""
+"""Pydantic v2 schemas for brand CRUD and multi-brand overview operations."""
 
 from datetime import datetime
 from urllib.parse import urlparse
@@ -52,3 +52,25 @@ class BrandResponse(BaseModel):
 class BrandListResponse(BaseModel):
     brands: list[BrandResponse]
     total: int
+
+
+class MultiBrandOverviewEntry(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    brand_id: UUID
+    brand_name: str
+    brand_url: str
+    brand_domain: str
+    latest_audit_id: UUID | None = None
+    combined_geo_score: int | None = None
+    visibility_score: int | None = None
+    optimization_score: int | None = None
+    mention_count: int = 0
+    top_issues_count: int = 0
+    audit_count: int = 0
+    last_audited_at: datetime | None = None
+
+
+class MultiBrandOverviewResponse(BaseModel):
+    brands: list[MultiBrandOverviewEntry]
+    total_brands: int

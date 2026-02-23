@@ -9,7 +9,12 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.models.audit import Audit
+from app.models.audit_query import AuditQuery
+from app.models.audit_recommendation import AuditRecommendation
 from app.models.brand import Brand
+from app.models.brand_mention import BrandMention
+from app.models.engine_response import EngineResponse
+from app.models.visibility_score import VisibilityScore
 from app.schemas.brand import BrandCreate, BrandUpdate, normalize_domain
 
 
@@ -200,6 +205,114 @@ class BrandService:
             .filter(Brand.user_id == user_id, Brand.domain == domain)
             .first()
         )
+
+    def get_multi_brand_overview(self, user_id: str) -> list[dict]:
+        """Get a lightweight overview of all brands with latest audit metrics.
+
+        For each brand, finds the latest completed audit and fetches:
+        - visibility_score from VisibilityScore table
+        - optimization_score from Audit column
+        - combined_geo_score (50/50 blend)
+        - mention_count from BrandMention via AuditQuery/EngineResponse
+        - top_issues_count (high priority open recommendations)
+        - audit_count
+        - last_audited_at
+
+        Args:
+            user_id: The owner's profile ID.
+
+        Returns:
+            List of dicts matching MultiBrandOverviewEntry fields.
+        """
+        brands = self.list_brands(user_id)
+        result = []
+
+        for brand in brands:
+            # Count total audits for this brand
+            audit_count = (
+                self.db.query(func.count(Audit.id))
+                .filter(Audit.brand_id == brand.id)
+                .scalar()
+            )
+
+            # Find latest completed audit
+            latest_audit = (
+                self.db.query(Audit)
+                .filter(
+                    Audit.brand_id == brand.id,
+                    Audit.status == "completed",
+                )
+                .order_by(Audit.created_at.desc())
+                .first()
+            )
+
+            entry = {
+                "brand_id": brand.id,
+                "brand_name": brand.name,
+                "brand_url": brand.url,
+                "brand_domain": brand.domain,
+                "latest_audit_id": None,
+                "combined_geo_score": None,
+                "visibility_score": None,
+                "optimization_score": None,
+                "mention_count": 0,
+                "top_issues_count": 0,
+                "audit_count": audit_count,
+                "last_audited_at": None,
+            }
+
+            if latest_audit:
+                entry["latest_audit_id"] = latest_audit.id
+                entry["last_audited_at"] = (
+                    latest_audit.completed_at or latest_audit.created_at
+                )
+
+                # Visibility score
+                vs = (
+                    self.db.query(VisibilityScore)
+                    .filter(VisibilityScore.audit_id == latest_audit.id)
+                    .first()
+                )
+                vis = vs.overall_score if vs else None
+                opt = latest_audit.optimization_score
+
+                entry["visibility_score"] = vis
+                entry["optimization_score"] = opt
+
+                if vis is not None and opt is not None:
+                    entry["combined_geo_score"] = round(vis * 0.5 + opt * 0.5)
+
+                # Mention count via AuditQuery -> EngineResponse -> BrandMention
+                mention_count = (
+                    self.db.query(func.count(BrandMention.id))
+                    .join(
+                        EngineResponse,
+                        BrandMention.engine_response_id == EngineResponse.id,
+                    )
+                    .join(
+                        AuditQuery,
+                        EngineResponse.audit_query_id == AuditQuery.id,
+                    )
+                    .filter(AuditQuery.audit_id == latest_audit.id)
+                    .scalar()
+                )
+                entry["mention_count"] = mention_count or 0
+
+                # Top issues: high priority open recommendations
+                top_issues_count = (
+                    self.db.query(func.count(AuditRecommendation.id))
+                    .filter(
+                        AuditRecommendation.audit_id == latest_audit.id,
+                        AuditRecommendation.status == "open",
+                        AuditRecommendation.priority == "high",
+                    )
+                    .scalar()
+                )
+                entry["top_issues_count"] = top_issues_count or 0
+
+            result.append(entry)
+
+        return result
 
     def _associate_audits(self, brand: Brand) -> int:
         """Associate existing audits with a brand by matching normalized domain.

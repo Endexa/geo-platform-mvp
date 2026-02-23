@@ -20,6 +20,7 @@ from app.schemas.brand import (
     BrandListResponse,
     BrandResponse,
     BrandUpdate,
+    MultiBrandOverviewResponse,
 )
 from app.services.brand_service import BrandService
 
@@ -86,6 +87,26 @@ def list_brands(
         brand_responses.append(_brand_to_response(brand, audit_count))
 
     return BrandListResponse(brands=brand_responses, total=len(brand_responses))
+
+
+@router.get("/overview", response_model=MultiBrandOverviewResponse)
+def get_multi_brand_overview(
+    db: Session = Depends(get_db),
+    current_user: Profile = Depends(get_current_active_user),
+):
+    """Get a multi-brand overview with aggregated metrics for all user brands.
+
+    Returns lightweight per-brand metrics including combined GEO score,
+    visibility, optimization, mention count, issues count, audit count,
+    and last audited date. Avoids N+1 by querying directly per brand.
+    """
+    service = BrandService(db)
+    entries = service.get_multi_brand_overview(str(current_user.id))
+
+    return MultiBrandOverviewResponse(
+        brands=entries,
+        total_brands=len(entries),
+    )
 
 
 @router.get("/{brand_id}", response_model=BrandResponse)
