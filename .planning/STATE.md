@@ -5,21 +5,21 @@
 See: .planning/PROJECT.md (updated 2026-02-21)
 
 **Core value:** Show brands exactly how AI engines see them -- with real quotes from real AI responses, not just theoretical scores.
-**Current focus:** Phase 10 IN PROGRESS: Scale & Agency (1 of 2 plans complete). Brand model + CRUD API built.
+**Current focus:** Phase 10 COMPLETE: Scale & Agency (2 of 2 plans complete). All 10 phases done.
 
 ## Current Position
 
 Phase: 10 of 10 (Scale & Agency)
-Plan: 1 of 2 in current phase (1 complete)
-Status: Plan 10-01 complete. Brand model, migration, CRUD API, auto-association built. Next: Plan 10-02.
-Last activity: 2026-02-23 -- Completed 10-01 (Multi-Brand Model & CRUD)
+Plan: 2 of 2 in current phase (2 complete)
+Status: Phase 10 COMPLETE. All plans executed. Multi-brand dashboard with comparison chart built.
+Last activity: 2026-02-23 -- Completed 10-02 (Multi-Brand Dashboard & Comparison)
 
-Progress: [#############################] 99%
+Progress: [##############################] 100%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 28
+- Total plans completed: 29
 - Average duration: 4 min
 - Total execution time: ~2 hours
 
@@ -36,11 +36,11 @@ Progress: [#############################] 99%
 | 07-auto-competitor-discovery | 4 | 19 min | 5 min |
 | 08-actionable-recommendations | 4 | 13 min | 3 min |
 | 09-dashboard-reporting | 3 | 9 min | 3 min |
-| 10-scale-agency | 1 | 3 min | 3 min |
+| 10-scale-agency | 2 | 6 min | 3 min |
 
 **Recent Trend:**
-- Last 5 plans: 08-04 (1min), 09-01 (4min), 09-02 (3min), 09-03 (2min), 10-01 (3min)
-- Trend: Consistently fast (1-4min per plan)
+- Last 5 plans: 09-01 (4min), 09-02 (3min), 09-03 (2min), 10-01 (3min), 10-02 (3min)
+- Trend: Consistently fast (2-4min per plan)
 
 *Updated after each plan completion*
 | Phase 02 P01 | 4min | 2 tasks | 9 files |
@@ -65,6 +65,7 @@ Progress: [#############################] 99%
 | Phase 09 P02 | 3min | 2 tasks | 4 files |
 | Phase 09 P03 | 2min | 2 tasks | 2 files |
 | Phase 10 P01 | 3min | 2 tasks | 9 files |
+| Phase 10 P02 | 3min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -166,6 +167,9 @@ Recent decisions affecting current work:
 - [10-01]: Domain variant matching: retroactive association matches both "example.com" and "www.example.com"
 - [10-01]: Router pattern: brands.py defines own prefix (/api/v1/brands) following competitors/recommendations pattern
 - [10-01]: normalize_domain in schemas/brand.py: shared between brand creation and audit auto-association
+- [10-02]: Overview endpoint placed before /{brand_id} routes to prevent FastAPI path conflict
+- [10-02]: Mention count via AuditQuery->EngineResponse->BrandMention join (no direct audit_id FK on BrandMention)
+- [10-02]: Brands page uses single /brands/overview endpoint for all data (avoids waterfall requests)
 
 ### Pending Todos
 
@@ -181,5 +185,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-23
-Stopped at: Completed 10-01-PLAN.md
-Resume file: .planning/phases/10-scale-agency/10-01-SUMMARY.md
+Stopped at: Completed 10-02-PLAN.md (ALL PHASES COMPLETE)
+Resume file: .planning/phases/10-scale-agency/10-02-SUMMARY.md
