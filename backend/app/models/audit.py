@@ -36,6 +36,9 @@ class Audit(Base):
     error_message = Column(String, nullable=True)
     optimization_score = Column(Integer, nullable=True)  # Final 0-100 score after scoring
     content_gaps = Column(JSONB, nullable=True)  # List of content gap dicts from gap analysis
+    brand_id = Column(
+        UUID(as_uuid=True), ForeignKey("brands.id"), nullable=True, index=True
+    )
     created_at = Column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
     )
@@ -50,3 +53,4 @@ class Audit(Base):
         backref="audit",
         foreign_keys="AuditCostLedger.audit_id",
     )
+    brand = relationship("Brand", back_populates="audits")

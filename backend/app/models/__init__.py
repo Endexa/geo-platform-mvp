@@ -15,6 +15,7 @@ from app.models.criterion_result import CriterionResult
 from app.models.competitor import DiscoveredCompetitor, CompetitorAudit
 from app.models.audit_recommendation import AuditRecommendation
 from app.models.mention_sentiment import MentionSentiment
+from app.models.brand import Brand
 
 __all__ = [
     "Organization",
@@ -38,4 +39,5 @@ __all__ = [
     "CompetitorAudit",
     "AuditRecommendation",
     "MentionSentiment",
+    "Brand",
 ]
