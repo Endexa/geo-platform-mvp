@@ -14,6 +14,8 @@ from app.core.database import get_db
 from app.core.security import get_current_active_user
 from app.models import Profile
 from app.models.audit import Audit, AuditStatus
+from app.models.brand import Brand
+from app.schemas.brand import normalize_domain
 from app.models.audit_query import AuditQuery
 from app.models.engine_response import EngineResponse
 from app.models.page_score import PageScore
@@ -69,6 +71,17 @@ def create_audit(
         status=AuditStatus.PENDING.value,
     )
     db.add(audit)
+
+    # Auto-associate with brand if one exists for this user + domain
+    normalized = normalize_domain(request.url)
+    matching_brand = (
+        db.query(Brand)
+        .filter(Brand.user_id == current_user.id, Brand.domain == normalized)
+        .first()
+    )
+    if matching_brand:
+        audit.brand_id = matching_brand.id
+
     db.commit()
     db.refresh(audit)
 
