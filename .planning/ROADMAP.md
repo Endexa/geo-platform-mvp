@@ -381,6 +381,28 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
 | 9. Dashboard & Reporting | 3/3 | Complete | 2026-02-23 |
 | 10. Scale & Agency | 2/2 | Complete    | 2026-02-23 |
 
+### Phase 11: End-to-End Testing with Playwright
+
+**Goal:** The platform has comprehensive Playwright E2E tests covering all critical user journeys (auth, audit, dashboard, recommendations, competitors, brands) with production-grade test infrastructure (auth state reuse, Page Object Models, centralized mock data, event-based waits)
+**Depends on:** Phase 10
+**Requirements:** E2E-01, E2E-02, E2E-03, E2E-04, E2E-05
+
+**Success Criteria** (what must be TRUE):
+  1. Test infrastructure supports auth state reuse via Playwright project dependencies and storageState
+  2. All mock data is centralized in shared fixtures -- no inline mock definitions in spec files
+  3. Every testable page has a Page Object Model class with typed locators and action methods
+  4. Auth flow is fully tested: register, login, invalid credentials, auth guard redirect
+  5. Audit lifecycle is tested with mocked polling progression (pending -> crawling -> completed)
+  6. Dashboard tests use proper waits (no waitForTimeout) with full section coverage
+  7. Recommendations, competitors, and brands pages each have tests covering happy path and empty states
+  8. Zero instances of waitForTimeout across the entire test suite
+**Plans:** 3 plans
+
+Plans:
+- [ ] 11-01-PLAN.md -- Test infrastructure: enhanced Playwright config, auth setup project, centralized mock data, test helpers, 6 Page Object Models (E2E-01)
+- [ ] 11-02-PLAN.md -- Auth flow tests, navigation guard tests, audit lifecycle tests with mocked pipeline (E2E-02, E2E-03)
+- [ ] 11-03-PLAN.md -- Dashboard test refactor, recommendations/competitors/brands page tests (E2E-04, E2E-05)
+
 ---
 *Roadmap created: 2026-02-21*
-*Last updated: 2026-02-23 (Phase 9 complete: 3 plans, 3 waves)*
+*Last updated: 2026-02-23 (Phase 11 planned: 3 plans, 2 waves)*
