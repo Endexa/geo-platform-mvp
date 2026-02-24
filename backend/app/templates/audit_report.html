@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GEO Audit Report: {{ domain }}</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 2cm;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #1E3A8A;
+      margin: 0;
+      padding: 0;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .header {
+      border-bottom: 3px solid #1E40AF;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      color: #1E40AF;
+      margin: 0 0 4px 0;
+    }
+
+    .header p {
+      font-size: 11px;
+      color: #64748B;
+      margin: 2px 0;
+    }
+
+    h2 {
+      font-size: 16px;
+      color: #1E40AF;
+      margin: 24px 0 12px 0;
+      border-bottom: 1px solid #E2E8F0;
+      padding-bottom: 6px;
+    }
+
+    .score-grid {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .score-card {
+      flex: 1;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .score-value {
+      font-size: 36px;
+      font-weight: 700;
+    }
+
+    .score-value.high {
+      color: #059669;
+    }
+
+    .score-value.medium {
+      color: #D97706;
+    }
+
+    .score-value.low {
+      color: #DC2626;
+    }
+
+    .score-label {
+      font-size: 11px;
+      color: #64748B;
+      margin-top: 4px;
+    }
+
+    .score-sublabel {
+      font-size: 10px;
+      color: #94A3B8;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+    }
+
+    th {
+      background: #1E40AF;
+      color: white;
+      padding: 8px 10px;
+      text-align: left;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    td {
+      padding: 6px 10px;
+      border-bottom: 1px solid #E2E8F0;
+      font-size: 11px;
+    }
+
+    tr:nth-child(even) {
+      background: #F8FAFC;
+    }
+
+    .priority-high {
+      color: #DC2626;
+      font-weight: 600;
+    }
+
+    .priority-medium {
+      color: #D97706;
+      font-weight: 600;
+    }
+
+    .priority-low {
+      color: #059669;
+      font-weight: 600;
+    }
+
+    .category-grid {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .category-card {
+      flex: 1;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .category-score {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1E40AF;
+    }
+
+    .category-label {
+      font-size: 10px;
+      color: #64748B;
+      margin-top: 2px;
+    }
+
+    .footer {
+      margin-top: 32px;
+      padding-top: 12px;
+      border-top: 1px solid #E2E8F0;
+      text-align: center;
+      font-size: 10px;
+      color: #94A3B8;
+    }
+
+    .empty-note {
+      color: #94A3B8;
+      font-style: italic;
+      padding: 8px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>GEO Audit Report: {{ domain }}</h1>
+    <p>Generated: {{ generated_at }} | URL: {{ url }}</p>
+    {% if completed_at %}
+    <p>Audit completed: {{ completed_at }}</p>
+    {% endif %}
+  </div>
+
+  <!-- Score Overview -->
+  <div class="score-grid">
+    <div class="score-card">
+      <div class="score-value {{ 'high' if combined_geo_score >= 80 else ('medium' if combined_geo_score >= 50 else 'low') }}">
+        {{ combined_geo_score }}
+      </div>
+      <div class="score-label">Combined GEO Score</div>
+    </div>
+    <div class="score-card">
+      <div class="score-value {{ 'high' if visibility_score >= 80 else ('medium' if visibility_score >= 50 else 'low') }}">
+        {{ visibility_score }}
+      </div>
+      <div class="score-label">AI Visibility</div>
+      <div class="score-sublabel">{{ mention_count }} mentions</div>
+    </div>
+    <div class="score-card">
+      <div class="score-value {{ 'high' if optimization_score >= 80 else ('medium' if optimization_score >= 50 else 'low') }}">
+        {{ optimization_score }}
+      </div>
+      <div class="score-label">Site Optimization</div>
+    </div>
+  </div>
+
+  <!-- Per-Engine Breakdown -->
+  <h2>AI Engine Breakdown</h2>
+  {% if per_engine_scores %}
+  <table>
+    <thead>
+      <tr>
+        <th>Engine</th>
+        <th>Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for engine, score in per_engine_scores.items() %}
+      <tr>
+        <td>{{ engine | capitalize }}</td>
+        <td>{{ score }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty-note">No engine data available.</p>
+  {% endif %}
+
+  <!-- Category Scores -->
+  <h2>Category Scores</h2>
+  <div class="category-grid">
+    <div class="category-card">
+      <div class="category-score">{{ category_averages.get('crawlability', 0) }}</div>
+      <div class="category-label">Crawlability</div>
+    </div>
+    <div class="category-card">
+      <div class="category-score">{{ category_averages.get('content_structure', 0) }}</div>
+      <div class="category-label">Content Structure</div>
+    </div>
+    <div class="category-card">
+      <div class="category-score">{{ category_averages.get('structured_data', 0) }}</div>
+      <div class="category-label">Structured Data</div>
+    </div>
+    <div class="category-card">
+      <div class="category-score">{{ category_averages.get('authority', 0) }}</div>
+      <div class="category-label">Authority</div>
+    </div>
+  </div>
+
+  <!-- Recommendations -->
+  <h2>Recommendations ({{ recommendations | length }})</h2>
+  {% if recommendations %}
+  <table>
+    <thead>
+      <tr>
+        <th>Priority</th>
+        <th>Category</th>
+        <th>Criterion</th>
+        <th>Summary</th>
+        <th>Gap</th>
+        <th>Impact</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for rec in recommendations %}
+      <tr>
+        <td class="priority-{{ rec.priority }}">{{ rec.priority | upper }}</td>
+        <td>{{ rec.category | replace('_', ' ') | title }}</td>
+        <td>{{ rec.criterion_name }}</td>
+        <td>{{ rec.summary }}</td>
+        <td>{{ rec.gap_score }}</td>
+        <td>{{ rec.impact_label }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty-note">No recommendations generated.</p>
+  {% endif %}
+
+  <!-- Content Gaps -->
+  {% if content_gaps %}
+  <h2>Content Gaps ({{ content_gaps | length }})</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Query</th>
+        <th>Competitors Mentioned</th>
+        <th>Suggested Title</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for gap in content_gaps %}
+      <tr>
+        <td>{{ gap.query_text }}</td>
+        <td>{{ gap.competitors_mentioned | join(', ') }}</td>
+        <td>{{ gap.brief.title if gap.brief else '' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+
+  <!-- Competitors -->
+  <h2>Competitive Landscape</h2>
+  {% if all_competitors %}
+  <table>
+    <thead>
+      <tr>
+        <th>Competitor</th>
+        <th>Share of Voice (%)</th>
+        <th>Optimization Score</th>
+        <th>URL</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for comp in all_competitors %}
+      <tr>
+        <td>{{ comp.entity_name }}</td>
+        <td>{{ "%.1f" | format(comp.share_of_voice | float) }}%</td>
+        <td>
+          {% set ca_match = competitor_audits | selectattr('competitor_name', 'equalto', comp.entity_name) | first %}
+          {% if ca_match %}{{ ca_match.optimization_score or 'N/A' }}{% else %}N/A{% endif %}
+        </td>
+        <td>{{ comp.resolved_url or 'N/A' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty-note">No competitor data available.</p>
+  {% endif %}
+
+  <div class="footer">
+    <p>GEO Platform - AI Brand Visibility Audit | {{ domain }} | {{ generated_at }}</p>
+  </div>
+</body>
+</html>

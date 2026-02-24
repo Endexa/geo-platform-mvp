@@ -171,6 +171,10 @@ Recent decisions affecting current work:
 - [10-02]: Mention count via AuditQuery->EngineResponse->BrandMention join (no direct audit_id FK on BrandMention)
 - [10-02]: Brands page uses single /brands/overview endpoint for all data (avoids waterfall requests)
 
+### Roadmap Evolution
+
+- Phase 11 added: End-to-End Testing with Playwright
+
 ### Pending Todos
 
 None yet.

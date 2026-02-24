@@ -1,160 +1,342 @@
 <template>
   <div class="space-y-6">
-        <!-- Header -->
-        <div>
-          <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p class="text-gray-600 mt-1">Monitor your GEO performance at a glance</p>
-        </div>
+    <!-- Header row: title + audit selector + export buttons -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+        <p class="text-sm text-gray-500">GEO performance overview</p>
+      </div>
+      <div class="flex items-center gap-4">
+        <select
+          v-if="auditList.length > 0"
+          v-model="selectedAuditId"
+          class="text-sm border border-gray-300 rounded-lg px-3 py-2 focus-visible:ring-2 focus-visible:ring-[#1E40AF] cursor-pointer"
+        >
+          <option v-for="a in auditList" :key="a.id" :value="a.id">
+            {{ a.domain }} -- {{ formatDate(a.completed_at || a.created_at) }}
+          </option>
+        </select>
+        <ExportActions
+          v-if="overview"
+          :audit-id="selectedAuditId!"
+          :domain="overview.domain"
+        />
+      </div>
+    </div>
 
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <!-- Average GEO Score -->
-          <div class="card">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-sm font-medium text-gray-600">Avg GEO Score</p>
-                <p class="text-3xl font-bold mt-2" :class="getScoreColor(stats.avgGeoScore)">
-                  {{ stats.avgGeoScore }}
-                </p>
-              </div>
-              <div class="w-16 h-16 rounded-full flex items-center justify-center"
-                   :class="getScoreBg(stats.avgGeoScore)">
-                <svg class="w-8 h-8" :class="getScoreColor(stats.avgGeoScore)" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          <!-- Total Analyses -->
-          <div class="card">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-sm font-medium text-gray-600">Total Analyses</p>
-                <p class="text-3xl font-bold text-gray-900 mt-2">{{ stats.totalAnalyses }}</p>
-              </div>
-              <div class="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center">
-                <svg class="w-8 h-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          <!-- Status -->
-          <div class="card">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-sm font-medium text-gray-600">Status</p>
-                <p class="text-lg font-semibold text-success-600 mt-2">All Systems Go</p>
-              </div>
-              <div class="w-16 h-16 bg-success-50 rounded-full flex items-center justify-center">
-                <svg class="w-8 h-8 text-success-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Recent Audits -->
-        <div class="card">
-          <h2 class="text-xl font-bold text-gray-900 mb-4">Recent Audits</h2>
-          <div v-if="loading" class="space-y-3">
-            <div v-for="i in 3" :key="i" class="skeleton h-16 rounded-lg"></div>
-          </div>
-          <div v-else-if="recentAudits.length === 0" class="text-center py-12">
-            <svg class="w-16 h-16 mx-auto text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            <p class="text-gray-500 mt-4">No analyses yet. Start by analyzing a URL!</p>
-            <NuxtLink to="/analyze" class="btn-primary mt-4 inline-block">
-              Analyze Now
-            </NuxtLink>
-          </div>
-          <div v-else class="overflow-x-auto">
-            <table class="w-full">
-              <thead>
-                <tr class="border-b border-gray-200">
-                  <th class="text-left py-3 px-4 text-sm font-semibold text-gray-700">Website</th>
-                  <th class="text-left py-3 px-4 text-sm font-semibold text-gray-700">GEO Score</th>
-                  <th class="text-left py-3 px-4 text-sm font-semibold text-gray-700">Status</th>
-                  <th class="text-left py-3 px-4 text-sm font-semibold text-gray-700">Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="audit in recentAudits" :key="audit.id" class="border-b border-gray-100 hover:bg-gray-50">
-                  <td class="py-3 px-4">{{ audit.website }}</td>
-                  <td class="py-3 px-4">
-                    <span class="font-semibold" :class="getScoreColor(audit.geo_score)">
-                      {{ audit.geo_score }}
-                    </span>
-                  </td>
-                  <td class="py-3 px-4">
-                    <span class="badge" :class="getStatusClass(audit.status)">
-                      {{ audit.status }}
-                    </span>
-                  </td>
-                  <td class="py-3 px-4 text-gray-600 text-sm">
-                    {{ formatDate(audit.created_at) }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+    <!-- Loading skeleton -->
+    <div v-if="loading" class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div v-for="i in 3" :key="i" class="bg-white rounded-xl border border-gray-200 p-6 h-40 animate-pulse">
+          <div class="h-4 bg-gray-200 rounded w-1/2 mb-4" />
+          <div class="h-16 bg-gray-200 rounded w-1/3 mx-auto" />
         </div>
       </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white rounded-xl border border-gray-200 p-6 h-64 animate-pulse" />
+        <div class="bg-white rounded-xl border border-gray-200 p-6 h-64 animate-pulse" />
+      </div>
+    </div>
+
+    <!-- Empty state -->
+    <div
+      v-else-if="!overview"
+      class="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center"
+    >
+      <ShieldCheckIcon class="w-16 h-16 mx-auto text-gray-300" />
+      <h2 class="text-lg font-semibold text-gray-700 mt-4">No completed audits yet</h2>
+      <p class="text-gray-500 mt-2 mb-6">Run your first AI audit to see your GEO performance.</p>
+      <NuxtLink
+        to="/audit"
+        class="inline-flex items-center px-6 py-3 bg-[#1E40AF] text-white rounded-lg font-medium hover:bg-[#1E3A8A] transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-[#1E40AF] focus-visible:ring-offset-2"
+      >
+        Start an Audit
+      </NuxtLink>
+    </div>
+
+    <!-- Dashboard content -->
+    <template v-else>
+      <!-- Score hero -->
+      <DashboardHero
+        :combined-score="overview.combined_geo_score"
+        :visibility-score="overview.visibility_score"
+        :optimization-score="overview.optimization_score"
+        :mention-count="overview.mention_count"
+        :query-mention-rate="overview.query_mention_rate"
+        :combined-delta="scoreDeltas.combined"
+        :visibility-delta="scoreDeltas.visibility"
+        :optimization-delta="scoreDeltas.optimization"
+      />
+
+      <!-- Two-column: Top Issues + Per-Engine Breakdown -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Top Issues -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Top Issues to Fix</h3>
+          <div v-if="overview.top_issues.length > 0" class="space-y-3">
+            <div
+              v-for="issue in overview.top_issues"
+              :key="issue.id"
+              class="flex items-start gap-3 p-3 rounded-lg bg-gray-50"
+            >
+              <span
+                class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold shrink-0 mt-0.5"
+                :class="priorityClass(issue.priority)"
+              >
+                {{ issue.priority.toUpperCase() }}
+              </span>
+              <div class="min-w-0">
+                <p class="text-sm font-medium text-gray-900 truncate">{{ issue.summary }}</p>
+                <p class="text-xs text-gray-500">{{ issue.category.replace('_', ' ') }} | Gap: {{ issue.gap_score }}</p>
+              </div>
+            </div>
+          </div>
+          <p v-else class="text-sm text-gray-400 py-4 text-center">No open high-priority issues</p>
+          <NuxtLink
+            to="/recommendations"
+            class="mt-4 block text-center text-sm font-medium text-[#1E40AF] hover:text-[#1E3A8A] cursor-pointer"
+          >
+            View all recommendations
+          </NuxtLink>
+        </div>
+
+        <!-- Per-Engine Breakdown -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">AI Engine Breakdown</h3>
+          <div v-if="perEngineList.length > 0" class="space-y-4">
+            <div v-for="item in perEngineList" :key="item.engine" class="flex items-center gap-3">
+              <span class="text-sm font-medium text-gray-700 w-24 shrink-0 capitalize">{{ item.engine }}</span>
+              <div class="flex-1 bg-gray-200 rounded-full h-2.5">
+                <div
+                  class="h-2.5 rounded-full bg-[#1E40AF] transition-all duration-300"
+                  :style="{ width: Math.min(item.score, 100) + '%' }"
+                />
+              </div>
+              <span class="text-sm font-semibold text-gray-900 w-8 text-right">{{ item.score }}</span>
+            </div>
+          </div>
+          <p v-else class="text-sm text-gray-400 py-4 text-center">No engine data available</p>
+        </div>
+      </div>
+
+      <!-- Competitive Position -->
+      <CompetitorRadar
+        :user-scores="overview.competitive_position.user_scores"
+        :competitors="overview.competitive_position.competitors"
+      />
+
+      <!-- Audit History Trend (populated by Plan 09-03) -->
+      <TrendChart
+        v-if="auditHistory.length > 0"
+        :history="auditHistory"
+      />
+      <div
+        v-else-if="historyLoading"
+        class="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
+      >
+        <div class="h-64 bg-gray-100 rounded animate-pulse" />
+      </div>
+
+      <!-- Recommendation Progress -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-lg font-semibold text-gray-900">Recommendation Progress</h3>
+          <span class="text-sm text-gray-500">
+            {{ overview.recommendation_progress.done + overview.recommendation_progress.dismissed }}/{{ overview.recommendation_progress.total }} addressed
+          </span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+          <div
+            class="bg-green-500 h-2.5 rounded-full transition-all duration-300"
+            :style="{ width: recProgressPercent + '%' }"
+          />
+        </div>
+        <div class="mt-2 flex items-center gap-4 text-xs text-gray-500">
+          <span>
+            <span class="inline-block w-2 h-2 rounded-full bg-green-400 mr-1" />
+            Done: {{ overview.recommendation_progress.done }}
+          </span>
+          <span>
+            <span class="inline-block w-2 h-2 rounded-full bg-gray-400 mr-1" />
+            Dismissed: {{ overview.recommendation_progress.dismissed }}
+          </span>
+          <span>
+            <span class="inline-block w-2 h-2 rounded-full bg-amber-400 mr-1" />
+            Open: {{ overview.recommendation_progress.open }}
+          </span>
+        </div>
+        <NuxtLink
+          to="/recommendations"
+          class="mt-4 block text-center text-sm font-medium text-[#1E40AF] hover:text-[#1E3A8A] cursor-pointer"
+        >
+          View all recommendations
+        </NuxtLink>
+      </div>
+    </template>
+  </div>
 </template>
 
 <script setup lang="ts">
+import { ShieldCheckIcon } from '@heroicons/vue/24/outline'
+
 definePageMeta({ layout: 'dashboard' })
 
-const config = useRuntimeConfig()
-const loading = ref(true)
-const stats = ref({
-  avgGeoScore: 0,
-  totalAnalyses: 0
-})
-const recentAudits = ref([])
+interface DashboardOverview {
+  audit_id: string
+  domain: string
+  url: string
+  completed_at: string | null
+  combined_geo_score: number
+  visibility_score: number
+  optimization_score: number
+  per_engine_scores: Record<string, number>
+  mention_count: number
+  query_mention_rate: number
+  top_issues: Array<{
+    id: string
+    page_url: string | null
+    criterion_id: string
+    criterion_name: string
+    category: string
+    priority: string
+    impact_label: string
+    summary: string
+    gap_score: number
+  }>
+  competitive_position: {
+    user_scores: Record<string, number>
+    competitors: Array<{
+      name: string
+      share_of_voice: number
+      scores: Record<string, number>
+    }>
+  }
+  recommendation_progress: {
+    done: number
+    dismissed: number
+    open: number
+    total: number
+  }
+}
 
-// Fetch dashboard stats
+interface AuditListItem {
+  id: string
+  domain: string
+  url: string
+  status: string
+  created_at: string
+  completed_at: string | null
+}
+
+interface AuditHistoryEntry {
+  date: string
+  combined_score: number
+  visibility_score: number
+  optimization_score: number
+  per_engine_scores?: Record<string, number>
+  crawlability_avg?: number
+  content_structure_avg?: number
+  structured_data_avg?: number
+  authority_avg?: number
+}
+
+const loading = ref(true)
+const overview = ref<DashboardOverview | null>(null)
+const auditList = ref<AuditListItem[]>([])
+const selectedAuditId = ref<string | null>(null)
+const error = ref<string | null>(null)
+const auditHistory = ref<AuditHistoryEntry[]>([])
+const historyLoading = ref(false)
+
+// Fetch user's completed audits on mount
 onMounted(async () => {
   try {
-    const response = await fetch(`${config.public.apiUrl}/api/v1/dashboard/stats`)
-    const data = await response.json()
+    const audits = await useApiFetch<AuditListItem[]>('/audit')
+    const completed = audits.filter((a: AuditListItem) => a.status === 'completed')
+    auditList.value = completed
 
-    stats.value = {
-      avgGeoScore: Math.round(data.avg_geo_score) || 0,
-      totalAnalyses: data.total_analyses || 0
+    if (completed.length > 0) {
+      selectedAuditId.value = completed[0].id
     }
-    recentAudits.value = data.recent_audits || []
-  } catch (error) {
-    console.error('Failed to fetch dashboard stats:', error)
+  } catch (e) {
+    console.error('Failed to fetch audits:', e)
+    error.value = 'Failed to load audits'
   } finally {
     loading.value = false
   }
 })
 
-const getScoreColor = (score: number) => {
-  if (score >= 80) return 'text-success-600'
-  if (score >= 50) return 'text-warning-600'
-  return 'text-danger-600'
+// Watch audit selection and fetch overview + history
+watch(selectedAuditId, async (newId) => {
+  if (!newId) {
+    overview.value = null
+    return
+  }
+
+  loading.value = true
+  try {
+    const data = await useApiFetch<DashboardOverview>(`/dashboard/overview/${newId}`)
+    overview.value = data
+
+    // Fetch history (supplementary -- fail silently)
+    historyLoading.value = true
+    try {
+      const historyData = await useApiFetch<{
+        domain: string
+        entries: AuditHistoryEntry[]
+        total: number
+      }>('/dashboard/history', { params: { domain: data.domain } })
+      auditHistory.value = historyData.entries || []
+    } catch {
+      auditHistory.value = []
+    } finally {
+      historyLoading.value = false
+    }
+  } catch (e) {
+    console.error('Failed to fetch dashboard overview:', e)
+    overview.value = null
+  } finally {
+    loading.value = false
+  }
+})
+
+// Computed properties
+const perEngineList = computed(() => {
+  if (!overview.value) return []
+  return Object.entries(overview.value.per_engine_scores).map(([engine, score]) => ({
+    engine,
+    score,
+  }))
+})
+
+const scoreDeltas = computed(() => {
+  if (auditHistory.value.length < 2) {
+    return { combined: null, visibility: null, optimization: null }
+  }
+  const latest = auditHistory.value[auditHistory.value.length - 1]
+  const prev = auditHistory.value[auditHistory.value.length - 2]
+  return {
+    combined: latest.combined_score - prev.combined_score,
+    visibility: latest.visibility_score - prev.visibility_score,
+    optimization: latest.optimization_score - prev.optimization_score,
+  }
+})
+
+const recProgressPercent = computed(() => {
+  if (!overview.value) return 0
+  const p = overview.value.recommendation_progress
+  if (p.total === 0) return 0
+  return Math.round(((p.done + p.dismissed) / p.total) * 100)
+})
+
+function priorityClass(priority: string): string {
+  if (priority === 'high') return 'bg-red-100 text-red-700'
+  if (priority === 'medium') return 'bg-amber-100 text-amber-700'
+  return 'bg-green-100 text-green-700'
 }
 
-const getScoreBg = (score: number) => {
-  if (score >= 80) return 'bg-success-50'
-  if (score >= 50) return 'bg-warning-50'
-  return 'bg-danger-50'
-}
-
-const getStatusClass = (status: string) => {
-  if (status === 'completed') return 'badge-success'
-  if (status === 'processing') return 'badge-warning'
-  return 'badge-danger'
-}
-
-const formatDate = (dateString: string) => {
+function formatDate(dateString: string): string {
   const date = new Date(dateString)
-  return date.toLocaleDateString() + ' ' + date.toLocaleTimeString()
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 }
 </script>

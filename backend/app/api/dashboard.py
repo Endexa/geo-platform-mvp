@@ -1,122 +1,151 @@
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
-from sqlalchemy import func
-from datetime import datetime, timedelta
-from app.core.database import get_db
-from app.models import Analysis, Website, Profile
-from app.core.security import get_current_active_user
-from app.core.rate_limiter import standard_rate_limit
+"""Dashboard API endpoints for overview, history, and report export.
+
+Provides GET dashboard overview (aggregated scores, issues, competitors),
+GET audit history (trend data), and GET export as PDF or CSV.
+
+Completely replaces the legacy dashboard that used the obsolete Analysis model.
+All endpoints require authentication and verify audit ownership.
+"""
+
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import Response, StreamingResponse
 from loguru import logger
+from sqlalchemy.orm import Session
+
+from app.core.database import get_db
+from app.core.security import get_current_active_user
+from app.models import Profile
+from app.schemas.dashboard import AuditHistoryResponse, DashboardOverviewResponse
+from app.services.dashboard_service import DashboardService
 
 router = APIRouter()
 
 
-@router.get("/stats", dependencies=[Depends(standard_rate_limit)])
-async def get_dashboard_stats(
+@router.get("/overview/{audit_id}", response_model=DashboardOverviewResponse)
+def get_dashboard_overview(
+    audit_id: str,
     db: Session = Depends(get_db),
     current_user: Profile = Depends(get_current_active_user),
 ):
+    """Get single-screen dashboard overview for an audit.
+
+    Returns combined GEO score, visibility/optimization scores,
+    per-engine breakdown, top 5 issues, competitive position,
+    and recommendation progress in a single response.
     """
-    Get aggregated statistics for dashboard.
+    service = DashboardService(db)
+    try:
+        data = service.get_overview(audit_id, str(current_user.id))
+    except ValueError as e:
+        msg = str(e)
+        if "denied" in msg.lower():
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied",
+            )
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Audit not found",
+        )
 
-    **Security Features:**
-    - Rate limited: 100 requests per minute
-    - Read-only operation
-    - Authentication required
-    """
-    logger.info("Dashboard stats requested")
-
-    # Total analyses
-    total_analyses = db.query(func.count(Analysis.id)).scalar()
-
-    # Average GEO score
-    avg_geo_score = db.query(func.avg(Analysis.geo_score)).filter(
-        Analysis.status == "completed"
-    ).scalar() or 0
-
-    # Recent analyses (last 30 days)
-    thirty_days_ago = datetime.utcnow() - timedelta(days=30)
-    recent_analyses = db.query(Analysis).filter(
-        Analysis.created_at >= thirty_days_ago,
-        Analysis.status == "completed"
-    ).order_by(Analysis.created_at.desc()).all()
-
-    # Calculate trend data
-    trend_data = []
-    for analysis in recent_analyses[:30]:  # Last 30 analyses
-        trend_data.append({
-            "date": analysis.created_at.isoformat(),
-            "geo_score": analysis.geo_score,
-            "visibility_score": analysis.visibility_score,
-            "readability_score": analysis.readability_score,
-            "authority_score": analysis.authority_score
-        })
-
-    # Recent audits
-    recent_audits = db.query(Analysis).order_by(
-        Analysis.created_at.desc()
-    ).limit(5).all()
-
-    logger.info(f"Dashboard stats retrieved: {total_analyses} total analyses")
-
-    return {
-        "total_analyses": total_analyses,
-        "avg_geo_score": round(avg_geo_score, 2),
-        "trend_data": trend_data,
-        "recent_audits": [
-            {
-                "id": str(audit.id),
-                "website": audit.website.domain,
-                "geo_score": audit.geo_score,
-                "status": audit.status,
-                "created_at": audit.created_at.isoformat()
-            }
-            for audit in recent_audits
-        ]
-    }
+    logger.info(
+        "Dashboard overview served for audit {} by user {}",
+        audit_id,
+        current_user.id,
+    )
+    return DashboardOverviewResponse(**data)
 
 
-@router.get("/history", dependencies=[Depends(standard_rate_limit)])
-async def get_analysis_history(
-    days: int = 30,
+@router.get("/history", response_model=AuditHistoryResponse)
+def get_audit_history(
+    domain: str,
     db: Session = Depends(get_db),
     current_user: Profile = Depends(get_current_active_user),
 ):
+    """Get audit history for a domain for trend visualization.
+
+    Returns time-series data for all completed audits of the given domain
+    owned by the current user. Filters by domain AND user_id.
     """
-    Get analysis history for charts.
+    service = DashboardService(db)
+    data = service.get_audit_history(domain, str(current_user.id))
 
-    **Security Features:**
-    - Rate limited: 100 requests per minute
-    - Input validation: Days parameter validated
-    - Read-only operation
-    - Authentication required
+    logger.info(
+        "Audit history served for domain '{}': {} entries",
+        domain,
+        data["total"],
+    )
+    return AuditHistoryResponse(**data)
+
+
+@router.get("/{audit_id}/export/pdf")
+def export_pdf(
+    audit_id: str,
+    db: Session = Depends(get_db),
+    current_user: Profile = Depends(get_current_active_user),
+):
+    """Export complete audit report as PDF.
+
+    Uses WeasyPrint to render an HTML template to PDF. This is a sync
+    endpoint so FastAPI auto-runs it in a threadpool, preventing
+    event loop blocking during PDF generation.
     """
-    # Validate days parameter
-    if days < 1 or days > 365:
-        logger.warning(f"Invalid days parameter: {days}")
-        days = 30  # Default to 30 days if invalid
+    service = DashboardService(db)
+    try:
+        pdf_bytes, domain = service.export_pdf(audit_id, str(current_user.id))
+    except ValueError as e:
+        msg = str(e)
+        if "denied" in msg.lower():
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied",
+            )
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Audit not found",
+        )
 
-    logger.info(f"Analysis history requested: last {days} days")
+    logger.info("PDF export served for audit {}", audit_id)
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": f'attachment; filename="geo-audit-{domain}.pdf"'
+        },
+    )
 
-    start_date = datetime.utcnow() - timedelta(days=days)
 
-    analyses = db.query(Analysis).filter(
-        Analysis.created_at >= start_date,
-        Analysis.status == "completed"
-    ).order_by(Analysis.created_at).all()
+@router.get("/{audit_id}/export/csv")
+def export_csv(
+    audit_id: str,
+    db: Session = Depends(get_db),
+    current_user: Profile = Depends(get_current_active_user),
+):
+    """Export complete audit report as CSV.
 
-    logger.info(f"Analysis history retrieved: {len(analyses)} analyses")
+    Generates a CSV with sections: scores, per-engine breakdown, category
+    scores, recommendations, content gaps, and competitors.
+    """
+    service = DashboardService(db)
+    try:
+        content, domain = service.export_csv(audit_id, str(current_user.id))
+    except ValueError as e:
+        msg = str(e)
+        if "denied" in msg.lower():
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied",
+            )
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Audit not found",
+        )
 
-    return {
-        "period": f"last_{days}_days",
-        "data": [
-            {
-                "date": analysis.created_at.date().isoformat(),
-                "geo_score": analysis.geo_score,
-                "visibility_score": analysis.visibility_score,
-                "readability_score": analysis.readability_score,
-                "authority_score": analysis.authority_score
-            }
-            for analysis in analyses
-        ]
-    }
+    logger.info("CSV export served for audit {}", audit_id)
+    return StreamingResponse(
+        iter([content]),
+        media_type="text/csv",
+        headers={
+            "Content-Disposition": f'attachment; filename="geo-audit-{domain}.csv"'
+        },
+    )

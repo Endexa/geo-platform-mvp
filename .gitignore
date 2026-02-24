@@ -36,5 +36,10 @@ geo_data_points/logs/
 .DS_Store
 Thumbs.db
 
+# Playwright
+frontend/playwright/.auth/
+frontend/playwright-report/
+frontend/test-results/
+
 # Nested git repos (subagent plugin)
 .claude/awesome-claude-code-subagents/.git/
