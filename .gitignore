@@ -43,3 +43,9 @@ frontend/test-results/
 
 # Nested git repos (subagent plugin)
 .claude/awesome-claude-code-subagents/.git/
+
+# Claude Code local skills cache
+.claude/skills/
+
+# Backend logs (already covered by *.log but explicit)
+backend/logs/
