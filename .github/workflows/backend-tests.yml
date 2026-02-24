@@ -7,7 +7,12 @@ on:
     branches: [main]
 
 # Backend tests run against real Supabase PostgreSQL database.
-# Requires GitHub Secrets: DATABASE_URL, SECRET_KEY, SUPABASE_URL, SUPABASE_KEY
+# Requires GitHub Secrets: DATABASE_URL (pooler URL for IPv4), SECRET_KEY, SUPABASE_URL, SUPABASE_KEY
+#
+# IMPORTANT: DATABASE_URL must use the Supabase POOLER connection string (IPv4),
+# not the direct connection (IPv6 only). GitHub Actions does not support IPv6.
+# Find it at: Supabase Dashboard > Project Settings > Database > Connection string > Session mode
+# Format: postgresql://postgres.PROJECT_REF:PASSWORD@aws-0-REGION.pooler.supabase.com:5432/postgres
 
 jobs:
   backend:
@@ -17,9 +22,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Prefer IPv4 for Supabase connectivity
-        run: sudo sh -c 'echo "precedence ::ffff:0:0/96  100" >> /etc/gai.conf'
 
       - name: Set up Python
         uses: actions/setup-python@v5
