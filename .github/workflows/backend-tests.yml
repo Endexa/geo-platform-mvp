@@ -18,6 +18,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Prefer IPv4 for Supabase connectivity
+        run: sudo sh -c 'echo "precedence ::ffff:0:0/96  100" >> /etc/gai.conf'
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
