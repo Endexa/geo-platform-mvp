@@ -1,15 +1,15 @@
 # GEO Platform MVP
 
-A production-grade Generative Engine Optimization (GEO) platform built with a modern, scalable stack.
+A Generative Engine Optimization (GEO) platform that analyzes how well websites are optimized for AI language models (ChatGPT, Claude, Perplexity, Gemini). Scores websites 0-100 across 61 criteria and generates optimization recommendations.
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
 - **Node.js**: v18+
 - **Python**: 3.11+
-- **Docker**: Latest version
-- **Supabase Account**: For database and auth
+- **Docker**: For Redis only (or install Redis natively)
+- **Supabase Account**: Remote PostgreSQL database
 
 ### Installation
 
@@ -23,10 +23,10 @@ A production-grade Generative Engine Optimization (GEO) platform built with a mo
    ```bash
    cd backend
    python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   source venv/bin/activate
    pip install -r requirements.txt
    cp .env.example .env
-   # Edit .env with your Supabase credentials
+   # Edit .env with your Supabase DATABASE_URL and API keys
    ```
 
 3. **Setup Frontend**
@@ -34,205 +34,124 @@ A production-grade Generative Engine Optimization (GEO) platform built with a mo
    cd frontend
    npm install
    cp .env.example .env
-   # Edit .env with your API URL
+   # Edit .env with your Supabase URL
    ```
+
+4. **Setup Database**
+   - Create a Supabase project at https://supabase.com
+   - Disable the Data API (Settings > API) — not needed
+   - Enable pgvector extension via SQL Editor:
+     ```sql
+     CREATE EXTENSION IF NOT EXISTS vector;
+     ```
+   - Run migrations:
+     ```bash
+     cd backend && source venv/bin/activate && alembic upgrade head
+     ```
 
 ### Running the Application
 
-#### Development Mode
-
-**Terminal 1 - Backend:**
+**One command (recommended):**
 ```bash
-cd backend
-source venv/bin/activate
-uvicorn app.main:app --reload --port 8000
+./start.sh
 ```
 
-**Terminal 2 - Frontend:**
+This starts Redis (Docker), runs migrations, launches the backend, Celery worker, and frontend.
+
+**Manual (3 terminals):**
+
+Terminal 1 — Redis:
 ```bash
-cd frontend
-npm run dev
+docker run -d --name geo-redis -p 6379:6379 redis:7-alpine
 ```
 
-Access the app at `http://localhost:3000`
-
-#### Using Docker
-
+Terminal 2 — Backend + Celery:
 ```bash
-docker-compose up --build
+cd backend && source venv/bin/activate
+uvicorn app.main:app --reload --port 8000 &
+celery -A app.tasks.celery_app worker --loglevel=info -Q geo_platform,audit,analysis
 ```
 
-## 📁 Project Structure
+Terminal 3 — Frontend:
+```bash
+cd frontend && npm run dev
+```
+
+Open **http://localhost:3000**, register an account, run an audit.
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | Nuxt 3 (Vue 3) + Tailwind CSS + Chart.js |
+| Backend | FastAPI + SQLAlchemy + Pydantic v2 |
+| Database | Supabase PostgreSQL + pgvector |
+| Task Queue | Celery + Redis |
+| AI Engines | LiteLLM (ChatGPT, Claude, Perplexity, Gemini) |
+| Auth | JWT (PyJWT + pwdlib/bcrypt) |
+
+## Project Structure
 
 ```
 geo-platform-mvp/
-├── backend/              # FastAPI Python backend
+├── start.sh                # One-command dev server launcher
+├── backend/                # FastAPI Python backend
 │   ├── app/
-│   │   ├── api/         # API endpoints
-│   │   ├── core/        # Config, security
-│   │   ├── models/      # Database models
-│   │   ├── services/    # Business logic
-│   │   └── main.py      # App entry point
-│   ├── requirements.txt
-│   └── Dockerfile
-│
-├── frontend/            # Nuxt 3 frontend
-│   ├── components/      # Vue components
-│   ├── layouts/         # Layout templates
-│   ├── pages/           # Route pages
-│   ├── composables/     # Reusable logic
-│   └── nuxt.config.ts
-│
-├── docker-compose.yml
-└── README.md
+│   │   ├── api/           # API endpoints
+│   │   ├── core/          # Config, security, middleware
+│   │   ├── models/        # SQLAlchemy models (22 tables)
+│   │   ├── services/      # Business logic + scoring
+│   │   └── tasks/         # Celery background tasks
+│   ├── alembic/           # Database migrations
+│   └── requirements.txt
+├── frontend/              # Nuxt 3 frontend
+│   ├── components/        # Vue components
+│   ├── pages/             # Route pages
+│   ├── composables/       # Reusable logic
+│   └── tests/e2e/         # Playwright E2E tests (45 tests)
+└── docker-compose.yml     # Redis + optional Docker dev setup
 ```
 
-## 🔧 Tech Stack
+## Environment Variables
 
-### Frontend
-- **Nuxt 3** - Vue.js framework
-- **Tailwind CSS** - Utility-first CSS
-- **Tremor** - Dashboard charts
-- **Lucide** - Icon library
-
-### Backend
-- **FastAPI** - Modern Python API framework
-- **Supabase** - PostgreSQL database with auth
-- **LiteLLM** - Multi-provider LLM router
-- **LangChain** - LLM orchestration
-- **Redis + Celery** - Background tasks
-
-### Database
-- **PostgreSQL 15+** - Relational data
-- **pgvector** - Vector embeddings
-
-## 🎯 Core Features
-
-### Module 1: Intelligence Engine
-- URL analysis and scoring
-- GEO score calculation (0-100)
-- Visibility, Readability, Authority metrics
-- Historical trend analysis
-
-### Module 2: Optimization Engine
-- AI-powered recommendations
-- Gap analysis vs competitors
-- Jira integration for task creation
-- Priority-based action items
-
-### Module 3: Brand Voice
-- Vector-based similarity checking
-- Rule-based content validation
-- Hybrid scoring algorithm
-- Real-time content feedback
-
-## 🔐 Environment Variables
-
-### Backend (.env)
+### Backend (`backend/.env`)
 ```env
-SUPABASE_URL=your-project-url
+DATABASE_URL=postgresql://postgres:PASSWORD@db.PROJECT_REF.supabase.co:5432/postgres
+SUPABASE_URL=https://PROJECT_REF.supabase.co
 SUPABASE_KEY=your-anon-key
-OPENAI_API_KEY=your-openai-key
-REDIS_URL=redis://localhost:6379
-STRIPE_SECRET_KEY=your-stripe-key
-JIRA_BASE_URL=your-jira-url
-JIRA_API_TOKEN=your-jira-token
+REDIS_URL=redis://localhost:6379/0
+SECRET_KEY=your-secret-key
+OPENAI_API_KEY=...
+ANTHROPIC_API_KEY=...
+GEMINI_API_KEY=...
 ```
 
-### Frontend (.env)
+### Frontend (`frontend/.env`)
 ```env
-NUXT_PUBLIC_API_URL=http://localhost:8000
-NUXT_PUBLIC_SUPABASE_URL=your-project-url
+NUXT_PUBLIC_API_BASE=http://localhost:8000/api/v1
+NUXT_PUBLIC_SUPABASE_URL=https://PROJECT_REF.supabase.co
 NUXT_PUBLIC_SUPABASE_KEY=your-anon-key
 ```
 
-## 📊 Database Setup
-
-1. Create a Supabase project
-2. Enable pgvector extension:
-   ```sql
-   CREATE EXTENSION IF NOT EXISTS vector;
-   ```
-3. Run migrations:
-   ```bash
-   cd backend
-   alembic upgrade head
-   ```
-
-## 🚢 Deployment
-
-### Frontend (Vercel)
-```bash
-cd frontend
-vercel --prod
-```
-
-### Backend (Railway/Render)
-- Connect GitHub repository
-- Set environment variables
-- Deploy from main branch
-
-### Database
-- Use Supabase cloud hosting
-- Configure connection pooling
-- Enable Row Level Security (RLS)
-
-## 🧪 Testing
+## Testing
 
 ```bash
-# Backend tests
-cd backend
-pytest
+# E2E tests (Playwright — mocked API, no backend needed)
+cd frontend && npx playwright test
 
-# Frontend tests
-cd frontend
-npm run test
+# Interactive test UI
+cd frontend && npx playwright test --ui
+
+# Frontend build check
+cd frontend && npm run build
 ```
 
-## 📈 Monitoring
+## API Documentation
 
-- Backend logs: Railway/Render dashboard
-- Frontend analytics: Vercel Analytics
-- Database: Supabase dashboard
-- Errors: Sentry (optional)
+Once the backend is running:
+- **Swagger UI**: http://localhost:8000/api/v1/docs
+- **Health**: http://localhost:8000/health
 
-## 🔄 Development Workflow
-
-1. Create feature branch
-2. Implement changes
-3. Run tests
-4. Submit PR
-5. Deploy to staging
-6. Merge to main → auto-deploy
-
-## 📝 API Documentation
-
-Once the backend is running, visit:
-- **Swagger UI**: `http://localhost:8000/docs`
-- **ReDoc**: `http://localhost:8000/redoc`
-
-## 🎨 UI/UX Features
-
-- **Real-time Progress**: Stepper showing analysis stages
-- **Score Gauges**: Color-coded donut charts (Red < 50, Yellow 50-80, Green > 80)
-- **Streaming Text**: ChatGPT-style text generation
-- **Premium Blur**: Freemium model with feature previews
-- **Loading States**: Skeleton screens and animations
-
-## 🤝 Contributing
-
-This is an MVP project. Contributions welcome after v1.0 release.
-
-## 📄 License
+## License
 
 Proprietary - All rights reserved
-
-## 🆘 Support
-
-For issues and questions:
-- Create GitHub issue
-- Email: support@geoplatform.com
-
----
-
-Built with ❤️ for the future of GEO

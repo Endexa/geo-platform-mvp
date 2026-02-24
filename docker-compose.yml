@@ -1,24 +1,10 @@
 version: '3.8'
 
-services:
-  # PostgreSQL Database
-  postgres:
-    image: ankane/pgvector:latest
-    container_name: geo-postgres
-    environment:
-      POSTGRES_DB: geo_platform
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+# Database is hosted on Supabase (remote PostgreSQL).
+# Only Redis runs locally for caching and Celery task broker.
+# Set DATABASE_URL in backend/.env to your Supabase connection string.
 
+services:
   # Redis for caching and task queue
   redis:
     image: redis:7-alpine
@@ -42,18 +28,13 @@ services:
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     ports:
       - "8000:8000"
+    env_file:
+      - ./backend/.env
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/geo_platform
       REDIS_URL: redis://redis:6379/0
-      SUPABASE_URL: ${SUPABASE_URL}
-      SUPABASE_KEY: ${SUPABASE_KEY}
-      OPENAI_API_KEY: ${OPENAI_API_KEY}
-      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
     volumes:
       - ./backend:/app
     depends_on:
-      postgres:
-        condition: service_healthy
       redis:
         condition: service_healthy
     restart: unless-stopped
@@ -65,15 +46,14 @@ services:
       dockerfile: Dockerfile
     container_name: geo-celery
     command: celery -A app.tasks.celery_app worker --loglevel=info -Q geo_platform,audit,analysis
+    env_file:
+      - ./backend/.env
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/geo_platform
       REDIS_URL: redis://redis:6379/0
-      OPENAI_API_KEY: ${OPENAI_API_KEY}
     volumes:
       - ./backend:/app
     depends_on:
       - redis
-      - postgres
     restart: unless-stopped
 
   # Nuxt 3 Frontend
@@ -85,10 +65,10 @@ services:
     command: npm run dev
     ports:
       - "3000:3000"
+    env_file:
+      - ./frontend/.env
     environment:
-      NUXT_PUBLIC_API_URL: http://backend:8000
-      NUXT_PUBLIC_SUPABASE_URL: ${SUPABASE_URL}
-      NUXT_PUBLIC_SUPABASE_KEY: ${SUPABASE_KEY}
+      NUXT_PUBLIC_API_BASE: http://backend:8000/api/v1
     volumes:
       - ./frontend:/app
       - /app/node_modules
@@ -98,5 +78,4 @@ services:
     restart: unless-stopped
 
 volumes:
-  postgres_data:
   redis_data:

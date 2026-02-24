@@ -17,7 +17,7 @@
 │  ┌──────┐ ┌───────────┐ ┌──────────┐ ┌───────┐ │
 │  │ API  │ │ Services  │ │ Middleware│ │ Auth  │ │
 │  │Routes│ │(analyzer, │ │(security,│ │(JWT,  │ │
-│  │      │ │ optimizer,│ │ logging, │ │ RLS)  │ │
+│  │      │ │ optimizer,│ │ logging, │ │bcrypt)│ │
 │  │      │ │ brand_v.) │ │ audit)   │ │       │ │
 │  └──┬───┘ └─────┬─────┘ └──────────┘ └───────┘ │
 │     │           │                                │
@@ -27,8 +27,10 @@
 └───────────┼──────────────────────┼───────────────┘
             │                      │
   ┌─────────▼──────┐    ┌─────────▼──────┐
-  │ PostgreSQL 15  │    │   Redis 7      │
-  │  + pgvector    │    │ (cache+broker) │
+  │   Supabase     │    │  Redis 7       │
+  │  PostgreSQL 17 │    │  (local Docker │
+  │  + pgvector    │    │   cache+broker)│
+  │  (remote)      │    │               │
   └────────────────┘    └────────────────┘
 ```
 

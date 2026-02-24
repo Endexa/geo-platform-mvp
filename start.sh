@@ -17,13 +17,11 @@ PID_FRONTEND=""
 
 cleanup() {
   echo -e "\n${YELLOW}Shutting down...${NC}"
-  # Kill background processes
   [[ -n "$PID_BACKEND" ]] && kill "$PID_BACKEND" 2>/dev/null || true
   [[ -n "$PID_CELERY" ]] && kill "$PID_CELERY" 2>/dev/null || true
   [[ -n "$PID_FRONTEND" ]] && kill "$PID_FRONTEND" 2>/dev/null || true
   wait 2>/dev/null || true
-  # Stop Docker containers
-  docker stop geo-postgres geo-redis 2>/dev/null || true
+  docker stop geo-redis 2>/dev/null || true
   echo -e "${GREEN}All services stopped.${NC}"
 }
 trap cleanup EXIT
@@ -42,29 +40,19 @@ for port in 3000 8000; do
   fi
 done
 
-# --- PostgreSQL ---
-echo -e "\n${YELLOW}[1/5] PostgreSQL${NC}"
-if docker ps --format '{{.Names}}' | grep -q '^geo-postgres$'; then
-  echo -e "  ${GREEN}Already running${NC}"
-else
-  docker rm -f geo-postgres 2>/dev/null || true
-  docker run -d \
-    --name geo-postgres \
-    -e POSTGRES_DB=geo_platform \
-    -e POSTGRES_USER=postgres \
-    -e POSTGRES_PASSWORD=postgres \
-    -p 5432:5432 \
-    ankane/pgvector:latest >/dev/null
-  echo -e "  ${GREEN}Started (port 5432)${NC}"
-  echo -e "  Waiting for ready..."
-  for i in $(seq 1 30); do
-    if docker exec geo-postgres pg_isready -U postgres >/dev/null 2>&1; then
-      echo -e "  ${GREEN}Ready${NC}"
-      break
-    fi
-    sleep 1
-  done
-fi
+# --- Supabase DB check ---
+echo -e "\n${YELLOW}[1/5] Supabase PostgreSQL${NC}"
+cd "$PROJECT_DIR/backend"
+source venv/bin/activate
+python -c "
+from app.core.config import settings
+from sqlalchemy import create_engine, text
+engine = create_engine(settings.DATABASE_URL, connect_args={'connect_timeout': 10})
+with engine.connect() as conn:
+    conn.execute(text('SELECT 1'))
+    print('  Connected to Supabase')
+" 2>&1 || { echo -e "  ${RED}Cannot reach Supabase DB. Check DATABASE_URL in backend/.env${NC}"; exit 1; }
+echo -e "  ${GREEN}OK${NC}"
 
 # --- Redis ---
 echo -e "\n${YELLOW}[2/5] Redis${NC}"
@@ -81,8 +69,6 @@ fi
 
 # --- Alembic migrations ---
 echo -e "\n${YELLOW}[3/5] Database migrations${NC}"
-cd "$PROJECT_DIR/backend"
-source venv/bin/activate
 alembic upgrade head 2>&1 | tail -3
 echo -e "  ${GREEN}Migrations applied${NC}"
 
@@ -112,6 +98,7 @@ echo -e "${GREEN} All services running${NC}"
 echo -e "  Frontend:  http://localhost:3000"
 echo -e "  Backend:   http://localhost:8000"
 echo -e "  API Docs:  http://localhost:8000/api/v1/docs"
+echo -e "  Database:  Supabase (remote)"
 echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo -e "${YELLOW}Press Ctrl+C to stop all services${NC}\n"
 

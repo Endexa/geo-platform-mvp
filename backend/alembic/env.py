@@ -33,7 +33,10 @@ from app.models.mention_sentiment import MentionSentiment  # noqa: F401
 config = context.config
 
 # Override sqlalchemy.url from app settings
-config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
+# Escape % for configparser interpolation (e.g. %23 in passwords)
+config.set_main_option(
+    "sqlalchemy.url", settings.DATABASE_URL.replace("%", "%%")
+)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

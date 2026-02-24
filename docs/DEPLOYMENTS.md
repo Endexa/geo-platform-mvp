@@ -6,11 +6,10 @@
 
 ## Pre-Deploy Checklist
 
-- [ ] Backend: `pytest` passes
 - [ ] Frontend: `npm run build` passes
-- [ ] Docker: `docker-compose up --build` starts clean
+- [ ] E2E tests: `cd frontend && npx playwright test` passes
 - [ ] Environment variables set for target environment
-- [ ] Database migrations applied: `alembic upgrade head`
+- [ ] Database migrations applied on Supabase: `cd backend && alembic upgrade head`
 - [ ] `docs/progression.md` updated
 - [ ] `CLAUDE.md` updated if architecture changed
 

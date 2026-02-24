@@ -74,12 +74,11 @@
 | Embeddings | OpenAI text-embedding-3-small (1536 dims) via pgvector |
 | Web Scraping | Playwright, BeautifulSoup4, lxml |
 | Text Analysis | textstat, NLTK |
-| Database | PostgreSQL 15+ with pgvector |
-| Cache | Redis 7 |
+| Database | Supabase PostgreSQL 17 + pgvector (remote) |
+| Cache | Redis 7 (local Docker container) |
 | Payments | Stripe SDK (stub) |
 | Tasks | Jira API (stub) |
 | Logging | Loguru |
-| Containers | Docker + Docker Compose |
 
 ## Project Structure
 
@@ -153,51 +152,43 @@ geo-platform-mvp/
 
 ### Backend (.env)
 ```env
-SUPABASE_URL=your-project-url
+DATABASE_URL=postgresql://postgres:PASSWORD@db.PROJECT_REF.supabase.co:5432/postgres
+SUPABASE_URL=https://PROJECT_REF.supabase.co
 SUPABASE_KEY=your-anon-key
-OPENAI_API_KEY=your-openai-key
-REDIS_URL=redis://localhost:6379
+SUPABASE_SERVICE_KEY=your-service-role-key
+REDIS_URL=redis://localhost:6379/0
 SECRET_KEY=your-secret-key        # openssl rand -hex 32
-STRIPE_SECRET_KEY=your-stripe-key  # Optional for MVP
-JIRA_BASE_URL=your-jira-url       # Optional for MVP
-JIRA_API_TOKEN=your-jira-token    # Optional for MVP
-DATABASE_URL=postgresql://postgres:postgres@postgres:5432/geo_platform
+OPENAI_API_KEY=your-openai-key
+ANTHROPIC_API_KEY=your-anthropic-key
+GEMINI_API_KEY=your-gemini-key
 ```
 
 ### Frontend (.env)
 ```env
-NUXT_PUBLIC_API_URL=http://localhost:8000
-NUXT_PUBLIC_SUPABASE_URL=your-project-url
+NUXT_PUBLIC_API_BASE=http://localhost:8000/api/v1
+NUXT_PUBLIC_SUPABASE_URL=https://PROJECT_REF.supabase.co
 NUXT_PUBLIC_SUPABASE_KEY=your-anon-key
 ```
 
 ## Commands
 
 ```bash
-# Docker (recommended)
-docker-compose up --build           # Start all services
-docker-compose logs -f backend      # View backend logs
-docker-compose down                 # Stop all
-docker-compose down -v              # Stop + delete data (WARNING)
+# One command start (recommended)
+./start.sh                          # Starts Redis, migrations, backend, Celery, frontend
 
-# Backend (manual)
-cd backend
-source venv/bin/activate
-uvicorn app.main:app --reload --port 8000
-celery -A app.tasks.celery_app worker --loglevel=info
+# Manual start (3 terminals)
+docker start geo-redis || docker run -d --name geo-redis -p 6379:6379 redis:7-alpine
+cd backend && source venv/bin/activate && uvicorn app.main:app --reload --port 8000
+cd backend && source venv/bin/activate && celery -A app.tasks.celery_app worker --loglevel=info -Q geo_platform,audit,analysis
+cd frontend && npm run dev
 
-# Frontend (manual)
-cd frontend
-npm install
-npm run dev
-
-# Database
-cd backend
-alembic upgrade head                # Run migrations
+# Database (Supabase — remote)
+cd backend && source venv/bin/activate
+alembic upgrade head                # Run migrations against Supabase
 
 # Testing
-cd backend && pytest                # Backend tests
-cd frontend && npm run test         # Frontend tests
+cd frontend && npx playwright test  # E2E tests (45 tests, mocked API)
+cd frontend && npm run build        # Build check
 
 # Access points
 # Frontend: http://localhost:3000
@@ -301,12 +292,12 @@ See `docs/ARCHITECTURE.md` for the full design.
 ## Architecture Decisions
 
 - **No SSR** — Nuxt 3 SPA mode. This is a dashboard app, not a content site.
-- **PostgreSQL + pgvector** — Single DB handles relational data AND vector embeddings. No need for separate vector DB.
-- **Celery + Redis** — Background tasks for analysis (10-30s jobs). Redis also handles caching.
+- **Supabase PostgreSQL + pgvector** — Remote hosted DB. Single DB handles relational data AND vector embeddings. No local Postgres needed.
+- **Celery + Redis** — Background tasks for analysis (10-30s jobs). Redis also handles caching. Redis runs locally via Docker.
 - **Direct LLM calls** — For recommendations, use direct OpenAI/LiteLLM calls with inline context.
 - **pgvector for everything** — Brand signature uses PostgreSQL pgvector for embeddings. No external vector DB (MongoDB/Qdrant) needed.
 - **4-layer brand signature** — Rules + stats + vectors + LLM. Layers 1-3 are real-time, Layer 4 is on-demand.
-- **Docker Compose** — Single command to run everything. PostgreSQL, Redis, Backend, Celery, Frontend.
+- **`start.sh`** — Single command to run everything. Redis (Docker), migrations, Backend, Celery, Frontend.
 - **FastAPI** — Async-first, auto-generates OpenAPI docs, Pydantic validation.
 
 ## Installed Development Tools

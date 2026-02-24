@@ -24,18 +24,20 @@ You should NOT need to explore the codebase after reading these files.
 ## 2. Health Check (Before Starting Work)
 
 ```bash
-# Docker (recommended)
-docker-compose up --build        # Must start without errors
-curl http://localhost:8000/health # Backend must respond {"status": "healthy"}
+# One command (starts Redis, backend, Celery, frontend)
+./start.sh
 
-# Or manual
+# Or manual (3 terminals)
+docker start geo-redis || docker run -d --name geo-redis -p 6379:6379 redis:7-alpine
 cd backend && source venv/bin/activate && uvicorn app.main:app --reload --port 8000
 cd frontend && npm run dev
 
-# Always
-git status                       # Check branch, uncommitted changes. Start clean.
+# Verify
+curl http://localhost:8000/health # Backend must respond {"status": "healthy"}
+git status                        # Check branch, uncommitted changes. Start clean.
 ```
 
+Database is on **Supabase** (remote PostgreSQL). No local Postgres needed.
 For external service health checks, see `docs/CONNECTIONS.md`.
 
 ---

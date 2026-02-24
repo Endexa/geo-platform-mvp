@@ -1,6 +1,6 @@
 # External Connections & Health Checks
 
-> Run these checks when things break. Each connection includes a curl command to verify it's alive.
+> Run these checks when things break. Each connection includes a command to verify it's alive.
 
 ---
 
@@ -9,7 +9,7 @@
 ```
 Browser (Nuxt 3)
   └─> FastAPI Backend (:8000)
-        ├─> PostgreSQL + pgvector (:5432)
+        ├─> Supabase PostgreSQL + pgvector (remote)
         ├─> Redis (:6379) — AI response cache + Celery broker + rate limiting
         ├─> OpenAI API — LLM for recommendations (not yet integrated)
         ├─> Stripe API — payments (stub)
@@ -30,19 +30,44 @@ curl -s http://localhost:8000/api/v1/docs | head -20
 # Expected: HTML Swagger UI
 ```
 
-## 2. PostgreSQL (pgvector)
+## 2. Supabase PostgreSQL (pgvector)
+
+Database is hosted on Supabase. No local PostgreSQL container needed.
 
 ```bash
-# Via Docker
-docker-compose exec postgres pg_isready -U postgres
-# Expected: accepting connections
+# Test connection from backend
+cd backend && source venv/bin/activate
+python -c "
+from app.core.config import settings
+from sqlalchemy import create_engine, text
+engine = create_engine(settings.DATABASE_URL, connect_args={'connect_timeout': 10})
+with engine.connect() as conn:
+    result = conn.execute(text('SELECT version()'))
+    print('Connected:', result.fetchone()[0])
+"
 
 # Check pgvector extension
-docker-compose exec postgres psql -U postgres -d geo_platform -c "SELECT extname FROM pg_extension WHERE extname = 'vector';"
-# Expected: vector
+python -c "
+from app.core.config import settings
+from sqlalchemy import create_engine, text
+engine = create_engine(settings.DATABASE_URL, connect_args={'connect_timeout': 10})
+with engine.connect() as conn:
+    result = conn.execute(text(\"SELECT extname FROM pg_extension WHERE extname = 'vector'\"))
+    print('pgvector:', result.fetchone())
+"
 
-# Check tables exist
-docker-compose exec postgres psql -U postgres -d geo_platform -c "\dt"
+# Check tables
+python -c "
+from app.core.config import settings
+from sqlalchemy import create_engine, text
+engine = create_engine(settings.DATABASE_URL, connect_args={'connect_timeout': 10})
+with engine.connect() as conn:
+    result = conn.execute(text(\"SELECT tablename FROM pg_tables WHERE schemaname='public' ORDER BY tablename\"))
+    for row in result: print(f'  {row[0]}')
+"
+
+# Run migrations
+cd backend && source venv/bin/activate && alembic upgrade head
 ```
 
 ## 3. Redis
@@ -51,18 +76,14 @@ Used for: AI response caching (`AICacheService`), Celery task broker/backend, in
 
 ```bash
 # Via Docker
-docker-compose exec redis redis-cli ping
+docker exec geo-redis redis-cli ping
 # Expected: PONG
 
-# Check Celery broker
-docker-compose exec redis redis-cli info clients
-
 # Check AI cache keys
-docker-compose exec redis redis-cli keys "ai_cache:*" | head -5
-# Expected: cache key hashes (if any cached responses exist)
+docker exec geo-redis redis-cli keys "ai_cache:*" | head -5
 
 # Check cache key count
-docker-compose exec redis redis-cli dbsize
+docker exec geo-redis redis-cli dbsize
 ```
 
 ## 4. Celery Worker
@@ -70,12 +91,12 @@ docker-compose exec redis redis-cli dbsize
 Configured in `backend/app/tasks/celery_app.py`. Uses Redis as broker and backend. JSON serialization, late acks, task routing for `audit` and `analysis` queues.
 
 ```bash
-# Check worker is running
-docker-compose logs celery | tail -5
-# Expected: "celery@... ready"
+# If using start.sh — celery runs as a background process
+# Check it's alive via ps:
+ps aux | grep celery
 
-# Check active tasks
-docker-compose exec celery celery -A app.tasks.celery_app inspect active
+# If using Docker:
+docker logs geo-celery | tail -5
 ```
 
 ## 5. OpenAI API (when integrated)
@@ -112,9 +133,12 @@ curl -s "$JIRA_BASE_URL/rest/api/2/myself" \
 ```bash
 echo "=== GEO Platform Health ==="
 echo -n "Backend:    " && curl -s http://localhost:8000/health | jq -r '.status' 2>/dev/null || echo "DOWN"
-echo -n "PostgreSQL: " && docker-compose exec -T postgres pg_isready -U postgres 2>/dev/null | grep -o "accepting connections" || echo "DOWN"
-echo -n "Redis:      " && docker-compose exec -T redis redis-cli ping 2>/dev/null || echo "DOWN"
-echo -n "Celery:     " && docker-compose logs celery 2>/dev/null | grep -q "ready" && echo "READY" || echo "DOWN"
+echo -n "Supabase:   " && cd backend && source venv/bin/activate && python -c "
+from app.core.config import settings; from sqlalchemy import create_engine, text
+e = create_engine(settings.DATABASE_URL, connect_args={'connect_timeout': 5})
+with e.connect() as c: c.execute(text('SELECT 1')); print('OK')
+" 2>/dev/null || echo "DOWN"
+echo -n "Redis:      " && docker exec geo-redis redis-cli ping 2>/dev/null || echo "DOWN"
 echo -n "Frontend:   " && curl -s -o /dev/null -w "%{http_code}" http://localhost:3000 2>/dev/null || echo "DOWN"
 ```
 
@@ -124,9 +148,10 @@ echo -n "Frontend:   " && curl -s -o /dev/null -w "%{http_code}" http://localhos
 
 | Symptom | Likely Cause | Fix |
 |---------|-------------|-----|
-| Backend 500 errors | Database not ready | `docker-compose restart postgres` then `backend` |
-| "Connection refused" on :8000 | Backend not started | `docker-compose up backend` |
-| Analysis stuck in "pending" | Celery worker down | `docker-compose restart celery` |
-| Frontend can't reach API | CORS or wrong API URL | Check `NUXT_PUBLIC_API_URL` in frontend .env |
-| pgvector not available | Extension not created | `docker-compose exec postgres psql -U postgres -d geo_platform -c "CREATE EXTENSION IF NOT EXISTS vector;"` |
-| Redis connection refused | Redis not started | `docker-compose up redis` |
+| Backend 500 errors | Supabase DB unreachable | Check `DATABASE_URL` in `backend/.env`, verify Supabase project is running |
+| "Connection refused" on :8000 | Backend not started | Run `./start.sh` or start manually |
+| Analysis stuck in "pending" | Celery worker down | Restart celery: `celery -A app.tasks.celery_app worker --loglevel=info` |
+| Frontend can't reach API | CORS or wrong API URL | Check `NUXT_PUBLIC_API_BASE` in `frontend/.env` |
+| pgvector not available | Extension not enabled | Run SQL on Supabase: `CREATE EXTENSION IF NOT EXISTS vector;` |
+| Redis connection refused | Redis container not started | `docker start geo-redis` or `docker run -d --name geo-redis -p 6379:6379 redis:7-alpine` |
+| Alembic `%` error | Password with special chars | Already fixed in `alembic/env.py` (escapes `%` as `%%`) |
