@@ -226,7 +226,7 @@ def verify_api_key_dependency(request: Request, db: Session = Depends(get_db)):
     # For now, we'll implement a basic check
     # In production, store hashed API keys in a separate table
 
-    logger.info(f"API key authentication attempted from {request.client.host}")
+    logger.info(f"API key authentication attempted from {request.client.host if request.client else 'unknown'}")
 
     # TODO: Implement actual API key verification
     # api_key_hash = hashlib.sha256(api_key.encode()).hexdigest()

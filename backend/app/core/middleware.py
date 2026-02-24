@@ -9,6 +9,11 @@ from app.core.config import settings
 import json
 
 
+def _client_ip(request: Request) -> str:
+    """Safely get client IP, returning 'unknown' when request.client is None (e.g. in tests)."""
+    return request.client.host if request.client else "unknown"
+
+
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
     """Add security headers to all responses"""
 
@@ -70,7 +75,7 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
                 "request_id": request_id,
                 "method": request.method,
                 "path": request.url.path,
-                "client_ip": request.client.host,
+                "client_ip": _client_ip(request),
                 "user_agent": request.headers.get("user-agent", ""),
             }
         )
@@ -136,7 +141,7 @@ class AuditLogMiddleware(BaseHTTPMiddleware):
                 "request_id": getattr(request.state, "request_id", "unknown"),
                 "method": request.method,
                 "path": request.url.path,
-                "client_ip": request.client.host,
+                "client_ip": _client_ip(request),
                 "user_agent": request.headers.get("user-agent", ""),
                 "user_id": getattr(request.state, "user_id", "anonymous"),
             }
@@ -164,7 +169,7 @@ class IPWhitelistMiddleware(BaseHTTPMiddleware):
         )
 
         if is_admin and self.WHITELISTED_IPS:
-            client_ip = request.client.host
+            client_ip = _client_ip(request)
 
             if client_ip not in self.WHITELISTED_IPS:
                 logger.warning(f"Unauthorized admin access attempt from {client_ip}")
@@ -191,7 +196,7 @@ class RequestSizeLimitMiddleware(BaseHTTPMiddleware):
 
             if content_length > self.MAX_REQUEST_SIZE:
                 logger.warning(
-                    f"Request too large: {content_length} bytes from {request.client.host}"
+                    f"Request too large: {content_length} bytes from {_client_ip(request)}"
                 )
 
                 return JSONResponse(
@@ -221,7 +226,7 @@ class SQLInjectionProtectionMiddleware(BaseHTTPMiddleware):
             if keyword in query_string:
                 logger.warning(
                     f"Potential SQL injection detected in query: {query_string} "
-                    f"from {request.client.host}"
+                    f"from {_client_ip(request)}"
                 )
 
                 return JSONResponse(
