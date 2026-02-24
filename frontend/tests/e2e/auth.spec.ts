@@ -1,6 +1,10 @@
 import { test, expect } from '@playwright/test'
 import { LoginPage } from './pages/login.page'
 
+// Auth tests require a real backend (register/login API calls).
+// Skip in CI where only mocked E2E tests run.
+test.skip(!!process.env.CI, 'Auth tests require a running backend')
+
 // Auth tests run without storageState -- they test the auth flow itself
 test.use({ storageState: { cookies: [], origins: [] } })
 
