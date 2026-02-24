@@ -5,6 +5,10 @@ import time
 from app.core.config import settings
 from loguru import logger
 
+
+def _client_ip(request: Request) -> str:
+    return request.client.host if request.client else "unknown"
+
 # Redis connection
 redis_client = redis.Redis.from_url(settings.REDIS_URL, decode_responses=True)
 
@@ -35,7 +39,7 @@ class RateLimiter:
 
         # Determine identifier
         if self.identifier == "ip":
-            key = f"rate_limit:ip:{(request.client.host if request.client else "unknown")}"
+            key = f"rate_limit:ip:{_client_ip(request)}"
         elif self.identifier == "user":
             # Extract user ID from token if present
             auth_header = request.headers.get("Authorization")
@@ -44,12 +48,12 @@ class RateLimiter:
                 # You would decode token here to get user_id
                 key = f"rate_limit:user:{token[:20]}"  # Using token prefix
             else:
-                key = f"rate_limit:ip:{(request.client.host if request.client else "unknown")}"
+                key = f"rate_limit:ip:{_client_ip(request)}"
         elif self.identifier == "api_key":
             api_key = request.headers.get("X-API-Key", "")
             key = f"rate_limit:api:{api_key[:20]}"
         else:
-            key = f"rate_limit:global:{(request.client.host if request.client else "unknown")}"
+            key = f"rate_limit:global:{_client_ip(request)}"
 
         try:
             # Sliding window counter
@@ -133,7 +137,7 @@ class IPRateLimiter:
     async def __call__(self, request: Request):
         """Check if IP is blocked or exceeding global limits"""
 
-        ip = (request.client.host if request.client else "unknown")
+        ip = _client_ip(request)
 
         # Check if IP is blocked
         if ip in self.BLOCKED_IPS:
@@ -189,7 +193,7 @@ class EndpointRateLimiter:
         """Apply endpoint-specific rate limit"""
 
         endpoint = request.url.path
-        identifier = (request.client.host if request.client else "unknown")
+        identifier = _client_ip(request)
 
         key = f"endpoint_limit:{endpoint}:{identifier}"
 
