@@ -1,206 +1,219 @@
 # Project Research Summary
 
-**Project:** GEO Platform -- AI Brand Visibility Auditor
-**Domain:** Generative Engine Optimization (GEO) / AI Brand Visibility Monitoring
-**Researched:** 2026-02-21
-**Confidence:** MEDIUM (architecture HIGH, stack HIGH, features MEDIUM, pitfall specifics MEDIUM)
+**Project:** Endexa GEO Platform v2
+**Domain:** GEO/SEO SaaS Audit Platform
+**Researched:** 2026-02-25
+**Confidence:** HIGH
 
 ## Executive Summary
 
-The AI brand visibility auditing market is a nascent but fast-growing category (2024-2026) where commercial competitors (Profound, Otterly.ai, Peec AI, Knowatoa) have established table stakes expectations but left a clear gap: all require setup and onboarding, none offer a URL-first instant audit. The recommended approach builds directly on the existing FastAPI + Nuxt 3 + PostgreSQL + Celery + Redis stack, adding three new subsystems -- an AI engine query layer (using LiteLLM already installed at 1.80.7), an NLP brand mention analyzer (spaCy NER + rapidfuzz fuzzy matching), and a scoring pipeline with a transparent 0-100 GEO score. The core product is a 5-phase async pipeline: crawl site -> generate queries -> fan out to ChatGPT/Claude/Perplexity in parallel -> analyze brand mentions -> compute scores. The entire pipeline runs as a Celery task, returning `audit_id` immediately while the frontend polls for status.
+Endexa v2 is a rebuild of a GEO/SEO audit platform that has working infrastructure (FastAPI + Celery + Supabase + 4 AI engines) but broken scoring (103/108 data points return zeros, recommendations are stubs, visibility scores use mock data). The market is exploding -- Profound just raised $96M at a $1B valuation, and every SEO tool from Semrush to Ahrefs is bolting on GEO. But a glaring gap exists: no tool under $50/month combines SEO and GEO auditing with actionable, prioritized recommendations. Competitors either monitor without advising (Otterly, Geneo), advise on content without technical depth (Frase), or charge $200-800+/month for real value (Profound, Semrush, Ahrefs). Endexa's structural advantage is a 53-criteria scoring system spanning both SEO and GEO, auto-competitor discovery from AI responses, code-level analysis (unique in the entire market), and Jira export for developer teams.
 
-The recommended architecture is well-founded in existing patterns and fits the codebase cleanly. The most important product decision confirmed by research is to stay tightly scoped to the one-time audit before building any monitoring: this avoids the classic trap of tracking unreliable data in an elaborate scheduling system before the core audit produces trustworthy results. The URL-first instant audit (no onboarding required) is the genuine differentiator the market is missing, enabled by the auto-query-generation feature that crawls the user's site and generates industry-relevant AI queries from the content.
+The recommended approach is to treat the scoring pipeline as the absolute first priority. Every feature -- recommendations, reports, chat, dashboard, payments -- depends on scores being real. The existing 61-criteria framework is architecturally sound but produces zeros. Phase 1 must make every criterion produce real measurements with a three-state system (PASS/FAIL/NOT_MEASURED), then wire recommendations to use real data. Only after scoring and recommendations work should the team build output features (reports, exports, payments) and interactive features (chat, code analysis). The existing stack needs minimal additions: 1 new backend package (sse-starlette), 5 new frontend packages (marked, highlight.js, DOMPurify, @stripe/stripe-js, marked-highlight), and 3 upgrades (Stripe, LiteLLM, WeasyPrint).
 
-The most critical risk is unit economics: each audit queries 3 engines with 10-15 prompts, costing approximately $0.03-0.08 per audit (with aggressive model tiering and caching), reaching $0.15-0.50 at the competitive-analysis tier. Cost controls -- per-audit budget caps, Redis response caching with 24h TTL, cheap model selection (gpt-4o-mini, claude-3-5-haiku), and Celery-based batching -- must be designed into the AI query layer from the start, not added later. Authentication must also be enabled before any AI audit endpoint is exposed, since a single unauthenticated endpoint can drain the entire API budget in minutes from automated requests.
+The key risks are: (1) shipping fabricated scores that SEO professionals will immediately detect and publicly expose, destroying credibility; (2) AI visibility measurement non-determinism where scores swing 20+ points between identical audits; and (3) LLM API cost spirals where free-tier abuse or viral moments generate $5K+ bills overnight. All three are preventable with specific engineering practices: three-state scoring, statistical multi-query measurement, and hard per-user spending caps. The competitive window is open now but closing fast -- Semrush, Ahrefs, and Geoptie are all pushing into the SEO+GEO space.
 
 ## Key Findings
 
 ### Recommended Stack
 
-The existing stack requires only two new Python packages to support the full AI audit pipeline: `spacy>=3.7.0` (for Named Entity Recognition to detect brand mentions) and `rapidfuzz>=3.6.0` (for fuzzy brand name matching catching abbreviations and typos). LiteLLM is already installed at version 1.80.7 and provides a unified `completion()` interface for ChatGPT, Claude, and Perplexity through a single call pattern -- the `optimizer.py` should be migrated away from the direct `openai` SDK to use LiteLLM. Three dead dependencies (langchain, langchain-openai, sentence-transformers) should be removed from requirements.txt as they are listed but not installed. One new environment variable (`PERPLEXITY_API_KEY`) and several configuration constants (query limits, timeouts, model names, cost caps) need to be added to `config.py`.
+The existing FastAPI + Nuxt 3 + Supabase + Celery + Redis stack is solid and needs no replacement. The rebuild is about adding capabilities to this foundation, not changing it. Total new dependencies are remarkably small: 1 new Python package and 5 new npm packages.
 
-See `.planning/research/STACK.md` for complete dependency list, model selection rationale, and cost estimates.
+**Core additions and upgrades:**
+- **sse-starlette** (new): Server-Sent Events for chat assistant LLM streaming -- SSE is the standard pattern used by OpenAI and Anthropic, simpler than WebSockets for unidirectional streaming
+- **Stripe SDK 7.9 -> 14.x** (upgrade): The old `stripe.api_key` global pattern is deprecated; v14 uses instance-based `StripeClient` which aligns with the project's existing explicit api_key passing pattern
+- **LiteLLM 1.17 -> 1.81** (upgrade): Current version is 2 years old; v1.75+ adds MCP support, 50% memory leak reduction, better streaming -- pin exact version as LiteLLM breaks between minors
+- **marked + highlight.js + DOMPurify** (new frontend): Markdown rendering for chat responses with XSS sanitization -- DOMPurify is security-critical since LLM output is rendered as HTML
+- **@stripe/stripe-js** (new frontend): Checkout Session redirect -- start with redirect flow, not inline Payment Elements
 
-**Core technologies:**
-- **LiteLLM 1.80.7** (already installed): Unified gateway for OpenAI, Anthropic, Perplexity -- eliminates per-provider SDK management and provides built-in cost tracking per call
-- **spaCy + en_core_web_sm**: Named Entity Recognition for brand/organization mention detection -- deterministic, millisecond-speed, far cheaper than LLM-based extraction at audit scale
-- **rapidfuzz**: Fuzzy string matching catching brand name variants (abbreviations, misspellings, partial names) -- 10-100x faster than fuzzywuzzy (C++ backend)
-- **Redis (existing)**: Response caching keyed by `sha256(query + engine)` with 24h TTL -- the primary cost control mechanism
-- **Celery (existing)**: Async audit pipeline execution -- already in docker-compose but not yet wired to analysis; this is the right time to wire it properly
-- **pgvector (existing)**: Semantic comparison between AI's description of the brand and the site's own content (messaging alignment score)
+**Key removal:** langchain + langchain-openai + openai (200MB+ of unused dependencies). All LLM calls go through LiteLLM.
+
+**Architecture decisions baked into stack:**
+- Chat uses prompt stuffing, NOT RAG (audit data is 5-15KB, fits easily in 128K context)
+- PDF reports use WeasyPrint + Jinja2 (already installed), with CSS-styled HTML charts, not Chart.js
+- CSV/Jira export uses Python stdlib csv module (not pandas)
+- Recommendations engine is deterministic (rule-based gap analysis), NOT LLM-powered
 
 ### Expected Features
 
-Research confirms the following feature prioritization from the competitive landscape and dependency analysis.
+**Must have (table stakes -- v2.0 launch):**
+- [TS-1] Working URL-based audit producing real scores across all 61 criteria -- the critical path root
+- [TS-2] Multi-engine AI visibility tracking across 4 engines with per-engine breakdown
+- [TS-3] Overall GEO readiness score (0-100) with dual Visibility + Optimization architecture
+- [TS-4] Category breakdown scores across 4 weighted categories
+- [TS-6] Actionable, prioritized recommendations with evidence and code snippets -- the #1 conversion driver
+- [TS-9] Freemium entry point: free crawlability audit, paid unlocks full audit + recommendations
+- [TS-10] Authentication + saved audit history (already built)
 
-See `.planning/research/FEATURES.md` for full feature table with complexity, confidence, and cost impact assessments.
+**Should have (differentiators -- v2.x):**
+- [D-1] SEO + GEO combined audit -- nearly uncontested in the market; only Frase does dual scoring but content-only
+- [TS-5] Competitor comparison with auto-discovery from AI responses
+- [D-5] Priority-ordered recommendations with calculated impact estimates ("Fix this = +X points")
+- [TS-7] PDF/HTML audit report export for agencies
+- [D-3] Jira/CSV export with structured stories -- unique in the market
+- [TS-8] Dashboard with score history and trend tracking
+- [D-7] Per-page drill-down with weakest-link aggregation
 
-**Must have (Phase 1 -- Core Audit Loop):**
-- Site crawl + AI-readiness signal extraction -- already partially built; foundation for query generation
-- Auto query generation from site content (DF-6) -- THE differentiator; enables zero-config URL-first onboarding
-- Multi-engine AI querying: ChatGPT + Claude + Perplexity minimum (TS-1) -- this is the product
-- Brand mention detection with verbatim quotes (TS-2) -- core output; without quotes there is no proof
-- Visibility score 0-100 (TS-3) -- the metric users track and report
-- Per-query drill-down with full AI response (DF-5) -- low complexity, high value
-
-**Must have (Phase 2 -- Competitive Intelligence):**
-- Competitor comparison / gap analysis (TS-4) -- makes the audit actionable; who IS being mentioned?
-- Query/prompt management: review, edit, add custom queries (TS-5)
-- Actionable recommendations (TS-7) -- even basic ones dramatically increase perceived value
-- Dashboard with score overview (TS-6)
-
-**Defer (Phase 3+):**
-- Query history over time / trend tracking (TS-9) -- natural launch of monitoring tier
-- PDF/CSV export for agencies (TS-8) -- important but not blocking
-- Sentiment analysis per mention (DF-2)
-- Contextual mention analysis (DF-3) -- recommendation vs. warning vs. comparison
-- Multi-brand agency management (DF-7)
-- Source attribution tracking from Perplexity citations (DF-8)
-- AI content gap identification (DF-4) -- expensive LLM analysis, defer until unit economics understood
-- Content-level recommendations (DF-9) -- most expensive feature; defer until audit loop proven
-
-**Defer indefinitely (Anti-features to avoid):**
-- Real-time continuous monitoring (builds before the audit is reliable)
-- Content rewriting / AI writing tool (scope creep into a different product category)
-- Traditional SEO metrics (competing with Ahrefs/Semrush is a losing battle)
-- Social media monitoring (muddies the value proposition)
-- Browser extension (engineering distraction)
-- AI chatbot assistant (if the dashboard requires a chatbot to interpret, the UX needs work)
+**Defer (v3+):**
+- [D-6] Chat assistant for audit Q&A
+- [D-2] Code analysis flow (novel but unvalidated)
+- [D-8] Multi-site management for agencies
+- White-label reports, CRM integrations, Brand Signature Engine
+- Real-time continuous monitoring (too expensive in API costs)
+- AI content generation (different product category, not our lane)
 
 ### Architecture Approach
 
-The AI audit system adds three major subsystems to the existing 4-layer FastAPI architecture (routers, services, models, tasks) without disrupting what works. The core pattern is an async 5-phase pipeline orchestrated by Celery: (1) site crawl using existing BeautifulSoup/Playwright infrastructure, (2) LLM-based query generation from crawled context, (3) parallel AI engine dispatch via asyncio.gather with per-engine semaphores, (4) brand mention extraction via spaCy + rapidfuzz + pgvector alignment scoring, (5) composite GEO score computation (site readiness 30% + AI presence 70%). New tables (audits, audit_queries, ai_engine_responses, brand_mentions, site_crawl_results) are clean additions that do not alter the existing analyses table. The existing analyses table and AnalyzerService stay in place for backward compatibility but are not extended.
-
-See `.planning/research/ARCHITECTURE.md` for complete component designs, data flow diagrams, database schema, build order, and code patterns.
+The architecture centers on the Audit as the aggregate root, with all features radiating from it. The existing 19-table data model needs 5 new tables (chat_sessions, audit_reports, subscriptions, code_analysis_prompts, code_analysis_results). The build order is strictly dependency-driven: Scoring Pipeline first (everything depends on real scores), then Recommendations + Competitor Benchmarking (immediate value from real data), then output features (reports, exports, payments), then interactive features (chat, code analysis), and finally the production dashboard.
 
 **Major components:**
-1. **AuditOrchestrator** -- Thin coordinator wiring all services together; Celery task entry point; manages audit status progression across 6 states
-2. **QueryGenerator** -- Crawls the URL using existing BeautifulSoup infrastructure; extracts brand, industry, product, competitor signals; calls LLM once to generate 10-15 categorized queries (industry, brand-direct, comparison, problem, recommendation)
-3. **AIEngineOrchestrator** -- Parallel dispatch via asyncio.gather + per-engine asyncio.Semaphore for rate limiting; Redis cache check before each API call; return_exceptions=True so one engine failure does not block others
-4. **Engine Adapters** (OpenAI, Anthropic, Perplexity) -- Thin wrappers with engine-specific prompt handling, response parsing, retry logic via tenacity; registered in ENGINE_REGISTRY for easy addition of Gemini/Copilot later
-5. **ResponseAnalyzer** -- spaCy NER to find organization entities; rapidfuzz to match against target brand + competitors; pgvector cosine similarity for messaging alignment; LLM fallback only for ambiguous cases
-6. **ScoringPipeline** -- Two-dimensional scoring: site readiness (structured data, content quality, AI crawler access, authority signals) at 30% weight + AI presence (mention frequency, accuracy, sentiment, competitive position) at 70% weight; starts simple, iterated based on user feedback
+1. **ScoringPipeline** -- Run 61 criteria against crawled pages, produce real measurements (CRITICAL PATH)
+2. **RecommendationEngine** -- Deterministic gap analysis comparing scores against benchmarks and competitor averages
+3. **CompetitorBenchmarking** -- NER-based competitor discovery, parallel crawl+score, leaderboard with share-of-voice
+4. **PaymentGating** -- Stripe Checkout Sessions, webhook handling, tier-based feature gating via FastAPI dependencies
+5. **ReportGenerator** -- Jinja2 HTML templates rendered to PDF via WeasyPrint in Celery workers
+6. **JiraCSVExport** -- Server-side CSV generation with configurable Jira column mapping
+7. **ChatAssistant** -- SSE-streamed LLM responses with audit data as context (prompt stuffing)
+8. **CodeAnalysisFlow** -- Generate prompts for users to run on their repos, ingest output for deeper analysis
+9. **ProductionDashboard** -- Real metrics from all components, trend charts, audit history
+
+**Key patterns to follow:** Celery tasks for operations >2s, FastAPI Depends() for tier gating, audit ownership verification on every endpoint, context-aware LLM prompts for chat.
+
+**Key anti-patterns to avoid:** LLM for deterministic logic (recommendations must be rule-based), synchronous heavy operations in API handlers, fat monolithic Celery tasks, N+1 queries.
 
 ### Critical Pitfalls
 
-See `.planning/research/PITFALLS.md` for complete pitfall catalog with phase mappings, warning signs, and detection methods.
+1. **Fabricated scores (CREDIBILITY KILLER)** -- The v1 gave a site with zero AI mentions a 69/100 visibility score. SEO professionals will verify and publicly expose this. Prevention: implement three-state system (PASS/FAIL/NOT_MEASURED), exclude unmeasured criteria from aggregation, validate against 10 known sites before launch.
 
-1. **API cost explosion without per-audit budget controls (C-1)** -- Model unit economics BEFORE writing any AI query code. Hard cap of N queries per engine at the service layer. Use cheapest models (gpt-4o-mini, claude-3-5-haiku). Cache responses in Redis with 24h TTL. Track `cost_per_audit` from day one. Never expose AI audit endpoints without authentication.
+2. **AI visibility non-determinism** -- AirOps research found only 30% of brands stayed visible across consecutive LLM queries. A single-query check is meaningless. Prevention: run 5-15 queries per engine, report mention rates with confidence intervals, use temperature=0, cache with 7-day TTL, track trends instead of absolutes.
 
-2. **TOS violations: scraping AI UIs instead of using official APIs (C-2)** -- Official APIs only: OpenAI API, Anthropic API, Perplexity pplx-api. The existing Playwright dependency is for crawling user-submitted URLs, NOT for interacting with chat.openai.com or claude.ai. Review current TOS for all three providers before implementation begins. This is an architecture decision that must be locked before any AI integration code is written.
+3. **LLM API cost spiral** -- Each audit = 40 LLM calls at $0.10-0.15. Free-tier abuse can multiply costs 10x overnight. Prevention: enforce per-audit budget caps, use cheap models (Gemini Flash, GPT-4o-mini) for most queries, cache aggressively (7-day TTL), rate-limit free tier (3 audits/day, no AI queries), set hard monthly spending caps per tier.
 
-3. **Building monitoring before nailing the one-time audit (C-3)** -- Strict milestone gate: the one-time audit must be validated with real users before any scheduling, trend tracking, or alert code is written. Celery beat must not be configured until Phase 3+. The data model should be monitoring-compatible (timestamps, versioning) without implementing the monitoring layer.
+4. **Irrelevant recommendations** -- The v1 recommended ClaimReview schema for a student SaaS and VideoObject for a site with no videos. All recommendations showed identical "+5%" impact. Prevention: require vertical classification, generate recommendations from actual measurement data (not static checklist), include copy-paste-ready fixes, calculate impact from measurement deltas, filter by site type.
 
-4. **Storing AI responses without data handling strategy (C-4)** -- Review each provider's API terms on output storage and redistribution before the first API response is stored. Store structured extracts (brand_mentioned, context excerpt, sentiment, position) rather than full transcripts. Implement data retention from day one: add `expires_at` column, purge raw text after N days, keep scores and metadata. Flag potential PII (real person names in AI responses).
-
-5. **LLM non-determinism eroding score trust (H-1)** -- Set temperature=0 on all audit queries. Track and store the model version identifier returned in every API response. Design scoring to weight stable binary signals (mentioned/not) higher than fuzzy signals (sentiment, position). Display confidence alongside scores where variance is high. Run baseline queries against known brands to detect model drift.
-
-6. **Over-engineering the scoring algorithm (H-2, validated by existing 108-point system)** -- Start with the simplest meaningful score: `(engines_that_mention_brand / total_engines_queried) * 100`. Layer complexity only when user feedback validates each additional signal. The existing codebase's 108-point system is a concrete cautionary tale: elaborate measurement infrastructure with questionable signal value.
-
-7. **Authentication disabled before AI endpoints exposed (codebase-specific)** -- Authentication must be enabled before any AI audit endpoint is publicly accessible. A single unauthenticated endpoint can drain the entire API budget from automated requests. This is a prerequisite for Phase 1, not a Phase 2 polish item.
+5. **Rebuilding on half-working code** -- Two parallel systems exist (old 108-point geo_data_points/ vs new 61-criteria scoring/). Hidden import chains and shared DB schemas create invisible coupling. Prevention: do NOT fix the old system, build everything in backend/app/services/scoring/, delete geo_data_points/ in Phase 1, add integration tests as safety net before refactoring.
 
 ## Implications for Roadmap
 
-Based on research, the feature dependency graph and critical pitfall analysis suggest four phases. The critical path is: foundation and safety (auth, models, adapters, cost controls) -> core audit pipeline (crawl, generate, query, analyze, score) -> competitive intelligence and usability (competitor comparison, dashboard, recommendations) -> enrichment and scale features.
+Based on combined research, the following 8-phase structure maps to dependencies, architecture boundaries, and pitfall avoidance.
 
-### Phase 1: Foundation and Safety
+### Phase 1: Scoring Foundation
+**Rationale:** The critical path root. Every other feature -- recommendations, reports, chat, dashboard, payments -- depends on scores being real. Nothing ships until this works.
+**Delivers:** All 61 criteria producing real measurements from crawl data. Three-state system (PASS/FAIL/NOT_MEASURED). Crawler enrichment for missing data signals. Integration test that runs a full audit against a known site and verifies output. Dead code cleanup (remove geo_data_points/).
+**Addresses:** TS-1 (URL-based audit), TS-3 (overall score), TS-4 (category breakdown), D-1 (SEO+GEO combined)
+**Avoids:** Pitfall 1 (fabricated scores), Pitfall 5 (integration debt), Pitfall 8 (SPA crawl failures)
 
-**Rationale:** No AI query code should be written until cost controls, authentication, and the data model are in place. Codebase-specific pitfalls (disabled auth, no outbound rate limiting, .env committed with keys) are blockers, not afterthoughts. This phase makes the system safe to expose before making it functional.
-**Delivers:** Authentication enabled; new database schema (audits, audit_queries, ai_engine_responses, brand_mentions, site_crawl_results) with Alembic migration; engine adapter layer (BaseEngineAdapter ABC + OpenAI, Anthropic, Perplexity adapters) with unit tests against real APIs or mocks; Redis cache service for AI responses; per-audit cost tracking instrumentation; outbound rate limiter for AI providers.
-**Addresses features:** TS-1 infrastructure (API integration, not yet querying), TS-10 prerequisites
-**Avoids pitfalls:** C-1 (cost explosion), C-2 (TOS review happens here), C-4 (data handling strategy defined), H-3 (rate limiting from day one), codebase-specific auth and .gitignore issues
-**Research flag:** No additional research needed. Standard Python async patterns + established API patterns.
+### Phase 2: Recommendations + Competitor Benchmarking
+**Rationale:** The #1 conversion driver (recommendations) and the most-requested context feature (competitor comparison) both depend on Phase 1 scores. The existing deterministic recommendation engine framework just needs real data to produce real output. Competitor benchmarking adds the "competitor_avg" data that recommendations use for gap analysis.
+**Delivers:** Working recommendation engine with evidence, code snippets, action steps, and calculated impact estimates. Auto-competitor discovery via NER, URL resolution, parallel crawl+score. Leaderboard with share-of-voice. Vertical-aware recommendation filtering.
+**Addresses:** TS-5 (competitor comparison), TS-6 (actionable recommendations), D-5 (impact estimates)
+**Avoids:** Pitfall 4 (irrelevant recommendations), Pitfall 10 (scoring without calibration), Pitfall 11 (wrong competitors)
 
-### Phase 2: Core Audit Pipeline
+### Phase 3: AI Visibility Hardening
+**Rationale:** The existing 4-engine dispatch works but treats visibility as a single-shot check. This phase makes it a statistical measurement system with confidence intervals, multi-query aggregation, and per-engine breakdowns. Must happen before public launch.
+**Delivers:** Multi-query measurement (5-15 queries per engine), temperature=0 for measurement queries, mention rate reporting with confidence intervals, model routing (cheap models for bulk, expensive for final assessment), 7-day cache TTL for AI responses, per-engine breakdown dashboard.
+**Addresses:** TS-2 (multi-engine visibility), polishes dual-score architecture
+**Avoids:** Pitfall 2 (AI visibility non-determinism), Pitfall 3 (API cost spiral)
 
-**Rationale:** Once the foundation is safe, build the full pipeline end-to-end using a vertical slice approach (one URL -> one query -> one engine -> basic scoring) before scaling to multiple queries and engines. This validates the pipeline architecture before investing in parallel execution.
-**Delivers:** QueryGenerator (site crawl + LLM-based query generation from crawled context); AIEngineOrchestrator wired to all three engines with parallel dispatch and caching; ResponseAnalyzer (spaCy NER + rapidfuzz brand detection + verbatim quote extraction); ScoringPipeline (simple score: mentions/total_engines * 100, expandable later); AuditOrchestrator Celery task wiring all components; API endpoints (POST /audit/start, GET /audit/{id}, GET /audit/{id}/results); frontend audit initiation UI with progress polling.
-**Addresses features:** TS-10 (site crawl), DF-6 (auto query generation), TS-1 (multi-engine querying), TS-2 (mention detection with quotes), TS-3 (visibility score), DF-5 (per-query drill-down with full response)
-**Avoids pitfalls:** H-1 (temperature=0, model version logging), H-2 (simple scoring first), H-4 (user-intent queries not brand-name-based), M-1 (engine-specific adapters), M-2 (graceful degradation), M-3 (show queries before executing), L-1 (timeouts on all API calls), L-3 (prompt templates in config not hardcoded)
-**Stack used:** LiteLLM (query dispatch), spaCy + rapidfuzz (mention analysis), Redis (response cache), Celery (pipeline orchestration), pgvector (alignment scoring)
-**Research flag:** Query template design (H-4) needs validation against known brands before auto-generation feature is built. Test: run audit on Salesforce for CRM queries -- if it surfaces Salesforce consistently, the query design works.
+### Phase 4: Payments + Freemium Gating
+**Rationale:** Must work before public launch. Independent of other features architecturally but blocks monetization. Stripe SDK upgrade is required.
+**Delivers:** Working Stripe Checkout Session flow, webhook handling with idempotent handlers, subscription management, tier-based feature gating via FastAPI Depends(), reconciliation job for database/Stripe consistency, freemium gate (free crawlability, paid full audit).
+**Addresses:** TS-9 (freemium entry point), enables monetization
+**Avoids:** Pitfall 6 (freemium miscalibration), Pitfall 7 (Stripe webhook unreliability)
+**Uses:** Stripe SDK 14.x, @stripe/stripe-js
 
-### Phase 3: Competitive Intelligence and Usability
+### Phase 5: Reports + Exports
+**Rationale:** High-perceived-value output features that convert free users to paid. Reports are essential for agencies. Jira export is a unique differentiator. Both consume completed audit data, so they are simple to build once Phases 1-2 are done.
+**Delivers:** PDF/HTML audit report generation via Jinja2 + WeasyPrint (Celery task), Jira-compatible CSV export with configurable columns and grouping, download API endpoints gated by subscription tier.
+**Addresses:** TS-7 (PDF/HTML export), D-3 (Jira export)
+**Avoids:** Pitfall 12 (Jira export before recommendations are validated)
 
-**Rationale:** The core audit loop (Phase 2) must be validated with real users before expanding to competitive analysis and recommendations. Competitor comparison multiplies API cost by 3-5x (one pipeline run per competitor). This phase converts the raw audit into an actionable intelligence product.
-**Delivers:** Competitor comparison / gap analysis (same pipeline for competitor brands); query management UI (review, edit, add custom queries before executing); basic actionable recommendations (even generic ones dramatically increase perceived value); dashboard with score overview (per-engine breakdown, trend direction, top issues); export to PDF/CSV for agency reporting.
-**Addresses features:** TS-4 (competitor comparison), TS-5 (query management), TS-7 (recommendations), TS-6 (dashboard), TS-8 (export)
-**Avoids pitfalls:** C-1 (competitor queries must count against the per-audit budget cap), C-3 (monitoring boundary explicitly enforced -- no scheduling code)
-**Research flag:** Recommendations content requires subject matter judgment on what GEO optimization actions are most impactful. May need a focused research spike on GEO best practices before writing recommendation templates.
+### Phase 6: Chat Assistant
+**Rationale:** A differentiator (no competitor has audit Q&A chat), but requires working scores and recommendations as context. Lower priority than core audit features for launch.
+**Delivers:** SSE-streamed LLM chat over audit results, prompt-stuffed context (not RAG), conversation persistence, DOMPurify-sanitized markdown rendering, budget-capped per audit.
+**Addresses:** D-6 (chat assistant)
+**Avoids:** Pitfall 9 (prompt leakage), Pitfall 3 (cost spiral from chat)
+**Uses:** sse-starlette, marked, highlight.js, DOMPurify, LiteLLM streaming
 
-### Phase 4: Enrichment and Advanced Features
+### Phase 7: Dashboard + History
+**Rationale:** Last major feature phase because it requires all other components producing real data. Building the dashboard over fake data is how v1 failed.
+**Delivers:** Real metrics dashboard (not mock data), audit history with trend tracking, per-brand score progression, competitor positioning over time, recommendation progress tracking (done/open/dismissed), scoring version annotations on trend charts.
+**Addresses:** TS-8 (dashboard with trends), D-7 (per-page drill-down)
+**Avoids:** Pitfall 13 (stale/misleading trends)
 
-**Rationale:** Once the audit is proven valuable with real users and the unit economics are understood, add enrichment layers that increase depth without changing the core value proposition. Monitoring tier launches here as the natural revenue upsell.
-**Delivers:** Sentiment analysis per mention (DF-2); contextual mention classification -- recommendation vs. comparison vs. warning (DF-3); source attribution tracking from Perplexity citations (DF-8); query history over time / trend tracking (TS-9); multi-brand management for agencies (DF-7); monitoring tier with scheduled re-audits (unlocks AF-1 anti-feature properly, as paid upgrade after core is solid).
-**Addresses features:** TS-9, DF-2, DF-3, DF-7, DF-8
-**Avoids pitfalls:** C-3 (monitoring only starts here, after Phase 2 is validated), M-4 (re-scoring capability; raw data preserved from Phase 1, scoring version field added in Phase 1 schema)
-**Research flag:** Multi-brand agency management and monitoring tier both need research-phase before planning (rate limiting strategy per customer tier, OpenAI Batch API for 50% cost discount on scheduled jobs, Celery beat configuration).
+### Phase 8: Code Analysis + Scale
+**Rationale:** Novel but unvalidated feature (zero competitors offer it). Build only after core product is proven. Also includes scaling work needed as user base grows.
+**Delivers:** Code analysis prompt generation from audit gaps, output ingestion + LLM parsing, enriched recommendations from code findings. Queue routing (separate Celery queues), connection pooling, pagination on all list endpoints.
+**Addresses:** D-2 (code analysis flow), D-8 (multi-site management groundwork)
+**Avoids:** Building unvalidated features before core is solid
 
 ### Phase Ordering Rationale
 
-- **Safety before functionality:** Authentication disabled + no cost controls = existential financial risk. These prerequisites cannot be deferred to a polish phase.
-- **Vertical slice before horizontal expansion:** Build one complete audit path (one URL, one query, one engine, basic scoring) end-to-end in Phase 2 before scaling. This validates the Celery task boundary, async patterns, and API response storage before committing to the full architecture.
-- **Core audit before competitive analysis:** TS-4 (competitor comparison) depends on TS-1 and TS-2 being reliable. Running unreliable audits against competitors produces misleading gap analysis.
-- **Validate before monitoring:** C-3 pitfall is clear -- monitoring garbage is worse than no monitoring. The monitoring tier only launches after the one-time audit is validated.
-- **Dependencies drive grouping:** The feature dependency graph (FEATURES.md) confirms the Phase 1-2 grouping. TS-10 -> DF-6 -> TS-1 -> TS-2 -> TS-3 is the critical path. Everything else layers on top.
+- **Phases 1-3 are the core audit loop.** Scoring -> Recommendations + Competitors -> AI Visibility Hardening. Each depends on the previous. Nothing else is worth building until this loop produces real, trustworthy results.
+- **Phase 4 (Payments) is independent architecturally but blocks launch.** It can be built in parallel with Phase 3 by a separate developer.
+- **Phases 5-6 are output/interaction layers** that consume audit data. They add value but do not change what the audit measures.
+- **Phases 7-8 are polish and expansion.** Dashboard requires real data from all components. Code analysis is a bet on a novel feature.
+- **The grouping follows architecture boundaries.** Each phase maps to 1-2 components from the architecture document, minimizing cross-cutting concerns per phase.
 
 ### Research Flags
 
-Phases needing deeper research during planning:
-- **Phase 2 (Query design):** The user-intent query template set needs validation against real brands before the auto-generation feature is built. Test prompts against Salesforce (CRM), Nike (footwear), and a smaller brand before finalizing template structure.
-- **Phase 3 (Recommendations):** GEO optimization best practices need a focused research spike to produce recommendation templates that are actually actionable, not generic SEO advice repackaged.
-- **Phase 4 (Monitoring tier + agency features):** OpenAI Batch API availability and pricing (claimed 50% discount, MEDIUM confidence), Celery beat configuration for scheduled jobs, rate limiting strategy per customer tier.
+Phases likely needing deeper research during planning:
+- **Phase 1 (Scoring Foundation):** Needs research per criterion category -- what exactly does each of the 61 criteria measure, what crawl data does it need, what are the thresholds? The ARCHITECTURE.md notes the crawler may need enrichment.
+- **Phase 3 (AI Visibility Hardening):** Needs research on statistical measurement design -- how many queries per engine, what confidence interval is acceptable, how to handle engine-specific behaviors (Perplexity does live search, Claude rarely cites).
+- **Phase 4 (Payments):** Needs research on Stripe Checkout Session v2 API changes from v7 to v14, webhook best practices, and test clock setup.
+- **Phase 6 (Chat Assistant):** Needs research on SSE reconnection patterns, context window management for large audits, and prompt injection prevention.
 
-Phases with standard patterns (skip additional research):
-- **Phase 1 (Foundation):** Standard Python async patterns, SQLAlchemy/Alembic migrations, tenacity retry library. All well-documented.
-- **Phase 2 (Pipeline):** asyncio.gather + Semaphore pattern, engine adapters, Redis caching are established patterns with clear implementation guides in ARCHITECTURE.md.
+Phases with standard patterns (skip research-phase):
+- **Phase 2 (Recommendations):** The deterministic engine framework exists, gap analysis is well-documented, this is standard software engineering.
+- **Phase 5 (Reports + Exports):** WeasyPrint + Jinja2 PDF generation and CSV export are thoroughly documented patterns.
+- **Phase 7 (Dashboard):** Standard Chart.js + Vue composables + SQL aggregation queries. No novel patterns needed.
 
 ## Confidence Assessment
 
 | Area | Confidence | Notes |
 |------|------------|-------|
-| Stack | HIGH | LiteLLM already installed (1.80.7), spaCy/rapidfuzz are established libraries. Model names and pricing are MEDIUM (verify before implementation). No established open-source GEO library found (LOW confidence; space is nascent). |
-| Features | MEDIUM | Competitor feature analysis based on training data (pre-2025). Feature complexity estimates for existing infrastructure are HIGH confidence. Cost estimates are MEDIUM. |
-| Architecture | HIGH | Based on direct codebase analysis + established Python async patterns. Schema design is HIGH confidence. Perplexity API specifics are MEDIUM (adapter interface may have evolved). |
-| Pitfalls | HIGH for patterns, MEDIUM for specifics | Non-determinism, TOS violations, cost explosion, premature monitoring: HIGH confidence (fundamental properties). Specific rate limit numbers, pricing, current TOS language: MEDIUM (verify against live docs). |
+| Stack | HIGH | All versions verified via pip index/npm view. Minimal additions needed. Architecture decisions well-reasoned. |
+| Features | HIGH | Based on competitor pricing pages, G2 reviews, and market research. 8 competitors analyzed with verified pricing. |
+| Architecture | HIGH | Grounded in existing codebase audit. Component boundaries match real code. Data model evolution is incremental. |
+| Pitfalls | HIGH | Grounded in actual v1 failures (fabricated scores, irrelevant recs, SPA crawl failures) plus industry research (OWASP, AirOps, Bessemer). |
+| Competitors | HIGH | All 8 competitor pricing and features verified from official sources in Feb 2026. Market positioning is clear. |
 
-**Overall confidence:** MEDIUM-HIGH
-
-The architectural and product recommendations are HIGH confidence. The specific API pricing, rate limits, model names, and provider TOS language are MEDIUM confidence and require verification against live documentation before Phase 1 implementation begins.
+**Overall confidence:** HIGH
 
 ### Gaps to Address
 
-- **API pricing verification:** Estimated cost per audit ($0.03-0.08) is based on early 2025 pricing. Verify current OpenAI, Anthropic, and Perplexity pricing before modeling unit economics. Perplexity uses per-request pricing for some models which changes the cost structure.
-- **Perplexity API model names:** `perplexity/sonar` was accurate as of early 2025. Verify current model names and capabilities at https://docs.perplexity.ai before writing the Perplexity adapter.
-- **Provider TOS for output storage:** Specifically, whether each provider allows storing and re-displaying API outputs as a product feature. OpenAI generally allows commercial use of API outputs; Perplexity's policy needs verification. This must be resolved before Phase 1 schema design is finalized.
-- **OpenAI Batch API availability:** Claimed 50% discount for 24h-window jobs. Was available as of mid-2024; verify it is still offered before designing the Phase 4 monitoring tier around it.
-- **Existing codebase concerns from CONCERNS.md:** Six specific issues identified (BackgroundTasks instead of Celery, disabled auth, rate limiter fails open, .env committed, random number fallbacks in scoring, dual ORM architecture) must all be resolved in Phase 1 before any new AI features are built.
-- **Open-source GEO library landscape:** Research could not verify whether new Python libraries for AI visibility monitoring launched in late 2025 or 2026. Search before Phase 2 to avoid building something that already exists.
+- **Scoring calibration dataset does not exist.** The 61 criteria use research-backed weights but have never been validated against actual AI citation rates. Need to build a 50-100 site calibration dataset during Phase 2 to validate that the optimization score correlates with AI visibility.
+- **Freemium gate position is unvalidated.** The recommendation (free = crawlability only) is an educated guess. Need usage analytics from the first 50 free users to calibrate -- if conversion rate is below 2% after 60 days, the gate needs to move.
+- **Gemini free tier instability.** Google slashed free tier limits by 50-92% in December 2025. Production deployment should budget for paid Gemini tier, not rely on free.
+- **LiteLLM pinning risk.** LiteLLM releases multiple times per week with potential breaking changes. The recommendation to pin exact version (1.81.15) means manual upgrade management. Need a strategy for testing LiteLLM upgrades.
+- **Code analysis feature demand is unvalidated.** Zero competitors offer this, which could mean "massive opportunity" or "nobody wants it." Defer to Phase 8 and validate demand before building.
 
 ## Sources
 
 ### Primary (HIGH confidence)
-- Existing codebase analysis: `/home/salim/Informatique/Perso/Endexa/geo-platform-mvp/.planning/codebase/ARCHITECTURE.md`
-- Project definition: `/home/salim/Informatique/Perso/Endexa/geo-platform-mvp/.planning/PROJECT.md`
-- `CLAUDE.md` and `docs/` directory (direct codebase audit): existing stack, installed packages, CONCERNS.md issues
-- LiteLLM installed at 1.80.7 (verified in venv)
-- Python asyncio.Semaphore and asyncio.gather: Python standard library documentation
-- tenacity retry library: established Python ecosystem library, well-documented
-- spaCy: established NLP library, well-documented for NER tasks
-- rapidfuzz vs fuzzywuzzy benchmarks: established benchmark results
+- Endexa codebase direct audit (19 existing tables, 61-criteria framework, working infrastructure)
+- PyPI verified versions: stripe 14.3.0, litellm 1.81.15, weasyprint 68.1, sse-starlette 3.2.0
+- npm verified versions: marked 17.0.3, highlight.js 11.11.1, DOMPurify 3.3.1, @stripe/stripe-js 8.8.0
+- Profound pricing ($99-$399+/mo), Series C $96M at $1B valuation (SiliconAngle, Feb 24 2026)
+- Otterly.AI pricing ($29-$489/mo), Geoptie pricing ($0-$199/mo), Frase.io pricing ($14.99-$114.99/mo)
+- Semrush AI Visibility Toolkit ($99-$549/mo), Ahrefs Brand Radar ($328-$2,198/mo), BrightEdge ($12K-$150K+/yr)
+- OWASP Top 10 for LLM Applications 2025 (prompt leakage, injection)
+- Stripe webhook documentation (delivery ordering, 72-hour finalization)
 
 ### Secondary (MEDIUM confidence)
-- Competitor feature landscape (Profound, Otterly.ai, Peec AI, Knowatoa): training data knowledge as of early 2025 -- features and pricing may have changed
-- LiteLLM provider support for Perplexity: training data (confirmed support exists, model name needs verification)
-- OpenAI, Anthropic, Perplexity API pricing: training data as of early 2025 (verify before modeling unit economics)
-- API rate limit structures: training data (verify current tier limits before implementation)
-- Provider TOS on API output storage: training data (must be verified against current policy documents before implementation)
+- AirOps LLM brand citation tracking (30% visibility consistency)
+- Bessemer AI pricing playbook (50-60% AI SaaS margins)
+- First Page Sage freemium conversion benchmarks (2-5% base, 8-15% top quartile)
+- FastAPI + Celery production patterns (community guides)
+- RAG vs prompt stuffing analysis (SpyglassMTG)
+- WeasyPrint vs alternatives comparison (PDFBolt, Glukhov)
+- Search Engine Land GEO audit guides
 
-### Tertiary (LOW confidence)
-- Open-source GEO monitoring library landscape: training data only; space is nascent and evolving rapidly; new libraries may have launched in late 2025 or 2026 -- search before Phase 2
-- Cost-per-audit estimates ($0.03-0.08): calculated from training-data pricing; verify against current pricing before using for business decisions
-- OpenAI Batch API 50% discount: was available as of mid-2024; verify current availability and pricing
+### Tertiary (needs validation)
+- Gemini free tier stability (Google has changed limits multiple times; monitor continuously)
+- Code analysis feature demand (zero market validation; build last)
+- Optimal freemium gate position (requires real user data to calibrate)
 
 ---
-*Research completed: 2026-02-21*
+*Research completed: 2026-02-25*
 *Ready for roadmap: yes*
