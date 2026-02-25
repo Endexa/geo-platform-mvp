@@ -1,0 +1,87 @@
+{
+  "url": "https://example-test.com",
+  "domain": "example-test.com",
+  "title": "Example Test - AI Platform for Modern Businesses",
+  "meta_description": "A comprehensive AI platform that helps modern businesses automate workflows, analyze data, and drive growth through intelligent automation solutions.",
+  "status_code": 200,
+  "response_time_ms": 450,
+  "word_count": 580,
+  "internal_links_count": 25,
+  "html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Example Test - AI Platform for Modern Businesses</title>\n  <meta name=\"description\" content=\"A comprehensive AI platform that helps modern businesses automate workflows, analyze data, and drive growth through intelligent automation solutions.\">\n  <meta property=\"og:title\" content=\"Example Test - AI Platform\">\n  <meta property=\"og:description\" content=\"A comprehensive AI platform for modern businesses\">\n  <meta property=\"og:image\" content=\"https://example-test.com/og-image.png\">\n  <meta property=\"og:type\" content=\"website\">\n  <meta property=\"og:url\" content=\"https://example-test.com\">\n  <meta property=\"article:published_time\" content=\"2026-02-10T12:00:00Z\">\n  <meta property=\"article:modified_time\" content=\"2026-02-20T08:30:00Z\">\n  <link rel=\"canonical\" href=\"https://example-test.com\">\n  <script type=\"application/ld+json\">\n  {\n    \"@context\": \"https://schema.org\",\n    \"@type\": \"Organization\",\n    \"name\": \"Example Test\",\n    \"url\": \"https://example-test.com\",\n    \"logo\": \"https://example-test.com/logo.png\",\n    \"sameAs\": [\n      \"https://twitter.com/exampletest\",\n      \"https://linkedin.com/company/exampletest\",\n      \"https://github.com/exampletest\",\n      \"https://www.facebook.com/exampletest\",\n      \"https://www.youtube.com/exampletest\"\n    ]\n  }\n  </script>\n  <script type=\"application/ld+json\">\n  {\n    \"@context\": \"https://schema.org\",\n    \"@type\": \"Article\",\n    \"headline\": \"How AI Platforms Transform Business Operations\",\n    \"author\": {\n      \"@type\": \"Person\",\n      \"name\": \"Dr. Sarah Johnson\",\n      \"jobTitle\": \"Chief Technology Officer\",\n      \"affiliation\": {\n        \"@type\": \"Organization\",\n        \"name\": \"Example Test\"\n      }\n    },\n    \"datePublished\": \"2026-02-10T12:00:00Z\",\n    \"dateModified\": \"2026-02-20T08:30:00Z\"\n  }\n  </script>\n</head>\n<body>\n  <header>\n    <nav>\n      <a href=\"/\">Home</a>\n      <a href=\"/features\">Features</a>\n      <a href=\"/pricing\">Pricing</a>\n      <a href=\"/about\">About Us</a>\n      <a href=\"/docs\">Documentation</a>\n      <a href=\"/blog\">Blog</a>\n      <a href=\"/contact\">Contact</a>\n      <a href=\"/case-studies\">Case Studies</a>\n      <a href=\"/integrations\">Integrations</a>\n      <a href=\"/security\">Security</a>\n      <a href=\"/careers\">Careers</a>\n      <a href=\"/partners\">Partners</a>\n      <a href=\"/resources\">Resources</a>\n      <a href=\"/webinars\">Webinars</a>\n      <a href=\"/support\">Support</a>\n      <a href=\"/faq\">FAQ</a>\n      <a href=\"/terms\">Terms</a>\n      <a href=\"/privacy\">Privacy</a>\n      <a href=\"/sitemap\">Sitemap</a>\n      <a href=\"/enterprise\">Enterprise</a>\n      <a href=\"/developers\">Developers</a>\n    </nav>\n  </header>\n  <main>\n    <article>\n      <h1>AI Platform for Modern Businesses</h1>\n\n      <p class=\"author-byline\">By Dr. Sarah Johnson, CTO at Example Test</p>\n      <time datetime=\"2026-02-10T12:00:00Z\">February 10, 2026</time>\n\n      <p>Example Test provides a comprehensive AI platform designed to help modern businesses automate complex workflows and analyze data at scale. Our platform leverages state-of-the-art machine learning models to deliver actionable insights that drive measurable growth. According to research from MIT, companies using AI automation see a 35% increase in operational efficiency, making the investment worthwhile for organizations of all sizes. Data from McKinsey confirms that early AI adopters outperform their peers by 2.5x in revenue growth.</p>\n\n      <h2>What makes our platform different?</h2>\n      <p>Our approach combines advanced natural language processing with proprietary algorithms that understand business context. Unlike traditional automation tools, our platform learns from your specific data patterns and adapts its recommendations over time. This results in increasingly accurate predictions and more relevant insights as the system processes more of your business data. Research shows this adaptive approach yields a 40% improvement in prediction accuracy compared to static models published in the Journal of Machine Learning Research.</p>\n\n      <h2>How does the AI automation work?</h2>\n      <p>The platform processes your data through three intelligent layers: ingestion, analysis, and action. Each layer is optimized for speed and accuracy, ensuring that your business receives real-time insights without sacrificing quality. The ingestion layer handles over 10,000 data points per second, while our analysis engine identifies patterns with 98.5% accuracy. The action layer then generates specific, prioritized recommendations tailored to your business goals and constraints.</p>\n\n      <h3>Data Processing Pipeline</h3>\n      <p>Our proprietary data pipeline handles structured and unstructured data with equal precision. Whether you are processing financial records, customer feedback surveys, or operational logs, the system automatically classifies, enriches, and normalizes your data. This unified approach eliminates data silos and provides a complete view of your business operations from a single dashboard interface.</p>\n\n      <h2>Frequently Asked Questions</h2>\n\n      <h3>What integrations are supported?</h3>\n      <p>We support over 200 integrations including Salesforce, HubSpot, Slack, Microsoft Teams, Jira, and major cloud providers like AWS and Google Cloud Platform. Our REST API and webhook system allow custom integrations with any platform that supports HTTP requests, giving your engineering team complete flexibility.</p>\n\n      <h3>How secure is the platform?</h3>\n      <p>Security is our top priority. We maintain SOC 2 Type II compliance, encrypt all data at rest and in transit using AES-256, and provide role-based access controls for every feature. Our infrastructure runs on isolated virtual private clouds with regular penetration testing conducted by independent security firms. We also offer HIPAA-compliant deployments for healthcare organizations.</p>\n\n      <h3>What does onboarding look like?</h3>\n      <p>Onboarding typically takes 2-4 weeks depending on the complexity of your data sources. Our dedicated customer success team guides you through every step, from initial data migration to training your team on advanced features. Most customers see measurable ROI within the first 90 days of deployment.</p>\n\n      <blockquote>\"Example Test transformed our data operations. We reduced manual processing time by 65% and improved forecast accuracy by 3.2x in just three months.\" -- Jane Smith, VP of Operations at TechCorp</blockquote>\n\n      <h2>Enterprise Pricing and Plans</h2>\n      <p>We offer flexible pricing starting at $299/month for growing teams and custom enterprise plans for large organizations. All plans include unlimited API access, dedicated support, and quarterly business reviews. Enterprise customers receive additional benefits including custom model training, SLA guarantees of 99.99% uptime, and a dedicated solutions architect.</p>\n\n      <ul>\n        <li>Starter Plan: $299/month - Up to 100,000 records processed monthly</li>\n        <li>Growth Plan: $799/month - Up to 1,000,000 records with advanced analytics</li>\n        <li>Enterprise Plan: Custom pricing - Unlimited records with custom model training</li>\n      </ul>\n\n      <h2>Performance Benchmarks</h2>\n      <table>\n        <thead>\n          <tr>\n            <th>Metric</th>\n            <th>Industry Average</th>\n            <th>Example Test</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr>\n            <td>Processing Speed</td>\n            <td>2,500 records/sec</td>\n            <td>10,000 records/sec</td>\n          </tr>\n          <tr>\n            <td>Prediction Accuracy</td>\n            <td>82%</td>\n            <td>98.5%</td>\n          </tr>\n          <tr>\n            <td>Uptime SLA</td>\n            <td>99.9%</td>\n            <td>99.99%</td>\n          </tr>\n        </tbody>\n      </table>\n\n      <p>For more information, visit our <a href=\"https://wikipedia.org/wiki/Artificial_intelligence\">Wikipedia reference on AI</a> or read the <a href=\"https://arxiv.org/abs/2301.00001\">latest research paper</a> on enterprise AI adoption trends. You can also check our reviews on <a href=\"https://www.g2.com/products/exampletest\">G2</a> and <a href=\"https://www.trustpilot.com/review/example-test.com\">Trustpilot</a>.</p>\n\n      <p>Copyright 2019 Example Test Inc. All rights reserved.</p>\n    </article>\n  </main>\n  <footer>\n    <p>Copyright 2019-2026 Example Test Inc.</p>\n    <a href=\"/terms\">Terms of Service</a>\n    <a href=\"/privacy\">Privacy Policy</a>\n  </footer>\n</body>\n</html>",
+  "main_content": "AI Platform for Modern Businesses. By Dr. Sarah Johnson, CTO at Example Test. February 10, 2026. Example Test provides a comprehensive AI platform designed to help modern businesses automate complex workflows and analyze data at scale. Our platform leverages state-of-the-art machine learning models to deliver actionable insights that drive measurable growth. According to research from MIT, companies using AI automation see a 35% increase in operational efficiency, making the investment worthwhile for organizations of all sizes. Data from McKinsey confirms that early AI adopters outperform their peers by 2.5x in revenue growth. What makes our platform different? Our approach combines advanced natural language processing with proprietary algorithms that understand business context. Unlike traditional automation tools, our platform learns from your specific data patterns and adapts its recommendations over time. This results in increasingly accurate predictions and more relevant insights as the system processes more of your business data. Research shows this adaptive approach yields a 40% improvement in prediction accuracy compared to static models published in the Journal of Machine Learning Research. How does the AI automation work? The platform processes your data through three intelligent layers: ingestion, analysis, and action. Each layer is optimized for speed and accuracy, ensuring that your business receives real-time insights without sacrificing quality. The ingestion layer handles over 10,000 data points per second, while our analysis engine identifies patterns with 98.5% accuracy. The action layer then generates specific, prioritized recommendations tailored to your business goals and constraints. Data Processing Pipeline. Our proprietary data pipeline handles structured and unstructured data with equal precision. Whether you are processing financial records, customer feedback surveys, or operational logs, the system automatically classifies, enriches, and normalizes your data. This unified approach eliminates data silos and provides a complete view of your business operations from a single dashboard interface. Frequently Asked Questions. What integrations are supported? We support over 200 integrations including Salesforce, HubSpot, Slack, Microsoft Teams, Jira, and major cloud providers like AWS and Google Cloud Platform. Our REST API and webhook system allow custom integrations with any platform that supports HTTP requests, giving your engineering team complete flexibility. How secure is the platform? Security is our top priority. We maintain SOC 2 Type II compliance, encrypt all data at rest and in transit using AES-256, and provide role-based access controls for every feature. Our infrastructure runs on isolated virtual private clouds with regular penetration testing conducted by independent security firms. We also offer HIPAA-compliant deployments for healthcare organizations. What does onboarding look like? Onboarding typically takes 2-4 weeks depending on the complexity of your data sources. Our dedicated customer success team guides you through every step, from initial data migration to training your team on advanced features. Most customers see measurable ROI within the first 90 days of deployment. Example Test transformed our data operations. We reduced manual processing time by 65% and improved forecast accuracy by 3.2x in just three months. Jane Smith, VP of Operations at TechCorp. Enterprise Pricing and Plans. We offer flexible pricing starting at $299/month for growing teams and custom enterprise plans for large organizations. All plans include unlimited API access, dedicated support, and quarterly business reviews. Enterprise customers receive additional benefits including custom model training, SLA guarantees of 99.99% uptime, and a dedicated solutions architect. Starter Plan: $299/month - Up to 100,000 records processed monthly. Growth Plan: $799/month - Up to 1,000,000 records with advanced analytics. Enterprise Plan: Custom pricing - Unlimited records with custom model training. Performance Benchmarks. For more information, visit our Wikipedia reference on AI or read the latest research paper on enterprise AI adoption trends. You can also check our reviews on G2 and Trustpilot. Copyright 2019 Example Test Inc. All rights reserved.",
+  "schema_org": [
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Example Test",
+      "url": "https://example-test.com",
+      "logo": "https://example-test.com/logo.png",
+      "sameAs": [
+        "https://twitter.com/exampletest",
+        "https://linkedin.com/company/exampletest",
+        "https://github.com/exampletest",
+        "https://www.facebook.com/exampletest",
+        "https://www.youtube.com/exampletest"
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "How AI Platforms Transform Business Operations",
+      "author": {
+        "@type": "Person",
+        "name": "Dr. Sarah Johnson",
+        "jobTitle": "Chief Technology Officer",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "Example Test"
+        }
+      },
+      "datePublished": "2026-02-10T12:00:00Z",
+      "dateModified": "2026-02-20T08:30:00Z"
+    }
+  ],
+  "ai_bot_access": {
+    "gptbot": true,
+    "chatgpt_user": true,
+    "claudebot": true,
+    "claude_searchbot": true,
+    "perplexitybot": true,
+    "google_extended": true,
+    "applebot_extended": null,
+    "ccbot": false
+  },
+  "og_tags": {
+    "og:title": "Example Test - AI Platform",
+    "og:description": "A comprehensive AI platform for modern businesses",
+    "og:image": "https://example-test.com/og-image.png",
+    "og:type": "website",
+    "og:url": "https://example-test.com"
+  },
+  "headings": [
+    {"level": 1, "text": "AI Platform for Modern Businesses"},
+    {"level": 2, "text": "What makes our platform different?"},
+    {"level": 2, "text": "How does the AI automation work?"},
+    {"level": 3, "text": "Data Processing Pipeline"},
+    {"level": 2, "text": "Frequently Asked Questions"},
+    {"level": 3, "text": "What integrations are supported?"},
+    {"level": 3, "text": "How secure is the platform?"},
+    {"level": 3, "text": "What does onboarding look like?"},
+    {"level": 2, "text": "Enterprise Pricing and Plans"},
+    {"level": 2, "text": "Performance Benchmarks"}
+  ],
+  "open_graph": {
+    "og:title": "Example Test - AI Platform",
+    "og:description": "A comprehensive AI platform for modern businesses",
+    "og:image": "https://example-test.com/og-image.png",
+    "og:type": "website"
+  },
+  "microdata": [],
+  "content_keywords": ["AI", "automation", "platform", "business", "data"],
+  "industry_signals": ["SaaS", "Enterprise Software", "AI/ML"],
+  "authority_markers": {
+    "has_author": true,
+    "has_dates": true,
+    "has_citations": true
+  }
+}

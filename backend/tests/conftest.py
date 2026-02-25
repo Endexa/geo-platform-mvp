@@ -2,9 +2,12 @@
 
 Tests run against Supabase to ensure real integration.
 Each test gets its own DB session with transaction rollback for isolation.
+Also provides scoring-related fixtures for pipeline tests.
 """
 
+import json
 import uuid
+from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
@@ -16,6 +19,8 @@ from app.core.database import Base, get_db
 from app.core.security import SecurityManager
 from app.main import app
 from app.models.profile import Profile
+
+FIXTURES_DIR = Path(__file__).parent / "fixtures"
 
 # Use the real Supabase DATABASE_URL from settings / env
 engine = create_engine(
@@ -129,3 +134,39 @@ def authenticated_client(client: TestClient, auth_headers: dict):
             return self._tc.delete(url, **kw)
 
     return AuthClient(client, auth_headers)
+
+
+# ---------------------------------------------------------------------------
+# Scoring pipeline fixtures
+# ---------------------------------------------------------------------------
+
+
+@pytest.fixture()
+def stripe_crawl_data() -> dict:
+    """Load the known-good crawl data fixture (mimics a well-structured page)."""
+    with open(FIXTURES_DIR / "stripe_crawl_data.json") as f:
+        return json.load(f)
+
+
+@pytest.fixture()
+def minimal_crawl_data() -> dict:
+    """Minimal crawl data dict for testing edge cases (empty content)."""
+    return {
+        "url": "https://empty-test.com",
+        "domain": "empty-test.com",
+        "html": "",
+        "main_content": "",
+        "title": "",
+        "meta_description": "",
+        "schema_org": [],
+        "ai_bot_access": {},
+        "og_tags": {},
+        "headings": [],
+        "word_count": 0,
+        "internal_links_count": 0,
+        "open_graph": {},
+        "microdata": [],
+        "content_keywords": [],
+        "industry_signals": [],
+        "authority_markers": {},
+    }
