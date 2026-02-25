@@ -7,15 +7,15 @@
 
 ### Scoring Pipeline
 
-- [ ] **SCORE-01**: All 61 scoring criteria across 4 categories produce real measurements from crawled page data
-- [ ] **SCORE-02**: Each criterion uses three-state system: measured, not-applicable, or error — never fabricated
+- [x] **SCORE-01**: All 61 scoring criteria across 4 categories produce real measurements from crawled page data
+- [x] **SCORE-02**: Each criterion uses three-state system: measured, not-applicable, or error — never fabricated
 - [ ] **SCORE-03**: Optimization Score aggregates via weakest-link formula (0.6*mean + 0.4*min across pages)
 - [ ] **SCORE-04**: Dual scores displayed: Visibility Score (AI mention-based) + Optimization Score (page-level criteria)
-- [ ] **SCORE-05**: Crawlability category (C1-C12) produces accurate measurements including AI bot access, SSR detection, TTFB
-- [ ] **SCORE-06**: Content Structure category (CS1-CS13) measures headings, lists, word count, readability, citations
-- [ ] **SCORE-07**: Structured Data category (SD1-SD13) detects JSON-LD, FAQPage, HowTo, schema types, llms.txt
-- [ ] **SCORE-08**: Authority category (A1-A8, S1-S15) evaluates E-E-A-T signals and SEO fundamentals
-- [ ] **SCORE-09**: Dead code removed — legacy `geo_data_points/` directory deleted, only `scoring/` services used
+- [x] **SCORE-05**: Crawlability category (C1-C12) produces accurate measurements including AI bot access, SSR detection, TTFB
+- [x] **SCORE-06**: Content Structure category (CS1-CS13) measures headings, lists, word count, readability, citations
+- [x] **SCORE-07**: Structured Data category (SD1-SD13) detects JSON-LD, FAQPage, HowTo, schema types, llms.txt
+- [x] **SCORE-08**: Authority category (A1-A8, S1-S15) evaluates E-E-A-T signals and SEO fundamentals
+- [x] **SCORE-09**: Dead code removed — legacy `geo_data_points/` directory deleted, only `scoring/` services used
 - [ ] **SCORE-10**: Scoring pipeline has integration tests verifying end-to-end accuracy against known test sites
 
 ### Recommendations Engine
@@ -115,15 +115,15 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SCORE-01 | Phase 1: Scoring Foundation | Pending |
-| SCORE-02 | Phase 1: Scoring Foundation | Pending |
+| SCORE-01 | Phase 1: Scoring Foundation | Complete |
+| SCORE-02 | Phase 1: Scoring Foundation | Complete |
 | SCORE-03 | Phase 1: Scoring Foundation | Pending |
 | SCORE-04 | Phase 1: Scoring Foundation | Pending |
-| SCORE-05 | Phase 1: Scoring Foundation | Pending |
-| SCORE-06 | Phase 1: Scoring Foundation | Pending |
-| SCORE-07 | Phase 1: Scoring Foundation | Pending |
-| SCORE-08 | Phase 1: Scoring Foundation | Pending |
-| SCORE-09 | Phase 1: Scoring Foundation | Pending |
+| SCORE-05 | Phase 1: Scoring Foundation | Complete |
+| SCORE-06 | Phase 1: Scoring Foundation | Complete |
+| SCORE-07 | Phase 1: Scoring Foundation | Complete |
+| SCORE-08 | Phase 1: Scoring Foundation | Complete |
+| SCORE-09 | Phase 1: Scoring Foundation | Complete |
 | SCORE-10 | Phase 1: Scoring Foundation | Pending |
 | REC-01 | Phase 2: Recommendations + Competitor Benchmarking | Pending |
 | REC-02 | Phase 2: Recommendations + Competitor Benchmarking | Pending |
