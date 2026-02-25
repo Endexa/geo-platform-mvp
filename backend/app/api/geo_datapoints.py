@@ -12,13 +12,6 @@ from pydantic import BaseModel, Field, validator
 from uuid import UUID
 from typing import List, Dict, Any, Optional
 from datetime import datetime
-import sys
-from pathlib import Path
-
-# Add geo_data_points to path
-geo_data_points_path = Path(__file__).parent.parent.parent.parent / "geo_data_points"
-sys.path.append(str(geo_data_points_path))
-
 from app.core.database import get_db
 from app.core.rate_limiter import standard_rate_limit, analysis_rate_limit
 from app.core.security import get_current_active_user
@@ -26,15 +19,13 @@ from app.core.validators import SecureBaseModel
 from app.models import Profile
 from loguru import logger
 
-# Import GEO data points components
-try:
-    from db import Analysis as GeoAnalysis, DataPointResult, get_db_session
-    from orchestrator import GeoOrchestrator
-except ImportError as e:
-    logger.warning(f"Could not import GEO data points modules: {e}")
-    GeoAnalysis = None
-    DataPointResult = None
-    GeoOrchestrator = None
+# TODO: Legacy geo_data_points/ system has been deleted (108 hardcoded-zero scripts).
+# Scoring is now handled by backend/app/services/scoring/ (61 real criteria).
+# These endpoints should be rewired to the new scoring system or removed entirely.
+GeoAnalysis = None
+DataPointResult = None
+GeoOrchestrator = None
+get_db_session = None
 
 
 router = APIRouter()
