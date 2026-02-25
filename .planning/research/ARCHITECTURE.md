@@ -1,799 +1,621 @@
 # Architecture Patterns
 
-**Domain:** AI Brand Visibility Auditing Platform
-**Researched:** 2026-02-21
-**Confidence:** HIGH (based on existing codebase analysis + established async orchestration patterns)
+**Domain:** GEO/SEO SaaS Platform -- v2 Rebuild
+**Researched:** 2026-02-25
+**Confidence:** HIGH (based on codebase audit + existing working infrastructure)
+
+## Executive Summary
+
+The existing FastAPI + Celery + Supabase architecture is sound (70/100 architecture grade per audit critique). The rebuild adds 9 major components to this foundation. The critical insight is that **nearly every new feature depends on the scoring pipeline producing real data**, making it the single most important prerequisite. The architecture should be organized around an "Audit" as the central aggregate, with all new features (recommendations, chat, reports, payments, competitors) radiating from it.
+
+This document maps each new component, defines boundaries, specifies data flows, and recommends a build order based on hard dependencies.
 
 ---
 
 ## Recommended Architecture
 
-The AI brand visibility auditing system adds three major subsystems to the existing FastAPI + Nuxt 3 + PostgreSQL stack. These subsystems integrate into the existing 4-layer backend (middleware, routers, services, models) without disrupting what works.
-
-### High-Level System View
+### System Overview
 
 ```
-                        ┌─────────────────────────────────────────────┐
-                        │  Nuxt 3 SPA Frontend                        │
-                        │  Audit Dashboard + Results + Gap Analysis    │
-                        └──────────────────┬──────────────────────────┘
-                                           │ HTTP/JSON
-                                           ▼
-┌──────────────────────────────────────────────────────────────────────────────┐
-│  FastAPI Application                                                         │
-│  ┌──────────────────────────────────────────────────────────────────────┐   │
-│  │  API Routers                                                         │   │
-│  │  POST /audit/start     GET /audit/{id}     GET /audit/{id}/results   │   │
-│  └──────────────────────────┬───────────────────────────────────────────┘   │
-│                              │                                               │
-│  ┌───────────────────────────┴───────────────────────────────────────────┐  │
-│  │                        Service Layer                                   │  │
-│  │                                                                        │  │
-│  │  ┌─────────────────┐  ┌──────────────────┐  ┌─────────────────────┐  │  │
-│  │  │ AuditOrchestrator│  │ QueryGenerator   │  │ ScoringPipeline     │  │  │
-│  │  │ (coordinates     │  │ (crawl site,     │  │ (site signals +     │  │  │
-│  │  │  full audit flow)│  │  extract context, │  │  AI presence =      │  │  │
-│  │  │                  │  │  generate queries)│  │  final score)       │  │  │
-│  │  └────────┬─────────┘  └─────────┬────────┘  └──────────┬──────────┘  │  │
-│  │           │                      │                       │             │  │
-│  │  ┌────────┴──────────────────────┴───────────────────────┴──────────┐  │  │
-│  │  │                   AIEngineOrchestrator                            │  │  │
-│  │  │  (parallel dispatch to ChatGPT, Claude, Perplexity               │  │  │
-│  │  │   with per-engine rate limits + retries)                         │  │  │
-│  │  └──────┬──────────────────┬──────────────────┬─────────────────────┘  │  │
-│  │         │                  │                   │                        │  │
-│  │  ┌──────┴─────┐   ┌───────┴──────┐   ┌───────┴───────┐               │  │
-│  │  │ OpenAI     │   │ Anthropic    │   │ Perplexity    │               │  │
-│  │  │ Adapter    │   │ Adapter      │   │ Adapter       │               │  │
-│  │  └────────────┘   └──────────────┘   └───────────────┘               │  │
-│  └───────────────────────────────────────────────────────────────────────┘  │
-└──────────────────────────────────────────────────────────────────────────────┘
-         │                    │                     │
-         ▼                    ▼                     ▼
-   ┌──────────┐        ┌──────────┐          ┌──────────┐
-   │PostgreSQL│        │  Redis   │          │ Celery   │
-   │+ pgvector│        │  Cache   │          │ Worker   │
-   └──────────┘        └──────────┘          └──────────┘
+                    +------------------+
+                    |   Nuxt 3 SPA     |
+                    |  (Vue 3 + TW)    |
+                    +--------+---------+
+                             |
+                    REST API + WebSocket
+                             |
+                    +--------+---------+
+                    |   FastAPI App     |
+                    |  (main.py)        |
+                    +--------+---------+
+                             |
+              +--------------+--------------+
+              |              |              |
+     +--------+------+ +----+----+ +-------+--------+
+     |  Celery Worker | |  Redis  | | Supabase PG    |
+     |  (audit pipe)  | | (cache/ | | (data + pgvec) |
+     +--------+------+ | broker) | +-------+--------+
+              |         +----+----+         |
+     +--------+------+                     |
+     |  AI Engines    |                     |
+     |  (LiteLLM)     |                     |
+     +----------------+                     |
+                                            |
+     +----------------+                     |
+     |  Stripe API    +---------------------+
+     +----------------+
 ```
 
 ### Component Boundaries
 
-| Component | Responsibility | Communicates With |
-|-----------|---------------|-------------------|
-| **AuditOrchestrator** | Coordinates end-to-end audit flow: site crawl, query generation, AI dispatch, scoring, result assembly | QueryGenerator, AIEngineOrchestrator, ScoringPipeline, DB |
-| **QueryGenerator** | Crawls target URL, extracts industry/brand/product signals, generates industry-relevant questions for AI engines | Site crawling utils (BeautifulSoup/Playwright), LLM for question generation |
-| **AIEngineOrchestrator** | Dispatches queries to multiple AI APIs in parallel with rate limiting, retries, and response normalization | Engine adapters (OpenAI, Anthropic, Perplexity), Redis (rate limit state) |
-| **Engine Adapters** | Thin wrappers around each AI API. Normalize request/response format. Handle auth, retries, error mapping | External AI APIs |
-| **ScoringPipeline** | Combines site-readiness signals (structured data, content quality) with AI presence analysis (mentions, sentiment, accuracy) into a 0-100 score | DB for site analysis data, AI response data |
-| **ResponseAnalyzer** | Parses AI responses to detect brand mentions, extract quotes, identify competitors, assess sentiment | pgvector for semantic comparison |
-| **CacheLayer** | Deduplicates AI queries, caches responses by query hash + engine + date window | Redis |
+| Component | Responsibility | Communicates With | Build Phase |
+|-----------|---------------|-------------------|-------------|
+| **ScoringPipeline** | Run 61 criteria against crawled pages, produce real measurements | CrawlerService, DB (CriterionResult, PageScore) | Phase 1 (FIRST) |
+| **RecommendationEngine** | Gap analysis, priority ordering, code snippets, action steps | ScoringPipeline output, CompetitorAudit data, DB | Phase 2 |
+| **ChatAssistant** | WebSocket-based Q&A over audit results | FastAPI WebSocket, LiteLLM, DB (audit data) | Phase 4 |
+| **ReportGenerator** | PDF/HTML export of audit results + recommendations | DB (all audit data), WeasyPrint, Jinja2 | Phase 3 |
+| **PaymentGating** | Stripe subscriptions, freemium feature gating | Stripe API, DB (Organization.subscription_tier) | Phase 3 |
+| **CompetitorBenchmarking** | Crawl + score competitor sites, share-of-voice | CrawlerService, ScoringPipeline, EntityExtractor | Phase 2 |
+| **CodeAnalysisFlow** | Generate prompts for user's AI tools, ingest output | DB (audit data), dedicated API endpoints | Phase 4 |
+| **JiraCSVExport** | Export recommendations as importable CSV | DB (AuditRecommendation), pandas/csv module | Phase 3 |
+| **ProductionDashboard** | Real metrics, trend charts, audit history | DB (all tables), Nuxt 3 composables, Chart.js | Phase 5 |
 
 ---
 
-## Data Flow
+## Data Model: The Audit Aggregate
 
-### Complete Audit Flow (Main Pipeline)
-
-```
-User submits URL on frontend
-        │
-        │ POST /api/v1/audit/start  { url, brand_name?, competitors? }
-        ▼
-┌─────────────────────────────────────────────────────────────────┐
-│  1. AuditOrchestrator.start_audit()                             │
-│     - Create Audit record (status=pending)                      │
-│     - Dispatch Celery task                                      │
-│     - Return audit_id immediately                               │
-└───────────────────────────┬─────────────────────────────────────┘
-                            │  (Celery worker picks up)
-                            ▼
-┌─────────────────────────────────────────────────────────────────┐
-│  2. PHASE 1: Site Crawl + Context Extraction                    │
-│     QueryGenerator.analyze_site(url)                            │
-│     - Crawl URL with BeautifulSoup (+ Playwright for JS sites) │
-│     - Extract: brand name, industry, products/services,         │
-│       competitors mentioned, structured data, meta description  │
-│     - Store SiteCrawlResult in DB                               │
-│     - Update audit status → "site_analyzed"                     │
-└───────────────────────────┬─────────────────────────────────────┘
-                            │
-                            ▼
-┌─────────────────────────────────────────────────────────────────┐
-│  3. PHASE 2: Query Generation                                   │
-│     QueryGenerator.generate_queries(site_context)               │
-│     - Use LLM to generate 5-10 industry-relevant questions      │
-│       e.g., "What are the best CRM tools for small business?"   │
-│     - Include brand-specific queries:                           │
-│       "What do you know about [brand_name]?"                    │
-│     - Include competitor-comparison queries:                    │
-│       "Compare [brand] vs [competitor]"                         │
-│     - Store generated queries in DB                             │
-│     - Update audit status → "queries_generated"                 │
-└───────────────────────────┬─────────────────────────────────────┘
-                            │
-                            ▼
-┌─────────────────────────────────────────────────────────────────┐
-│  4. PHASE 3: AI Engine Querying (the expensive part)            │
-│     AIEngineOrchestrator.execute_queries(queries, engines)       │
-│                                                                  │
-│     For each query x engine combination:                        │
-│       a. Check Redis cache (query_hash + engine + date_window)  │
-│       b. If cached → use cached response                        │
-│       c. If not → dispatch through engine adapter               │
-│          - asyncio.Semaphore per engine for rate limiting        │
-│          - Exponential backoff on 429/5xx                        │
-│          - Store response + metadata in DB                      │
-│       d. All engines queried in parallel (within rate limits)    │
-│                                                                  │
-│     Result: List of AIEngineResponse records in DB              │
-│     Update audit status → "ai_queried"                          │
-└───────────────────────────┬─────────────────────────────────────┘
-                            │
-                            ▼
-┌─────────────────────────────────────────────────────────────────┐
-│  5. PHASE 4: Response Analysis                                   │
-│     ResponseAnalyzer.analyze_responses(responses, brand_info)    │
-│                                                                  │
-│     For each AI response:                                        │
-│       a. Detect brand mentions (exact + fuzzy match)            │
-│       b. Extract quotes containing brand                        │
-│       c. Identify competitor mentions                           │
-│       d. Assess sentiment (positive/neutral/negative)           │
-│       e. Check factual accuracy against site content            │
-│       f. Store BrandMention records                             │
-│                                                                  │
-│     pgvector: Compare AI's description of brand vs site's       │
-│     own description → alignment score                           │
-│     Update audit status → "responses_analyzed"                  │
-└───────────────────────────┬─────────────────────────────────────┘
-                            │
-                            ▼
-┌─────────────────────────────────────────────────────────────────┐
-│  6. PHASE 5: Scoring + Report Generation                         │
-│     ScoringPipeline.compute_scores(site_data, ai_analysis)      │
-│                                                                  │
-│     Site Readiness Score (0-100):                                │
-│       - Structured data presence (schema.org, JSON-LD)          │
-│       - Content quality signals (readability, depth)            │
-│       - Authority signals (E-E-A-T markers)                     │
-│       - AI crawler accessibility (robots.txt, sitemap)          │
-│                                                                  │
-│     AI Presence Score (0-100):                                   │
-│       - Mention frequency across engines                        │
-│       - Quote accuracy (does AI describe brand correctly?)      │
-│       - Sentiment score                                         │
-│       - Competitive positioning (rank vs competitors)           │
-│                                                                  │
-│     Final GEO Score = (site_readiness * 0.3) +                  │
-│                       (ai_presence * 0.7)                       │
-│                                                                  │
-│     Generate gap analysis:                                       │
-│       - "Competitor X mentioned for [topic] but you are not"    │
-│       - "AI describes your brand as [X] but your site says [Y]" │
-│                                                                  │
-│     Update audit status → "completed"                           │
-└─────────────────────────────────────────────────────────────────┘
-                            │
-                            ▼
-Frontend polls GET /api/v1/audit/{id} → receives completed results
-```
-
-### Data Flow for Cost Efficiency (Cache Layer)
+The `Audit` is the central aggregate root. Every feature radiates from it:
 
 ```
-Query arrives at AIEngineOrchestrator
-        │
-        ▼
-┌───────────────────────────────────────────────┐
-│  Cache Check (Redis)                           │
-│  Key: sha256(query_text + engine_id)           │
-│  TTL: 24 hours (configurable per engine)       │
-│                                                │
-│  HIT  → Return cached AIEngineResponse         │
-│  MISS → Proceed to API call                    │
-└───────────────────────────┬────────────────────┘
-                            │ MISS
-                            ▼
-┌───────────────────────────────────────────────┐
-│  Deduplication Check                           │
-│  "Is another audit currently querying the     │
-│   same query+engine?"                          │
-│  Redis lock: query_hash:engine:in_flight       │
-│                                                │
-│  YES → Wait for existing result (pub/sub)      │
-│  NO  → Acquire lock, proceed                   │
-└───────────────────────────┬────────────────────┘
-                            │ NO (first requester)
-                            ▼
-┌───────────────────────────────────────────────┐
-│  Rate Limit Gate (asyncio.Semaphore)           │
-│  Per-engine concurrency:                       │
-│    ChatGPT:    max 3 concurrent                │
-│    Claude:     max 3 concurrent                │
-│    Perplexity: max 5 concurrent                │
-│                                                │
-│  Acquire semaphore → call API                  │
-│  Release semaphore on response/error           │
-└───────────────────────────┬────────────────────┘
-                            │
-                            ▼
-┌───────────────────────────────────────────────┐
-│  API Call + Store                               │
-│  - Call engine adapter                         │
-│  - Store response in PostgreSQL                │
-│  - Cache response in Redis                     │
-│  - Release in-flight lock                      │
-│  - Notify waiters via pub/sub                  │
-└────────────────────────────────────────────────┘
+                            Audit
+                              |
+            +---------+-------+-------+---------+
+            |         |       |       |         |
+        AuditQuery  PageScore  VisibilityScore  Brand
+            |         |
+    EngineResponse  CriterionResult
+            |
+    BrandMention    AuditRecommendation
+            |
+    MentionSentiment  DiscoveredCompetitor
+                            |
+                      CompetitorAudit
+
+    NEW TABLES (to add):
+    - ChatSession (audit_id FK, messages JSONB, created_at)
+    - AuditReport (audit_id FK, format, file_url, created_at)
+    - Subscription (user_id FK, stripe_customer_id, tier, status, current_period_end)
+    - CodeAnalysisPrompt (audit_id FK, prompt_text, status)
+    - CodeAnalysisResult (prompt_id FK, output_text, parsed_findings JSONB)
 ```
+
+### Existing Tables (19 total, keep as-is)
+
+| Table | Records per Audit | Status |
+|-------|-------------------|--------|
+| `audits` | 1 | Working |
+| `audit_queries` | 10-15 | Working |
+| `engine_responses` | 40-60 (queries x engines) | Working |
+| `brand_mentions` | 0-50+ | Working |
+| `visibility_scores` | 1 | Working |
+| `page_scores` | 5-10 (configurable cap) | Working |
+| `criterion_results` | 61 x pages_scored | Framework exists, criteria return 0 |
+| `audit_recommendations` | 10-40 | Framework exists, needs real scoring data |
+| `discovered_competitors` | 5-15 | Working |
+| `competitor_audits` | 3-5 | Working |
+| `mention_sentiments` | per mention | Working |
+| `audit_cost_ledger` | per API call | Working |
+| `profiles` | per user | Working |
+| `organizations` | per org | Working |
+| `brands` | per brand | Working |
+| `websites` | per site | Exists |
+| `brand_voice_*` | per config | Exists (deferred to v3) |
+| `analyses` | legacy | Exists (legacy, to deprecate) |
+| `recommendations` | legacy | Exists (legacy, to deprecate) |
+
+### New Tables (5 to add)
+
+| Table | Purpose | Key Columns |
+|-------|---------|-------------|
+| `chat_sessions` | Persist chat conversations per audit | `audit_id`, `messages` (JSONB array), `model_used`, `token_count` |
+| `audit_reports` | Track generated reports | `audit_id`, `format` (pdf/html), `storage_path`, `generated_at` |
+| `subscriptions` | Stripe subscription state (replaces org.subscription_tier) | `user_id`, `stripe_subscription_id`, `tier`, `status`, `current_period_end` |
+| `code_analysis_prompts` | Prompts generated for user's AI tools | `audit_id`, `prompt_text`, `target_files`, `status` |
+| `code_analysis_results` | User-uploaded output from running prompts | `prompt_id`, `raw_output`, `parsed_findings` (JSONB), `uploaded_at` |
 
 ---
 
-## Component Deep Dives
+## Component Detail: Data Flows
 
-### Component 1: AIEngineOrchestrator
+### 1. Scoring Pipeline (CRITICAL PATH)
 
-This is the most architecturally critical component. It must handle parallel API calls with different rate limits, retries, and cost controls.
+**Current state:** 4 category scorers registered (crawlability, content_structure, structured_data, authority). Criteria exist as framework but most return score=0.
 
-**Design: Adapter pattern + asyncio.Semaphore-based rate limiting**
+**Target state:** All 61 criteria produce real measurements from crawl data.
 
-```python
-# backend/app/services/ai_engines/orchestrator.py
-
-import asyncio
-import hashlib
-from typing import List, Dict
-from datetime import datetime, timedelta
-
-class AIEngineOrchestrator:
-    """
-    Dispatches queries to multiple AI engines in parallel.
-    Handles rate limiting, caching, deduplication, retries.
-    """
-
-    def __init__(self, cache_service, db_session):
-        self.cache = cache_service
-        self.db = db_session
-
-        # Per-engine concurrency semaphores
-        self.semaphores = {
-            "chatgpt": asyncio.Semaphore(3),
-            "claude": asyncio.Semaphore(3),
-            "perplexity": asyncio.Semaphore(5),
-        }
-
-        # Engine adapters (registered at init)
-        self.adapters: Dict[str, BaseEngineAdapter] = {}
-
-    async def execute_queries(
-        self,
-        queries: List[str],
-        engines: List[str],
-        cache_ttl_hours: int = 24
-    ) -> List[AIEngineResponse]:
-        """
-        Execute all query x engine combinations in parallel.
-        Returns list of AIEngineResponse objects.
-        """
-        tasks = []
-        for query in queries:
-            for engine in engines:
-                tasks.append(
-                    self._execute_single(query, engine, cache_ttl_hours)
-                )
-
-        # asyncio.gather with return_exceptions=True
-        # so one failure doesn't cancel all others
-        results = await asyncio.gather(*tasks, return_exceptions=True)
-
-        responses = []
-        for result in results:
-            if isinstance(result, Exception):
-                # Log error, create failed response record
-                pass
-            else:
-                responses.append(result)
-
-        return responses
-
-    async def _execute_single(
-        self, query: str, engine: str, cache_ttl_hours: int
-    ) -> AIEngineResponse:
-        """Single query to single engine with cache + rate limit."""
-
-        cache_key = self._cache_key(query, engine)
-
-        # 1. Cache check
-        cached = await self.cache.get(cache_key)
-        if cached:
-            return cached
-
-        # 2. Rate limit gate (semaphore)
-        async with self.semaphores[engine]:
-            # 3. Call adapter with retry
-            adapter = self.adapters[engine]
-            response = await adapter.query(query)
-
-            # 4. Store + cache
-            db_record = AIEngineResponse(
-                query_text=query,
-                engine_id=engine,
-                response_text=response.text,
-                model_used=response.model,
-                tokens_used=response.tokens,
-                latency_ms=response.latency_ms,
-                cached=False,
-                queried_at=datetime.utcnow(),
-            )
-            self.db.add(db_record)
-
-            await self.cache.set(
-                cache_key, db_record, ttl=timedelta(hours=cache_ttl_hours)
-            )
-
-            return db_record
-
-    def _cache_key(self, query: str, engine: str) -> str:
-        normalized = query.strip().lower()
-        query_hash = hashlib.sha256(normalized.encode()).hexdigest()[:16]
-        return f"ai_response:{engine}:{query_hash}"
+```
+Data Flow:
+  CrawlerService.crawl(url)
+    -> CrawlResult (html, headings, schema_org, ai_bot_access, ...)
+      -> ScoringOrchestrator.score_audit()
+        -> CrawlerService.crawl_multiple(discovered_pages)
+        -> For each page:
+          -> CrawlabilityScorer.score_page(page_data)   -> [CriterionResult x 12]
+          -> ContentStructureScorer.score_page(page_data) -> [CriterionResult x 13]
+          -> StructuredDataScorer.score_page(page_data)   -> [CriterionResult x 13]
+          -> AuthorityScorer.score_page(page_data)        -> [CriterionResult x 23]
+        -> Store PageScore + CriterionResult records
+        -> Weakest-link aggregation -> optimization_score
 ```
 
-**Why this design:**
-- `asyncio.Semaphore` is the right primitive for per-engine concurrency limits. It is cooperative, lightweight, and handles backpressure naturally (callers wait, they do not fail).
-- `asyncio.gather` with `return_exceptions=True` ensures one engine failure does not block results from other engines.
-- Cache key uses normalized query hash, so "what is X?" and "What is X?" hit the same cache.
-- Each engine adapter is independent and can be swapped, disabled, or rate-adjusted without touching orchestration logic.
+**Key Pattern: Score from Crawl Data Only**
 
-### Component 2: Engine Adapters
+Each scorer receives a `page_data` dict (the CrawlResult serialized) and must extract all signals from it. No additional HTTP calls inside scorers. The crawler is responsible for fetching everything needed.
+
+**Implication:** The CrawlerService may need enrichment to capture data that scorers need but don't currently receive (e.g., full HTML for structured data parsing, response headers for TTFB, Lighthouse-style metrics). This is a Phase 1 prerequisite.
 
 ```python
-# backend/app/services/ai_engines/base.py
-
-from abc import ABC, abstractmethod
-from dataclasses import dataclass
-
-@dataclass
-class EngineResponse:
-    text: str
-    model: str
-    tokens: int
-    latency_ms: float
-    raw_response: dict  # Full API response for debugging
-
-class BaseEngineAdapter(ABC):
-    """
-    Each AI engine gets an adapter.
-    Adapters handle auth, request formatting, response parsing,
-    and retry logic specific to that engine's API.
-    """
-
-    @abstractmethod
-    async def query(self, prompt: str) -> EngineResponse:
-        """Send a query and return normalized response."""
+# Pattern: BaseScorer interface (already exists)
+class BaseScorer:
+    async def score_page(self, page_data: dict) -> list[ScoringCriterionResult]:
+        """Each criterion returns: criterion_id, score 0-100, human_summary, evidence"""
         ...
 
-    @abstractmethod
-    def estimate_cost(self, prompt: str) -> float:
-        """Estimate cost in USD for this query."""
+    def compute_category_score(self, results: list[ScoringCriterionResult]) -> float:
+        """Weighted average of criterion scores within category"""
         ...
 ```
 
-```python
-# backend/app/services/ai_engines/openai_adapter.py
+### 2. Recommendation Engine
 
-import openai
-import asyncio
-from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
+**Current state:** Deterministic gap analysis engine exists and works. Compares user scores against competitor averages and research benchmarks. Produces AuditRecommendation records with evidence, code snippets, and action steps.
 
-class OpenAIAdapter(BaseEngineAdapter):
-    """ChatGPT adapter using OpenAI API."""
+**Target state:** Keep deterministic engine. Enhance with richer code snippets, industry-specific recommendations, and better prioritization once scoring produces real data.
 
-    def __init__(self, api_key: str, model: str = "gpt-4o-mini"):
-        self.client = openai.AsyncOpenAI(api_key=api_key)
-        self.model = model
-
-    @retry(
-        stop=stop_after_attempt(3),
-        wait=wait_exponential(multiplier=1, min=2, max=30),
-        retry=retry_if_exception_type((openai.RateLimitError, openai.APITimeoutError)),
-    )
-    async def query(self, prompt: str) -> EngineResponse:
-        start = asyncio.get_event_loop().time()
-        response = await self.client.chat.completions.create(
-            model=self.model,
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=1024,
-            temperature=0.7,
-        )
-        latency = (asyncio.get_event_loop().time() - start) * 1000
-
-        return EngineResponse(
-            text=response.choices[0].message.content,
-            model=response.model,
-            tokens=response.usage.total_tokens,
-            latency_ms=latency,
-            raw_response=response.model_dump(),
-        )
-
-    def estimate_cost(self, prompt: str) -> float:
-        # gpt-4o-mini: ~$0.15/1M input, ~$0.60/1M output
-        estimated_tokens = len(prompt.split()) * 1.3 + 500  # rough estimate
-        return estimated_tokens * 0.0000004
+```
+Data Flow:
+  ScoringPipeline completes
+    -> RecommendationEngine.generate_recommendations(audit_id)
+      -> Load CriterionResult records (per page)
+      -> Load CompetitorAudit category averages
+      -> For each criterion below threshold:
+        -> Compute gap_score (competitor_avg - user_score OR benchmark - user_score)
+        -> Classify priority (HIGH/MEDIUM/LOW based on impact_pct + gap_score)
+        -> Attach code_snippet from CRITERION_SNIPPETS map
+        -> Carry over prior done/dismissed status via recommendation_hash
+      -> Generate sentiment-based recommendations for negative mentions
+      -> Identify content gaps (queries where competitors appear, user doesn't)
+      -> Store AuditRecommendation records
+      -> Store content_gaps on Audit.content_gaps JSONB
 ```
 
-**Why `tenacity` for retries:** The library is already a standard in the Python ecosystem. It handles exponential backoff correctly and is composable with async. Using it instead of hand-rolled retry logic avoids off-by-one errors and edge cases around jitter, max wait, and exception filtering.
+**Key Insight:** The recommendation engine is NOT LLM-based. It is deterministic. This is correct -- deterministic recommendations are reproducible, testable, and don't incur API costs. LLM involvement should be limited to the chat assistant (where users ask follow-up questions about recommendations).
 
-**Why `gpt-4o-mini` default:** Cost-effective for brand mention detection queries. A full audit generating 10 queries x 3 engines = 30 API calls. At gpt-4o-mini pricing this is roughly $0.01-0.03 per audit, versus $0.30-1.00 with gpt-4o. The audit is looking for factual mentions, not creative output, so the cheaper model is appropriate.
+### 3. Chat Assistant
 
-### Component 3: QueryGenerator
+**Architecture: WebSocket + LiteLLM streaming**
 
-```python
-# backend/app/services/query_generator.py
+The chat assistant allows users to ask questions about their audit results. It uses the audit data as context and streams LLM responses.
 
-class QueryGenerator:
-    """
-    Crawls a URL, extracts brand/industry context,
-    generates AI-relevant queries.
-    """
-
-    async def analyze_site(self, url: str) -> SiteContext:
-        """
-        Phase 1: Extract everything needed for query generation.
-        Returns structured context about the brand.
-        """
-        # 1. Crawl with existing BeautifulSoup infrastructure
-        # 2. Extract: brand name, meta description, product/service keywords
-        # 3. Detect industry from content signals
-        # 4. Find competitor mentions
-        # 5. Check structured data (schema.org Organization, Product, etc.)
-        ...
-
-    async def generate_queries(self, context: SiteContext) -> List[Query]:
-        """
-        Phase 2: Generate queries that would reveal brand visibility in AI.
-
-        Query categories:
-        1. INDUSTRY: "What are the best [industry] tools/services?"
-        2. BRAND_DIRECT: "What do you know about [brand_name]?"
-        3. COMPARISON: "Compare [brand] vs [competitor]"
-        4. PROBLEM: "How do I solve [problem brand solves]?"
-        5. RECOMMENDATION: "Recommend a [product category] for [use case]"
-        """
-        # Use LLM to generate queries from site context
-        # Template-based with LLM refinement for natural phrasing
-        ...
+```
+Data Flow:
+  User opens chat panel on audit detail page
+    -> Frontend establishes WebSocket connection to /ws/chat/{audit_id}
+    -> Backend authenticates via JWT token in connection params
+    -> Backend loads audit context:
+      - Audit.crawl_data (summarized)
+      - Top 10 AuditRecommendation records
+      - VisibilityScore breakdown
+      - CriterionResult scores by category
+      - ContentGaps
+    -> Context injected as system prompt
+    -> User sends message
+    -> Backend streams LiteLLM response token-by-token via WebSocket
+    -> Chat history stored in chat_sessions table (JSONB messages array)
+    -> Budget cap: X messages per audit (freemium gating)
 ```
 
-**Why hybrid template + LLM for query generation:** Pure templates produce robotic queries that do not reflect how real users ask AI engines. Pure LLM generation is expensive and unreliable. The hybrid approach uses templates for structure (guaranteeing coverage of all query categories) and a single LLM call to refine phrasing.
-
-### Component 4: ScoringPipeline
+**Implementation Pattern:**
 
 ```python
-# backend/app/services/scoring.py
-
-class ScoringPipeline:
-    """
-    Two-dimensional scoring:
-    1. Site Readiness (how well the site is optimized for AI)
-    2. AI Presence (how visible the brand is in AI responses)
-    Combined into a single 0-100 GEO Score.
-    """
-
-    # Site Readiness subscores (30% of final)
-    SITE_WEIGHTS = {
-        "structured_data": 0.25,    # schema.org, JSON-LD
-        "content_quality": 0.25,    # depth, readability, E-E-A-T signals
-        "ai_accessibility": 0.25,   # robots.txt allows AI crawlers, sitemap
-        "authority_signals": 0.25,  # citations, expertise markers
-    }
-
-    # AI Presence subscores (70% of final)
-    PRESENCE_WEIGHTS = {
-        "mention_frequency": 0.30,    # How often brand appears across engines
-        "mention_accuracy": 0.25,     # Does AI describe brand correctly?
-        "sentiment": 0.15,            # Positive/neutral/negative
-        "competitive_position": 0.20, # Brand rank vs competitors in responses
-        "citation_quality": 0.10,     # Are sources cited? Is brand's URL linked?
-    }
-
-    def compute_final_score(
-        self,
-        site_signals: SiteAnalysis,
-        ai_analysis: AIPresenceAnalysis
-    ) -> AuditScore:
-        site_score = self._compute_site_score(site_signals)
-        presence_score = self._compute_presence_score(ai_analysis)
-
-        final = int(site_score * 0.3 + presence_score * 0.7)
-
-        return AuditScore(
-            overall=final,
-            site_readiness=site_score,
-            ai_presence=presence_score,
-            breakdown=self._generate_breakdown(site_signals, ai_analysis),
-            gap_analysis=self._generate_gap_analysis(ai_analysis),
-        )
+# FastAPI WebSocket endpoint
+@router.websocket("/ws/chat/{audit_id}")
+async def chat_websocket(
+    websocket: WebSocket,
+    audit_id: str,
+    db: Session = Depends(get_db),
+):
+    await websocket.accept()
+    # Authenticate, load context, stream responses
+    # Use litellm.acompletion(..., stream=True) for token streaming
+    async for chunk in response:
+        await websocket.send_text(chunk.choices[0].delta.content or "")
 ```
 
-**Why 70/30 weighting toward AI presence:** The product's core value proposition is "see how AI engines actually describe your brand." Site readiness matters (it influences future AI training data), but users are paying for the AI presence insights. A product that scores sites but never checks AI responses is what the old 108-point system did -- and that is what we are pivoting away from.
+**Key Decision: WebSocket over SSE.** WebSocket is bidirectional, allowing the user to cancel generation or send follow-ups while the LLM is still responding. SSE is simpler but one-directional. For a chat experience, WebSocket is the right choice.
 
----
+**Context Window Management:** Summarize audit data to fit within context limits. Use a template that includes: overall scores, top 5 failing criteria, top 3 recommendations, content gaps summary. Full audit data would exceed context limits for large audits.
 
-## Database Schema Design
+### 4. Report Generation (PDF/HTML)
 
-### New Tables (Additions to Existing Schema)
-
-```
-audits
-├── id                  UUID PK
-├── website_id          UUID FK → websites
-├── brand_name          String          -- Detected or user-provided
-├── industry            String?         -- Auto-detected from site content
-├── status              String          -- pending | site_analyzed | queries_generated |
-│                                          ai_queried | responses_analyzed | completed | failed
-├── overall_score       Integer?        -- 0-100 final GEO score
-├── site_readiness_score Integer?       -- 0-100 site optimization score
-├── ai_presence_score   Integer?        -- 0-100 AI visibility score
-├── score_breakdown     JSONB?          -- Detailed sub-scores
-├── gap_analysis        JSONB?          -- Competitor gaps, messaging mismatches
-├── cost_usd            Float?          -- Total API cost for this audit
-├── total_queries       Integer?        -- Number of AI queries sent
-├── cached_queries      Integer?        -- Number served from cache
-├── error_details       JSONB?          -- Error info if failed
-├── created_at          DateTime
-├── completed_at        DateTime?
-└── requested_by        UUID? FK → profiles  -- null for unauthenticated MVP
-
-audit_queries
-├── id                  UUID PK
-├── audit_id            UUID FK → audits
-├── query_text          String          -- "What are the best CRM tools?"
-├── query_category      String          -- industry | brand_direct | comparison |
-│                                          problem | recommendation
-├── query_hash          String(16)      -- sha256 prefix for cache key
-├── is_user_custom      Boolean         -- false=auto-generated, true=user-added
-├── created_at          DateTime
-
-ai_engine_responses
-├── id                  UUID PK
-├── audit_id            UUID FK → audits
-├── query_id            UUID FK → audit_queries
-├── engine_id           String          -- chatgpt | claude | perplexity
-├── model_used          String          -- gpt-4o-mini | claude-3.5-sonnet | etc.
-├── response_text       Text            -- Full AI response
-├── response_embedding  Vector(1536)    -- pgvector embedding for semantic comparison
-├── tokens_used         Integer?
-├── latency_ms          Float?
-├── cost_usd            Float?          -- Estimated cost of this API call
-├── cached              Boolean         -- Was this served from cache?
-├── error_message       Text?           -- null if successful
-├── queried_at          DateTime
-├── INDEX               (query_id, engine_id) UNIQUE  -- One response per query per engine
-
-brand_mentions
-├── id                  UUID PK
-├── response_id         UUID FK → ai_engine_responses
-├── audit_id            UUID FK → audits    -- Denormalized for faster queries
-├── brand_name          String          -- Which brand was mentioned
-├── is_target_brand     Boolean         -- true = the brand being audited
-├── mention_type        String          -- direct | indirect | comparison | recommendation
-├── quote               Text            -- Exact quote from AI response
-├── sentiment           String          -- positive | neutral | negative
-├── position_in_response Integer?       -- 1=first mentioned, 2=second, etc.
-├── context_text        Text?           -- Surrounding text for context
-├── created_at          DateTime
-├── INDEX               (audit_id, is_target_brand)
-├── INDEX               (brand_name)    -- For cross-audit competitor tracking
-
-site_crawl_results
-├── id                  UUID PK
-├── audit_id            UUID FK → audits
-├── url                 String
-├── page_title          String?
-├── meta_description    Text?
-├── detected_brand      String?         -- Brand name extracted from site
-├── detected_industry   String?
-├── detected_products   JSONB?          -- List of product/service keywords
-├── detected_competitors JSONB?         -- Competitor names found on site
-├── structured_data     JSONB?          -- schema.org data found
-├── content_signals     JSONB?          -- readability, word count, heading structure
-├── ai_crawler_access   JSONB?          -- robots.txt analysis for AI bots
-├── raw_html_hash       String?         -- For detecting site changes over time
-├── crawled_at          DateTime
-```
-
-### Schema Design Rationale
-
-**Why `audits` as a separate table from existing `analyses`:** The existing `analyses` table stores the old scoring system (visibility/readability/authority from keyword matching). The new audits table is structurally different -- it orchestrates a multi-phase pipeline with AI API calls, has different scoring dimensions, and different status states. Reusing `analyses` would require a messy migration and confusion about which scoring system applies. Build the new system cleanly, then deprecate the old table.
-
-**Why denormalize `audit_id` on `brand_mentions`:** The most common query pattern is "show me all brand mentions for this audit." Without denormalization, that requires JOIN through `ai_engine_responses`. With denormalization, it is a direct index scan. The data is write-once (mentions are computed once during analysis), so denormalization cost is minimal.
-
-**Why `response_embedding` on `ai_engine_responses`:** Enables semantic comparison between what the AI says about the brand and what the site says about itself. This powers the "messaging alignment" feature. pgvector is already in the stack (used by Brand Voice), so no new infrastructure needed.
-
-**Why `query_hash` on `audit_queries`:** Enables O(1) cache lookups. Two different audits asking "What are the best CRM tools?" should share cached responses. The hash is on the normalized (lowered, trimmed) query text.
-
-### Relationship to Existing Tables
+**Architecture: Jinja2 templates + WeasyPrint**
 
 ```
-organizations ──┬── websites ──┬── analyses (OLD - keep for now, deprecate later)
-                 │              └── audits (NEW)
-                 │                    ├── audit_queries
-                 │                    ├── ai_engine_responses
-                 │                    │     └── brand_mentions
-                 │                    └── site_crawl_results
-                 │
-                 └── brand_voice_configs (existing, keep as-is)
-                       ├── voice_vectors
-                       └── voice_rules
+Data Flow:
+  User clicks "Export Report" on audit detail page
+    -> POST /api/v1/reports/{audit_id}/generate?format=pdf
+    -> Celery task: generate_report(audit_id, format)
+      -> Load all audit data from DB
+      -> Render Jinja2 HTML template with data
+      -> If format=pdf: WeasyPrint converts HTML to PDF
+      -> If format=html: Return rendered HTML directly
+      -> Store file reference in audit_reports table
+      -> Return download URL
+    -> Frontend polls or uses WebSocket notification for completion
+    -> User downloads generated file
+```
+
+**Key Decision: Celery task, not synchronous endpoint.** PDF generation with WeasyPrint can take 5-15 seconds for complex reports. Running it in a Celery worker prevents blocking API threads.
+
+**Template Structure:**
+
+```
+report_template.html.j2
+  - Cover page (brand, domain, date, overall scores)
+  - Executive Summary (scores by category, visibility breakdown)
+  - Per-Category Detail (criterion results, evidence, charts)
+  - Recommendations (priority-ordered, with code snippets)
+  - Competitor Benchmarking (leaderboard, score comparison)
+  - Content Gaps (topics to address)
+  - Appendix (methodology, scoring weights, data sources)
+```
+
+**Styling:** CSS in the Jinja2 template, using Tailwind-inspired utility classes that WeasyPrint supports. Charts rendered as inline SVG (not Chart.js canvas -- WeasyPrint can't execute JS).
+
+### 5. Stripe Payment + Freemium Gating
+
+**Current state:** Stub endpoints exist in `integrations.py`. Checkout session creation and webhook handling are partially implemented but use the legacy `Organization` model.
+
+**Target state:** Working subscription management with three tiers and feature gating middleware.
+
+```
+Data Flow:
+  User clicks "Upgrade" on pricing page
+    -> POST /api/v1/payments/create-checkout
+      -> Create Stripe Checkout Session with price_id for selected tier
+      -> Return checkout_url
+    -> User completes payment on Stripe-hosted checkout
+    -> Stripe fires webhook: checkout.session.completed
+      -> POST /api/v1/payments/webhook (public, signature-verified)
+        -> Update subscriptions table (tier, status, stripe_subscription_id)
+        -> Log event
+
+  Feature gating (on every gated request):
+    -> Middleware or dependency reads user's subscription tier
+    -> Tier determines: max audits/month, AI query budget, report export, chat messages
+    -> Return 402 Payment Required if over limit
+```
+
+**Freemium Tier Structure:**
+
+| Feature | Free | Pro ($49/mo) | Team ($149/mo) |
+|---------|------|-------------|----------------|
+| Audits/month | 3 | 20 | Unlimited |
+| Pages per audit | 3 | 10 | 50 |
+| AI engines | 2 (Gemini + Perplexity) | All 4 | All 4 |
+| Recommendations | Top 5 only | All | All |
+| PDF report | No | Yes | Yes |
+| Chat messages | 5/audit | 50/audit | Unlimited |
+| Competitor benchmarking | No | 3 competitors | 10 competitors |
+| Code analysis | No | Yes | Yes |
+| Jira CSV export | No | Yes | Yes |
+| Team members | 1 | 1 | 5 |
+
+**Gating Implementation Pattern:**
+
+```python
+# Dependency injection for tier checking
+from enum import IntEnum
+
+class SubscriptionTier(IntEnum):
+    FREE = 0
+    PRO = 1
+    TEAM = 2
+
+def require_tier(minimum: SubscriptionTier):
+    async def dependency(current_user: Profile = Depends(get_current_active_user), db: Session = Depends(get_db)):
+        subscription = db.query(Subscription).filter(Subscription.user_id == current_user.id).first()
+        tier = SubscriptionTier[subscription.tier.upper()] if subscription else SubscriptionTier.FREE
+        if tier < minimum:
+            raise HTTPException(status_code=402, detail="Upgrade required")
+        return tier
+    return dependency
+
+# Usage:
+@router.get("/reports/{audit_id}/download")
+async def download_report(
+    audit_id: str,
+    tier: SubscriptionTier = Depends(require_tier(SubscriptionTier.PRO)),
+):
+    ...
+```
+
+### 6. Competitor Benchmarking
+
+**Current state:** Entity extraction from AI responses works. URL resolution and competitor crawling partially implemented. CompetitorAudit model stores results.
+
+**Target state:** Reliable competitor discovery, URL resolution, parallel crawl+score, leaderboard with share-of-voice.
+
+```
+Data Flow:
+  Audit pipeline Stage 6 (DISCOVERING_COMPETITORS):
+    -> EntityExtractorService.discover_competitors_for_audit()
+      -> NER on engine responses -> DiscoveredCompetitor records
+      -> Share-of-voice calculation (mention_count / total_mentions)
+    -> CompetitorService.crawl_top_competitors()
+      -> Resolve entity names to URLs (WebSearch or domain heuristics)
+      -> CrawlerService.crawl(competitor_url) for top 3-5
+      -> ScoringOrchestrator.score_audit() on each (reuse same scorers)
+      -> Store CompetitorAudit with per-category averages
+    -> RecommendationEngine uses competitor averages for gap analysis
+
+  Leaderboard API:
+    -> GET /api/v1/competitors/{audit_id}/leaderboard
+      -> Returns all entities ranked by share_of_voice
+      -> Includes optimization scores for crawled competitors
+      -> Highlights user brand position in ranking
+```
+
+**Key Risk:** URL resolution (brand name -> website URL) is unreliable. Mitigation: Use multiple signals (web search, domain guessing, cached mappings from prior audits), and always show users which competitors were identified so they can correct mistakes.
+
+### 7. Code Analysis Flow
+
+**Architecture: Prompt generation + output ingestion (no direct repo access)**
+
+This is the "Shannon-style" approach from the critique: generate prompts that users run on their own repos using their AI tools (Copilot, Cursor, Claude Code), then upload the output back to Endexa.
+
+```
+Data Flow:
+  Phase A -- Prompt Generation:
+    Audit completes
+      -> POST /api/v1/code-analysis/{audit_id}/generate-prompts
+        -> Analyze audit findings (failing criteria, recommendations)
+        -> Generate targeted prompts:
+          - "Check if SSR is enabled in your build config"
+          - "Find all pages without meta descriptions"
+          - "List all JSON-LD schema in your codebase"
+          - "Analyze your robots.txt and sitemap.xml"
+        -> Store in code_analysis_prompts table
+        -> Return prompts to user (copy-paste ready)
+
+  Phase B -- Output Ingestion:
+    User runs prompts on their codebase, copies output
+      -> POST /api/v1/code-analysis/{audit_id}/upload-result
+        -> Accept raw text output from user's AI tool
+        -> Parse findings (LLM-assisted extraction of structured data)
+        -> Store in code_analysis_results table
+        -> Trigger re-scoring with enriched data
+        -> Generate deeper, code-specific recommendations
+```
+
+**Key Decision: No direct GitHub/GitLab integration in v2.** This avoids OAuth complexity, repo permission management, and security concerns. Users paste output manually. V3 can add a GitHub App.
+
+### 8. Jira CSV Export
+
+**Architecture: Server-side CSV generation with customizable columns**
+
+```
+Data Flow:
+  User clicks "Export to Jira" on recommendations page
+    -> GET /api/v1/recommendations/{audit_id}/export/jira-csv
+      -> Query parameters: grouping (by_page, by_category, by_priority), epic_link, fields
+      -> Load AuditRecommendation records
+      -> Map to Jira CSV columns:
+        - Summary: criterion_name + page_url
+        - Description: summary + action_steps + code_snippet
+        - Issue Type: "Story" or "Task"
+        - Priority: map high->Highest, medium->High, low->Medium
+        - Labels: category, "geo-audit", domain
+        - Epic Link: user-provided epic key
+        - Story Points: based on complexity heuristic
+      -> Generate CSV using csv module (not pandas -- lighter dependency)
+      -> Return as StreamingResponse with Content-Disposition header
+```
+
+**Column mapping is configurable** because different Jira instances have different custom fields. Provide sensible defaults but let users override column names in the request.
+
+### 9. Production Dashboard
+
+**Architecture: Real data from DB, Nuxt 3 composables, Chart.js**
+
+```
+Data Flow:
+  Dashboard page loads
+    -> GET /api/v1/dashboard/stats (overview numbers)
+      -> Total audits, average scores, trend direction
+    -> GET /api/v1/dashboard/history (score over time)
+      -> Audit scores with timestamps for trend chart
+    -> GET /api/v1/dashboard/recent (latest audits)
+      -> Last 5 audits with status and scores
+
+  Brand-specific dashboard:
+    -> GET /api/v1/brands/{brand_id}/dashboard
+      -> All audits for this brand, score progression
+      -> Competitor positioning over time
+      -> Recommendation progress (done/open/dismissed)
 ```
 
 ---
 
 ## Patterns to Follow
 
-### Pattern 1: Phased Status Progression
+### Pattern 1: Celery Task for Long Operations
 
-**What:** The audit record progresses through well-defined status states. The frontend polls and renders progressively.
-
-**Why:** An audit takes 30-120 seconds. Users need feedback during the wait. Phased status lets the frontend show "Crawling site..." then "Generating queries..." then "Querying AI engines (2/3 complete)..." instead of a blank spinner for 2 minutes.
-
-```python
-AUDIT_STATES = [
-    "pending",              # Just created, queued for processing
-    "site_analyzed",        # Site crawl complete, context extracted
-    "queries_generated",    # AI queries generated
-    "ai_queried",           # All AI engines responded
-    "responses_analyzed",   # Brand mentions extracted, sentiment scored
-    "completed",            # Final scores computed, report ready
-    "failed",               # Error occurred (check error_details)
-]
-```
-
-### Pattern 2: Adapter Registration
-
-**What:** Engine adapters register with the orchestrator at startup. Adding a new AI engine means writing one adapter file and one registration line.
-
-**Why:** Inevitably, new AI engines will matter (Gemini, Copilot, etc.). The system should not require refactoring to add one.
+**What:** Any operation taking >2 seconds should be a Celery background task.
+**When:** Audit pipeline, PDF generation, competitor crawling, code analysis parsing.
+**Why:** Prevents FastAPI thread starvation. The existing audit pipeline already follows this pattern.
 
 ```python
-# backend/app/services/ai_engines/__init__.py
-
-from .openai_adapter import OpenAIAdapter
-from .anthropic_adapter import AnthropicAdapter
-from .perplexity_adapter import PerplexityAdapter
-
-ENGINE_REGISTRY = {
-    "chatgpt": OpenAIAdapter,
-    "claude": AnthropicAdapter,
-    "perplexity": PerplexityAdapter,
-}
-```
-
-### Pattern 3: Cost Tracking Per Audit
-
-**What:** Every API call records its estimated cost. The audit record aggregates total cost. This is not billing -- it is operational visibility.
-
-**Why:** Without cost tracking, the first 1000 users could generate a surprise $500 API bill. Cost-per-audit lets you set guardrails (e.g., max $0.10 per audit for free tier, $0.50 for pro) and make pricing decisions based on real data.
-
-### Pattern 4: Celery for the Audit Pipeline (not FastAPI BackgroundTasks)
-
-**What:** Use Celery (already in docker-compose) for audit processing, not FastAPI's `BackgroundTasks`.
-
-**Why:** The existing `AnalyzerService` uses `BackgroundTasks`, which runs in the same process as the web server. This works for the current 5-second analysis but will not work for 30-120 second AI audit pipelines that make external API calls. Celery runs in a separate worker process, handles retries natively, and survives web server restarts. The Celery worker is already declared in docker-compose but not wired to analysis -- this is the right time to wire it.
-
-**Critical nuance:** Celery tasks are synchronous by default. For async AI API calls within a Celery task, use `asyncio.run()` inside the task function to run the async orchestrator. This is a well-established pattern -- Celery handles task dispatch and retry, asyncio handles concurrent API calls within a single task.
-
-```python
-# backend/app/tasks/audit_task.py
-
-from celery import current_app
-import asyncio
-
-@current_app.task(bind=True, max_retries=2, soft_time_limit=300)
-def run_audit_task(self, audit_id: str):
-    """
-    Celery task that runs the full audit pipeline.
-    Uses asyncio.run() internally for concurrent AI API calls.
-    """
+@celery_app.task(bind=True, name="app.tasks.reports.generate_report")
+def generate_report(self, audit_id: str, format: str):
+    db = SessionLocal()
     try:
-        asyncio.run(_run_audit_async(audit_id))
-    except Exception as exc:
-        self.retry(exc=exc, countdown=30)
+        # Load data, render template, generate PDF
+        ...
+    finally:
+        db.close()
+```
 
-async def _run_audit_async(audit_id: str):
-    # Full pipeline: crawl -> generate queries -> AI dispatch -> analyze -> score
-    orchestrator = AuditOrchestrator(...)
-    await orchestrator.run_full_audit(audit_id)
+### Pattern 2: Dependency Injection for Feature Gating
+
+**What:** Use FastAPI `Depends()` for subscription tier checking.
+**When:** Any endpoint that varies by tier (report download, chat, competitor crawl).
+**Why:** Clean separation of auth/billing logic from business logic.
+
+```python
+@router.get("/reports/{audit_id}/download")
+async def download_report(
+    audit_id: str,
+    tier: SubscriptionTier = Depends(require_tier(SubscriptionTier.PRO)),
+    db: Session = Depends(get_db),
+    current_user: Profile = Depends(get_current_active_user),
+):
+    ...
+```
+
+### Pattern 3: Audit Ownership Verification
+
+**What:** Every endpoint that accesses audit data verifies ownership.
+**When:** All audit-related endpoints (already implemented consistently).
+**Why:** Multi-tenant security -- users must only see their own data.
+
+The existing `_verify_audit_ownership()` pattern should be extracted into a shared dependency:
+
+```python
+# app/core/dependencies.py
+def get_user_audit(audit_id: str, db: Session, current_user: Profile) -> Audit:
+    audit = db.query(Audit).filter(Audit.id == audit_id).first()
+    if not audit or audit.user_id != current_user.id:
+        raise HTTPException(status_code=404, detail="Audit not found")
+    return audit
+```
+
+### Pattern 4: Context-Aware LLM Calls
+
+**What:** Inject structured audit context into LLM system prompts for chat.
+**When:** Chat assistant, future AI-enhanced recommendations.
+**Why:** Focused, accurate responses grounded in actual audit data.
+
+```python
+def build_chat_context(audit: Audit, db: Session) -> str:
+    """Build a summarized context string from audit data."""
+    scores = f"Optimization: {audit.optimization_score}/100"
+    # Load top 5 failing criteria
+    failing = db.query(CriterionResult).filter(...).order_by(CriterionResult.score.asc()).limit(5).all()
+    # Load top 3 recommendations
+    recs = db.query(AuditRecommendation).filter(...).limit(3).all()
+    # Build context template
+    return f"""You are an SEO/GEO expert analyzing {audit.domain}.
+Audit scores: {scores}
+Top issues: {format_criteria(failing)}
+Top recommendations: {format_recs(recs)}
+Answer questions about this audit. Be specific and actionable."""
 ```
 
 ---
 
 ## Anti-Patterns to Avoid
 
-### Anti-Pattern 1: Sequential AI API Calls
+### Anti-Pattern 1: LLM for Deterministic Logic
 
-**What:** Calling ChatGPT, waiting for response, then calling Claude, waiting, then calling Perplexity.
+**What:** Using LLM calls to generate recommendations or compute scores.
+**Why bad:** Non-reproducible results, API costs per audit, latency, hallucination risk.
+**Instead:** The existing deterministic RecommendationEngine is correct. Keep scoring and recommendations rule-based. Use LLMs only for chat (user-initiated, interactive) and code analysis output parsing.
 
-**Why bad:** 3 engines x 10 queries = 30 calls. At 2-5s each, sequential execution = 60-150 seconds. Parallel execution with semaphores = 10-30 seconds (limited by the slowest engine's rate limit, not the sum of all calls).
+### Anti-Pattern 2: Synchronous Heavy Operations in API Handlers
 
-**Instead:** `asyncio.gather()` with per-engine semaphores.
+**What:** Running crawler, scorer, or PDF generator inside a FastAPI endpoint handler.
+**Why bad:** Blocks API threads, causes timeouts, poor UX.
+**Instead:** Use Celery tasks. Return 202 Accepted with a task ID, let frontend poll for completion. The existing audit pipeline already follows this correctly.
 
-### Anti-Pattern 2: Storing AI Responses Only in JSONB
+### Anti-Pattern 3: Fat Celery Tasks
 
-**What:** Dumping all AI responses into a single JSONB column on the audit record.
+**What:** A single massive Celery task (like the current `run_crawl_and_generate`) that does everything.
+**Why bad:** If one stage fails, the entire task fails. No partial results. Hard to test stages independently. Currently at ~350 lines.
+**Instead:** Consider breaking into Celery chain/group primitives for independent stages:
 
-**Why bad:** Cannot query across audits ("show me all audits where ChatGPT mentioned brand X"), cannot do semantic search on responses, cannot efficiently compute trends over time.
+```python
+# Future refactor (not urgent, but recommended):
+from celery import chain, group
 
-**Instead:** Normalized tables: `ai_engine_responses` with proper columns + pgvector embedding, `brand_mentions` for extracted mentions.
+audit_pipeline = chain(
+    crawl_url.s(audit_id, url),
+    generate_queries.s(),
+    dispatch_to_engines.s(),
+    analyze_mentions.s(),
+    score_pages.s(),
+    group(
+        discover_competitors.s(),
+        generate_recommendations.s(),
+    ),
+    mark_completed.s(),
+)
+```
 
-### Anti-Pattern 3: Regenerating Queries for Every Audit of the Same Site
+**Mitigation for now:** The current monolithic task works because each stage is wrapped in try/except with non-fatal failures for later stages. This is acceptable for v2 but should be refactored when adding task chaining.
 
-**What:** If a user audits the same URL twice in a week, crawling the site and generating queries from scratch each time.
+### Anti-Pattern 4: N+1 Queries
 
-**Why bad:** Wastes an LLM call for query generation and a site crawl. The site content probably has not changed.
+**What:** Loading related records in loops instead of using eager loading.
+**Why bad:** Performance degrades as data grows.
+**Instead:** The existing `get_audit` endpoint correctly uses `joinedload()`. Follow this pattern everywhere.
 
-**Instead:** Cache `site_crawl_results` by URL + date. If a crawl exists within 24 hours, reuse it. Let users force a fresh crawl if needed.
+### Anti-Pattern 5: Storing Secrets in Code
 
-### Anti-Pattern 4: Blocking the API Response on Audit Completion
-
-**What:** Making the POST /audit/start endpoint wait until the entire audit is done.
-
-**Why bad:** HTTP timeout (60s typical) will kill the connection before the audit finishes. Frontend hangs. User refreshes and triggers duplicate audits.
-
-**Instead:** Return `audit_id` immediately, process in Celery, frontend polls status. This is already the pattern used by the existing `POST /analyze` endpoint.
-
-### Anti-Pattern 5: One Giant Service Class
-
-**What:** Putting site crawling, query generation, AI dispatch, response analysis, and scoring all in one `AuditService` class.
-
-**Why bad:** Violates single responsibility. Makes unit testing nearly impossible. Cannot evolve components independently (e.g., adding a new scoring dimension should not touch AI dispatch code).
-
-**Instead:** Separate service classes per concern (QueryGenerator, AIEngineOrchestrator, ResponseAnalyzer, ScoringPipeline) coordinated by a thin AuditOrchestrator.
+**What:** Hardcoded Stripe price IDs, API keys, or webhook secrets.
+**Why bad:** Security risk, environment inflexibility.
+**Instead:** All configuration through pydantic-settings `.env` loading (already established pattern). Stripe price IDs should be in settings, not hardcoded in endpoint handlers.
 
 ---
 
-## File/Module Organization
+## Integration Points Between Components
+
+### Dependency Graph
 
 ```
-backend/app/
-├── api/
-│   ├── audit.py                    # NEW: POST /audit/start, GET /audit/{id}, GET /audit/{id}/results
-│   ├── analysis.py                 # KEEP: Legacy endpoint, deprecate later
-│   └── ...existing...
-│
-├── services/
-│   ├── audit_orchestrator.py       # NEW: Coordinates full audit flow
-│   ├── query_generator.py          # NEW: Site crawl + query generation
-│   ├── scoring.py                  # NEW: Scoring pipeline
-│   ├── response_analyzer.py        # NEW: Brand mention extraction, sentiment
-│   ├── ai_engines/                 # NEW: AI engine subsystem
-│   │   ├── __init__.py             # Engine registry
-│   │   ├── base.py                 # BaseEngineAdapter ABC
-│   │   ├── orchestrator.py         # AIEngineOrchestrator (parallel dispatch)
-│   │   ├── cache.py                # Redis cache layer for AI responses
-│   │   ├── openai_adapter.py       # ChatGPT adapter
-│   │   ├── anthropic_adapter.py    # Claude adapter
-│   │   └── perplexity_adapter.py   # Perplexity adapter
-│   ├── analyzer.py                 # KEEP: Legacy service, deprecate later
-│   └── ...existing...
-│
-├── models/
-│   ├── audit.py                    # NEW: Audit, AuditQuery, AIEngineResponse,
-│   │                               #       BrandMention, SiteCrawlResult
-│   └── ...existing...
-│
-├── schemas/
-│   ├── audit.py                    # NEW: Pydantic request/response schemas
-│   └── ...existing...
-│
-├── tasks/
-│   ├── audit_task.py               # NEW: Celery task for audit pipeline
-│   └── celery_app.py               # EXISTING: Wire audit_task here
-│
-└── core/
-    └── ...existing (no changes needed)...
+ScoringPipeline (Phase 1)
+    |
+    +---> RecommendationEngine (Phase 2) ---> JiraCSVExport (Phase 3)
+    |                                    \--> ReportGenerator (Phase 3)
+    |                                    \--> ChatAssistant (Phase 4)
+    |
+    +---> CompetitorBenchmarking (Phase 2)
+    |         |
+    |         +---> RecommendationEngine (competitor averages)
+    |
+    +---> CodeAnalysisFlow (Phase 4, prompt generation uses scoring gaps)
+    |
+    +---> ProductionDashboard (Phase 5, displays all scores)
+
+PaymentGating (Phase 3) -- independent, gates access to:
+    -> ReportGenerator
+    -> ChatAssistant
+    -> CompetitorBenchmarking (number of competitors)
+    -> CodeAnalysisFlow
+    -> JiraCSVExport
 ```
+
+### Build Order (strict dependency chain)
+
+1. **ScoringPipeline** -- Everything depends on real scores. Without real criterion results, recommendations are meaningless, reports show zeros, chat has nothing to discuss, and the dashboard displays fake data. This is the absolute first priority.
+
+2. **RecommendationEngine enhancements + CompetitorBenchmarking** -- Once scoring works, recommendations automatically produce better output. Competitor benchmarking adds the "competitor_avg" comparison data that recommendations use for gap_score calculation.
+
+3. **PaymentGating + ReportGenerator + JiraCSVExport** -- These are "output" features that consume completed audit data. Payment gating is independent but needed before public launch. Reports and Jira export are high-value features that convert free users to paid.
+
+4. **ChatAssistant + CodeAnalysisFlow** -- These are "interactive" features. Chat requires working scores and recommendations to be useful. Code analysis prompts are generated from audit gaps.
+
+5. **ProductionDashboard** -- Requires all other components to produce real data. Building the dashboard last ensures every metric displayed is genuine.
 
 ---
 
@@ -801,110 +623,55 @@ backend/app/
 
 | Concern | At 100 users | At 10K users | At 1M users |
 |---------|--------------|--------------|-------------|
-| **AI API costs** | ~$3-10/day, no concern | ~$300-1000/day, need tiered limits + caching | Requires negotiated enterprise API pricing, aggressive caching |
-| **Celery workers** | 1 worker, 4 concurrency | 3-5 workers, 16 concurrency total | Worker pool with auto-scaling, priority queues |
-| **Response storage** | Single PostgreSQL, no issue | Partition `ai_engine_responses` by month, archive old data | Move historical responses to cold storage, keep recent in PostgreSQL |
-| **Cache hit rate** | Low (few users, diverse queries) | Medium (agencies audit competing brands, queries overlap) | High (common industry queries cached across all users) |
-| **Queue backlog** | No queue, immediate processing | Queue with priority (paid > free) | Multi-queue: express (paid), standard (free), batch (monitoring) |
+| **Audit throughput** | Single Celery worker sufficient | 3-5 workers with queue routing | Distributed workers, message priority |
+| **DB connections** | Supabase free tier (60 connections) | Supabase Pro (connection pooling) | Read replicas, connection pooling (PgBouncer) |
+| **AI API costs** | ~$10/day at $0.10/audit | ~$1000/day, need caching + cheaper models | Negotiated enterprise API rates, aggressive caching |
+| **PDF generation** | In-process WeasyPrint | Dedicated Celery queue for reports | Serverless PDF service (Lambda/Cloud Run) |
+| **Chat WebSockets** | FastAPI handles ~100 concurrent easily | Need WebSocket connection management | Redis Pub/Sub for multi-instance WebSocket |
+| **Redis** | Single instance (6379) | Redis cluster or managed Redis | Redis Sentinel with read replicas |
+| **Storage (reports)** | Local filesystem or Supabase Storage | Supabase Storage / S3 | CDN-fronted S3 with lifecycle policies |
 
-**For MVP (current stage):** Single Celery worker with 4 concurrency threads is sufficient. 24-hour Redis cache on AI responses. No partitioning needed. Focus on correctness, not scale.
+### Near-term Scaling Actions (before 1K users)
+
+1. **Queue routing:** Separate Celery queues for audit tasks vs. report generation vs. competitor crawling. Prevents long-running competitor crawls from blocking quick audit dispatches.
+
+```python
+# celery_app.py
+celery_app.conf.task_routes = {
+    "app.tasks.audit_tasks.*": {"queue": "audit"},
+    "app.tasks.reports.*": {"queue": "reports"},
+    "app.tasks.competitors.*": {"queue": "competitors"},
+}
+```
+
+2. **Connection pooling:** Add SQLAlchemy `pool_size` and `max_overflow` configuration. The current `create_engine()` call should explicitly set these.
+
+3. **Redis caching TTLs:** Current 24h TTL for crawl data is appropriate. Add 7-day TTL for AI responses (already noted in critique). Add 30-day TTL for generated report PDFs.
 
 ---
 
-## Suggested Build Order
+## Suggested Build Order (for Roadmap)
 
-Dependencies determine build order. Components lower in this list depend on components above them.
-
-```
-Phase 1: Foundation                    Phase 2: Core Pipeline
-─────────────────────────              ─────────────────────────
-1a. Database models (audit.py)         2a. QueryGenerator
-    - Audit, AuditQuery,                   - Site crawling (reuse existing
-      AIEngineResponse,                      BeautifulSoup infrastructure)
-      BrandMention,                        - Context extraction
-      SiteCrawlResult                      - LLM-based query generation
-    - Alembic migration
-                                       2b. AIEngineOrchestrator
-1b. Engine adapters                        - Parallel dispatch
-    - BaseEngineAdapter ABC                - Cache integration
-    - OpenAI adapter                       - Rate limit enforcement
-    - Anthropic adapter
-    - Perplexity adapter               2c. ResponseAnalyzer
-    - Unit tests per adapter               - Brand mention detection
-                                           - Sentiment analysis
-1c. Redis cache service                    - Competitor extraction
-    - Cache get/set with TTL               - pgvector alignment scoring
-    - Query hash normalization
-    - Cache invalidation
-
-Phase 3: Scoring + API                 Phase 4: Frontend + Polish
-─────────────────────────              ─────────────────────────
-3a. ScoringPipeline                    4a. Audit results page
-    - Site readiness scoring               - Score dashboard
-    - AI presence scoring                  - AI mention cards with quotes
-    - Gap analysis generation              - Gap analysis view
-    - Score breakdown                      - Competitor comparison
-
-3b. AuditOrchestrator                  4b. Audit initiation
-    - Wire all components                  - URL input + options
-    - Celery task integration              - Progress polling UI
-    - Status progression                   - Cost estimation display
-
-3c. API endpoints                      4c. Custom queries
-    - POST /audit/start                    - User adds/edits queries
-    - GET /audit/{id}                      - Query management UI
-    - GET /audit/{id}/results
-```
-
-**Build order rationale:**
-
-1. **Models first** because every other component depends on data structures. You cannot write services that store results without knowing the schema.
-2. **Engine adapters before orchestrator** because the orchestrator needs adapters to compose. Adapters can be tested independently against real APIs (or mocks).
-3. **Cache service early** because the orchestrator needs it, and it is simple to build (Redis get/set with TTL).
-4. **QueryGenerator and AIEngineOrchestrator in Phase 2** because they are independent of each other and can be built in parallel by different developers.
-5. **ResponseAnalyzer after AIEngineOrchestrator** because it needs real AI responses to process (cannot build without knowing what responses look like).
-6. **ScoringPipeline after ResponseAnalyzer** because scoring depends on analyzed mentions and extracted data.
-7. **AuditOrchestrator last in backend** because it wires everything together -- all components must exist first.
-8. **Frontend last** because API endpoints must be stable before building UI against them.
-
-**Vertical slice opportunity:** Build one complete path first (single query, single engine, basic scoring) end-to-end before expanding to multiple queries and engines. This validates the full pipeline with minimal investment.
-
----
-
-## Integration with Existing Architecture
-
-### What Stays Untouched
-- Middleware stack (security headers, rate limiting, CORS, logging) -- applies to new endpoints automatically
-- Database infrastructure (SQLAlchemy, Alembic, pgvector)
-- Docker Compose setup (add env vars for new API keys, that is all)
-- Frontend framework (Nuxt 3, Tailwind)
-- Brand Voice module (independent, keep as-is)
-
-### What Gets Extended
-- **Settings** (`core/config.py`): Add `ANTHROPIC_API_KEY` (already present), `PERPLEXITY_API_KEY`, engine-specific rate limit configs
-- **Celery** (`tasks/`): Wire `audit_task.py` -- the Celery worker already exists in docker-compose but is not connected to analysis
-- **Models** (`models/__init__.py`): Register new model classes
-- **API Router** (`main.py`): Register new `audit` router
-
-### What Gets Deprecated (Not Removed)
-- `POST /api/v1/analysis/analyze` -- keep working for backward compatibility, but new frontend points to `/audit/start`
-- `AnalyzerService` -- the old keyword-in-headings scorer. Keep but do not extend.
-- `geo_data_points/` -- the 108-point system. Some signals (structured data, robots.txt, readability) are reused in the site readiness score, but the orchestrator and scoring framework are replaced.
+| Order | Component | Rationale | Estimated Complexity |
+|-------|-----------|-----------|---------------------|
+| 1 | ScoringPipeline (all 61 criteria) | Everything depends on it. No value without real scores. | HIGH (most effort) |
+| 2 | RecommendationEngine + CompetitorBenchmarking | Immediate value once scoring works. Already has framework. | MEDIUM |
+| 3 | PaymentGating (Stripe) | Must work before public launch. Independent of other features. | MEDIUM |
+| 4 | ReportGenerator (PDF/HTML) | High perceived value. Converts free -> paid. | MEDIUM |
+| 5 | JiraCSVExport | Small effort, high value for agency users. | LOW |
+| 6 | ChatAssistant (WebSocket) | Differentiatior. Requires working audit data. | MEDIUM-HIGH |
+| 7 | CodeAnalysisFlow | Unique differentiator. Requires audit data + user interaction. | MEDIUM |
+| 8 | ProductionDashboard | Displays all the real data from previous phases. | MEDIUM |
 
 ---
 
 ## Sources
 
-- Existing codebase analysis: `/home/salim/Informatique/Perso/Endexa/geo-platform-mvp/.planning/codebase/ARCHITECTURE.md`
-- Project definition: `/home/salim/Informatique/Perso/Endexa/geo-platform-mvp/.planning/PROJECT.md`
-- Python asyncio.Semaphore: standard library pattern for cooperative concurrency limiting
-- tenacity library: standard Python retry library (already commonly paired with OpenAI/Anthropic SDKs)
-- OpenAI async client: `openai.AsyncOpenAI` supports native asyncio
-- Anthropic async client: `anthropic.AsyncAnthropic` supports native asyncio
-- Celery + asyncio pattern: `asyncio.run()` inside Celery task is the established bridge pattern
-
-**Confidence notes:**
-- HIGH confidence on architecture patterns (based on established Python async patterns and direct codebase analysis)
-- HIGH confidence on schema design (based on the domain requirements and existing PostgreSQL + pgvector stack)
-- MEDIUM confidence on specific API pricing (model pricing changes frequently; verify before hardcoding cost estimates)
-- MEDIUM confidence on Perplexity API specifics (their API surface may have evolved; verify adapter interface against current docs)
+- Existing codebase audit: `/home/salim/Informatique/Perso/Endexa/geo-platform-mvp/backend/app/` (HIGH confidence -- direct code reading)
+- Comprehensive critique: `endexa-audit-review-2/ENDEXA-COMPREHENSIVE-CRITIQUE.md` (HIGH confidence -- authored with full code access)
+- [FastAPI + Celery production guide](https://medium.com/@dewasheesh.rana/celery-redis-fastapi-the-ultimate-2025-production-guide-broker-vs-backend-explained-5b84ef508fa7) (MEDIUM confidence)
+- [FastAPI + Celery task chaining patterns](https://gist.github.com/coderberry/e13165e2ae66ecbf3df9ee1aa0ffb373) (MEDIUM confidence)
+- [FastAPI WebSocket + LLM streaming](https://dev.to/dpills/create-a-streaming-ai-assistant-with-chatgpt-fastapi-websockets-and-react-3ehf) (MEDIUM confidence)
+- [WeasyPrint PDF generation with FastAPI](https://medium.com/@pariosur/weasyprint-generating-dynamic-pdf-reports-with-python-37b3d9e58e16) (MEDIUM confidence)
+- [FastAPI + Stripe integration patterns](https://www.fast-saas.com/blog/fastapi-stripe-integration/) (MEDIUM confidence)
+- [Jira CSV export patterns](https://community.atlassian.com/forums/App-Central-articles/Jira-Export-6-Tips-to-Jira-Export-to-Excel-CSV-PDF-and-More/ba-p/2814825) (MEDIUM confidence)
