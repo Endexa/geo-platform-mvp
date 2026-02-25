@@ -1,16 +1,8 @@
-# Roadmap: GEO Platform -- AI Brand Visibility Auditor
+# Roadmap: Endexa GEO Platform v2
 
 ## Overview
 
-This roadmap transforms the existing FastAPI + Nuxt 3 + PostgreSQL codebase into a comprehensive GEO+SEO audit platform. The journey starts with safety (auth and cost controls), builds the AI audit pipeline (crawl, query, dispatch, analyze, display), then layers on page-level scoring with research-backed criteria, auto-competitor discovery from AI responses, evidence-based recommendations, and agency-scale reporting. Ten phases, each delivering a coherent, verifiable capability. Every phase depends on the previous.
-
-**Reworked 2026-02-22:** Phases 6-10 redesigned from deep research into GEO scoring methods, AI citation factors, competitor tools, and AI-ready standards. Key changes: Brand Signature deferred to v2. Site AI-Readiness Scoring (page-level criteria checks) added as Phase 6. Competitors auto-discovered from AI responses instead of manually added. Recommendations now evidence-based with research data. Scoring services built from scratch based on research and industry standards (legacy `geo_data_points/` system not used -- incompatible architecture and outdated criteria).
-
-**Research basis:** `.planning/research/` contains 4 research documents informing phases 6-10:
-- `geo-scoring-methods.md` -- Princeton GEO paper, Otterly/HubSpot/Evertune methodologies, scoring formulas
-- `ai-citation-factors.md` -- Ahrefs 75K-brand study, Surfer SEO 46M-citation analysis, 5-tier factor hierarchy
-- `geo-competitors.md` -- 17 competitor deep dives, pricing landscape, market gaps
-- `ai-ready-standards.md` -- llms.txt spec, all AI bot user-agents, schema.org tiers, WebMCP
+Endexa v2 is a brownfield rebuild: the FastAPI + Celery + Redis + Supabase foundation works, but the scoring pipeline (103/108 data points return zeros), recommendations engine (stub), AI visibility (fabricated), and dashboard (fake data) must all be rebuilt from scratch. The roadmap follows a strict dependency chain: real scores first (everything depends on them), then features that consume scores (recommendations, visibility, exports), then monetization and interactive features, then polish. Every phase delivers a coherent, verifiable capability that the next phase builds on.
 
 ## Phases
 
@@ -20,389 +12,156 @@ This roadmap transforms the existing FastAPI + Nuxt 3 + PostgreSQL codebase into
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [x] **Phase 1: Foundation & Safety** - Enable auth, cost tracking, response caching, and outbound rate limiting before any AI API code
-- [x] **Phase 2: Site Crawl & Query Generation** - Crawl user URLs for AI-readiness signals and auto-generate industry-relevant queries from content
-- [x] **Phase 3: AI Engine Dispatch** - Query ChatGPT, Claude, Perplexity, and Gemini APIs with generated queries via LiteLLM
-- [x] **Phase 4: Mention Detection & Scoring** - Detect brand mentions in AI responses with verbatim quotes and compute visibility scores
-- [x] **Phase 5: Audit Experience** - Users can trigger an audit from URL entry to scored results with per-query drill-down
-- [ ] **Phase 6: Site AI-Readiness Scoring** - Score each page against research-backed SEO+GEO criteria with purpose-built scoring services, producing an Optimization Score alongside the Visibility Score
-- [x] **Phase 7: Auto-Competitor Discovery** - Extract competitors from AI responses, crawl their sites, and compare technical setup (completed 2026-02-22)
-- [ ] **Phase 8: Actionable Recommendations** - Generate page-specific, evidence-based fix recommendations with impact estimates
-- [ ] **Phase 9: Dashboard & Reporting** - Combined GEO Score dashboard, competitive position map, PDF/CSV export, audit history
-- [x] **Phase 10: Scale & Agency** - Multi-brand management with per-brand audit history and cross-brand comparison (completed 2026-02-23)
+- [ ] **Phase 1: Scoring Foundation** - All 61 criteria produce real measurements; dead code removed; integration-tested against known sites
+- [ ] **Phase 2: Recommendations + Competitor Benchmarking** - Deterministic gap analysis generates prioritized, actionable recommendations; auto-competitor discovery and side-by-side comparison
+- [ ] **Phase 3: AI Visibility Hardening** - Statistical multi-query measurement replaces single-shot checks; per-engine breakdown with confidence indicators
+- [ ] **Phase 4: Payments + Freemium Gating** - Stripe checkout flow, webhook handling, subscription lifecycle, tier-based feature gating
+- [ ] **Phase 5: Reports + Exports** - PDF/HTML audit reports and Jira-compatible CSV export with customizable fields
+- [ ] **Phase 6: Chat Assistant** - SSE-streamed LLM chat grounded in user's actual audit data
+- [ ] **Phase 7: Dashboard + Frontend Polish** - Real metrics dashboard with trend charts, audit history, multi-site management, and production-ready UI throughout
+- [ ] **Phase 8: Code Analysis** - Prompt generation for user's codebase, output ingestion, enriched recommendations from code findings
 
 ## Phase Details
 
-### Phase 1: Foundation & Safety
-**Goal**: The system is safe to expose to the internet -- authenticated, cost-controlled, and rate-limited -- before any AI API integration code is written
-**Depends on**: Nothing (first phase)
-**Requirements**: FOUND-01, FOUND-02, FOUND-03, FOUND-04
+### Phase 1: Scoring Foundation
+**Goal**: Users receive real, trustworthy audit scores derived from actual page measurements -- not zeros or fabricated numbers
+**Depends on**: Nothing (critical path root)
+**Requirements**: SCORE-01, SCORE-02, SCORE-03, SCORE-04, SCORE-05, SCORE-06, SCORE-07, SCORE-08, SCORE-09, SCORE-10
 **Success Criteria** (what must be TRUE):
-  1. User can register, log in with email/password, and access protected endpoints with a JWT token
-  2. Every outbound AI API call is tracked with cost metadata, and a per-audit budget cap halts execution when exceeded
-  3. Identical AI queries return cached responses from Redis within the 24-hour TTL window instead of making new API calls
-  4. Outbound requests to each AI engine API are throttled to stay within provider rate limits, with back-pressure when limits are hit
-  5. Unauthenticated requests to any audit-related endpoint receive a 401 response
-**Plans**: 3 plans
+  1. Running an audit on a known site (e.g., stripe.com) produces non-zero scores across all 4 categories (Crawlability, Content Structure, Structured Data, Authority) with scores that a human SEO professional would consider reasonable
+  2. Every criterion that cannot be measured for a given page reports NOT_MEASURED or NOT_APPLICABLE -- never a fabricated value or hardcoded zero
+  3. The Optimization Score aggregates correctly via the weakest-link formula (0.6 * mean + 0.4 * min) and the dual-score display (Visibility + Optimization) renders on the audit results page
+  4. The legacy `geo_data_points/` directory is deleted and no imports reference it
+  5. Integration tests run a full audit against a known test site and verify that output scores fall within expected ranges
+**Plans**: TBD
 
 Plans:
-- [x] 01-01-PLAN.md -- Dependency migration (PyJWT, pwdlib), Alembic setup, auth endpoints (FOUND-01)
-- [x] 01-02-PLAN.md -- Cost tracking model, service, and Celery initialization (FOUND-02)
-- [x] 01-03-PLAN.md -- Redis AI cache service, outbound rate limiter, enable auth on endpoints (FOUND-03, FOUND-04)
+- [ ] 01-01: TBD
+- [ ] 01-02: TBD
+- [ ] 01-03: TBD
 
-### Phase 2: Site Crawl & Query Generation
-**Goal**: The system can take any URL, extract AI-readiness signals from the site, and generate a set of industry-relevant queries that a real user would ask an AI engine about that brand's domain
+### Phase 2: Recommendations + Competitor Benchmarking
+**Goal**: Users receive specific, prioritized recommendations they can immediately act on, with competitor context showing where they stand relative to discovered competitors
 **Depends on**: Phase 1
-**Requirements**: AUDIT-02, AUDIT-03
+**Requirements**: REC-01, REC-02, REC-03, REC-04, REC-05, COMP-01, COMP-02, COMP-03, COMP-04
 **Success Criteria** (what must be TRUE):
-  1. Given a URL, the system crawls the site and extracts structured data (schema.org, robots.txt AI directives, content structure, authority markers)
-  2. From crawled content, the system generates 10-15 categorized queries (industry, brand-direct, comparison, problem, recommendation) that reflect how real users would ask AI about that domain
-  3. Generated queries are stored and associated with an audit record for downstream processing
-**Plans**: 2 plans
+  1. After an audit completes, the user sees a prioritized list of recommendations grouped by category with severity levels, where each recommendation includes a clear action description, impact estimate, and evidence from the actual audit data
+  2. Recommendations are industry-aware: a SaaS site does not receive advice about LocalBusiness schema, and a blog does not receive advice about Product schema
+  3. Competitor brands are automatically discovered from AI engine responses (NER extraction) and displayed in a side-by-side score comparison without the user manually entering competitor URLs
+  4. Share of voice (percentage of AI mentions per brand across engines) is calculated and displayed per audit
+  5. Competitor data persists across audits so users can track competitive positioning over time
+**Plans**: TBD
 
 Plans:
-- [x] 02-01-PLAN.md -- Audit/AuditQuery models, Alembic migration 003, CrawlerService with AI-readiness signal extraction (AUDIT-02)
-- [x] 02-02-PLAN.md -- QueryGeneratorService with LiteLLM structured output, Celery audit pipeline, audit API endpoints (AUDIT-03)
+- [ ] 02-01: TBD
+- [ ] 02-02: TBD
+- [ ] 02-03: TBD
 
-### Phase 3: AI Engine Dispatch
-**Goal**: The system can send generated queries to ChatGPT, Claude, Perplexity, and Gemini in parallel and store their responses reliably, with graceful degradation if one engine fails
-**Depends on**: Phase 2
-**Requirements**: AUDIT-04
+### Phase 3: AI Visibility Hardening
+**Goal**: Users can trust their AI Visibility Score because it is derived from statistical measurement across multiple queries and engines, not a single-shot check
+**Depends on**: Phase 1
+**Requirements**: VIS-01, VIS-02, VIS-03, VIS-04
 **Success Criteria** (what must be TRUE):
-  1. Each generated query is dispatched to all configured AI engines via LiteLLM with engine-specific adapters
-  2. Engine queries execute in parallel with per-engine semaphores respecting rate limits, and a single engine failure does not block the others
-  3. Every AI response is stored with its full text, model version identifier, cost metadata, and timestamp
-  4. Cached responses are served for duplicate query+engine combinations within the 24h TTL
-**Plans**: 2 plans
+  1. AI Visibility Score is derived from multiple real LLM queries per engine (5-15 queries each) with mention rates and confidence indicators shown to the user
+  2. Per-engine breakdown displays separate visibility scores for each active engine (ChatGPT, Claude, Perplexity, Gemini)
+  3. Engines without API keys are gracefully skipped, and the overall score adjusts to reflect only engines that were actually queried
+  4. Running the same audit twice within the cache TTL produces consistent results (not random fluctuation)
+**Plans**: TBD
 
 Plans:
-- [x] 03-01-PLAN.md -- EngineResponse model, migration 004, dispatch config, DispatchService with parallel engine dispatch (AUDIT-04)
-- [x] 03-02-PLAN.md -- Extend Celery pipeline with dispatch stage, update audit API/schemas for engine responses (AUDIT-04)
+- [ ] 03-01: TBD
+- [ ] 03-02: TBD
 
-### Phase 4: Mention Detection & Scoring
-**Goal**: The system can analyze AI responses to detect whether and how a brand is mentioned, extract verbatim quotes, and compute a meaningful visibility score
-**Depends on**: Phase 3
-**Requirements**: AUDIT-05, AUDIT-06
+### Phase 4: Payments + Freemium Gating
+**Goal**: Users can start with a free partial audit and upgrade to a paid subscription for full access, with Stripe handling the payment flow
+**Depends on**: Phases 1-2 (must know what features to gate)
+**Requirements**: PAY-01, PAY-02, PAY-03, PAY-04, PAY-05
 **Success Criteria** (what must be TRUE):
-  1. The system detects brand name mentions (including abbreviations, typos, and variants) in AI engine responses using NER and fuzzy matching
-  2. Each detected mention includes a verbatim quote of the surrounding context from the AI response
-  3. A visibility score (0-100) is computed with a per-engine breakdown showing which engines mention the brand and how prominently
-  4. Score computation uses temperature=0 on all queries and logs model version for reproducibility
-**Plans**: 2 plans
+  1. A non-paying user can run a free audit that shows Crawlability category scores, overall score, and top 3 recommendations -- but cannot access full category breakdowns, all recommendations, exports, chat, or code analysis
+  2. Clicking "Upgrade" initiates a Stripe Checkout Session that successfully processes a test payment and creates a subscription
+  3. Stripe webhooks correctly handle subscription lifecycle events (created, updated, cancelled, payment failed) and the user's access level updates accordingly
+  4. Feature gating is enforced server-side via FastAPI dependencies -- accessing a paid endpoint without a subscription returns a clear "upgrade required" response
+**Plans**: TBD
 
 Plans:
-- [x] 04-01-PLAN.md -- BrandMention/VisibilityScore models, migration 005, MentionDetectorService, ScoringService (AUDIT-05, AUDIT-06)
-- [x] 04-02-PLAN.md -- Celery ANALYZING pipeline stage, audit API/schemas for mentions and scores (AUDIT-05, AUDIT-06)
+- [ ] 04-01: TBD
+- [ ] 04-02: TBD
 
-### Phase 5: Audit Experience
-**Goal**: A user can enter a URL on the frontend, trigger a complete audit, watch it progress, and explore the scored results with full AI response drill-down
-**Depends on**: Phase 4
-**Requirements**: AUDIT-01, AUDIT-07
+### Phase 5: Reports + Exports
+**Goal**: Users can download professional audit reports and export recommendations to their project management tools
+**Depends on**: Phases 1-2 (needs real scores and recommendations)
+**Requirements**: RPT-01, RPT-02, RPT-03, RPT-04
 **Success Criteria** (what must be TRUE):
-  1. User enters a URL on the frontend and triggers a full AI brand visibility audit with one action
-  2. The audit runs asynchronously (Celery) with the frontend polling and displaying progress through crawl, query generation, AI dispatch, analysis, and scoring stages
-  3. User sees final results: visibility score, per-engine breakdown, and list of queries with mention/no-mention indicators
-  4. User can drill down into any individual query to see the full AI response from each engine with brand mentions highlighted in context
-**Plans**: 2 plans
+  1. User can download a PDF audit report containing executive summary, dual scores, per-category breakdown, top recommendations, and charts
+  2. User can download an HTML version of the same report that renders correctly in a browser
+  3. User can export recommendations as a Jira-compatible CSV with customizable fields (grouping, priority, epic link) that imports cleanly into Jira
+  4. Report downloads are gated by subscription tier (paid users only)
+**Plans**: TBD
 
 Plans:
-- [x] 05-01-PLAN.md -- Frontend auth foundation: remove Supabase, useApiFetch/useAuth composables, login page rewrite, auth-aware layout (AUDIT-01)
-- [x] 05-02-PLAN.md -- Audit page with URL form, progress polling, results display, query drill-down with highlighted mentions (AUDIT-01, AUDIT-07)
+- [ ] 05-01: TBD
+- [ ] 05-02: TBD
 
-### Phase 6: Site AI-Readiness Scoring
-**Goal**: The system scores each crawled page against research-backed SEO+GEO criteria, producing per-page and per-category scores that roll up into an Optimization Score (0-100) displayed alongside the existing Visibility Score
-**Depends on**: Phase 5 (needs crawled page data and working audit pipeline)
-**Requirements**: READY-01, READY-02, READY-03, READY-04, READY-05, READY-06
-
-**Architecture**: Purpose-built scoring services integrated into the existing audit pipeline. Each scoring category (Crawlability, Content Structure, Structured Data, Authority) is implemented as an async service in `backend/app/services/scoring/` that receives crawled page data and returns per-criteria scores. Services run in the Celery pipeline as a new SCORING stage after ANALYZING. Criteria are derived from research (Princeton GEO paper, Ahrefs 75K study, Surfer SEO 46M analysis, BrightEdge data) and industry standards, NOT from the legacy `geo_data_points/` system (which uses incompatible sync patterns, a separate DB, and outdated criteria).
-
-**Scoring Formula** (research-backed weights):
-```
-Optimization Score = (
-  Crawlability    x 0.25 +    # Can AI bots read this page?
-  Content_Structure x 0.25 +  # Is content extractable by AI?
-  Structured_Data x 0.20 +    # Schema.org quality
-  Authority       x 0.15 +    # E-E-A-T + entity signals + SEO fundamentals
-  AI_Visibility   x 0.15      # Actual mention score from phases 4-5
-) x 100
-```
-
-**Evidence for weights:**
-- Crawlability 25%: "If AI can't read your content, nothing else matters" (Otterly.ai core finding). AI crawlers don't execute JS.
-- Content Structure 25%: Answer-first format +40% citations (Princeton GEO paper). Clear headings 2.8x citation rate.
-- Structured Data 20%: JSON-LD 2.3-2.5x more likely in AI Overviews. FAQPage +28% citations (Frase.io). 3.2x citation rate (BrightEdge).
-- Authority 15%: Brand authority is #1 predictor (Ahrefs 75K study, YouTube mentions r=0.737). E-E-A-T r=0.81 correlation with citation.
-- AI Visibility 15%: Direct measurement from our audit pipeline (phases 4-5).
-
-**Criteria by Category** (all built from scratch based on research):
-
-#### Category 1: Crawlability (25%) -- READY-01
-*Can AI crawlers access and read the page content?*
-*Service: `backend/app/services/scoring/crawlability_scorer.py`*
-
-| # | Criteria | Research Impact |
-|---|----------|-----------------|
-| C1 | GPTBot access (robots.txt) | Required for ChatGPT citations |
-| C2 | ClaudeBot access (robots.txt) | Required for Claude citations |
-| C3 | PerplexityBot access (robots.txt) | Required for Perplexity citations |
-| C4 | OAI-SearchBot access (robots.txt) | Search vs training crawler distinction (OpenAI) |
-| C5 | Claude-SearchBot access (robots.txt) | Search vs training crawler distinction (Anthropic) |
-| C6 | Bingbot access (robots.txt) | Powers Bing Copilot citations |
-| C7 | CCBot access (robots.txt) | Feeds LLaMA/Mistral training data |
-| C8 | Google-Extended access (robots.txt) | Controls Gemini training access |
-| C9 | SSR detection (JS vs no-JS content diff) | CRITICAL: AI bots don't execute JS |
-| C10 | Response time (TTFB) | Slow pages = AI bot timeout/skip |
-| C11 | HTTP status code for AI bots | Must respond 200 OK |
-| C12 | Resource blockage (CSS/JS in robots.txt) | Blocked resources degrade rendering |
-
-#### Category 2: Content Structure (25%) -- READY-02
-*Is the content structured for AI extraction?*
-*Service: `backend/app/services/scoring/content_structure_scorer.py`*
-
-| # | Criteria | Research Impact |
-|---|----------|-----------------|
-| CS1 | Heading hierarchy quality (H1>H2>H3) | 2.8x citation rate with clean hierarchy |
-| CS2 | Answer-first format detection | +40% citations (Princeton GEO paper) |
-| CS3 | Paragraph length (2-4 sentences ideal) | Short paragraphs = cleaner AI extraction |
-| CS4 | Data density (tables, lists, statistics) | 4.1x more citations with data tables (Surfer SEO) |
-| CS5 | FAQ section presence | FAQs mirror how users query AI engines |
-| CS6 | Content length (1200-1800 words optimal) | Optimal range for AI extraction depth |
-| CS7 | Readability score (Flesch-Kincaid 8-10) | AI prefers clear, accessible text |
-| CS8 | Citation/reference presence | +20-30% visibility (Princeton GEO paper) |
-| CS9 | Content freshness (date signals) | 85% of AI citations from content <2 years old |
-| CS10 | Statistics density | +40% visibility boost (Princeton GEO paper) |
-| CS11 | Quotation presence (expert quotes) | +15-25% boost (Princeton GEO paper) |
-| CS12 | Entity density (named entities/100 words) | Higher entity density = better AI understanding |
-| CS13 | Sentence length variety | Variety signals editorial quality |
-
-#### Category 3: Structured Data (20%) -- READY-03
-*Schema.org quality and coverage*
-*Service: `backend/app/services/scoring/structured_data_scorer.py`*
-
-| # | Criteria | Research Impact |
-|---|----------|-----------------|
-| SD1 | Organization schema present | Entity identity for AI knowledge graphs |
-| SD2 | sameAs links (multi-platform signals) | Multi-platform entity disambiguation |
-| SD3 | FAQPage schema | +28% citations (Frase.io), 3.2x in AI Overviews (BrightEdge) |
-| SD4 | Article/BlogPosting schema | E-E-A-T: author attribution + dates |
-| SD5 | HowTo schema | Step-by-step extraction by AI |
-| SD6 | BreadcrumbList schema | Site structure clarity for AI |
-| SD7 | JSON-LD validation (syntax + completeness) | Must be valid and parseable |
-| SD8 | Product/Offer schema | Commercial query visibility |
-| SD9 | Person schema (author credentials) | E-E-A-T author identity signals |
-| SD10 | ClaimReview schema | Trust signal for factual content |
-| SD11 | Structured data coverage (% of pages) | Breadth of schema adoption |
-| SD12 | llms.txt presence + format validation | Low-cost signal, 844K+ sites adopted |
-| SD13 | llms-full.txt presence | Full content accessibility for AI tools |
-
-#### Category 4: Authority & SEO Signals (15%) -- READY-04
-*E-E-A-T markers, entity signals, and SEO fundamentals*
-*Service: `backend/app/services/scoring/authority_scorer.py`*
-
-**E-E-A-T / Entity Signals:**
-
-| # | Criteria | Research Impact |
-|---|----------|-----------------|
-| A1 | Author bios with credentials | 96% of AI-cited sources have verified E-E-A-T |
-| A2 | Published/modified dates visible | 3.2x citations for content <30 days old |
-| A3 | Knowledge Graph presence | Entity disambiguation for AI |
-| A4 | Wikidata QID linkage | 2.8x citation likelihood |
-| A5 | Wikipedia page/backlinks | #1 cited source by AI engines |
-| A6 | Review platform profiles (G2, Trustpilot) | 3x citation boost from review profiles |
-| A7 | Brand search volume signal | Strongest predictor (r=0.334-0.466, Ahrefs study) |
-| A8 | E-E-A-T composite score | r=0.81 correlation with AI citation likelihood |
-
-**SEO Fundamentals (directly impact AI citation likelihood):**
-
-| # | Criteria | Research Impact |
-|---|----------|-----------------|
-| S1 | SSL/HTTPS | Baseline trust signal |
-| S2 | Canonical tags | Prevents duplicate content confusion |
-| S3 | Meta title optimization | Brand identity in search + AI |
-| S4 | Meta description quality | Click-through + AI snippet source |
-| S5 | XML sitemap presence | Crawl efficiency for all bots |
-| S6 | Open Graph tags | Social sharing + knowledge graph signals |
-| S7 | Mobile friendliness | 47% higher citation likelihood |
-| S8 | Internal linking score | 2.7x citation probability (content clusters) |
-| S9 | Backlink profile (DR/DA) | r=0.266 ChatGPT, higher for AI Overviews |
-| S10 | Referring domains diversity | 32K+ = 3.5x more cited by ChatGPT |
-| S11 | Core Web Vitals (LCP) | Page speed = citation signal |
-| S12 | URL structure quality | Clean URLs for citation targeting |
-| S13 | Image alt text coverage | Multimodal AI accessibility |
-| S14 | Broken links (404 detection) | Trust signal degradation |
-| S15 | Orphan pages detection | Content accessibility for crawlers |
-
+### Phase 6: Chat Assistant
+**Goal**: Users can ask questions about their audit results in natural language and receive accurate, contextual answers
+**Depends on**: Phases 1-2 (needs scores and recommendations as context)
+**Requirements**: CHAT-01, CHAT-02, CHAT-03, CHAT-04
 **Success Criteria** (what must be TRUE):
-  1. Given a crawled page, the scoring services produce sub-scores for Crawlability, Content Structure, Structured Data, and Authority
-  2. Each criterion returns a 0-100 score with a human-readable comment explaining what was found and why it matters
-  3. SSR detection works by rendering the page with and without JavaScript and comparing content difference
-  4. AI bot access is checked per-bot (GPTBot, ClaudeBot, PerplexityBot, OAI-SearchBot, Claude-SearchBot) via robots.txt parsing
-  5. Schema.org types are detected, classified by tier (Foundation/Content/Supplementary), and validated for completeness per type
-  6. An Optimization Score (0-100) is computed using the weighted formula and displayed alongside the existing Visibility Score
-  7. User sees a page-level breakdown with per-category scores and can drill down to see which specific criteria passed/failed and why
-**Plans**: 5 plans
+  1. User can open a chat interface on any completed audit and ask questions like "Why is my schema score low?" and receive an answer grounded in their actual audit data
+  2. Chat responses stream in real-time via SSE (not waiting for full response)
+  3. Follow-up questions maintain conversation context -- the user can have a multi-turn discussion about their audit
+  4. Chat responses reference specific scores, criteria, and recommendations from the user's audit (not generic advice)
+**Plans**: TBD
 
 Plans:
-- [ ] 06-01-PLAN.md -- Scoring pipeline foundation: PageScore/CriterionResult models, migration 006, SCORING Celery stage, BaseScorer interface, ScoringOrchestrator, multi-page crawl (READY-05, READY-06)
-- [ ] 06-02-PLAN.md -- CrawlabilityScorer: 12 criteria for AI bot access, SSR detection, TTFB, status codes, resource blockage (READY-01)
-- [ ] 06-03-PLAN.md -- ContentStructureScorer: 13 criteria for headings, answer-first, paragraphs, data density, FAQ, readability, citations, freshness, statistics, quotes, entities, sentence variety (READY-02)
-- [ ] 06-04-PLAN.md -- StructuredDataScorer: 13 criteria for schema.org types, tier classification, JSON-LD validation, FAQPage, llms.txt (READY-03)
-- [ ] 06-05-PLAN.md -- AuthorityScorer (23 criteria: 8 E-E-A-T + 15 SEO), Optimization Score in API, frontend scoring display with category breakdown and criterion drill-down (READY-04, READY-05, READY-06)
+- [ ] 06-01: TBD
+- [ ] 06-02: TBD
 
-### Phase 7: Auto-Competitor Discovery
-**Goal**: The system automatically discovers competitors from AI engine responses (who AI mentions instead of you), crawls their sites, and compares their technical setup against the user's site
-**Depends on**: Phase 6 (needs page-level scoring to compare sites)
-**Requirements**: COMP-01, COMP-02, COMP-03, COMP-04, COMP-05, COMP-06, COMP-07
-
-**How it works**: Instead of asking users to manually enter competitors, the system extracts all brand/entity names mentioned in AI responses using NER (Named Entity Recognition) and pattern matching. These are ranked by mention frequency to identify the user's real AI competitors -- the brands AI recommends instead of you. Top competitors are then crawled and scored using the same Phase 6 pipeline.
-
-**Research basis**: The Ahrefs 75K-brand study shows all three major AI platforms mention largely the same brands (r=0.779 overlap). If you're invisible in one engine, you're likely invisible in all. Auto-discovery reveals the competitive landscape as AI actually sees it.
-
+### Phase 7: Dashboard + Frontend Polish
+**Goal**: Users see a production-quality dashboard with real metrics, trend charts, and audit history -- and the entire application feels polished and professional
+**Depends on**: Phases 1-6 (dashboard requires all components producing real data)
+**Requirements**: DASH-01, DASH-02, DASH-03, DASH-04, DASH-05, UI-01, UI-02, UI-03, UI-04
 **Success Criteria** (what must be TRUE):
-  1. The system extracts all brand/entity names from AI engine responses using NER and pattern matching
-  2. Discovered entities are ranked by mention frequency across all queries and engines, with share-of-voice percentages
-  3. User sees a competitor leaderboard showing which brands AI mentions most for their industry queries
-  4. Top 3-5 competitors (by mention frequency) are auto-crawled using the same crawl + scoring pipeline as the user's site
-  5. User sees a comparison: their scores vs competitor scores per category (crawlability, content structure, schema, authority)
-  6. User can add, edit, or remove custom queries alongside auto-generated ones before or after an audit runs
-  7. For AI responses that cite sources (especially Perplexity), the system extracts and displays which URLs/sources each engine references
-**Plans**: 4 plans
+  1. Dashboard displays real audit history with actual data -- no mock numbers, no placeholder charts
+  2. Score trend charts show how Visibility and Optimization scores evolve across multiple audits over time
+  3. Per-engine AI visibility breakdown and per-category score breakdown are displayed on the dashboard
+  4. Agencies can manage multiple client sites from one account (multi-site management)
+  5. The entire application follows the design system (Data-Dense Dashboard style), with proper loading states, error states, empty states, and responsive layout on desktop and tablet
+**Plans**: TBD
 
 Plans:
-- [ ] 07-01-PLAN.md -- Competitor/CompetitorAudit models, migration 007, EntityExtractorService (spaCy NER + citation extraction + SOV), Perplexity citations capture, DISCOVERING_COMPETITORS pipeline stage (COMP-01, COMP-02, COMP-07)
-- [ ] 07-02-PLAN.md -- CompetitorService (URL resolution + crawl + score pipeline), competitor API endpoints (leaderboard, crawl trigger, detail), wire competitor crawling into audit pipeline (COMP-03, COMP-04)
-- [ ] 07-03-PLAN.md -- Custom query CRUD API endpoints (add/edit/remove), QueryEditor frontend component with inline editing (COMP-06)
-- [ ] 07-04-PLAN.md -- Competitors page, CompetitorLeaderboard + CompetitorComparison + SourceCitations frontend components, sidebar nav, audit page integration (COMP-05, COMP-07)
+- [ ] 07-01: TBD
+- [ ] 07-02: TBD
+- [ ] 07-03: TBD
 
-### Phase 8: Actionable Recommendations
-**Goal**: The system generates page-specific, evidence-based recommendations by comparing user site scores against competitor scores and research-backed best practices, with each recommendation showing the evidence, the gap, and the estimated impact
-**Depends on**: Phase 6 + Phase 7 (needs page-level scores AND competitor comparison data)
-**Requirements**: REC-01, REC-02, REC-03, REC-04, REC-05
-
-**How it works**: For each page, the system compares the user's per-criteria scores against (a) competitor scores for the same criteria, and (b) research-backed benchmarks. Gaps are identified and converted into specific, actionable recommendations. Each recommendation includes evidence from the research (e.g., "FAQPage schema gives 3.2x higher citation rate -- your competitors have it, you don't").
-
-**Research basis for impact estimates**:
-- Schema markup: 2.3-2.5x more likely in AI Overviews (BrightEdge)
-- FAQPage schema: +28% AI citations (Frase.io), 3.2x citation rate (BrightEdge)
-- Answer-first format: +40% citations (Princeton GEO paper)
-- Statistics in content: +40% visibility boost (Princeton GEO paper)
-- Quotations from authorities: +15-25% boost (Princeton GEO paper)
-- Content freshness (<30 days): 3.2x more citations
-- Data tables: 4.1x more AI citations (Surfer SEO)
-- Content clusters with bi-directional linking: 2.7x citation probability
-
+### Phase 8: Code Analysis
+**Goal**: Users can get deeper, code-level recommendations by running Endexa-generated prompts on their codebase and uploading the results
+**Depends on**: Phases 1-2 (needs scoring gaps to generate relevant prompts)
+**Requirements**: CODE-01, CODE-02, CODE-03, CODE-04
 **Success Criteria** (what must be TRUE):
-  1. The system generates page-specific recommendations by comparing user scores against competitor scores and research-backed best practices
-  2. Each recommendation includes: the research-backed impact data, the specific competitor comparison, and the exact gap identified
-  3. Recommendations are prioritized by estimated impact: High (>25% citation improvement), Medium (10-25%), Low (<10%) based on research data
-  4. The system classifies sentiment of AI mentions (positive, negative, neutral) and surfaces sentiment patterns per engine
-  5. Content gaps are identified: topics where competitors are mentioned but the user is not, linked to specific pages the user could create or improve
-**Plans**: 4 plans
+  1. After an audit, the user can download analysis prompts tailored to their scoring gaps that they can run with their AI tools (Claude, Copilot, etc.)
+  2. User can upload the output from running those prompts back into Endexa
+  3. Endexa produces additional, code-specific recommendations based on the uploaded analysis output
+  4. Generated prompts are useful for analysis but do not expose Endexa's proprietary scoring logic (users still need Endexa for interpretation)
+**Plans**: TBD
 
 Plans:
-- [x] 08-01-PLAN.md -- Recommendation engine + sentiment service: AuditRecommendation/MentionSentiment models, migration 008, RecommendationEngine gap analysis, SentimentService LLM classification, RECOMMENDING Celery stage (REC-01, REC-02, REC-03, REC-04)
-- [x] 08-02-PLAN.md -- Content gaps + API + export: content gap identification with mini briefs, recommendation CRUD endpoints, sentiment summary API, Markdown fix plan export (REC-01, REC-02, REC-03, REC-04, REC-05)
-- [x] 08-03-PLAN.md -- Frontend recommendations experience: RecommendationCard (two-tier), RecommendationProgress, SentimentBreakdown, ContentGapCard components, recommendations page with tabs/filters/export, sidebar nav, audit page preview (REC-01, REC-02, REC-03, REC-04, REC-05)
-- [x] 08-04-PLAN.md -- Gap closure: Wire identify_content_gaps() and save_content_gaps() into RECOMMENDING pipeline stage (REC-05)
-
-### Phase 9: Dashboard & Reporting
-**Goal**: Users see a single-screen dashboard with their combined GEO Score (Visibility + Optimization), competitive position, top issues, and can export complete reports and track changes over time
-**Depends on**: Phase 8 (needs recommendations and competitor data for complete dashboard)
-**Requirements**: DASH-01, DASH-02, DASH-03, DASH-04
-
-**Combined GEO Score**: The dashboard presents two primary scores:
-- **Visibility Score** (0-100): From the AI mention-based analysis (phases 4-5)
-- **Optimization Score** (0-100): From the page-level criteria scoring (phase 6)
-- **Combined GEO Score**: 50/50 weighted blend displayed as the headline metric
-
-**Success Criteria** (what must be TRUE):
-  1. Dashboard shows a single-screen overview: combined GEO Score, per-engine visibility breakdown, top 5 issues to fix, competitive position summary
-  2. Competitive position map shows user vs discovered competitors across key metrics (visibility score, optimization score, share of voice)
-  3. User can export a complete audit report as PDF or CSV including: scores, per-criteria breakdowns, mentions with quotes, gaps identified, recommendations with evidence, and competitor comparison
-  4. Audit history is stored so users can see how their scores and mention patterns change across re-audits over time (trend charts)
-**Plans**: 3 plans
-
-Plans:
-- [x] 09-01-PLAN.md -- Backend: DashboardService aggregation, dashboard API (overview, history, PDF/CSV export), Pydantic schemas, Jinja2 PDF template, WeasyPrint dependency (DASH-01, DASH-02, DASH-03, DASH-04)
-- [x] 09-02-PLAN.md -- Frontend: Dashboard page rewrite with DashboardHero scores, CompetitorRadar chart, ExportActions, per-engine breakdown, top issues, audit selector (DASH-01, DASH-02, DASH-03)
-- [x] 09-03-PLAN.md -- Frontend: TrendChart line chart for audit history, chartjs-adapter-date-fns install, dashboard history integration (DASH-04)
-
-### Phase 10: Scale & Agency
-**Goal**: Agency users can manage multiple brands under one account with separate audit histories and a cross-brand comparison dashboard
-**Depends on**: Phase 9 (needs full dashboard and reporting capabilities)
-**Requirements**: SCALE-01, SCALE-02
-
-**Success Criteria** (what must be TRUE):
-  1. Agency users can create and manage multiple brands under one account, each with its own URL, audit history, and score tracking
-  2. Multi-brand view shows a summary dashboard comparing GEO scores, visibility scores, optimization scores, and top issues across all managed brands
-**Plans**: 2 plans
-
-Plans:
-- [ ] 10-01-PLAN.md -- Brand model, migration 009, BrandService with CRUD + retroactive association, brand API endpoints, auto-association in audit creation (SCALE-01)
-- [ ] 10-02-PLAN.md -- Multi-brand overview API, frontend brands page with BrandCard + BrandComparison chart, sidebar nav update (SCALE-02)
-
-## Scoring Approach
-
-### Built from Research, Not Legacy Code
-
-The scoring services are built from scratch based on deep research and industry standards. The legacy `geo_data_points/` system (108 scripts, 7 modules) is **not integrated** because:
-- Incompatible architecture (sync `requests` vs async `httpx`, separate DB, class-based vs service-based)
-- 103 of 108 scripts are stubs returning 0
-- Criteria are outdated and don't reflect current AI citation research
-- Orchestrator imports are broken (paths don't match actual file structure)
-
-Some algorithm ideas from the legacy scripts may inspire implementations (e.g., robots.txt parsing logic, heading hierarchy analysis), but all criteria are verified against current research before inclusion.
-
-### Criteria Counts
-
-Phase 6 implements **61 criteria** across 4 scoring categories:
-- Crawlability: 12 criteria (robots.txt parsing, SSR detection, response metrics)
-- Content Structure: 13 criteria (HTML analysis + NLP)
-- Structured Data: 13 criteria (JSON-LD parsing + validation)
-- Authority/SEO: 23 criteria (8 E-E-A-T markers + 15 SEO fundamentals)
-
-Each criterion produces a 0-100 score with a human-readable explanation. Category scores are weighted averages of their criteria, and the Optimization Score is the weighted sum of category scores.
+- [ ] 08-01: TBD
+- [ ] 08-02: TBD
 
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
+Note: Phases 3 and 4 can execute in parallel (independent dependencies).
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Safety | 3/3 | Complete | 2026-02-22 |
-| 2. Site Crawl & Query Generation | 2/2 | Complete | 2026-02-22 |
-| 3. AI Engine Dispatch | 2/2 | Complete | 2026-02-22 |
-| 4. Mention Detection & Scoring | 2/2 | Complete | 2026-02-22 |
-| 5. Audit Experience | 2/2 | Complete | 2026-02-22 |
-| 6. Site AI-Readiness Scoring | 0/5 | Not started | - |
-| 7. Auto-Competitor Discovery | 2/4 | Complete    | 2026-02-22 |
-| 8. Actionable Recommendations | 4/4 | Complete | 2026-02-23 |
-| 9. Dashboard & Reporting | 3/3 | Complete | 2026-02-23 |
-| 10. Scale & Agency | 2/2 | Complete    | 2026-02-23 |
-
-### Phase 11: End-to-End Testing with Playwright
-
-**Goal:** The platform has comprehensive Playwright E2E tests covering all critical user journeys (auth, audit, dashboard, recommendations, competitors, brands) with production-grade test infrastructure (auth state reuse, Page Object Models, centralized mock data, event-based waits)
-**Depends on:** Phase 10
-**Requirements:** E2E-01, E2E-02, E2E-03, E2E-04, E2E-05
-
-**Success Criteria** (what must be TRUE):
-  1. Test infrastructure supports auth state reuse via Playwright project dependencies and storageState
-  2. All mock data is centralized in shared fixtures -- no inline mock definitions in spec files
-  3. Every testable page has a Page Object Model class with typed locators and action methods
-  4. Auth flow is fully tested: register, login, invalid credentials, auth guard redirect
-  5. Audit lifecycle is tested with mocked polling progression (pending -> crawling -> completed)
-  6. Dashboard tests use proper waits (no waitForTimeout) with full section coverage
-  7. Recommendations, competitors, and brands pages each have tests covering happy path and empty states
-  8. Zero instances of waitForTimeout across the entire test suite
-**Plans:** 3 plans
-
-Plans:
-- [ ] 11-01-PLAN.md -- Test infrastructure: enhanced Playwright config, auth setup project, centralized mock data, test helpers, 6 Page Object Models (E2E-01)
-- [ ] 11-02-PLAN.md -- Auth flow tests, navigation guard tests, audit lifecycle tests with mocked pipeline (E2E-02, E2E-03)
-- [ ] 11-03-PLAN.md -- Dashboard test refactor, recommendations/competitors/brands page tests (E2E-04, E2E-05)
-
----
-*Roadmap created: 2026-02-21*
-*Last updated: 2026-02-23 (Phase 11 planned: 3 plans, 2 waves)*
+| 1. Scoring Foundation | 0/3 | Not started | - |
+| 2. Recommendations + Competitor Benchmarking | 0/3 | Not started | - |
+| 3. AI Visibility Hardening | 0/2 | Not started | - |
+| 4. Payments + Freemium Gating | 0/2 | Not started | - |
+| 5. Reports + Exports | 0/2 | Not started | - |
+| 6. Chat Assistant | 0/2 | Not started | - |
+| 7. Dashboard + Frontend Polish | 0/3 | Not started | - |
+| 8. Code Analysis | 0/2 | Not started | - |

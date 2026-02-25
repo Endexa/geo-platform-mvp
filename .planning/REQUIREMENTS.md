@@ -115,13 +115,61 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| *(populated during roadmap creation)* | | |
+| SCORE-01 | Phase 1: Scoring Foundation | Pending |
+| SCORE-02 | Phase 1: Scoring Foundation | Pending |
+| SCORE-03 | Phase 1: Scoring Foundation | Pending |
+| SCORE-04 | Phase 1: Scoring Foundation | Pending |
+| SCORE-05 | Phase 1: Scoring Foundation | Pending |
+| SCORE-06 | Phase 1: Scoring Foundation | Pending |
+| SCORE-07 | Phase 1: Scoring Foundation | Pending |
+| SCORE-08 | Phase 1: Scoring Foundation | Pending |
+| SCORE-09 | Phase 1: Scoring Foundation | Pending |
+| SCORE-10 | Phase 1: Scoring Foundation | Pending |
+| REC-01 | Phase 2: Recommendations + Competitor Benchmarking | Pending |
+| REC-02 | Phase 2: Recommendations + Competitor Benchmarking | Pending |
+| REC-03 | Phase 2: Recommendations + Competitor Benchmarking | Pending |
+| REC-04 | Phase 2: Recommendations + Competitor Benchmarking | Pending |
+| REC-05 | Phase 2: Recommendations + Competitor Benchmarking | Pending |
+| COMP-01 | Phase 2: Recommendations + Competitor Benchmarking | Pending |
+| COMP-02 | Phase 2: Recommendations + Competitor Benchmarking | Pending |
+| COMP-03 | Phase 2: Recommendations + Competitor Benchmarking | Pending |
+| COMP-04 | Phase 2: Recommendations + Competitor Benchmarking | Pending |
+| VIS-01 | Phase 3: AI Visibility Hardening | Pending |
+| VIS-02 | Phase 3: AI Visibility Hardening | Pending |
+| VIS-03 | Phase 3: AI Visibility Hardening | Pending |
+| VIS-04 | Phase 3: AI Visibility Hardening | Pending |
+| PAY-01 | Phase 4: Payments + Freemium Gating | Pending |
+| PAY-02 | Phase 4: Payments + Freemium Gating | Pending |
+| PAY-03 | Phase 4: Payments + Freemium Gating | Pending |
+| PAY-04 | Phase 4: Payments + Freemium Gating | Pending |
+| PAY-05 | Phase 4: Payments + Freemium Gating | Pending |
+| RPT-01 | Phase 5: Reports + Exports | Pending |
+| RPT-02 | Phase 5: Reports + Exports | Pending |
+| RPT-03 | Phase 5: Reports + Exports | Pending |
+| RPT-04 | Phase 5: Reports + Exports | Pending |
+| CHAT-01 | Phase 6: Chat Assistant | Pending |
+| CHAT-02 | Phase 6: Chat Assistant | Pending |
+| CHAT-03 | Phase 6: Chat Assistant | Pending |
+| CHAT-04 | Phase 6: Chat Assistant | Pending |
+| DASH-01 | Phase 7: Dashboard + Frontend Polish | Pending |
+| DASH-02 | Phase 7: Dashboard + Frontend Polish | Pending |
+| DASH-03 | Phase 7: Dashboard + Frontend Polish | Pending |
+| DASH-04 | Phase 7: Dashboard + Frontend Polish | Pending |
+| DASH-05 | Phase 7: Dashboard + Frontend Polish | Pending |
+| UI-01 | Phase 7: Dashboard + Frontend Polish | Pending |
+| UI-02 | Phase 7: Dashboard + Frontend Polish | Pending |
+| UI-03 | Phase 7: Dashboard + Frontend Polish | Pending |
+| UI-04 | Phase 7: Dashboard + Frontend Polish | Pending |
+| CODE-01 | Phase 8: Code Analysis | Pending |
+| CODE-02 | Phase 8: Code Analysis | Pending |
+| CODE-03 | Phase 8: Code Analysis | Pending |
+| CODE-04 | Phase 8: Code Analysis | Pending |
 
 **Coverage:**
-- v2 requirements: 44 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 44
+- v2 requirements: 49 total
+- Mapped to phases: 49
+- Unmapped: 0
 
 ---
 *Requirements defined: 2025-02-25*
-*Last updated: 2025-02-25 after initial definition*
+*Last updated: 2026-02-25 after roadmap creation -- all 49 requirements mapped to phases*
