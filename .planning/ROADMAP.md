@@ -33,12 +33,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. The Optimization Score aggregates correctly via the weakest-link formula (0.6 * mean + 0.4 * min) and the dual-score display (Visibility + Optimization) renders on the audit results page
   4. The legacy `geo_data_points/` directory is deleted and no imports reference it
   5. Integration tests run a full audit against a known test site and verify that output scores fall within expected ranges
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
-- [ ] 01-03: TBD
+- [ ] 01-01-PLAN.md -- Fix scoring bugs (C9 fabricated score, link discovery field, Playwright cleanup) and delete legacy dead code
+- [ ] 01-02-PLAN.md -- Integration tests for all scorers, aggregation verification, and dual-score display confirmation
 
 ### Phase 2: Recommendations + Competitor Benchmarking
 **Goal**: Users receive specific, prioritized recommendations they can immediately act on, with competitor context showing where they stand relative to discovered competitors
@@ -157,7 +156,7 @@ Note: Phases 3 and 4 can execute in parallel (independent dependencies).
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Scoring Foundation | 0/3 | Not started | - |
+| 1. Scoring Foundation | 0/2 | Planning complete | - |
 | 2. Recommendations + Competitor Benchmarking | 0/3 | Not started | - |
 | 3. AI Visibility Hardening | 0/2 | Not started | - |
 | 4. Payments + Freemium Gating | 0/2 | Not started | - |
