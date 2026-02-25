@@ -1,91 +1,123 @@
-# GEO Platform — AI Brand Visibility Auditor
+# Endexa GEO Platform — v2 Rebuild
 
 ## What This Is
 
-A web application that audits how visible a brand is across AI engines (ChatGPT, Claude, Perplexity). Users enter a URL, the app crawls the site for optimization signals AND queries real AI engines to see if/how the brand appears in answers. Returns a visibility score, actual AI mentions with quotes, and a gap analysis showing what competitors get cited for that you don't.
-
-Target customers: marketing agencies managing multiple client brands (primary) and in-house marketing teams tracking their own brand.
+Endexa is a Generative Engine Optimization (GEO) + SEO platform that audits websites for AI-readiness and provides actionable recommendations to improve visibility in AI-powered search engines (ChatGPT, Claude, Perplexity, Gemini). It combines traditional SEO fundamentals with next-gen AI optimization — scoring, recommendations, competitor benchmarking, code-level analysis, and Jira-ready export — in a freemium SaaS model targeting agencies, in-house SEO teams, and solo consultants.
 
 ## Core Value
 
-Show brands exactly how AI engines see them — with real quotes from real AI responses, not just theoretical scores.
+A user enters a URL, gets a real, trustworthy score with actionable recommendations they can immediately act on — from fixing a robots.txt to adding JSON-LD schema to restructuring content for AI citations.
 
 ## Requirements
 
 ### Validated
 
-Existing codebase capabilities being repurposed:
+Existing working infrastructure (keep as-is):
 
-- ✓ FastAPI backend with 4-layer architecture (middleware → routers → services → models) — existing
-- ✓ Nuxt 3 SPA frontend with Tailwind CSS — existing
-- ✓ PostgreSQL + pgvector database with SQLAlchemy ORM — existing
-- ✓ Docker Compose multi-service setup (postgres, redis, backend, frontend) — existing
-- ✓ URL crawling and basic content extraction (BeautifulSoup, Playwright available) — existing
-- ✓ Basic scoring system (visibility, readability, authority) — existing, needs rethinking
-- ✓ Middleware stack (security headers, rate limiting, CORS, request logging) — existing
-- ✓ JWT authentication scaffolding — existing, disabled
+- ✓ JWT authentication (register/login/me) — Phase 1
+- ✓ Celery + Redis task queue with audit pipeline — Phase 1
+- ✓ AI cache (Redis, SHA-256, 24h TTL, fail-open) — Phase 1
+- ✓ Outbound rate limiter (per-provider semaphore + token bucket) — Phase 1
+- ✓ Cost tracking ($1.00/audit budget cap, per-call ledger) — Phase 1
+- ✓ LiteLLM dispatch to 4 engines (OpenAI, Anthropic, Perplexity, Gemini) — Phase 3
+- ✓ Mention detection from AI responses (NER-based) — Phase 4
+- ✓ 61-criteria scoring framework (4 categories, research-backed weights) — Phase 6
+- ✓ Alembic migrations — existing
+- ✓ Supabase PostgreSQL + pgvector — existing
 
 ### Active
 
-- [ ] User enters URL and gets a complete AI brand visibility audit
-- [ ] App crawls the site and checks AI-readiness signals (structured data, authority markers, content quality)
-- [ ] App queries AI engines (ChatGPT, Claude, Perplexity) with auto-generated industry-relevant questions
-- [ ] User can customize/add their own monitoring queries
-- [ ] Results show a visibility score (0-100) with breakdown
-- [ ] Results show actual AI mentions — which engines mention the brand, with real quotes
-- [ ] Results show gap analysis — what competitors get mentioned for that the user doesn't
-- [ ] MVP is one-time audit (user triggers manually)
-- [ ] Monitoring/scheduled re-checks as paid upgrade path
-- [ ] Repurpose Brand Voice engine for content analysis where applicable
-- [ ] Repurpose recommendation system for actionable improvement suggestions
+- [ ] Real scoring system that produces meaningful, accurate scores (not zeros)
+- [ ] Working data point pipeline (all criteria produce real measurements)
+- [ ] AI Visibility score from real LLM queries (not fabricated)
+- [ ] Actionable recommendations engine with priority ordering
+- [ ] Auto-competitor discovery from AI responses
+- [ ] Competitor benchmarking and comparison
+- [ ] PDF/HTML audit report export
+- [ ] Jira CSV export (customizable: grouping, priority, fields, epic link)
+- [ ] Code analysis flow: Endexa generates prompts -> user runs on repo -> uploads output -> deeper recommendations
+- [ ] URL-only audit (basic) AND code-analysis audit (deep) as two tiers
+- [ ] Chat assistant for audit results (ask questions, drill into issues)
+- [ ] Freemium model: free partial audit (crawlability), paid full audit + recommendations
+- [ ] Stripe payment integration (working checkout, subscriptions)
+- [ ] Dashboard with real metrics, trend charts, history
+- [ ] Polished frontend (production-ready UI, not prototype)
+- [ ] Multi-site management for agencies
 
 ### Out of Scope
 
-- Real-time continuous monitoring — MVP is audit-only, monitoring is v2 paid feature
-- Mobile app — web-first
-- Custom API for agency white-labeling — defer to post-MVP
-- Direct content editing/rewriting — focus is on auditing and recommendations, not content generation
-- Jira integration — remove, not relevant to new direction
+- Brand Signature Engine (deferred to v3 — pgvector/embeddings complexity)
+- IDE/VS Code plugin integration (deferred — web-first)
+- Real-time monitoring/alerting (deferred — audit-first, monitoring later)
+- Mobile app (web responsive is sufficient)
+- White-label reports (v3 feature for enterprise)
+- OAuth/social login (email/password sufficient for v2)
 
 ## Context
 
-**Existing codebase:** ~5% feature-complete against the original 108-data-point scoring spec. The original direction (score websites against 108 technical criteria) was too inward-focused — it checked the site but never checked what AI engines actually say. The redesign pivots to checking real AI engine responses.
+### Current State (from audit)
 
-**What stays:**
-- FastAPI + Nuxt 3 + PostgreSQL stack (proven, well-structured)
-- Docker Compose deployment model
-- Middleware stack (security, rate limiting, logging)
-- URL crawling infrastructure (BeautifulSoup, Playwright)
-- pgvector for embeddings (useful for semantic comparison of AI responses)
+- **Product grade**: 15/100 — only 5/108 data points work, scoring broken, AI visibility fabricated
+- **Architecture grade**: 70/100 — solid FastAPI/Celery/Redis/Supabase foundation
+- **Opportunity**: 90/100 — GEO tools market growing fast, no dominant affordable player
 
-**What changes:**
-- Core analysis loop: instead of 108 data points about the page, query AI engines and analyze responses
-- Scoring system: based on actual brand presence in AI answers, not just technical site signals
-- Dashboard: brand visibility trends, not just page scores
-- Brand Voice module: pivot from "check content tone" to "analyze how AI describes your brand"
-- Optimization module: pivot from generic recommendations to "here's why AI engines don't mention you and what to fix"
+### What Works (Keep)
 
-**What gets removed:**
-- 108-point data scoring system (geo_data_points/ directory) — replace with AI query system
-- Jira integration — not relevant
-- Stripe stays but reframed for monitoring upgrade path
+- Authentication system (JWT, register/login)
+- Celery task queue + Redis broker
+- AI cache service (Redis-based)
+- Outbound rate limiter
+- Cost tracking service
+- LiteLLM multi-engine dispatch (OpenAI, Anthropic, Perplexity, Gemini)
+- Mention detection (NER-based brand extraction)
+- 61-criteria scoring framework structure (categories, weights)
+- Database schema and migrations
+- Frontend Nuxt 3 + Tailwind foundation
+
+### What's Broken (Rebuild)
+
+- 103/108 data point measurement scripts return hardcoded 0
+- Scoring aggregation produces meaningless results (garbage in, garbage out)
+- AI Visibility score is mock random numbers
+- Recommendations engine is a stub
+- Dashboard shows fake data
+- Stripe integration is untested stub
+- Jira integration is stub
+
+### Market Context
+
+- **Profound**: $35M Series B, 500+ customers, enterprise-focused ($$$)
+- **Otterly.AI**: SMB-focused, basic monitoring
+- **AthenaHQ**: Tech teams, ChatGPT-focused
+- **Gap**: No affordable tool combining SEO + GEO with actionable recommendations + code analysis
+
+### Competitive Differentiators
+
+1. **Actionable recommendations** — not just scores, but exact fixes with priority
+2. **SEO + GEO combined** — traditional SEO fundamentals + AI optimization in one tool
+3. **Affordable** — freemium for SMBs/freelancers vs enterprise-only competitors
+4. **Code analysis flow** — generate prompts for user's AI tools, ingest output for deeper analysis
+5. **Jira integration** — export recommendations directly as user stories
 
 ## Constraints
 
-- **Tech stack**: Keep FastAPI + Nuxt 3 + PostgreSQL. No stack migration.
-- **AI API costs**: Querying multiple AI engines per audit has real cost. Need to design for cost efficiency (caching, smart query generation, batch where possible).
-- **AI API access**: Need API access to ChatGPT, Claude, and Perplexity. Rate limits and terms of service apply.
-- **Brownfield**: Must work within existing repo structure. Refactor, don't rewrite from zero.
+- **Tech stack**: Keep FastAPI + Nuxt 3 + Supabase + Redis + Celery (proven, working)
+- **AI costs**: Must stay within budget caps per audit ($1.00 default, configurable)
+- **API keys**: Support multiple AI providers, gracefully skip missing keys
+- **Python**: 3.11+ (CI uses 3.11)
+- **Database**: Supabase PostgreSQL 17 + pgvector (remote hosted)
+- **No rush**: Quality over speed — do it right
 
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Pivot from site-scoring to AI-presence auditing | Original 108-point system scored the site but never checked what AI actually says — that's the real value | — Pending |
-| Keep existing stack (FastAPI + Nuxt + PostgreSQL) | Stack is sound, problem was product direction not technology | — Pending |
-| MVP as one-time audit, monitoring as upgrade | Reduces complexity for v1, creates natural upsell | — Pending |
-| Auto-generate queries from URL + allow customization | Instant value on first use while being customizable for power users | — Pending |
-| Target agencies + in-house teams, agencies primary | Agencies manage multiple brands = higher contract value, natural expansion | — Pending |
+| Keep architecture, rebuild features | Architecture is 70/100, features are 15/100. Foundation is solid. | -- Pending |
+| Freemium: free partial audit (crawlability) | Low barrier to entry, upsell on full audit + recommendations | -- Pending |
+| SEO + GEO combined tool | Market gap — competitors do GEO only or SEO only | -- Pending |
+| Code analysis via prompt generation | Users run prompts on their own repos, upload output. Avoids repo access complexity. | -- Pending |
+| Jira CSV export over direct API | Simpler, works with any project management tool. Customizable fields. | -- Pending |
+| No brand signature in v2 | Pgvector/embeddings complexity deferred. Focus on core audit + recommendations. | -- Pending |
 
 ---
-*Last updated: 2026-02-21 after initialization*
+*Last updated: 2025-02-25 after v2 project initialization*
