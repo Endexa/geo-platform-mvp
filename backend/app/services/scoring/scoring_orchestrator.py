@@ -81,11 +81,11 @@ class ScoringOrchestrator:
 
         homepage_url = crawl_data.get("url", "")
         domain = crawl_data.get("domain", "")
-        html = crawl_data.get("main_content", "")
+        html = crawl_data.get("html", "")
 
         # Step 1: Discover internal links from initial crawl data
-        # We use the main_content as a fallback -- ideally we'd have the full HTML
-        # but we work with what the crawl_data provides
+        # Use the full HTML which contains anchor tags for link discovery
+        # (main_content is stripped text with no HTML tags)
         discovered_links = self._discover_internal_links(
             html=html, base_url=homepage_url, domain=domain
         )

@@ -346,15 +346,7 @@ class CrawlabilityScorer(BaseScorer):
 
         except Exception as e:
             logger.warning("Playwright SSR check failed for {}: {}", url, str(e))
-            return ScoringCriterionResult(
-                criterion_id="C9",
-                criterion_name="Server-side rendering",
-                score=50,
-                is_binary=False,
-                human_summary="Could not render page with JavaScript -- score uncertain",
-                technical_detail=f"Playwright failed: {str(e)[:200]}",
-                evidence={"error": str(e)[:200]},
-            )
+            return self._not_checked("C9", "Server-side rendering", f"Playwright failed: {str(e)[:200]}")
 
     async def _check_ttfb(self, url: str) -> ScoringCriterionResult:
         """Measure Time to First Byte (TTFB) for the page.

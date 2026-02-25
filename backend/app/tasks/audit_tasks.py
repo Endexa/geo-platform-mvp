@@ -226,6 +226,17 @@ def run_crawl_and_generate(self, audit_id: str, url: str):
             orchestrator.score_audit(audit_id, audit.crawl_data, visibility_score_value)
         )
 
+        # Cleanup Playwright browser to prevent chromium process leaks in Celery workers
+        try:
+            if "crawlability" in orchestrator.scorers:
+                asyncio.run(orchestrator.scorers["crawlability"].cleanup())
+        except Exception as cleanup_err:
+            logger.warning(
+                "Audit {}: Playwright cleanup failed (non-fatal): {}",
+                audit_id,
+                str(cleanup_err)[:200],
+            )
+
         # Persist the optimization score on the Audit row
         audit.optimization_score = scoring_result["optimization_score"]
         db.commit()
