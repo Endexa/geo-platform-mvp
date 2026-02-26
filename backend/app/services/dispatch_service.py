@@ -57,6 +57,11 @@ ENGINE_CONFIG = {
         "provider": "gemini",
         "api_key_setting": "GEMINI_API_KEY",
     },
+    "mistral": {
+        "model_setting": "DISPATCH_MODEL_MISTRAL",
+        "provider": "mistral",
+        "api_key_setting": "MISTRAL_API_KEY",
+    },
 }
 
 

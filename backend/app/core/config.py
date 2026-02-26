@@ -43,6 +43,7 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: str = ""
     ANTHROPIC_API_KEY: str = ""
     GEMINI_API_KEY: str = ""
+    MISTRAL_API_KEY: str = ""
 
     # Stripe
     STRIPE_SECRET_KEY: str = ""
@@ -121,6 +122,7 @@ class Settings(BaseSettings):
     DISPATCH_MODEL_ANTHROPIC: str = "anthropic/claude-haiku-4-5"
     DISPATCH_MODEL_PERPLEXITY: str = "perplexity/sonar"
     DISPATCH_MODEL_GEMINI: str = "gemini/gemini-2.5-flash"
+    DISPATCH_MODEL_MISTRAL: str = "mistral/mistral-small-latest"
     DISPATCH_TEMPERATURE: float = 0.0  # Reproducibility for Phase 4
     DISPATCH_TIMEOUT_SECONDS: int = 30  # Per-engine call timeout
     DISPATCH_MAX_WORKERS: int = 6  # ThreadPoolExecutor pool size
@@ -158,10 +160,12 @@ class Settings(BaseSettings):
     ANTHROPIC_RPM: int = 60
     PERPLEXITY_RPM: int = 20
     GEMINI_RPM: int = 15
+    MISTRAL_RPM: int = 60
     OPENAI_MAX_CONCURRENT: int = 10
     ANTHROPIC_MAX_CONCURRENT: int = 10
     PERPLEXITY_MAX_CONCURRENT: int = 5
     GEMINI_MAX_CONCURRENT: int = 5
+    MISTRAL_MAX_CONCURRENT: int = 10
 
     class Config:
         env_file = ".env"
