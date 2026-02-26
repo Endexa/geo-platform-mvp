@@ -19,7 +19,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 5: Reports + Exports** - PDF/HTML audit reports and Jira-compatible CSV export with customizable fields
 - [x] **Phase 6: Chat Assistant** - SSE-streamed LLM chat grounded in user's actual audit data
 - [x] **Phase 7: Dashboard + Frontend Polish** - Real metrics dashboard with trend charts, audit history, multi-site management, and production-ready UI throughout
-- [ ] **Phase 8: Code Analysis** - Prompt generation for user's codebase, output ingestion, enriched recommendations from code findings
+- [x] **Phase 8: Code Analysis** - Prompt generation for user's codebase, output ingestion, enriched recommendations from code findings
 
 ## Phase Details
 
@@ -145,8 +145,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 08-01-PLAN.md -- Backend: CodeAnalysis + CodeRecommendation models, migration 015, PromptGeneratorService (template-based, no LLM), CodeAnalysisService (LiteLLM structured output), Celery task, all 5 API endpoints
-- [ ] 08-02-PLAN.md -- Frontend: useCodeAnalysis composable, CodeAnalysisPrompts + CodeAnalysisUpload components, audit.vue integration, 22+ backend unit tests
+- [x] 08-01-PLAN.md -- Backend: CodeAnalysis + CodeRecommendation models, migration 015, PromptGeneratorService (template-based, no LLM), CodeAnalysisService (LiteLLM structured output), Celery task, all 5 API endpoints
+- [x] 08-02-PLAN.md -- Frontend: useCodeAnalysis composable, CodeAnalysisPrompts + CodeAnalysisUpload components, audit.vue integration, 25 backend unit tests
 
 ## Progress
 
@@ -163,4 +163,4 @@ Note: Phases 3 and 4 can execute in parallel (independent dependencies).
 | 5. Reports + Exports | 2/2 | Complete | 2026-02-26 |
 | 6. Chat Assistant | 2/2 | Complete | 2026-02-26 |
 | 7. Dashboard + Frontend Polish | 3/3 | Complete | 2026-02-26 |
-| 8. Code Analysis | 0/2 | Planned | - |
+| 8. Code Analysis | 2/2 | Complete | 2026-02-26 |

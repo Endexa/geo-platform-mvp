@@ -56,10 +56,10 @@
 
 ### Code Analysis
 
-- [ ] **CODE-01**: Endexa generates analysis prompts users can run on their codebase with their AI tools (Claude, Copilot, etc.)
-- [ ] **CODE-02**: User can upload AI tool output back to Endexa for deeper analysis
-- [ ] **CODE-03**: Endexa produces additional recommendations based on code analysis output
-- [ ] **CODE-04**: Prompts are useful but not self-revealing (users still need Endexa for interpretation)
+- [x] **CODE-01**: Endexa generates analysis prompts users can run on their codebase with their AI tools (Claude, Copilot, etc.)
+- [x] **CODE-02**: User can upload AI tool output back to Endexa for deeper analysis
+- [x] **CODE-03**: Endexa produces additional recommendations based on code analysis output
+- [x] **CODE-04**: Prompts are useful but not self-revealing (users still need Endexa for interpretation)
 
 ### Payments & Freemium
 
@@ -160,10 +160,10 @@
 | UI-02 | Phase 7: Dashboard + Frontend Polish | Complete |
 | UI-03 | Phase 7: Dashboard + Frontend Polish | Complete |
 | UI-04 | Phase 7: Dashboard + Frontend Polish | Complete |
-| CODE-01 | Phase 8: Code Analysis | Pending |
-| CODE-02 | Phase 8: Code Analysis | Pending |
-| CODE-03 | Phase 8: Code Analysis | Pending |
-| CODE-04 | Phase 8: Code Analysis | Pending |
+| CODE-01 | Phase 8: Code Analysis | Complete |
+| CODE-02 | Phase 8: Code Analysis | Complete |
+| CODE-03 | Phase 8: Code Analysis | Complete |
+| CODE-04 | Phase 8: Code Analysis | Complete |
 
 **Coverage:**
 - v2 requirements: 49 total
