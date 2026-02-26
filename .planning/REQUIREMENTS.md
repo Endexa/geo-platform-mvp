@@ -49,10 +49,10 @@
 
 ### Chat Assistant
 
-- [ ] **CHAT-01**: User can ask questions about their audit results via chat interface
-- [ ] **CHAT-02**: Chat responses are grounded in the user's actual audit data (scores, recommendations, page details)
-- [ ] **CHAT-03**: Chat streams responses via SSE for real-time feel
-- [ ] **CHAT-04**: Chat handles follow-up questions with conversation context
+- [x] **CHAT-01**: User can ask questions about their audit results via chat interface
+- [x] **CHAT-02**: Chat responses are grounded in the user's actual audit data (scores, recommendations, page details)
+- [x] **CHAT-03**: Chat streams responses via SSE for real-time feel
+- [x] **CHAT-04**: Chat handles follow-up questions with conversation context
 
 ### Code Analysis
 
@@ -147,10 +147,10 @@
 | RPT-02 | Phase 5: Reports + Exports | Complete |
 | RPT-03 | Phase 5: Reports + Exports | Complete |
 | RPT-04 | Phase 5: Reports + Exports | Complete |
-| CHAT-01 | Phase 6: Chat Assistant | Pending |
-| CHAT-02 | Phase 6: Chat Assistant | Pending |
-| CHAT-03 | Phase 6: Chat Assistant | Pending |
-| CHAT-04 | Phase 6: Chat Assistant | Pending |
+| CHAT-01 | Phase 6: Chat Assistant | Complete |
+| CHAT-02 | Phase 6: Chat Assistant | Complete |
+| CHAT-03 | Phase 6: Chat Assistant | Complete |
+| CHAT-04 | Phase 6: Chat Assistant | Complete |
 | DASH-01 | Phase 7: Dashboard + Frontend Polish | Pending |
 | DASH-02 | Phase 7: Dashboard + Frontend Polish | Pending |
 | DASH-03 | Phase 7: Dashboard + Frontend Polish | Pending |
