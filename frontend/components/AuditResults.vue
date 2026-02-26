@@ -25,19 +25,42 @@
     <div v-if="perEngineScores.length > 0" class="grid grid-cols-2 lg:grid-cols-4 gap-4">
       <div
         v-for="engine in perEngineScores"
-        :key="engine.key"
-        class="bg-white rounded-lg border border-gray-200 p-6 text-center"
+        :key="engine.engine_key"
+        class="bg-white rounded-lg border border-gray-200 p-6"
       >
-        <p class="text-sm font-medium text-gray-500 mb-1">{{ engine.displayName }}</p>
-        <p class="text-3xl font-bold" :class="getScoreColor(engine.score).text">
+        <div class="flex items-center justify-between mb-2">
+          <p class="text-sm font-medium text-gray-500">{{ engine.display_name }}</p>
+          <span v-if="engine.skipped"
+                class="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">
+            Not configured
+          </span>
+          <span v-else-if="engine.confidence_level && engine.confidence_level !== 'unknown'"
+                class="text-xs px-2 py-0.5 rounded-full"
+                :class="confidenceBadgeClass(engine.confidence_level)">
+            {{ engine.confidence_level }} confidence
+          </span>
+        </div>
+
+        <p v-if="!engine.skipped" class="text-3xl font-bold font-mono text-center"
+           :class="getScoreColor(engine.score).text">
           {{ engine.score }}
         </p>
-        <p class="text-xs text-gray-400 mt-1">/ 100</p>
+        <p v-else class="text-3xl text-gray-300 font-mono text-center">--</p>
+
+        <p v-if="!engine.skipped" class="text-xs text-gray-400 mt-1 text-center">/ 100</p>
+
+        <div v-if="!engine.skipped && engine.queries_sent > 0" class="mt-3 text-xs text-gray-500 space-y-0.5">
+          <p>Mentioned in {{ engine.queries_with_mentions }} of {{ engine.queries_sent }} queries</p>
+          <p>{{ engine.mention_rate }}% mention rate</p>
+        </div>
+        <div v-if="engine.skipped && engine.skip_reason" class="mt-3 text-xs text-gray-400">
+          <p>{{ engine.skip_reason }}</p>
+        </div>
       </div>
     </div>
 
     <!-- Summary Stats Row -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
       <div class="bg-white rounded-lg border border-gray-200 p-4 text-center">
         <p class="text-2xl font-bold text-gray-900">{{ audit.visibility_score?.mention_count ?? 0 }}</p>
         <p class="text-xs text-gray-500 mt-1">Brand Mentions</p>
@@ -53,6 +76,13 @@
       <div class="bg-white rounded-lg border border-gray-200 p-4 text-center">
         <p class="text-2xl font-bold text-gray-900">{{ audit.dispatch_summary?.total_responses ?? 0 }}</p>
         <p class="text-xs text-gray-500 mt-1">Responses Received</p>
+      </div>
+      <div class="bg-white rounded-lg border border-gray-200 p-4 text-center">
+        <p class="text-2xl font-bold text-gray-900">
+          {{ audit.visibility_score?.engines_queried ?? '—' }}
+          <span class="text-sm text-gray-400 font-normal">/ {{ (audit.visibility_score?.engines_queried ?? 0) + (audit.visibility_score?.engines_skipped ?? 0) }}</span>
+        </p>
+        <p class="text-xs text-gray-500 mt-1">Engines Queried</p>
       </div>
     </div>
 
@@ -126,12 +156,30 @@ interface AuditQuery {
   engine_responses: EngineResponseData[]
 }
 
+interface PerEngineBreakdown {
+  engine_key: string
+  display_name: string
+  score: number
+  queries_sent: number
+  queries_with_mentions: number
+  mention_rate: number
+  total_mentions: number
+  avg_confidence: number
+  confidence_level: string  // "high" | "medium" | "low" | "not_measured" | "unknown"
+  skipped: boolean
+  skip_reason?: string
+}
+
 interface VisibilityScore {
   overall_score: number
-  per_engine_scores: Record<string, number>
+  per_engine_scores: Record<string, number | Record<string, unknown>>
   mention_count: number
   query_mention_rate: number
   algorithm_version: string
+  confidence_level?: string
+  engines_queried?: number
+  engines_skipped?: number
+  per_engine_breakdown?: PerEngineBreakdown[]
 }
 
 interface DispatchSummary {
@@ -217,13 +265,39 @@ function getScoreColor(score: number) {
 
 const scoreColor = computed(() => getScoreColor(overallScore.value))
 
+function confidenceBadgeClass(level: string) {
+  switch (level) {
+    case 'high': return 'bg-green-100 text-green-700'
+    case 'medium': return 'bg-yellow-100 text-yellow-700'
+    case 'low': return 'bg-orange-100 text-orange-700'
+    case 'not_measured': return 'bg-gray-100 text-gray-500'
+    default: return 'bg-gray-100 text-gray-400'
+  }
+}
+
 const perEngineScores = computed(() => {
-  const scores = props.audit.visibility_score?.per_engine_scores
+  const vs = props.audit.visibility_score
+  if (!vs) return []
+
+  // New format: use per_engine_breakdown from API
+  if (vs.per_engine_breakdown && vs.per_engine_breakdown.length > 0) {
+    return vs.per_engine_breakdown
+  }
+
+  // Legacy fallback: old per_engine_scores format
+  const scores = vs.per_engine_scores
   if (!scores) return []
   return Object.entries(scores).map(([key, score]) => ({
-    key,
-    displayName: ENGINE_DISPLAY_NAMES[key] || key,
-    score,
+    engine_key: key,
+    display_name: ENGINE_DISPLAY_NAMES[key] || key,
+    score: typeof score === 'number' ? score : (score as any)?.score ?? 0,
+    queries_sent: 0,
+    queries_with_mentions: 0,
+    mention_rate: 0,
+    total_mentions: 0,
+    avg_confidence: 0,
+    confidence_level: 'unknown',
+    skipped: false,
   }))
 })
 
