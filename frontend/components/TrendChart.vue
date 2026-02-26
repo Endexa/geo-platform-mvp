@@ -7,9 +7,9 @@
         <button
           v-for="tab in tabs"
           :key="tab.key"
-          class="px-3 py-1.5 text-xs font-medium transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-[#1E40AF] focus-visible:ring-inset"
+          class="px-3 py-1.5 text-xs font-medium transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-inset"
           :class="activeTab === tab.key
-            ? 'bg-[#1E40AF] text-white'
+            ? 'bg-primary-800 text-white'
             : 'bg-white text-gray-600 hover:bg-gray-50'"
           :data-testid="`trend-tab-${tab.key}`"
           @click="activeTab = tab.key"
@@ -93,8 +93,9 @@ const overviewChartData = computed(() => ({
       borderColor: '#1E40AF',
       backgroundColor: 'rgba(30, 64, 175, 0.1)',
       fill: true,
-      tension: 0.3,
-      pointRadius: 4,
+      tension: 0.1,
+      pointRadius: 5,
+      pointHoverRadius: 7,
       pointBackgroundColor: '#1E40AF',
     },
     {
@@ -103,8 +104,9 @@ const overviewChartData = computed(() => ({
       borderColor: '#3B82F6',
       borderDash: [5, 5],
       fill: false,
-      tension: 0.3,
-      pointRadius: 3,
+      tension: 0.1,
+      pointRadius: 5,
+      pointHoverRadius: 7,
       pointBackgroundColor: '#3B82F6',
     },
     {
@@ -113,8 +115,9 @@ const overviewChartData = computed(() => ({
       borderColor: '#F59E0B',
       borderDash: [5, 5],
       fill: false,
-      tension: 0.3,
-      pointRadius: 3,
+      tension: 0.1,
+      pointRadius: 5,
+      pointHoverRadius: 7,
       pointBackgroundColor: '#F59E0B',
     },
   ],
@@ -128,8 +131,9 @@ const categoryChartData = computed(() => ({
       borderColor: '#059669',
       backgroundColor: 'rgba(5, 150, 105, 0.1)',
       fill: false,
-      tension: 0.3,
-      pointRadius: 4,
+      tension: 0.1,
+      pointRadius: 5,
+      pointHoverRadius: 7,
       pointBackgroundColor: '#059669',
     },
     {
@@ -137,8 +141,9 @@ const categoryChartData = computed(() => ({
       data: props.history.map(h => ({ x: h.date, y: h.content_structure_avg ?? 0 })),
       borderColor: '#7C3AED',
       fill: false,
-      tension: 0.3,
-      pointRadius: 4,
+      tension: 0.1,
+      pointRadius: 5,
+      pointHoverRadius: 7,
       pointBackgroundColor: '#7C3AED',
     },
     {
@@ -146,8 +151,9 @@ const categoryChartData = computed(() => ({
       data: props.history.map(h => ({ x: h.date, y: h.structured_data_avg ?? 0 })),
       borderColor: '#DC2626',
       fill: false,
-      tension: 0.3,
-      pointRadius: 4,
+      tension: 0.1,
+      pointRadius: 5,
+      pointHoverRadius: 7,
       pointBackgroundColor: '#DC2626',
     },
     {
@@ -155,8 +161,9 @@ const categoryChartData = computed(() => ({
       data: props.history.map(h => ({ x: h.date, y: h.authority_avg ?? 0 })),
       borderColor: '#D97706',
       fill: false,
-      tension: 0.3,
-      pointRadius: 4,
+      tension: 0.1,
+      pointRadius: 5,
+      pointHoverRadius: 7,
       pointBackgroundColor: '#D97706',
     },
   ],
@@ -180,8 +187,9 @@ const engineChartData = computed(() => {
       })),
       borderColor: colors[engine],
       fill: false,
-      tension: 0.3,
-      pointRadius: 4,
+      tension: 0.1,
+      pointRadius: 5,
+      pointHoverRadius: 7,
       pointBackgroundColor: colors[engine],
     })),
   }

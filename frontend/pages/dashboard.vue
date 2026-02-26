@@ -6,21 +6,26 @@
         <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
         <p class="text-sm text-gray-500">GEO performance overview</p>
       </div>
-      <div class="flex items-center gap-4">
-        <select
-          v-if="auditList.length > 0"
-          v-model="selectedAuditId"
-          class="text-sm border border-gray-300 rounded-lg px-3 py-2 focus-visible:ring-2 focus-visible:ring-[#1E40AF] cursor-pointer"
-        >
-          <option v-for="a in auditList" :key="a.id" :value="a.id">
-            {{ a.domain }} -- {{ formatDate(a.completed_at || a.created_at) }}
-          </option>
-        </select>
-        <ExportActions
-          v-if="overview"
-          :audit-id="selectedAuditId!"
-          :domain="overview.domain"
-        />
+      <div class="flex flex-col items-end gap-1">
+        <div class="flex items-center gap-4">
+          <select
+            v-if="auditList.length > 0"
+            v-model="selectedAuditId"
+            class="text-sm border border-gray-300 rounded-lg px-3 py-2 focus-visible:ring-2 focus-visible:ring-[#1E40AF] cursor-pointer"
+          >
+            <option v-for="a in auditList" :key="a.id" :value="a.id">
+              {{ a.domain }} -- {{ formatDate(a.completed_at || a.created_at) }}
+            </option>
+          </select>
+          <ExportActions
+            v-if="overview"
+            :audit-id="selectedAuditId!"
+            :domain="overview.domain"
+          />
+        </div>
+        <p v-if="lastAuditedDate" class="text-xs text-gray-400">
+          Last audited: {{ formatDate(lastAuditedDate) }}
+        </p>
       </div>
     </div>
 
@@ -36,6 +41,19 @@
         <div class="bg-white rounded-xl border border-gray-200 p-6 h-64 animate-pulse" />
         <div class="bg-white rounded-xl border border-gray-200 p-6 h-64 animate-pulse" />
       </div>
+    </div>
+
+    <!-- Error state -->
+    <div v-else-if="error" class="bg-white rounded-xl border border-gray-200 p-12 text-center">
+      <ExclamationTriangleIcon class="w-16 h-16 mx-auto text-amber-400" />
+      <h2 class="text-lg font-semibold text-gray-700 mt-4">Something went wrong</h2>
+      <p class="text-gray-500 mt-2 mb-6">{{ error }}</p>
+      <button
+        class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2"
+        @click="retryLoad"
+      >
+        Try Again
+      </button>
     </div>
 
     <!-- Empty state -->
@@ -105,7 +123,7 @@
           <h3 class="text-lg font-semibold text-gray-900 mb-4">AI Engine Breakdown</h3>
           <div v-if="perEngineList.length > 0" class="space-y-4">
             <div v-for="item in perEngineList" :key="item.engine" class="flex items-center gap-3">
-              <span class="text-sm font-medium text-gray-700 w-24 shrink-0 capitalize">{{ item.engine }}</span>
+              <span class="text-sm font-medium text-gray-700 w-24 shrink-0">{{ item.displayName }}</span>
               <div class="flex-1 bg-gray-200 rounded-full h-2.5">
                 <div
                   class="h-2.5 rounded-full bg-[#1E40AF] transition-all duration-300"
@@ -118,6 +136,13 @@
           <p v-else class="text-sm text-gray-400 py-4 text-center">No engine data available</p>
         </div>
       </div>
+
+      <!-- Category Breakdown -->
+      <CategoryBreakdown
+        v-if="categoryScores"
+        :optimization="categoryScores"
+        :selected-category="null"
+      />
 
       <!-- Competitive Position -->
       <CompetitorRadar
@@ -177,7 +202,7 @@
 </template>
 
 <script setup lang="ts">
-import { ShieldCheckIcon } from '@heroicons/vue/24/outline'
+import { ShieldCheckIcon, ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 
 definePageMeta({ layout: 'dashboard' })
 
@@ -301,10 +326,18 @@ watch(selectedAuditId, async (newId) => {
 })
 
 // Computed properties
+const ENGINE_DISPLAY_NAMES: Record<string, string> = {
+  openai: 'ChatGPT',
+  anthropic: 'Claude',
+  perplexity: 'Perplexity',
+  gemini: 'Gemini',
+}
+
 const perEngineList = computed(() => {
   if (!overview.value) return []
   return Object.entries(overview.value.per_engine_scores).map(([engine, score]) => ({
     engine,
+    displayName: ENGINE_DISPLAY_NAMES[engine] || engine.charAt(0).toUpperCase() + engine.slice(1),
     score,
   }))
 })
@@ -338,5 +371,52 @@ function priorityClass(priority: string): string {
 function formatDate(dateString: string): string {
   const date = new Date(dateString)
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+}
+
+// Category scores derived from latest audit history entry
+const categoryScores = computed(() => {
+  if (auditHistory.value.length === 0) return null
+  const latest = auditHistory.value[auditHistory.value.length - 1]
+  if (
+    latest.crawlability_avg == null
+    && latest.content_structure_avg == null
+    && latest.structured_data_avg == null
+    && latest.authority_avg == null
+  ) {
+    return null
+  }
+  return {
+    overall_score: overview.value?.optimization_score ?? 0,
+    crawlability_avg: latest.crawlability_avg ?? 0,
+    content_structure_avg: latest.content_structure_avg ?? 0,
+    structured_data_avg: latest.structured_data_avg ?? 0,
+    authority_avg: latest.authority_avg ?? 0,
+    pages_scored: 0,
+    pages_discovered: 0,
+  }
+})
+
+// Last audited date from selected audit
+const lastAuditedDate = computed(() => {
+  if (!selectedAuditId.value || auditList.value.length === 0) return null
+  const audit = auditList.value.find(a => a.id === selectedAuditId.value)
+  return audit?.completed_at || audit?.created_at || null
+})
+
+async function retryLoad() {
+  error.value = null
+  loading.value = true
+  try {
+    const audits = await useApiFetch<AuditListItem[]>('/audit')
+    const completed = audits.filter((a: AuditListItem) => a.status === 'completed')
+    auditList.value = completed
+    if (completed.length > 0) {
+      selectedAuditId.value = completed[0].id
+    }
+  } catch (e: any) {
+    error.value = e?.message || 'Failed to load audits'
+  } finally {
+    loading.value = false
+  }
 }
 </script>
