@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-26)
 ## Current Position
 
 Phase: 9 of 9 (Landing + Frontend Overhaul + Stripe) -- In Progress
-Plan: 5 of TBD complete
-Status: Active
-Last activity: 2026-02-26 -- 09-05 complete: remaining 5 landing sections (Testimonials, Pricing, FAQ, Trust, Footer) + wired into index.vue
+Plan: 6 of 6 complete
+Status: Phase Complete
+Last activity: 2026-02-26 -- 09-06 complete: design token sweep (gray->slate), Endexa branding in sidebar, useHead page titles for all 6 app pages
 
-Progress: [████████░░] 89% (8/9 phases complete)
+Progress: [██████████] 100% (9/9 phases complete)
 
 ## Performance Metrics
 
@@ -118,6 +118,9 @@ Recent decisions affecting current work:
 - [09-05]: FAQ accordion uses openIndex ref + v-show -- no external library needed for this interaction pattern
 - [Phase 09]: fetchTierOnMount silently fails to avoid breaking dashboard load on subscription status errors
 - [Phase 09]: portalLoading only resets on error since redirect navigates away on success
+- [09-06]: slate-* replaces gray-* across all 7 target files -- zero raw gray tokens remain in class attributes
+- [09-06]: Endexa sidebar logo uses font-mono + text-primary-800 to match data-dense dashboard style
+- [09-06]: useHead titles use em dash (--) as separator per Endexa format
 
 ### Pending Todos
 
@@ -135,5 +138,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed 09-05-PLAN.md (remaining 5 landing sections + footer wiring)
+Stopped at: Completed 09-06-PLAN.md (design token sweep, Endexa branding, page titles)
 Resume file: None
