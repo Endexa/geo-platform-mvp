@@ -14,6 +14,71 @@
       <!-- Phase 3: Results (audit complete) -->
       <AuditResults v-else-if="isCompleted && audit" :audit="audit" />
 
+      <!-- Download & Export Section -->
+      <div v-if="isCompleted && auditId" class="bg-white rounded-lg border border-gray-200 p-6">
+        <h3 class="text-lg font-semibold text-slate-800 mb-4" style="font-family: 'Fira Code', monospace;">
+          Download &amp; Export
+        </h3>
+        <div class="flex flex-wrap gap-3">
+          <button
+            @click="downloadPdf(auditId!)"
+            :disabled="reportDownloading || !isProUser"
+            class="inline-flex items-center px-4 py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-500 transition-colors duration-200"
+          >
+            PDF Report
+          </button>
+          <button
+            @click="downloadHtml(auditId!)"
+            :disabled="reportDownloading || !isProUser"
+            class="inline-flex items-center px-4 py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-500 transition-colors duration-200"
+          >
+            HTML Report
+          </button>
+          <button
+            @click="showCsvOptions = true"
+            :disabled="reportDownloading || !isProUser"
+            class="inline-flex items-center px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-400 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer focus-visible:ring-2 focus-visible:ring-amber-400 transition-colors duration-200"
+          >
+            Export to Jira (CSV)
+          </button>
+        </div>
+
+        <!-- Free tier upgrade prompt -->
+        <p v-if="!isProUser" class="mt-2 text-sm text-slate-500">
+          <NuxtLink to="/pricing" class="text-amber-600 hover:text-amber-500 cursor-pointer">Upgrade to Pro</NuxtLink>
+          to download reports and export recommendations.
+        </p>
+
+        <!-- Download error -->
+        <p v-if="reportError" class="mt-2 text-sm text-red-600">{{ reportError }}</p>
+
+        <!-- CSV Export Options -->
+        <div v-if="showCsvOptions" class="mt-4 p-4 bg-slate-50 border border-slate-200 rounded-lg">
+          <div class="space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Group by</label>
+              <select v-model="csvGrouping" class="border border-slate-300 rounded px-3 py-1.5 text-sm cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-500">
+                <option value="category">Category</option>
+                <option value="priority">Priority</option>
+                <option value="page">Page URL</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Epic Link (optional)</label>
+              <input v-model="csvEpicLink" type="text" placeholder="e.g., PROJ-123" class="border border-slate-300 rounded px-3 py-1.5 text-sm w-48 focus-visible:ring-2 focus-visible:ring-blue-500" />
+            </div>
+            <div class="flex gap-2">
+              <button @click="doExportCsv" class="px-3 py-1.5 bg-amber-500 text-white text-sm rounded hover:bg-amber-400 cursor-pointer focus-visible:ring-2 focus-visible:ring-amber-400 transition-colors duration-200">
+                Download CSV
+              </button>
+              <button @click="showCsvOptions = false" class="px-3 py-1.5 bg-slate-200 text-slate-700 text-sm rounded hover:bg-slate-300 cursor-pointer focus-visible:ring-2 focus-visible:ring-slate-400 transition-colors duration-200">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Competitor Preview (shown when audit completed and competitors discovered) -->
       <div v-if="isCompleted && competitorLeaderboard && competitorLeaderboard.competitors.length > 0" class="bg-white rounded-lg border border-gray-200">
         <div class="p-6 border-b border-gray-200 flex items-center justify-between">
@@ -254,6 +319,22 @@ const recProgress = ref<{ done: number; dismissed: number; open: number; total: 
 const topRecommendations = ref<RecommendationPreview[]>([])
 const recOpenByPriority = ref<{ high: number; medium: number; low: number } | undefined>(undefined)
 
+// Report download state
+const { downloadPdf, downloadHtml, downloadCsv, isDownloading: reportDownloading, downloadError: reportError } = useReports()
+const { isProUser, updateTierFromAudit } = useSubscription()
+const showCsvOptions = ref(false)
+const csvGrouping = ref('category')
+const csvEpicLink = ref('')
+
+function doExportCsv() {
+  if (!auditId.value) return
+  downloadCsv(auditId.value, {
+    grouping: csvGrouping.value,
+    epicLink: csvEpicLink.value || undefined,
+  })
+  showCsvOptions.value = false
+}
+
 const isRunning = computed(() => {
   const s = audit.value?.status
   return s && !['completed', 'failed'].includes(s)
@@ -304,6 +385,7 @@ const { pause, resume } = useIntervalFn(async () => {
     if (data.status === 'completed' || data.status === 'failed') {
       pause()
       if (data.status === 'completed') {
+        updateTierFromAudit(data as any)
         loadCompetitors(auditId.value!)
         loadRecommendations(auditId.value!)
       }
@@ -374,6 +456,7 @@ async function refreshAudit() {
     const data = await useApiFetch<AuditDetail>(`/audit/${auditId.value}`)
     audit.value = data
     if (data.status === 'completed') {
+      updateTierFromAudit(data as any)
       loadCompetitors(auditId.value!)
       loadRecommendations(auditId.value!)
     }
