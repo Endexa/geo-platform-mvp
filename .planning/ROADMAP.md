@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Recommendations + Competitor Benchmarking** - Deterministic gap analysis generates prioritized, actionable recommendations; auto-competitor discovery and side-by-side comparison
 - [x] **Phase 3: AI Visibility Hardening** - Statistical multi-query measurement replaces single-shot checks; per-engine breakdown with confidence indicators
 - [x] **Phase 4: Payments + Freemium Gating** - Stripe checkout flow, webhook handling, subscription lifecycle, tier-based feature gating
-- [ ] **Phase 5: Reports + Exports** - PDF/HTML audit reports and Jira-compatible CSV export with customizable fields
+- [x] **Phase 5: Reports + Exports** - PDF/HTML audit reports and Jira-compatible CSV export with customizable fields
 - [ ] **Phase 6: Chat Assistant** - SSE-streamed LLM chat grounded in user's actual audit data
 - [ ] **Phase 7: Dashboard + Frontend Polish** - Real metrics dashboard with trend charts, audit history, multi-site management, and production-ready UI throughout
 - [ ] **Phase 8: Code Analysis** - Prompt generation for user's codebase, output ingestion, enriched recommendations from code findings
@@ -98,8 +98,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 05-01-PLAN.md -- ReportService (HTML/PDF generation, CSV export) with tier-gated API endpoints
-- [ ] 05-02-PLAN.md -- Frontend download buttons, CSV export options, unit tests
+- [x] 05-01-PLAN.md -- ReportService (HTML/PDF generation, CSV export) with tier-gated API endpoints
+- [x] 05-02-PLAN.md -- Frontend download buttons, CSV export options, unit tests
 
 ### Phase 6: Chat Assistant
 **Goal**: Users can ask questions about their audit results in natural language and receive accurate, contextual answers
@@ -160,7 +160,7 @@ Note: Phases 3 and 4 can execute in parallel (independent dependencies).
 | 2. Recommendations + Competitor Benchmarking | 3/3 | Complete | 2026-02-26 |
 | 3. AI Visibility Hardening | 2/2 | Complete | 2026-02-26 |
 | 4. Payments + Freemium Gating | 2/2 | Complete | 2026-02-26 |
-| 5. Reports + Exports | 0/2 | Not started | - |
+| 5. Reports + Exports | 2/2 | Complete | 2026-02-26 |
 | 6. Chat Assistant | 0/2 | Not started | - |
 | 7. Dashboard + Frontend Polish | 0/3 | Not started | - |
 | 8. Code Analysis | 0/2 | Not started | - |

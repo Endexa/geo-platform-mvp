@@ -42,10 +42,10 @@
 
 ### Reports & Exports
 
-- [ ] **RPT-01**: User can download PDF audit report with scores, recommendations, and charts
-- [ ] **RPT-02**: User can download HTML version of audit report
-- [ ] **RPT-03**: User can export recommendations as Jira-compatible CSV with customizable fields (grouping, priority, epic link)
-- [ ] **RPT-04**: Report includes executive summary, per-category breakdown, and top recommendations
+- [x] **RPT-01**: User can download PDF audit report with scores, recommendations, and charts
+- [x] **RPT-02**: User can download HTML version of audit report
+- [x] **RPT-03**: User can export recommendations as Jira-compatible CSV with customizable fields (grouping, priority, epic link)
+- [x] **RPT-04**: Report includes executive summary, per-category breakdown, and top recommendations
 
 ### Chat Assistant
 
@@ -143,10 +143,10 @@
 | PAY-03 | Phase 4: Payments + Freemium Gating | Pending |
 | PAY-04 | Phase 4: Payments + Freemium Gating | Pending |
 | PAY-05 | Phase 4: Payments + Freemium Gating | Pending |
-| RPT-01 | Phase 5: Reports + Exports | Pending |
-| RPT-02 | Phase 5: Reports + Exports | Pending |
-| RPT-03 | Phase 5: Reports + Exports | Pending |
-| RPT-04 | Phase 5: Reports + Exports | Pending |
+| RPT-01 | Phase 5: Reports + Exports | Complete |
+| RPT-02 | Phase 5: Reports + Exports | Complete |
+| RPT-03 | Phase 5: Reports + Exports | Complete |
+| RPT-04 | Phase 5: Reports + Exports | Complete |
 | CHAT-01 | Phase 6: Chat Assistant | Pending |
 | CHAT-02 | Phase 6: Chat Assistant | Pending |
 | CHAT-03 | Phase 6: Chat Assistant | Pending |

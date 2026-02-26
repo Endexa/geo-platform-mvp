@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-26)
 
 **Core value:** A user enters a URL, gets a real, trustworthy score with actionable recommendations they can immediately act on.
-**Current focus:** Phase 5: Reports + Exports
+**Current focus:** Phase 6: Chat Assistant
 
 ## Current Position
 
-Phase: 5 of 8 (Reports + Exports) -- Ready to plan
+Phase: 6 of 8 (Chat Assistant) -- Ready to plan
 Plan: Not started
-Status: Ready to plan Phase 5
-Last activity: 2026-02-26 -- Phase 4 complete (Payments + Freemium Gating)
+Status: Phase 5 complete, transitioning to Phase 6
+Last activity: 2026-02-26 -- Phase 5 complete (Reports + Exports)
 
-Progress: [█████░░░░░] 50% (4/8 phases complete)
+Progress: [██████░░░░] 63% (5/8 phases complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9
+- Total plans completed: 11
 - Average duration: 4.3min
-- Total execution time: 0.65 hours
+- Total execution time: 0.79 hours
 
 **By Phase:**
 
@@ -31,9 +31,10 @@ Progress: [█████░░░░░] 50% (4/8 phases complete)
 | 02-recommendations-competitor-benchmarking | 3/3 | 14min | 4.7min |
 | 03-ai-visibility-hardening | 2/2 | 9min | 4.5min |
 | 04-payments-freemium-gating | 2/2 | 10min | 5min |
+| 05-reports-exports | 2/2 | 9min | 4.5min |
 
 **Recent Trend:**
-- Last 5 plans: 03-01 (5min), 03-02 (4min), 04-01 (4min), 04-02 (6min)
+- Last 5 plans: 04-01 (4min), 04-02 (6min), 05-01 (4min), 05-02 (5min)
 - Trend: Consistent (fast execution)
 
 *Updated after each plan completion*
@@ -74,6 +75,11 @@ Recent decisions affecting current work:
 - [04-02]: Audit filtering at read time only (pipeline runs all scorers regardless of tier)
 - [04-02]: Free tier shows crawlability + overall score + top 3 recs (enough for "aha moment")
 - [04-02]: Session-status polling on success page handles webhook race (5 attempts, 2s apart)
+- [05-01]: ReportService uses Jinja2+WeasyPrint for HTML/PDF; CSV with BOM for Excel compatibility
+- [05-01]: Combined GEO score = round(visibility * 0.15 + optimization * 0.85)
+- [05-01]: Template resolves via os.path.dirname relative path (not hardcoded)
+- [05-01]: CSV priority mapping: high->Highest, medium->Medium, low->Low (Jira standard)
+- [05-02]: 29 unit tests cover executive summary, CSV export, HTML/PDF rendering, tier gating
 
 ### Pending Todos
 
@@ -91,5 +97,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Phase 4 complete, ready to plan Phase 5
+Stopped at: Phase 5 complete, ready to plan Phase 6
 Resume file: None
