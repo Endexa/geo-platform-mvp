@@ -313,7 +313,7 @@ def get_audit(
         response_data["recommendations_preview"] = [
             {
                 "id": str(r.id),
-                "title": r.title,
+                "title": r.summary,
                 "priority": r.priority,
                 "category": r.category,
             }
@@ -361,7 +361,7 @@ def get_audit(
         response_data["recommendations_preview"] = [
             {
                 "id": str(r.id),
-                "title": r.title,
+                "title": r.summary,
                 "priority": r.priority,
                 "category": r.category,
             }
