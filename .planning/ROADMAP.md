@@ -17,7 +17,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 3: AI Visibility Hardening** - Statistical multi-query measurement replaces single-shot checks; per-engine breakdown with confidence indicators
 - [x] **Phase 4: Payments + Freemium Gating** - Stripe checkout flow, webhook handling, subscription lifecycle, tier-based feature gating
 - [x] **Phase 5: Reports + Exports** - PDF/HTML audit reports and Jira-compatible CSV export with customizable fields
-- [ ] **Phase 6: Chat Assistant** - SSE-streamed LLM chat grounded in user's actual audit data
+- [x] **Phase 6: Chat Assistant** - SSE-streamed LLM chat grounded in user's actual audit data
 - [ ] **Phase 7: Dashboard + Frontend Polish** - Real metrics dashboard with trend charts, audit history, multi-site management, and production-ready UI throughout
 - [ ] **Phase 8: Code Analysis** - Prompt generation for user's codebase, output ingestion, enriched recommendations from code findings
 
@@ -113,8 +113,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 06-01-PLAN.md -- Backend: ChatSession model, migration, ChatService (context builder + LLM streaming), SSE endpoint with tier gating
-- [ ] 06-02-PLAN.md -- Frontend: useChat composable, ChatPanel slide-over component, audit page integration, unit tests
+- [x] 06-01-PLAN.md -- Backend: ChatSession model, migration, ChatService (context builder + LLM streaming), SSE endpoint with tier gating
+- [x] 06-02-PLAN.md -- Frontend: useChat composable, ChatPanel slide-over component, audit page integration, unit tests
 
 ### Phase 7: Dashboard + Frontend Polish
 **Goal**: Users see a production-quality dashboard with real metrics, trend charts, and audit history -- and the entire application feels polished and professional
@@ -161,6 +161,6 @@ Note: Phases 3 and 4 can execute in parallel (independent dependencies).
 | 3. AI Visibility Hardening | 2/2 | Complete | 2026-02-26 |
 | 4. Payments + Freemium Gating | 2/2 | Complete | 2026-02-26 |
 | 5. Reports + Exports | 2/2 | Complete | 2026-02-26 |
-| 6. Chat Assistant | 0/2 | Not started | - |
+| 6. Chat Assistant | 2/2 | Complete | 2026-02-26 |
 | 7. Dashboard + Frontend Polish | 0/3 | Not started | - |
 | 8. Code Analysis | 0/2 | Not started | - |
