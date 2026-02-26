@@ -79,7 +79,7 @@ const props = defineProps<{
 const STEPS = [
   { key: 'crawling', label: 'Crawling website', description: 'Extracting AI-readiness signals' },
   { key: 'generating_queries', label: 'Generating queries', description: 'Creating industry-relevant AI queries' },
-  { key: 'dispatching', label: 'Querying AI engines', description: 'Sending queries to ChatGPT, Claude, Perplexity' },
+  { key: 'dispatching', label: 'Querying AI engines', description: 'Sending queries to AI engines' },
   { key: 'analyzing', label: 'Analyzing mentions', description: 'Detecting brand mentions and scoring' },
   { key: 'scoring', label: 'Scoring pages', description: 'Evaluating AI-readiness across 61 criteria' },
   { key: 'discovering_competitors', label: 'Discovering competitors', description: 'Extracting competitor brands from AI responses' },
