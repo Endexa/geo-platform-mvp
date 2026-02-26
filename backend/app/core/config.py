@@ -136,6 +136,11 @@ class Settings(BaseSettings):
     COMPETITOR_MAX_COUNT: int = 5  # Max competitors to auto-crawl
     COMPETITOR_URL_RESOLVE_TIMEOUT: float = 5.0  # Timeout for URL resolution HTTP checks
 
+    # Code Analysis (Phase 8)
+    CODE_ANALYSIS_MODEL: str = "gemini/gemini-2.5-flash"  # Same cheap model used for chat
+    CODE_ANALYSIS_MAX_UPLOAD_BYTES: int = 100 * 1024  # 100KB hard cap on uploaded text
+    CODE_ANALYSIS_MAX_TOKENS_INPUT: int = 50000  # Truncate input before sending to LLM
+
     # Chat Assistant (Phase 6)
     CHAT_MODEL: str = "gemini/gemini-2.5-flash"  # Cheap model for chat
     CHAT_TEMPERATURE: float = 0.3  # Low temperature for factual, grounded answers
