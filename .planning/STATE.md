@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-02-26)
 
 ## Current Position
 
-Phase: 8 of 8 (Code Analysis) -- Not started
-Plan: 0 of TBD complete
-Status: Phase 7 complete, transitioning to Phase 8
-Last activity: 2026-02-26 -- Phase 7 complete (all 3 plans executed)
+Phase: 8 of 8 (Code Analysis) -- In progress
+Plan: 1 of 1 complete
+Status: Phase 8 Plan 1 complete (code analysis backend)
+Last activity: 2026-02-26 -- 08-01 executed (models, migration, service, Celery task, 6 API endpoints)
 
-Progress: [████████░░] 88% (7/8 phases complete)
+Progress: [█████████░] 94% (7/8 phases + 08-01 complete)
 
 ## Performance Metrics
 
@@ -94,6 +94,10 @@ Recent decisions affecting current work:
 - [Phase 07-01]: Chart.js colors centralized in chartColors.ts utility using rgb() format instead of hex
 - [Phase 07-01]: Sidebar uses two states only (full open / fully hidden) -- no icon-only collapsed mode
 - [Phase 07-01]: Upgrade CTA conditionally hidden for pro users via useSubscription composable
+- [08-01]: Prompt generation is template-based with zero LLM calls -- sub-200ms guaranteed, no per-call cost
+- [08-01]: IP protection enforced -- CATEGORY_TEMPLATES contain only diagnostic questions, zero criterion IDs/scores/weights
+- [08-01]: Download endpoint is /prompts/download (separate route) rather than Accept-header switching -- avoids FastAPI response_model conflict
+- [08-01]: LiteLLM parse_output uses response_format=CodeAnalysisResult with explicit api_key= (same pattern as chat_service.py)
 
 ### Pending Todos
 
@@ -111,5 +115,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Phase 7 complete, transitioning to Phase 8
+Stopped at: Completed 08-01-PLAN.md (code analysis backend)
 Resume file: None
