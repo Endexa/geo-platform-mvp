@@ -12,7 +12,7 @@ Endexa v2 is a brownfield rebuild: the FastAPI + Celery + Redis + Supabase found
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Scoring Foundation** - All 61 criteria produce real measurements; dead code removed; integration-tested against known sites
+- [x] **Phase 1: Scoring Foundation** - All 61 criteria produce real measurements; dead code removed; integration-tested against known sites
 - [ ] **Phase 2: Recommendations + Competitor Benchmarking** - Deterministic gap analysis generates prioritized, actionable recommendations; auto-competitor discovery and side-by-side comparison
 - [ ] **Phase 3: AI Visibility Hardening** - Statistical multi-query measurement replaces single-shot checks; per-engine breakdown with confidence indicators
 - [ ] **Phase 4: Payments + Freemium Gating** - Stripe checkout flow, webhook handling, subscription lifecycle, tier-based feature gating
@@ -36,8 +36,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md -- Fix scoring bugs (C9 fabricated score, link discovery field, Playwright cleanup) and delete legacy dead code
-- [ ] 01-02-PLAN.md -- Integration tests for all scorers, aggregation verification, and dual-score display confirmation
+- [x] 01-01-PLAN.md -- Fix scoring bugs (C9 fabricated score, link discovery field, Playwright cleanup) and delete legacy dead code
+- [x] 01-02-PLAN.md -- Integration tests for all scorers, aggregation verification, and dual-score display confirmation
 
 ### Phase 2: Recommendations + Competitor Benchmarking
 **Goal**: Users receive specific, prioritized recommendations they can immediately act on, with competitor context showing where they stand relative to discovered competitors
@@ -156,7 +156,7 @@ Note: Phases 3 and 4 can execute in parallel (independent dependencies).
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Scoring Foundation | 0/2 | Planning complete | - |
+| 1. Scoring Foundation | 2/2 | Complete | 2026-02-26 |
 | 2. Recommendations + Competitor Benchmarking | 0/3 | Not started | - |
 | 3. AI Visibility Hardening | 0/2 | Not started | - |
 | 4. Payments + Freemium Gating | 0/2 | Not started | - |

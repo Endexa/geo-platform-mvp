@@ -9,29 +9,29 @@ See: .planning/PROJECT.md (updated 2025-02-25)
 
 ## Current Position
 
-Phase: 1 of 8 (Scoring Foundation)
-Plan: 1 of 2 in current phase
-Status: Executing
-Last activity: 2026-02-25 -- Completed 01-01-PLAN.md (fix scoring bugs, delete legacy code)
+Phase: 1 of 8 (Scoring Foundation) -- COMPLETE
+Plan: 2 of 2 in current phase (all plans complete)
+Status: Phase complete -- ready for Phase 2
+Last activity: 2026-02-26 -- Completed 01-02-PLAN.md (scoring pipeline integration tests)
 
-Progress: [█░░░░░░░░░] 5%
+Progress: [█░░░░░░░░░] 10%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
-- Average duration: 2min
-- Total execution time: 0.03 hours
+- Total plans completed: 2
+- Average duration: 2.5min
+- Total execution time: 0.08 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-scoring-foundation | 1/2 | 2min | 2min |
+| 01-scoring-foundation | 2/2 | 5min | 2.5min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (2min)
-- Trend: N/A (first plan)
+- Last 5 plans: 01-01 (2min), 01-02 (3min)
+- Trend: Consistent (fast execution)
 
 *Updated after each plan completion*
 
@@ -50,6 +50,9 @@ Recent decisions affecting current work:
 - [01-01]: Link discovery uses html field (full HTML) not main_content (stripped text) -- BeautifulSoup needs anchor tags
 - [01-01]: Playwright cleanup wrapped in try/except in Celery task -- cleanup failure must not crash pipeline
 - [01-01]: geo_datapoints.py router kept but imports disabled -- rewiring to new scoring is a future task
+- [01-02]: stripe_crawl_data.json fixture exercises all 4 scorers with Organization + Article schemas, 5 sameAs links, FAQ section, author bio, 25+ internal links
+- [01-02]: All scorer tests mock external HTTP calls -- no network dependencies, no API keys required
+- [01-02]: Dual-score display (Visibility + Optimization) confirmed correct in AuditResults.vue and OptimizationScore.vue -- no changes needed
 
 ### Pending Todos
 
@@ -64,6 +67,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-25
-Stopped at: Completed 01-01-PLAN.md
+Last session: 2026-02-26
+Stopped at: Completed 01-02-PLAN.md (Phase 1 complete)
 Resume file: None
