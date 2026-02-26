@@ -35,10 +35,10 @@
 
 ### AI Visibility
 
-- [ ] **VIS-01**: AI Visibility Score derived from real LLM queries across active engines (not fabricated)
-- [ ] **VIS-02**: Statistical sampling: multiple queries per engine for meaningful measurement with confidence indicators
-- [ ] **VIS-03**: Per-engine breakdown showing visibility on ChatGPT, Claude, Perplexity, Gemini separately
-- [ ] **VIS-04**: Graceful degradation: engines without API keys are skipped, score adjusts to available engines
+- [x] **VIS-01**: AI Visibility Score derived from real LLM queries across active engines (not fabricated)
+- [x] **VIS-02**: Statistical sampling: multiple queries per engine for meaningful measurement with confidence indicators
+- [x] **VIS-03**: Per-engine breakdown showing visibility on ChatGPT, Claude, Perplexity, Gemini separately
+- [x] **VIS-04**: Graceful degradation: engines without API keys are skipped, score adjusts to available engines
 
 ### Reports & Exports
 
@@ -134,10 +134,10 @@
 | COMP-02 | Phase 2: Recommendations + Competitor Benchmarking | Complete |
 | COMP-03 | Phase 2: Recommendations + Competitor Benchmarking | Complete |
 | COMP-04 | Phase 2: Recommendations + Competitor Benchmarking | Complete |
-| VIS-01 | Phase 3: AI Visibility Hardening | Pending |
-| VIS-02 | Phase 3: AI Visibility Hardening | Pending |
-| VIS-03 | Phase 3: AI Visibility Hardening | Pending |
-| VIS-04 | Phase 3: AI Visibility Hardening | Pending |
+| VIS-01 | Phase 3: AI Visibility Hardening | Complete |
+| VIS-02 | Phase 3: AI Visibility Hardening | Complete |
+| VIS-03 | Phase 3: AI Visibility Hardening | Complete |
+| VIS-04 | Phase 3: AI Visibility Hardening | Complete |
 | PAY-01 | Phase 4: Payments + Freemium Gating | Pending |
 | PAY-02 | Phase 4: Payments + Freemium Gating | Pending |
 | PAY-03 | Phase 4: Payments + Freemium Gating | Pending |

@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2025-02-25)
 
 **Core value:** A user enters a URL, gets a real, trustworthy score with actionable recommendations they can immediately act on.
-**Current focus:** Phase 2: Recommendations + Competitor Benchmarking
+**Current focus:** Phase 3: AI Visibility Hardening
 
 ## Current Position
 
-Phase: 3 of 8 (AI Visibility Hardening) -- Ready to plan
-Plan: Not started
-Status: Phase 2 complete, transitioning to Phase 3
-Last activity: 2026-02-26 -- Phase 2 verified and marked complete
+Phase: 3 of 8 (AI Visibility Hardening) -- Executing
+Plan: 1 of 2 complete
+Status: Plan 03-01 complete, executing Plan 03-02
+Last activity: 2026-02-26 -- Plan 03-01 executed (5min)
 
-Progress: [███░░░░░░░] 25%
+Progress: [███░░░░░░░] 31%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
+- Total plans completed: 5
 - Average duration: 4.8min
-- Total execution time: 0.32 hours
+- Total execution time: 0.40 hours
 
 **By Phase:**
 
@@ -29,9 +29,10 @@ Progress: [███░░░░░░░] 25%
 |-------|-------|-------|----------|
 | 01-scoring-foundation | 2/2 | 5min | 2.5min |
 | 02-recommendations-competitor-benchmarking | 2/3 | 14min | 7min |
+| 03-ai-visibility-hardening | 1/2 | 5min | 5min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (2min), 01-02 (3min), 02-01 (6min), 02-02 (8min)
+- Last 5 plans: 01-02 (3min), 02-01 (6min), 02-02 (8min), 03-01 (5min)
 - Trend: Consistent (fast execution)
 
 *Updated after each plan completion*
@@ -61,6 +62,9 @@ Recent decisions affecting current work:
 - [02-02]: SOV trend joins DiscoveredCompetitor with Audit to get audit dates, ordered ascending
 - [02-02]: Score comparison reads site category scores from PageScore averages, not a JSONB field
 - [02-02]: Migration numbered 011 to chain after existing 010 from plan 02-01
+- [03-01]: Weighted-by-queries-sent scoring replaces equal-weight averaging for overall visibility score
+- [03-01]: Confidence thresholds: 0=not_measured, 1-4=low, 5-9=medium, 10+=high (no external deps)
+- [03-01]: Enriched JSONB coexistence: old {"openai": 75} and new {"openai": {...}} formats in same column
 
 ### Pending Todos
 
@@ -76,5 +80,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed 02-02-PLAN.md
+Stopped at: Completed 03-01-PLAN.md
 Resume file: None
