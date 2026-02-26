@@ -52,9 +52,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md -- Vertical classifier + recommendation engine enhancements (industry-aware filtering, impact delta calculation)
-- [ ] 02-02-PLAN.md -- Cross-audit competitor persistence (brand linking, SOV trend tracking)
-- [ ] 02-03-PLAN.md -- Pipeline wiring + integration tests (audit_tasks.py integration, end-to-end verification)
+- [x] 02-01-PLAN.md -- Vertical classifier + recommendation engine enhancements (industry-aware filtering, impact delta calculation)
+- [x] 02-02-PLAN.md -- Cross-audit competitor persistence (brand linking, SOV trend tracking)
+- [x] 02-03-PLAN.md -- Pipeline wiring + integration tests (audit_tasks.py integration, end-to-end verification)
 
 ### Phase 3: AI Visibility Hardening
 **Goal**: Users can trust their AI Visibility Score because it is derived from statistical measurement across multiple queries and engines, not a single-shot check
