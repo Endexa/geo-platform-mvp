@@ -164,6 +164,19 @@
       color: #94A3B8;
     }
 
+    .executive-summary {
+      font-size: 12px;
+      line-height: 1.6;
+      color: #334155;
+      margin-bottom: 24px;
+    }
+
+    .pages-info {
+      font-size: 10px;
+      color: #64748B;
+      margin-bottom: 8px;
+    }
+
     .empty-note {
       color: #94A3B8;
       font-style: italic;
@@ -179,6 +192,12 @@
     <p>Audit completed: {{ completed_at }}</p>
     {% endif %}
   </div>
+
+  <!-- Executive Summary -->
+  {% if executive_summary %}
+  <h2>Executive Summary</h2>
+  <p class="executive-summary">{{ executive_summary }}</p>
+  {% endif %}
 
   <!-- Score Overview -->
   <div class="score-grid">
@@ -205,7 +224,30 @@
 
   <!-- Per-Engine Breakdown -->
   <h2>AI Engine Breakdown</h2>
-  {% if per_engine_scores %}
+  {% if per_engine_breakdown %}
+  <table>
+    <thead>
+      <tr>
+        <th>Engine</th>
+        <th>Score</th>
+        <th>Mention Rate</th>
+        <th>Queries Sent</th>
+        <th>Confidence</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for engine in per_engine_breakdown %}
+      <tr>
+        <td>{{ engine.display_name }}</td>
+        <td>{{ engine.score }}</td>
+        <td>{{ "%.0f" | format(engine.mention_rate * 100) }}%</td>
+        <td>{{ engine.queries_sent }}</td>
+        <td>{{ engine.confidence_level | capitalize }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% elif per_engine_scores %}
   <table>
     <thead>
       <tr>
@@ -216,7 +258,7 @@
     <tbody>
       {% for engine, score in per_engine_scores.items() %}
       <tr>
-        <td>{{ engine | capitalize }}</td>
+        <td>{{ engine }}</td>
         <td>{{ score }}</td>
       </tr>
       {% endfor %}
@@ -228,6 +270,9 @@
 
   <!-- Category Scores -->
   <h2>Category Scores</h2>
+  {% if pages_scored is defined %}
+  <p class="pages-info">{{ pages_scored }} pages scored out of {{ pages_discovered }} discovered</p>
+  {% endif %}
   <div class="category-grid">
     <div class="category-card">
       <div class="category-score">{{ category_averages.get('crawlability', 0) }}</div>
