@@ -578,15 +578,26 @@ class CompetitorService:
             return
 
         # Strategy 4: Create new Brand
+        # Use a unique placeholder domain when unresolved to avoid unique
+        # constraint violations (multiple competitors with domain="" would clash)
+        brand_domain = extracted_domain or f"unresolved-{competitor.entity_name.lower().replace(' ', '-')}"
         new_brand = Brand(
             user_id=user_id,
             name=competitor.entity_name,
-            domain=extracted_domain or "",
+            domain=brand_domain,
             url=competitor.resolved_url or "",
             is_competitor=True,
         )
         db.add(new_brand)
-        db.flush()
+        try:
+            db.flush()
+        except Exception:
+            db.rollback()
+            logger.debug(
+                "Could not create brand for '{}' (likely duplicate), skipping",
+                competitor.entity_name,
+            )
+            return
         competitor.competitor_brand_id = new_brand.id
         logger.debug(
             "Created new competitor brand '{}' for user {}",
