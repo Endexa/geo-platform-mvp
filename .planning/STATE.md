@@ -2,37 +2,38 @@
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2025-02-25)
+See: .planning/PROJECT.md (updated 2026-02-26)
 
 **Core value:** A user enters a URL, gets a real, trustworthy score with actionable recommendations they can immediately act on.
-**Current focus:** Phase 4: Payments + Freemium Gating
+**Current focus:** Phase 5: Reports + Exports
 
 ## Current Position
 
-Phase: 4 of 8 (Payments + Freemium Gating) -- Complete
-Plan: 04-02 complete (2/2 plans done)
-Status: Phase 4 execution complete, pending verification
-Last activity: 2026-02-26 -- Plan 04-02 executed (feature gating, pricing UI, tests)
+Phase: 5 of 8 (Reports + Exports) -- Ready to plan
+Plan: Not started
+Status: Ready to plan Phase 5
+Last activity: 2026-02-26 -- Phase 4 complete (Payments + Freemium Gating)
 
-Progress: [████░░░░░░] 38%
+Progress: [█████░░░░░] 50% (4/8 phases complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
-- Average duration: 4.5min
-- Total execution time: 0.47 hours
+- Total plans completed: 9
+- Average duration: 4.3min
+- Total execution time: 0.65 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-scoring-foundation | 2/2 | 5min | 2.5min |
-| 02-recommendations-competitor-benchmarking | 2/3 | 14min | 7min |
+| 02-recommendations-competitor-benchmarking | 3/3 | 14min | 4.7min |
 | 03-ai-visibility-hardening | 2/2 | 9min | 4.5min |
+| 04-payments-freemium-gating | 2/2 | 10min | 5min |
 
 **Recent Trend:**
-- Last 5 plans: 02-01 (6min), 02-02 (8min), 03-01 (5min), 03-02 (4min)
+- Last 5 plans: 03-01 (5min), 03-02 (4min), 04-01 (4min), 04-02 (6min)
 - Trend: Consistent (fast execution)
 
 *Updated after each plan completion*
@@ -84,9 +85,11 @@ None yet.
 - ~~Legacy `geo_data_points/` directory is dead code that must be deleted (Phase 1)~~ RESOLVED: deleted in 01-01
 - Gemini free tier instability -- Google has slashed limits; may need paid tier for production
 - LiteLLM pinning risk -- current version is 2 years old, upgrade needed but LiteLLM breaks between minors
+- Stripe setup requires manual configuration: product creation in Stripe Dashboard, env vars for price IDs
+- Integration tests requiring Supabase DB are skipped in local dev (only unit tests run locally)
 
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Phase 3 complete, ready to plan Phase 4
+Stopped at: Phase 4 complete, ready to plan Phase 5
 Resume file: None

@@ -25,21 +25,24 @@ Existing working infrastructure (keep as-is):
 - ✓ Alembic migrations — existing
 - ✓ Supabase PostgreSQL + pgvector — existing
 
+Built in v2 rebuild:
+
+- ✓ Real scoring system that produces meaningful, accurate scores — Phase 1
+- ✓ Working data point pipeline (all criteria produce real measurements) — Phase 1
+- ✓ AI Visibility score from real LLM queries (statistical multi-query) — Phase 3
+- ✓ Actionable recommendations engine with priority ordering — Phase 2
+- ✓ Auto-competitor discovery from AI responses — Phase 2
+- ✓ Competitor benchmarking and comparison — Phase 2
+- ✓ Freemium model: free partial audit (crawlability), paid full audit + recommendations — Phase 4
+- ✓ Stripe payment integration (checkout, webhooks, subscription lifecycle) — Phase 4
+
 ### Active
 
-- [ ] Real scoring system that produces meaningful, accurate scores (not zeros)
-- [ ] Working data point pipeline (all criteria produce real measurements)
-- [ ] AI Visibility score from real LLM queries (not fabricated)
-- [ ] Actionable recommendations engine with priority ordering
-- [ ] Auto-competitor discovery from AI responses
-- [ ] Competitor benchmarking and comparison
 - [ ] PDF/HTML audit report export
 - [ ] Jira CSV export (customizable: grouping, priority, fields, epic link)
 - [ ] Code analysis flow: Endexa generates prompts -> user runs on repo -> uploads output -> deeper recommendations
 - [ ] URL-only audit (basic) AND code-analysis audit (deep) as two tiers
 - [ ] Chat assistant for audit results (ask questions, drill into issues)
-- [ ] Freemium model: free partial audit (crawlability), paid full audit + recommendations
-- [ ] Stripe payment integration (working checkout, subscriptions)
 - [ ] Dashboard with real metrics, trend charts, history
 - [ ] Polished frontend (production-ready UI, not prototype)
 - [ ] Multi-site management for agencies
@@ -76,12 +79,12 @@ Existing working infrastructure (keep as-is):
 
 ### What's Broken (Rebuild)
 
-- 103/108 data point measurement scripts return hardcoded 0
-- Scoring aggregation produces meaningless results (garbage in, garbage out)
-- AI Visibility score is mock random numbers
-- Recommendations engine is a stub
+- ~~103/108 data point measurement scripts return hardcoded 0~~ FIXED Phase 1
+- ~~Scoring aggregation produces meaningless results~~ FIXED Phase 1
+- ~~AI Visibility score is mock random numbers~~ FIXED Phase 3
+- ~~Recommendations engine is a stub~~ FIXED Phase 2
 - Dashboard shows fake data
-- Stripe integration is untested stub
+- ~~Stripe integration is untested stub~~ FIXED Phase 4
 - Jira integration is stub
 
 ### Market Context
@@ -112,12 +115,16 @@ Existing working infrastructure (keep as-is):
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Keep architecture, rebuild features | Architecture is 70/100, features are 15/100. Foundation is solid. | -- Pending |
-| Freemium: free partial audit (crawlability) | Low barrier to entry, upsell on full audit + recommendations | -- Pending |
-| SEO + GEO combined tool | Market gap — competitors do GEO only or SEO only | -- Pending |
-| Code analysis via prompt generation | Users run prompts on their own repos, upload output. Avoids repo access complexity. | -- Pending |
-| Jira CSV export over direct API | Simpler, works with any project management tool. Customizable fields. | -- Pending |
-| No brand signature in v2 | Pgvector/embeddings complexity deferred. Focus on core audit + recommendations. | -- Pending |
+| Keep architecture, rebuild features | Architecture is 70/100, features are 15/100. Foundation is solid. | Validated — Phases 1-4 built on existing foundation |
+| Freemium: free partial audit (crawlability) | Low barrier to entry, upsell on full audit + recommendations | Shipped Phase 4 — crawlability + top 3 recs for free, full audit for PRO |
+| SEO + GEO combined tool | Market gap — competitors do GEO only or SEO only | Validated — 61 criteria + AI visibility scoring |
+| Code analysis via prompt generation | Users run prompts on their own repos, upload output. Avoids repo access complexity. | Pending — Phase 8 |
+| Jira CSV export over direct API | Simpler, works with any project management tool. Customizable fields. | Pending — Phase 5 |
+| No brand signature in v2 | Pgvector/embeddings complexity deferred. Focus on core audit + recommendations. | Confirmed — not needed for v2 |
+| StripeClient instance pattern (SDK v14+) | Modern pattern, not deprecated stripe.api_key global | Shipped Phase 4 |
+| Server-side feature gating only | require_tier() FastAPI dependency, never trust frontend | Shipped Phase 4 |
+| Audit pipeline runs all scorers regardless of tier | Gating at read time only, simpler architecture | Shipped Phase 4 |
+| Webhook idempotency via DB table | WebhookEvent table for deduplication, not Redis | Shipped Phase 4 |
 
 ---
-*Last updated: 2025-02-25 after v2 project initialization*
+*Last updated: 2026-02-26 after Phase 4 (Payments + Freemium Gating)*

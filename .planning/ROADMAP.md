@@ -13,9 +13,9 @@ Endexa v2 is a brownfield rebuild: the FastAPI + Celery + Redis + Supabase found
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Scoring Foundation** - All 61 criteria produce real measurements; dead code removed; integration-tested against known sites
-- [ ] **Phase 2: Recommendations + Competitor Benchmarking** - Deterministic gap analysis generates prioritized, actionable recommendations; auto-competitor discovery and side-by-side comparison
-- [ ] **Phase 3: AI Visibility Hardening** - Statistical multi-query measurement replaces single-shot checks; per-engine breakdown with confidence indicators
-- [ ] **Phase 4: Payments + Freemium Gating** - Stripe checkout flow, webhook handling, subscription lifecycle, tier-based feature gating
+- [x] **Phase 2: Recommendations + Competitor Benchmarking** - Deterministic gap analysis generates prioritized, actionable recommendations; auto-competitor discovery and side-by-side comparison
+- [x] **Phase 3: AI Visibility Hardening** - Statistical multi-query measurement replaces single-shot checks; per-engine breakdown with confidence indicators
+- [x] **Phase 4: Payments + Freemium Gating** - Stripe checkout flow, webhook handling, subscription lifecycle, tier-based feature gating
 - [ ] **Phase 5: Reports + Exports** - PDF/HTML audit reports and Jira-compatible CSV export with customizable fields
 - [ ] **Phase 6: Chat Assistant** - SSE-streamed LLM chat grounded in user's actual audit data
 - [ ] **Phase 7: Dashboard + Frontend Polish** - Real metrics dashboard with trend charts, audit history, multi-site management, and production-ready UI throughout
@@ -68,8 +68,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 03-01-PLAN.md -- Backend: enhanced VisibilityScore model, Alembic migration, enriched ScoringService with per-engine statistical breakdown, API schema with backward compatibility
-- [ ] 03-02-PLAN.md -- Frontend: per-engine cards with confidence badges and skipped-engine display + integration tests for enhanced scoring pipeline
+- [x] 03-01-PLAN.md -- Backend: enhanced VisibilityScore model, Alembic migration, enriched ScoringService with per-engine statistical breakdown, API schema with backward compatibility
+- [x] 03-02-PLAN.md -- Frontend: per-engine cards with confidence badges and skipped-engine display + integration tests for enhanced scoring pipeline
 
 ### Phase 4: Payments + Freemium Gating
 **Goal**: Users can start with a free partial audit and upgrade to a paid subscription for full access, with Stripe handling the payment flow
@@ -83,8 +83,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 04-01-PLAN.md -- Subscription model, StripeService, payments API (checkout, portal, webhook, session-status)
-- [ ] 04-02-PLAN.md -- Feature gating dependencies, tier-aware audit/recommendation endpoints, pricing page, checkout flow, tests
+- [x] 04-01-PLAN.md -- Subscription model, StripeService, payments API (checkout, portal, webhook, session-status)
+- [x] 04-02-PLAN.md -- Feature gating dependencies, tier-aware audit/recommendation endpoints, pricing page, checkout flow, tests
 
 ### Phase 5: Reports + Exports
 **Goal**: Users can download professional audit reports and export recommendations to their project management tools
@@ -156,10 +156,10 @@ Note: Phases 3 and 4 can execute in parallel (independent dependencies).
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Scoring Foundation | 2/2 | Complete    | 2026-02-26 |
-| 2. Recommendations + Competitor Benchmarking | 0/3 | Planning complete | - |
-| 3. AI Visibility Hardening | 0/2 | Planning complete | - |
-| 4. Payments + Freemium Gating | 0/2 | Planning complete | - |
+| 1. Scoring Foundation | 2/2 | Complete | 2026-02-26 |
+| 2. Recommendations + Competitor Benchmarking | 3/3 | Complete | 2026-02-26 |
+| 3. AI Visibility Hardening | 2/2 | Complete | 2026-02-26 |
+| 4. Payments + Freemium Gating | 2/2 | Complete | 2026-02-26 |
 | 5. Reports + Exports | 0/2 | Not started | - |
 | 6. Chat Assistant | 0/2 | Not started | - |
 | 7. Dashboard + Frontend Polish | 0/3 | Not started | - |
