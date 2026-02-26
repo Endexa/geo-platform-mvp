@@ -136,6 +136,13 @@ class Settings(BaseSettings):
     COMPETITOR_MAX_COUNT: int = 5  # Max competitors to auto-crawl
     COMPETITOR_URL_RESOLVE_TIMEOUT: float = 5.0  # Timeout for URL resolution HTTP checks
 
+    # Chat Assistant (Phase 6)
+    CHAT_MODEL: str = "gemini/gemini-2.5-flash"  # Cheap model for chat
+    CHAT_TEMPERATURE: float = 0.3  # Low temperature for factual, grounded answers
+    CHAT_MAX_TOKENS: int = 1024  # Cap response length
+    CHAT_MAX_HISTORY: int = 20  # Max messages in conversation context
+    CHAT_MAX_CONTEXT_TOKENS: int = 3000  # Budget for system prompt
+
     # Site AI-Readiness Scoring (Phase 6)
     SCORING_CRAWL_CAP: int = 25  # Max pages per audit for scoring
     SCORING_STAGE_TIMEOUT_SECONDS: int = 600  # 10 min timeout for scoring stage

@@ -17,6 +17,7 @@ from app.models.audit_recommendation import AuditRecommendation
 from app.models.mention_sentiment import MentionSentiment
 from app.models.brand import Brand
 from app.models.subscription import Subscription, WebhookEvent
+from app.models.chat_session import ChatSession
 
 __all__ = [
     "Organization",
@@ -43,4 +44,5 @@ __all__ = [
     "Brand",
     "Subscription",
     "WebhookEvent",
+    "ChatSession",
 ]

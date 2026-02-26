@@ -72,3 +72,6 @@ w3lib>=2.1.0
 # PDF/HTML export (Phase 9)
 weasyprint>=62.0
 jinja2>=3.1
+
+# SSE streaming (Phase 6 - Chat Assistant)
+sse-starlette>=2.1.0
