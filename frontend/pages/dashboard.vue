@@ -9,11 +9,11 @@
       <div class="flex flex-col items-end gap-1">
         <div class="flex items-center gap-4">
           <select
-            v-if="auditList.length > 0"
+            v-if="filteredAudits.length > 0"
             v-model="selectedAuditId"
-            class="text-sm border border-gray-300 rounded-lg px-3 py-2 focus-visible:ring-2 focus-visible:ring-[#1E40AF] cursor-pointer"
+            class="text-sm border border-gray-300 rounded-lg px-3 py-2 focus-visible:ring-2 focus-visible:ring-primary-800 cursor-pointer"
           >
-            <option v-for="a in auditList" :key="a.id" :value="a.id">
+            <option v-for="a in filteredAudits" :key="a.id" :value="a.id">
               {{ a.domain }} -- {{ formatDate(a.completed_at || a.created_at) }}
             </option>
           </select>
@@ -27,6 +27,26 @@
           Last audited: {{ formatDate(lastAuditedDate) }}
         </p>
       </div>
+    </div>
+
+    <!-- Brand selector (multi-site) -->
+    <div v-if="brands.length > 1" class="flex items-center gap-2 flex-wrap">
+      <button
+        class="px-3 py-1.5 text-sm font-medium rounded-lg transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2"
+        :class="!selectedBrandId ? 'bg-primary-800 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+        @click="selectBrand(null)"
+      >
+        All Sites
+      </button>
+      <button
+        v-for="brand in brands"
+        :key="brand.brand_id"
+        class="px-3 py-1.5 text-sm font-medium rounded-lg transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2"
+        :class="selectedBrandId === brand.brand_id ? 'bg-primary-800 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+        @click="selectBrand(brand.brand_id)"
+      >
+        {{ brand.brand_name }}
+      </button>
     </div>
 
     <!-- Loading skeleton -->
@@ -66,7 +86,7 @@
       <p class="text-gray-500 mt-2 mb-6">Run your first AI audit to see your GEO performance.</p>
       <NuxtLink
         to="/audit"
-        class="inline-flex items-center px-6 py-3 bg-[#1E40AF] text-white rounded-lg font-medium hover:bg-[#1E3A8A] transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-[#1E40AF] focus-visible:ring-offset-2"
+        class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2"
       >
         Start an Audit
       </NuxtLink>
@@ -112,7 +132,7 @@
           <p v-else class="text-sm text-gray-400 py-4 text-center">No open high-priority issues</p>
           <NuxtLink
             to="/recommendations"
-            class="mt-4 block text-center text-sm font-medium text-[#1E40AF] hover:text-[#1E3A8A] cursor-pointer"
+            class="mt-4 block text-center text-sm font-medium text-primary-800 hover:text-primary-900 cursor-pointer"
           >
             View all recommendations
           </NuxtLink>
@@ -126,7 +146,7 @@
               <span class="text-sm font-medium text-gray-700 w-24 shrink-0">{{ item.displayName }}</span>
               <div class="flex-1 bg-gray-200 rounded-full h-2.5">
                 <div
-                  class="h-2.5 rounded-full bg-[#1E40AF] transition-all duration-300"
+                  class="h-2.5 rounded-full bg-primary-800 transition-all duration-300"
                   :style="{ width: Math.min(item.score, 100) + '%' }"
                 />
               </div>
@@ -192,7 +212,7 @@
         </div>
         <NuxtLink
           to="/recommendations"
-          class="mt-4 block text-center text-sm font-medium text-[#1E40AF] hover:text-[#1E3A8A] cursor-pointer"
+          class="mt-4 block text-center text-sm font-medium text-primary-800 hover:text-primary-900 cursor-pointer"
         >
           View all recommendations
         </NuxtLink>
@@ -273,6 +293,23 @@ const error = ref<string | null>(null)
 const auditHistory = ref<AuditHistoryEntry[]>([])
 const historyLoading = ref(false)
 
+// Brand selector
+const {
+  selectedBrandId,
+  brands,
+  selectedBrand,
+  brandsLoading,
+  brandsError,
+  loadBrands,
+  selectBrand,
+} = useBrandSelector()
+
+// Filtered audits by selected brand
+const filteredAudits = computed(() => {
+  if (!selectedBrand.value) return auditList.value
+  return auditList.value.filter(a => a.domain === selectedBrand.value!.domain)
+})
+
 // Fetch user's completed audits on mount
 onMounted(async () => {
   try {
@@ -283,11 +320,24 @@ onMounted(async () => {
     if (completed.length > 0) {
       selectedAuditId.value = completed[0].id
     }
+
+    // Load brands (supplementary -- fail silently)
+    loadBrands().catch(() => {})
   } catch (e) {
     console.error('Failed to fetch audits:', e)
     error.value = 'Failed to load audits'
   } finally {
     loading.value = false
+  }
+})
+
+// When brand selection changes, auto-select the first audit from the filtered list
+watch(selectedBrandId, () => {
+  const filtered = filteredAudits.value
+  if (filtered.length > 0) {
+    selectedAuditId.value = filtered[0].id
+  } else {
+    selectedAuditId.value = null
   }
 })
 
@@ -304,13 +354,15 @@ watch(selectedAuditId, async (newId) => {
     overview.value = data
 
     // Fetch history (supplementary -- fail silently)
+    // Use brand domain if selected, otherwise use audit domain
+    const historyDomain = selectedBrand.value?.domain || data.domain
     historyLoading.value = true
     try {
       const historyData = await useApiFetch<{
         domain: string
         entries: AuditHistoryEntry[]
         total: number
-      }>('/dashboard/history', { params: { domain: data.domain } })
+      }>('/dashboard/history', { params: { domain: historyDomain } })
       auditHistory.value = historyData.entries || []
     } catch {
       auditHistory.value = []
