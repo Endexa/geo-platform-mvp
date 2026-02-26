@@ -9,19 +9,19 @@ See: .planning/PROJECT.md (updated 2026-02-26)
 
 ## Current Position
 
-Phase: 7 of 8 (Dashboard + Frontend Polish) -- Ready to plan
-Plan: Not started
-Status: Phase 6 complete, transitioning to Phase 7
-Last activity: 2026-02-26 -- Phase 6 complete (Chat Assistant)
+Phase: 7 of 8 (Dashboard + Frontend Polish) -- Executing
+Plan: 2 of 3 complete
+Status: Plan 07-02 complete (dashboard data display + brand selector)
+Last activity: 2026-02-26 -- Plan 07-02 complete
 
 Progress: [███████░░░] 75% (6/8 phases complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 13
-- Average duration: 4.2min
-- Total execution time: 0.93 hours
+- Total plans completed: 14
+- Average duration: 4.1min
+- Total execution time: 0.98 hours
 
 **By Phase:**
 
@@ -35,7 +35,7 @@ Progress: [███████░░░] 75% (6/8 phases complete)
 | 06-chat-assistant | 2/2 | 10min | 5min |
 
 **Recent Trend:**
-- Last 5 plans: 05-01 (4min), 05-02 (5min), 06-01 (5min), 06-02 (5min)
+- Last 5 plans: 05-02 (5min), 06-01 (5min), 06-02 (5min), 07-02 (3min)
 - Trend: Consistent (fast execution)
 
 *Updated after each plan completion*
@@ -88,6 +88,10 @@ Recent decisions affecting current work:
 - [06-02]: fetchEventSource over native EventSource for POST + auth headers on SSE chat endpoint
 - [06-02]: ChatPanel uses Teleport to body to avoid z-index stacking context issues
 - [06-02]: Plain text with whitespace-pre-wrap for assistant messages (markdown rendering deferred to future)
+- [07-02]: useBrandSelector uses Nuxt useState (not Pinia) for SSR-safe brand state that persists across navigations
+- [07-02]: CategoryBreakdown receives data from latest audit history entry rather than a separate API call
+- [07-02]: Brand selector hidden for single-brand users (brands.length <= 1)
+- [07-02]: TrendChart tension reduced to 0.1 to avoid implying interpolation between sparse audit snapshots
 
 ### Pending Todos
 
@@ -105,5 +109,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Phase 6 complete, ready to plan Phase 7
+Stopped at: Completed 07-02-PLAN.md
 Resume file: None

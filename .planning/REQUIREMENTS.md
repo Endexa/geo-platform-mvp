@@ -71,11 +71,11 @@
 
 ### Dashboard
 
-- [ ] **DASH-01**: Real metrics dashboard showing audit history with actual data
-- [ ] **DASH-02**: Score trend charts showing how scores evolve across audits over time
-- [ ] **DASH-03**: Per-engine AI visibility breakdown (ChatGPT, Claude, Perplexity, Gemini)
-- [ ] **DASH-04**: Per-category breakdown (Crawlability, Content, Schema, Authority)
-- [ ] **DASH-05**: Multi-site management: agencies can manage multiple client sites from one account
+- [x] **DASH-01**: Real metrics dashboard showing audit history with actual data
+- [x] **DASH-02**: Score trend charts showing how scores evolve across audits over time
+- [x] **DASH-03**: Per-engine AI visibility breakdown (ChatGPT, Claude, Perplexity, Gemini)
+- [x] **DASH-04**: Per-category breakdown (Crawlability, Content, Schema, Authority)
+- [x] **DASH-05**: Multi-site management: agencies can manage multiple client sites from one account
 
 ### Frontend Polish
 
@@ -151,11 +151,11 @@
 | CHAT-02 | Phase 6: Chat Assistant | Complete |
 | CHAT-03 | Phase 6: Chat Assistant | Complete |
 | CHAT-04 | Phase 6: Chat Assistant | Complete |
-| DASH-01 | Phase 7: Dashboard + Frontend Polish | Pending |
-| DASH-02 | Phase 7: Dashboard + Frontend Polish | Pending |
-| DASH-03 | Phase 7: Dashboard + Frontend Polish | Pending |
-| DASH-04 | Phase 7: Dashboard + Frontend Polish | Pending |
-| DASH-05 | Phase 7: Dashboard + Frontend Polish | Pending |
+| DASH-01 | Phase 7: Dashboard + Frontend Polish | Complete |
+| DASH-02 | Phase 7: Dashboard + Frontend Polish | Complete |
+| DASH-03 | Phase 7: Dashboard + Frontend Polish | Complete |
+| DASH-04 | Phase 7: Dashboard + Frontend Polish | Complete |
+| DASH-05 | Phase 7: Dashboard + Frontend Polish | Complete |
 | UI-01 | Phase 7: Dashboard + Frontend Polish | Pending |
 | UI-02 | Phase 7: Dashboard + Frontend Polish | Pending |
 | UI-03 | Phase 7: Dashboard + Frontend Polish | Pending |
