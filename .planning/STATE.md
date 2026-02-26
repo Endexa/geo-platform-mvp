@@ -9,10 +9,10 @@ See: .planning/PROJECT.md (updated 2025-02-25)
 
 ## Current Position
 
-Phase: 4 of 8 (Payments + Freemium Gating) -- Executing
-Plan: 04-01 complete, 04-02 next
-Status: Plan 04-01 (Stripe subscription backend) complete
-Last activity: 2026-02-26 -- Plan 04-01 executed (models, service, API, migration)
+Phase: 4 of 8 (Payments + Freemium Gating) -- Complete
+Plan: 04-02 complete (2/2 plans done)
+Status: Phase 4 execution complete, pending verification
+Last activity: 2026-02-26 -- Plan 04-02 executed (feature gating, pricing UI, tests)
 
 Progress: [████░░░░░░] 38%
 
@@ -69,6 +69,10 @@ Recent decisions affecting current work:
 - [04-01]: construct_event for webhook verification (returns full Event with data.object)
 - [04-01]: Upsert pattern in webhook handlers for out-of-order event tolerance
 - [04-01]: WebhookEvent table for idempotent deduplication (not Redis)
+- [04-02]: require_tier() FastAPI dependency factory for server-side feature gating
+- [04-02]: Audit filtering at read time only (pipeline runs all scorers regardless of tier)
+- [04-02]: Free tier shows crawlability + overall score + top 3 recs (enough for "aha moment")
+- [04-02]: Session-status polling on success page handles webhook race (5 attempts, 2s apart)
 
 ### Pending Todos
 
