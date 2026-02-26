@@ -32,12 +32,19 @@ class DiscoveredCompetitor(Base):
         ForeignKey("competitor_audits.id"),
         nullable=True,
     )  # set after crawl
+    competitor_brand_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("brands.id"),
+        nullable=True,
+        index=True,
+    )
     created_at = Column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
     )
 
     # Relationships
     audit = relationship("Audit", backref="discovered_competitors")
+    competitor_brand = relationship("Brand", backref="competitor_appearances")
 
 
 class CompetitorAudit(Base):

@@ -7,7 +7,7 @@ Audits are automatically associated with brands by domain matching.
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import Column, DateTime, ForeignKey, String, UniqueConstraint
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, String, UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
@@ -28,6 +28,9 @@ class Brand(Base):
     url = Column(String, nullable=False)
     domain = Column(String, nullable=False)
     description = Column(String, nullable=True)
+    is_competitor = Column(
+        Boolean, default=False, nullable=False, server_default="false"
+    )
     created_at = Column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
     )
