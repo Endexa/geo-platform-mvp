@@ -384,8 +384,12 @@ class CodeAnalysisService:
         """
         if model.startswith("gemini/"):
             return settings.GEMINI_API_KEY
+        elif model.startswith("mistral/"):
+            return settings.MISTRAL_API_KEY
         elif model.startswith("anthropic/"):
             return settings.ANTHROPIC_API_KEY
+        elif model.startswith("perplexity/"):
+            return settings.PERPLEXITYAI_API_KEY
         elif model.startswith("gpt") or model.startswith("o1") or model.startswith("o3"):
             return settings.OPENAI_API_KEY
         return settings.OPENAI_API_KEY  # fallback

@@ -112,7 +112,7 @@ class Settings(BaseSettings):
     AI_CACHE_TTL_SECONDS: int = 86400  # 24h cache TTL
 
     # Query Generation (Phase 2)
-    QUERY_GEN_MODEL: str = "gemini/gemini-2.5-flash"  # LLM model for query generation (configurable)
+    QUERY_GEN_MODEL: str = "mistral/mistral-small-latest"  # LLM model for query generation (configurable)
     QUERY_GEN_TEMPERATURE: float = 0.7  # Some creativity for diverse queries
     QUERY_GEN_MAX_CONTENT_WORDS: int = 2000  # Truncation limit for crawl content in LLM prompt
 
@@ -139,12 +139,12 @@ class Settings(BaseSettings):
     COMPETITOR_URL_RESOLVE_TIMEOUT: float = 5.0  # Timeout for URL resolution HTTP checks
 
     # Code Analysis (Phase 8)
-    CODE_ANALYSIS_MODEL: str = "gemini/gemini-2.5-flash"  # Same cheap model used for chat
+    CODE_ANALYSIS_MODEL: str = "mistral/mistral-small-latest"  # Switched from Gemini (rate limited)
     CODE_ANALYSIS_MAX_UPLOAD_BYTES: int = 100 * 1024  # 100KB hard cap on uploaded text
     CODE_ANALYSIS_MAX_TOKENS_INPUT: int = 50000  # Truncate input before sending to LLM
 
     # Chat Assistant (Phase 6)
-    CHAT_MODEL: str = "gemini/gemini-2.5-flash"  # Cheap model for chat
+    CHAT_MODEL: str = "mistral/mistral-small-latest"  # Switched from Gemini (rate limited)
     CHAT_TEMPERATURE: float = 0.3  # Low temperature for factual, grounded answers
     CHAT_MAX_TOKENS: int = 1024  # Cap response length
     CHAT_MAX_HISTORY: int = 20  # Max messages in conversation context

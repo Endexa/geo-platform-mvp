@@ -26,7 +26,7 @@ from app.models.mention_sentiment import MentionSentiment
 class SentimentService:
     """Classify brand mention sentiments using LLM zero-shot classification."""
 
-    SENTIMENT_MODEL = "gemini/gemini-2.5-flash"
+    SENTIMENT_MODEL = "mistral/mistral-small-latest"
 
     def __init__(self, db: Session):
         self.db = db
@@ -38,13 +38,13 @@ class SentimentService:
             dict with "sentiment" (positive/negative/neutral) and "confidence" (0-100).
             Falls back to neutral with 50 confidence if no API key or on error.
         """
-        if not settings.GEMINI_API_KEY:
+        if not settings.MISTRAL_API_KEY:
             return {"sentiment": "neutral", "confidence": 50}
 
         try:
             response = litellm.completion(
                 model=self.SENTIMENT_MODEL,
-                api_key=settings.GEMINI_API_KEY,
+                api_key=settings.MISTRAL_API_KEY,
                 response_format={"type": "json_object"},
                 temperature=0.0,
                 messages=[

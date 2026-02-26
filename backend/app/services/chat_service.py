@@ -30,8 +30,12 @@ def _resolve_api_key(model: str) -> str:
     """
     if model.startswith("gemini/"):
         return settings.GEMINI_API_KEY
+    elif model.startswith("mistral/"):
+        return settings.MISTRAL_API_KEY
     elif model.startswith("anthropic/"):
         return settings.ANTHROPIC_API_KEY
+    elif model.startswith("perplexity/"):
+        return settings.PERPLEXITYAI_API_KEY
     elif model.startswith("gpt") or model.startswith("o"):
         return settings.OPENAI_API_KEY
     return settings.OPENAI_API_KEY  # fallback

@@ -139,6 +139,8 @@ class QueryGeneratorService:
             return settings.ANTHROPIC_API_KEY or None
         if model_lower.startswith("perplexity/"):
             return settings.PERPLEXITYAI_API_KEY or None
+        if model_lower.startswith("mistral/"):
+            return settings.MISTRAL_API_KEY or None
         # Default to OpenAI
         return settings.OPENAI_API_KEY or None
 
