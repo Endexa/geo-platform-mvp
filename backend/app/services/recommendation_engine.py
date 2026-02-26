@@ -138,6 +138,39 @@ DEFAULT_BENCHMARK: dict = {
 
 
 # ---------------------------------------------------------------------------
+# Vertical-aware recommendation exclusions
+# Maps vertical -> set of criterion_ids to exclude (schema-specific only)
+# SD8 = Product/Offer schema, SD10 = ClaimReview schema,
+# SD5 = HowTo schema, SD4 = Article schema
+# ---------------------------------------------------------------------------
+VERTICAL_EXCLUSIONS: dict[str, set[str]] = {
+    "saas": {"SD8", "SD10"},  # No Product/Offer or ClaimReview
+    "ecommerce": {"SD10"},  # No ClaimReview
+    "local_business": {"SD10"},  # No ClaimReview
+    "media_blog": {"SD8"},  # No Product/Offer
+}
+
+
+def is_recommendation_relevant(criterion_id: str, vertical: str) -> bool:
+    """Check if a recommendation is relevant for the site's vertical.
+
+    Rules:
+    1. If vertical is 'generic', all recommendations are relevant
+    2. SD-category criteria are checked against VERTICAL_EXCLUSIONS
+    3. Non-SD criteria are always relevant
+    """
+    if vertical == "generic":
+        return True
+
+    if criterion_id.startswith("SD"):
+        exclusions = VERTICAL_EXCLUSIONS.get(vertical, set())
+        if criterion_id in exclusions:
+            return False
+
+    return True
+
+
+# ---------------------------------------------------------------------------
 # Code snippet templates for highest-impact criteria
 # ---------------------------------------------------------------------------
 CRITERION_SNIPPETS: dict[str, Optional[str]] = {
@@ -325,7 +358,7 @@ class RecommendationEngine:
         self.db = db
 
     def generate_recommendations(
-        self, audit_id: str, user_id: str
+        self, audit_id: str, user_id: str, vertical: str = "generic"
     ) -> list[AuditRecommendation]:
         """Generate page-specific recommendations from scoring data.
 
@@ -337,6 +370,11 @@ class RecommendationEngine:
             5. Generate sentiment-based recommendations for negative mentions
             6. Sort by priority then gap_score descending
             7. Persist and return
+
+        Args:
+            audit_id: The audit UUID.
+            user_id: The user UUID.
+            vertical: Detected site vertical for filtering irrelevant criteria.
         """
         # Load competitor category averages (may be empty)
         comp_audits = (
@@ -359,9 +397,11 @@ class RecommendationEngine:
         )
 
         recs: list[AuditRecommendation] = []
+        total_pages = len(page_scores)
         for page_score in page_scores:
             page_recs = self._generate_page_recommendations(
-                audit_id, user_id, page_score, comp_avgs
+                audit_id, user_id, page_score, comp_avgs,
+                vertical=vertical, total_pages=total_pages,
             )
             recs.extend(page_recs)
 
@@ -418,6 +458,8 @@ class RecommendationEngine:
         user_id: str,
         page_score: PageScore,
         comp_avgs: dict[str, Optional[float]],
+        vertical: str = "generic",
+        total_pages: int = 1,
     ) -> list[AuditRecommendation]:
         """Generate recommendations for a single page based on criterion gaps."""
         criteria = (
@@ -457,6 +499,18 @@ class RecommendationEngine:
             if gap_score < 10:
                 continue
 
+            # Skip if not relevant for this site vertical
+            if not is_recommendation_relevant(criterion.criterion_id, vertical):
+                continue
+
+            # Compute estimated score improvement delta
+            estimated_delta = self._compute_impact_delta(
+                criterion_score=criterion.score,
+                target_score=threshold,
+                category=criterion.category,
+                total_pages=total_pages,
+            )
+
             priority = self._classify_priority(
                 benchmark["impact_pct"], gap_score
             )
@@ -491,6 +545,7 @@ class RecommendationEngine:
                 evidence_source=benchmark["evidence_source"],
                 recommendation_hash=rec_hash,
                 status=status,
+                estimated_score_delta=estimated_delta,
             )
             recs.append(rec)
 
@@ -567,6 +622,56 @@ class RecommendationEngine:
         if impact_pct >= 120 and gap_score >= 20:
             return "medium"
         return "low"
+
+    def _compute_impact_delta(
+        self,
+        criterion_score: int,
+        target_score: int,
+        category: str,
+        total_pages: int,
+    ) -> float:
+        """Estimate optimization score improvement if this criterion is fixed.
+
+        Uses a simplified linear estimate based on category weights and
+        criteria counts from the scoring formula.
+
+        Args:
+            criterion_score: Current score for this criterion (0-100).
+            target_score: Threshold score from research benchmarks.
+            category: Scoring category (crawlability, content_structure, etc.).
+            total_pages: Number of scored pages in the audit.
+
+        Returns:
+            Estimated delta rounded to 1 decimal place, capped at 15.0.
+        """
+        category_weights = {
+            "crawlability": 0.25,
+            "content_structure": 0.25,
+            "structured_data": 0.20,
+            "authority": 0.15,
+        }
+        criteria_per_category = {
+            "crawlability": 12,
+            "content_structure": 13,
+            "structured_data": 13,
+            "authority": 23,
+        }
+
+        weight = category_weights.get(category, 0.15)
+        num_criteria = criteria_per_category.get(category, 15)
+
+        score_improvement = max(0, target_score - criterion_score)
+        category_improvement = score_improvement / num_criteria
+        delta = category_improvement * weight
+
+        # Conservative multi-page adjustment
+        if total_pages > 1:
+            delta *= 0.8
+
+        # Cap at 15.0 -- no single fix should claim more than 15 points
+        delta = min(delta, 15.0)
+
+        return round(delta, 1)
 
     def _lookup_prior_status(
         self, rec_hash: str, user_id: str
