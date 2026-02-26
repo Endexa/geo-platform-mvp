@@ -162,12 +162,15 @@ Plans:
   6. Settings page has "Manage Subscription" button (Stripe Customer Portal) for Pro users
   7. Frontend builds with no errors and passes visual coherence review
   8. About/Security/Trust content on landing page establishes credibility (E-E-A-T signals)
-**Plans**: TBD
+**Plans**: 6 plans
 
 Plans:
-- [ ] 09-01: TBD
-- [ ] 09-02: TBD
-- [ ] 09-03: TBD
+- [ ] 09-01-PLAN.md — Backend subscription-status endpoint + .env.example Stripe vars documentation
+- [ ] 09-02-PLAN.md — pricing.vue rewrite: 3 tiers, no yearly toggle, env-var price ID
+- [ ] 09-03-PLAN.md — Landing page layout isolation + Hero, Features, How It Works sections
+- [ ] 09-04-PLAN.md — Subscription rehydration (fetchTierOnMount) + settings Manage Subscription button
+- [ ] 09-05-PLAN.md — Remaining landing sections: Testimonials, Pricing, FAQ, Trust, Footer
+- [ ] 09-06-PLAN.md — Design system token sweep (gray→slate), Endexa branding, page titles + visual verification
 
 ## Progress
 
