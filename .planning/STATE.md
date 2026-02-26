@@ -10,9 +10,9 @@ See: .planning/PROJECT.md (updated 2026-02-26)
 ## Current Position
 
 Phase: 9 of 9 (Landing + Frontend Overhaul + Stripe) -- In Progress
-Plan: 3 of TBD complete
+Plan: 5 of TBD complete
 Status: Active
-Last activity: 2026-02-26 -- 09-03 complete: landing layout + Hero, Features, HowItWorks sections
+Last activity: 2026-02-26 -- 09-05 complete: remaining 5 landing sections (Testimonials, Pricing, FAQ, Trust, Footer) + wired into index.vue
 
 Progress: [████████░░] 89% (8/9 phases complete)
 
@@ -113,6 +113,9 @@ Recent decisions affecting current work:
 - [09-03]: useScrollFadeIn fires once then unobserves (0.1 threshold) -- avoids re-triggering on scroll up
 - [09-03]: Footer in landing.vue is inline placeholder -- full LandingFooter component created in plan 05
 - [09-03]: Landing components live in frontend/components/landing/ subdirectory
+- [09-05]: LandingFooter placed in layouts/landing.vue (not index.vue) -- global to all landing-layout pages
+- [09-05]: LandingPricing reads config.public.stripePriceProMonthly from useRuntimeConfig -- same env-var pattern as pricing.vue
+- [09-05]: FAQ accordion uses openIndex ref + v-show -- no external library needed for this interaction pattern
 - [Phase 09]: fetchTierOnMount silently fails to avoid breaking dashboard load on subscription status errors
 - [Phase 09]: portalLoading only resets on error since redirect navigates away on success
 
@@ -132,5 +135,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed 09-03-PLAN.md (landing layout + Hero, Features, HowItWorks sections)
+Stopped at: Completed 09-05-PLAN.md (remaining 5 landing sections + footer wiring)
 Resume file: None
