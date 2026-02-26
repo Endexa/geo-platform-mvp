@@ -49,12 +49,12 @@ Plans:
   3. Competitor brands are automatically discovered from AI engine responses (NER extraction) and displayed in a side-by-side score comparison without the user manually entering competitor URLs
   4. Share of voice (percentage of AI mentions per brand across engines) is calculated and displayed per audit
   5. Competitor data persists across audits so users can track competitive positioning over time
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
-- [ ] 02-03: TBD
+- [ ] 02-01-PLAN.md -- Vertical classifier + recommendation engine enhancements (industry-aware filtering, impact delta calculation)
+- [ ] 02-02-PLAN.md -- Cross-audit competitor persistence (brand linking, SOV trend tracking)
+- [ ] 02-03-PLAN.md -- Pipeline wiring + integration tests (audit_tasks.py integration, end-to-end verification)
 
 ### Phase 3: AI Visibility Hardening
 **Goal**: Users can trust their AI Visibility Score because it is derived from statistical measurement across multiple queries and engines, not a single-shot check
@@ -157,7 +157,7 @@ Note: Phases 3 and 4 can execute in parallel (independent dependencies).
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Scoring Foundation | 2/2 | Complete    | 2026-02-26 |
-| 2. Recommendations + Competitor Benchmarking | 0/3 | Not started | - |
+| 2. Recommendations + Competitor Benchmarking | 0/3 | Planning complete | - |
 | 3. AI Visibility Hardening | 0/2 | Not started | - |
 | 4. Payments + Freemium Gating | 0/2 | Not started | - |
 | 5. Reports + Exports | 0/2 | Not started | - |
