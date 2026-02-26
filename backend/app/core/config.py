@@ -122,7 +122,7 @@ class Settings(BaseSettings):
     DISPATCH_MODEL_PERPLEXITY: str = "perplexity/sonar"
     DISPATCH_MODEL_GEMINI: str = "gemini/gemini-2.5-flash"
     DISPATCH_TEMPERATURE: float = 0.0  # Reproducibility for Phase 4
-    DISPATCH_TIMEOUT_SECONDS: int = 60  # Per-engine call timeout
+    DISPATCH_TIMEOUT_SECONDS: int = 30  # Per-engine call timeout
     DISPATCH_MAX_WORKERS: int = 6  # ThreadPoolExecutor pool size
     PERPLEXITY_REQUEST_SURCHARGE: float = 0.005  # Per-request surcharge for Perplexity search fees
 

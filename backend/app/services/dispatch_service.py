@@ -258,13 +258,32 @@ class DispatchService:
             try:
                 # LLM call via LiteLLM
                 logger.info(f"Calling {engine_name}/{model} for query={query.id}")
-                response = litellm.completion(
-                    model=model,
-                    messages=messages,
-                    temperature=settings.DISPATCH_TEMPERATURE,
-                    timeout=settings.DISPATCH_TIMEOUT_SECONDS,
-                    api_key=api_key,
-                )
+                try:
+                    response = litellm.completion(
+                        model=model,
+                        messages=messages,
+                        temperature=settings.DISPATCH_TEMPERATURE,
+                        timeout=settings.DISPATCH_TIMEOUT_SECONDS,
+                        api_key=api_key,
+                    )
+                except litellm.AuthenticationError as auth_err:
+                    logger.warning(f"Engine {engine_name} auth failed (invalid/expired key): {auth_err}")
+                    error_resp = EngineResponse(
+                        audit_query_id=query.id,
+                        engine=engine_name,
+                        model_version=model,
+                        response_text="",
+                        prompt_tokens=0,
+                        completion_tokens=0,
+                        cost_usd=Decimal("0"),
+                        error_message=f"Authentication failed: invalid or expired API key for {engine_name}",
+                    )
+                    thread_db.add(error_resp)
+                    thread_db.commit()
+                    thread_db.refresh(error_resp)
+                    # Remove this engine from active engines so we don't retry on next query
+                    self._active_engines.pop(engine_name, None)
+                    return error_resp
 
                 # Extract metadata
                 response_text = response.choices[0].message.content or ""
