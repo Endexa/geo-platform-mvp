@@ -50,3 +50,38 @@ class CompetitorLeaderboardResponse(BaseModel):
     total_entities: int
     competitors: list[CompetitorLeaderboardEntry]
     competitor_audits: list[CompetitorAuditSummary]
+
+
+class ScoreComparisonSite(BaseModel):
+    """Score data for the user's audited site in a comparison."""
+
+    name: str
+    url: str
+    optimization_score: int | None
+    crawlability: int | None
+    content_structure: int | None
+    structured_data: int | None
+    authority: int | None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class ScoreComparisonCompetitor(BaseModel):
+    """Score data for a competitor in a comparison."""
+
+    name: str
+    url: str
+    optimization_score: int | None
+    crawlability: int | None
+    content_structure: int | None
+    structured_data: int | None
+    authority: int | None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class ScoreComparisonResponse(BaseModel):
+    """Side-by-side score comparison: user's site vs competitors."""
+
+    site: ScoreComparisonSite
+    competitors: list[ScoreComparisonCompetitor]

@@ -21,6 +21,7 @@ from app.models.competitor import CompetitorAudit
 from app.schemas.competitor import (
     CompetitorAuditSummary,
     CompetitorLeaderboardResponse,
+    ScoreComparisonResponse,
 )
 from app.services.competitor_service import CompetitorService
 
@@ -189,3 +190,25 @@ def get_sov_trend(
         db, brand_id, str(current_user.id)
     )
     return trend
+
+
+@router.get(
+    "/{audit_id}/score-comparison",
+    response_model=ScoreComparisonResponse,
+)
+def get_score_comparison(
+    audit_id: str,
+    db: Session = Depends(get_db),
+    current_user: Profile = Depends(get_current_active_user),
+):
+    """Get side-by-side score comparison between the user's site and competitors.
+
+    Returns the user's site optimization and per-category scores alongside
+    each completed competitor's scores for the given audit.
+    """
+    _verify_audit_ownership(audit_id, db, current_user)
+
+    service = CompetitorService(db)
+    data = service.get_score_comparison(db, str(audit_id), str(current_user.id))
+
+    return ScoreComparisonResponse(**data)
