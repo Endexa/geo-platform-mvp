@@ -29,6 +29,7 @@ from app.services.dispatch_service import DispatchService
 from app.services.mention_detector import MentionDetectorService
 from app.services.query_generator import QueryGeneratorService
 from app.services.scoring_service import ScoringService
+from app.services.vertical_classifier import VerticalClassifier
 from app.tasks.celery_app import celery_app
 
 
@@ -80,6 +81,26 @@ def run_crawl_and_generate(self, audit_id: str, url: str):
             audit_id,
             crawl_result.word_count,
         )
+
+        # Stage 1.5: Classify site vertical for recommendation filtering
+        try:
+            classifier = VerticalClassifier()
+            detected_vertical = classifier.classify(audit.crawl_data)
+            audit.vertical = detected_vertical.value
+            db.commit()
+            logger.info(
+                "Audit {}: detected vertical: {}",
+                audit_id,
+                detected_vertical.value,
+            )
+        except Exception as e:
+            logger.warning(
+                "Audit {}: vertical classification failed (defaulting to generic): {}",
+                audit_id,
+                str(e),
+            )
+            audit.vertical = "generic"
+            db.commit()
 
         # Stage 2: Generate queries
         audit.status = AuditStatus.GENERATING_QUERIES.value
@@ -295,6 +316,26 @@ def run_crawl_and_generate(self, audit_id: str, url: str):
                 str(e),
             )
 
+        # Stage 6.5: Link discovered competitors to Brand records
+        try:
+            from app.services.competitor_service import CompetitorService as BrandLinker
+
+            brand_linker = BrandLinker(db)
+            linked_count = brand_linker.link_audit_competitors_to_brands(
+                db, str(audit_id), str(audit.user_id)
+            )
+            logger.info(
+                "Audit {}: linked {} competitors to brands",
+                audit_id,
+                linked_count,
+            )
+        except Exception as e:
+            logger.warning(
+                "Audit {}: competitor brand linking failed (non-critical): {}",
+                audit_id,
+                str(e),
+            )
+
         # Stage 7: Generate recommendations and sentiment analysis
         # Non-fatal: recommendation generation failure should not fail the audit
         try:
@@ -319,6 +360,7 @@ def run_crawl_and_generate(self, audit_id: str, url: str):
             recs = rec_engine.generate_recommendations(
                 audit_id=audit_id,
                 user_id=str(audit.user_id),
+                vertical=audit.vertical or "generic",
             )
             logger.info(
                 "Audit {}: generated {} recommendations",
