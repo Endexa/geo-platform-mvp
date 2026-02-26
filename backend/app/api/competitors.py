@@ -1,8 +1,10 @@
-"""Competitor API endpoints for leaderboard, crawl trigger, and competitor detail.
+"""Competitor API endpoints for leaderboard, crawl trigger, competitor detail,
+SOV trend, and score comparison.
 
 Provides GET leaderboard (share-of-voice rankings), POST crawl trigger
-(resolve URLs and score competitors), and GET competitor detail for a
-specific competitor audit.
+(resolve URLs and score competitors), GET competitor detail, GET SOV trend
+for a competitor brand across audits, and GET score comparison (site vs
+competitors side-by-side).
 
 All endpoints require authentication and verify audit ownership.
 """
@@ -170,3 +172,20 @@ def get_competitor_detail(
             comp_audit.created_at.isoformat() if comp_audit.created_at else ""
         ),
     )
+
+
+@router.get("/brands/{brand_id}/sov-trend")
+def get_sov_trend(
+    brand_id: str,
+    db: Session = Depends(get_db),
+    current_user: Profile = Depends(get_current_active_user),
+):
+    """Get share-of-voice trend data for a competitor brand across audits.
+
+    Returns time-series data points ordered by audit date with SOV percentage
+    and mention count at each point.
+    """
+    trend = CompetitorService.get_competitor_sov_trend(
+        db, brand_id, str(current_user.id)
+    )
+    return trend

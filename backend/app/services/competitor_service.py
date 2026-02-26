@@ -5,22 +5,27 @@ domain heuristic > Google Knowledge Graph), crawls competitor sites using
 CrawlerService, scores them with the Phase 6 scoring pipeline, and stores
 per-category averages on CompetitorAudit records.
 
-The leaderboard query returns all discovered entities ranked by share-of-voice
-with associated competitor audit data.
+Also handles cross-audit competitor persistence by linking DiscoveredCompetitor
+records to Brand entities, enabling share-of-voice tracking over time and
+side-by-side score comparison.
 """
 
 import re
+from urllib.parse import urlparse
 
 import httpx
 from loguru import logger
 from rapidfuzz import fuzz
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
 from app.models.audit import Audit
 from app.models.audit_query import AuditQuery
+from app.models.brand import Brand
 from app.models.competitor import CompetitorAudit, DiscoveredCompetitor
 from app.models.engine_response import EngineResponse
+from app.models.page_score import PageScore
 from app.services.query_generator import QueryGeneratorService
 
 
@@ -489,6 +494,261 @@ class CompetitorService:
             "total_entities": len(competitors),
             "competitors": competitor_entries,
             "competitor_audits": audit_summaries,
+        }
+
+    # ------------------------------------------------------------------
+    # Brand Linking (cross-audit competitor persistence)
+    # ------------------------------------------------------------------
+
+    def link_competitor_to_brand(
+        self, db: Session, competitor: DiscoveredCompetitor, user_id: str
+    ) -> None:
+        """Link a DiscoveredCompetitor to a Brand record.
+
+        Matching strategy (in priority order):
+            1. Domain match (strongest signal): extract domain from resolved_url,
+               find Brand with matching domain for this user.
+            2. Exact name match (case-insensitive): find Brand where lower(name)
+               matches lower(entity_name).
+            3. Fuzzy name match: rapidfuzz token_set_ratio > 90 against all
+               user's Brands.
+            4. Create new Brand: if no match found.
+
+        Args:
+            db: SQLAlchemy session.
+            competitor: The DiscoveredCompetitor ORM record.
+            user_id: The owner user UUID string.
+        """
+        extracted_domain = None
+        if competitor.resolved_url:
+            parsed = urlparse(competitor.resolved_url)
+            extracted_domain = parsed.netloc.lower().replace("www.", "")
+
+        # Strategy 1: Domain match
+        if extracted_domain:
+            brand = (
+                db.query(Brand)
+                .filter(Brand.user_id == user_id)
+                .filter(func.lower(Brand.domain) == extracted_domain)
+                .first()
+            )
+            if brand:
+                competitor.competitor_brand_id = brand.id
+                logger.debug(
+                    "Linked '{}' to brand '{}' via domain match",
+                    competitor.entity_name,
+                    brand.name,
+                )
+                return
+
+        # Strategy 2: Exact name match (case-insensitive)
+        entity_lower = competitor.entity_name.lower()
+        brand = (
+            db.query(Brand)
+            .filter(Brand.user_id == user_id)
+            .filter(func.lower(Brand.name) == entity_lower)
+            .first()
+        )
+        if brand:
+            competitor.competitor_brand_id = brand.id
+            logger.debug(
+                "Linked '{}' to brand '{}' via exact name match",
+                competitor.entity_name,
+                brand.name,
+            )
+            return
+
+        # Strategy 3: Fuzzy name match (token_set_ratio > 90)
+        all_brands = db.query(Brand).filter(Brand.user_id == user_id).all()
+        best_score = 0
+        best_brand = None
+        for b in all_brands:
+            score = fuzz.token_set_ratio(b.name, competitor.entity_name)
+            if score > best_score:
+                best_score = score
+                best_brand = b
+        if best_score > 90 and best_brand is not None:
+            competitor.competitor_brand_id = best_brand.id
+            logger.debug(
+                "Linked '{}' to brand '{}' via fuzzy match (score={})",
+                competitor.entity_name,
+                best_brand.name,
+                best_score,
+            )
+            return
+
+        # Strategy 4: Create new Brand
+        new_brand = Brand(
+            user_id=user_id,
+            name=competitor.entity_name,
+            domain=extracted_domain or "",
+            url=competitor.resolved_url or "",
+            is_competitor=True,
+        )
+        db.add(new_brand)
+        db.flush()
+        competitor.competitor_brand_id = new_brand.id
+        logger.debug(
+            "Created new competitor brand '{}' for user {}",
+            competitor.entity_name,
+            user_id,
+        )
+
+    def link_audit_competitors_to_brands(
+        self, db: Session, audit_id: str, user_id: str
+    ) -> int:
+        """Link all unlinked DiscoveredCompetitor records for an audit to Brands.
+
+        Args:
+            db: SQLAlchemy session.
+            audit_id: The audit UUID string.
+            user_id: The owner user UUID string.
+
+        Returns:
+            Count of newly linked competitors.
+        """
+        unlinked = (
+            db.query(DiscoveredCompetitor)
+            .filter(DiscoveredCompetitor.audit_id == audit_id)
+            .filter(DiscoveredCompetitor.competitor_brand_id.is_(None))
+            .all()
+        )
+
+        count = 0
+        for comp in unlinked:
+            self.link_competitor_to_brand(db, comp, user_id)
+            count += 1
+
+        logger.info(
+            "Audit {}: linked {} competitors to brands", audit_id, count
+        )
+        return count
+
+    # ------------------------------------------------------------------
+    # SOV Trend Query (cross-audit time series)
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def get_competitor_sov_trend(
+        db: Session, brand_id: str, user_id: str
+    ) -> list[dict]:
+        """Query share-of-voice trend for a competitor brand across audits.
+
+        Joins DiscoveredCompetitor with Audit to get the audit date,
+        filtered by user_id and competitor_brand_id.
+
+        Args:
+            db: SQLAlchemy session.
+            brand_id: The Brand UUID string.
+            user_id: The owner user UUID string.
+
+        Returns:
+            List of dicts with date, share_of_voice, mention_count, audit_id,
+            ordered by audit date ascending.
+        """
+        results = (
+            db.query(DiscoveredCompetitor, Audit.created_at, Audit.id)
+            .join(Audit, DiscoveredCompetitor.audit_id == Audit.id)
+            .filter(Audit.user_id == user_id)
+            .filter(DiscoveredCompetitor.competitor_brand_id == brand_id)
+            .order_by(Audit.created_at.asc())
+            .all()
+        )
+
+        trend = []
+        for comp, audit_date, audit_id in results:
+            trend.append({
+                "date": audit_date.isoformat() if audit_date else "",
+                "share_of_voice": float(comp.share_of_voice),
+                "mention_count": comp.mention_count,
+                "audit_id": str(audit_id),
+            })
+
+        return trend
+
+    # ------------------------------------------------------------------
+    # Score Comparison (site vs competitors side-by-side)
+    # ------------------------------------------------------------------
+
+    def get_score_comparison(
+        self, db: Session, audit_id: str, user_id: str
+    ) -> dict:
+        """Build side-by-side score comparison between user's site and competitors.
+
+        Loads the Audit record for the user's site scores and all completed
+        CompetitorAudit records for competitor scores.
+
+        Site category scores are computed by averaging PageScore records for
+        the audit (same aggregation used by the scoring pipeline).
+
+        Args:
+            db: SQLAlchemy session.
+            audit_id: The audit UUID string.
+            user_id: The owner user UUID string.
+
+        Returns:
+            Dict with 'site' (name, url, optimization_score, category scores)
+            and 'competitors' list (same fields per completed competitor).
+        """
+        audit = db.query(Audit).filter(Audit.id == audit_id).first()
+        if not audit:
+            return {"site": {}, "competitors": []}
+
+        # Compute site category averages from PageScore records
+        page_scores = (
+            db.query(PageScore)
+            .filter(PageScore.audit_id == audit_id)
+            .filter(PageScore.was_scored.is_(True))
+            .all()
+        )
+
+        def _avg_field(records, field_name):
+            values = [
+                getattr(r, field_name)
+                for r in records
+                if getattr(r, field_name) is not None
+            ]
+            if not values:
+                return None
+            return round(sum(values) / len(values))
+
+        site_name = audit.url
+        if audit.brand:
+            site_name = audit.brand.name
+
+        site_data = {
+            "name": site_name,
+            "url": audit.url,
+            "optimization_score": audit.optimization_score,
+            "crawlability": _avg_field(page_scores, "crawlability_score"),
+            "content_structure": _avg_field(page_scores, "content_structure_score"),
+            "structured_data": _avg_field(page_scores, "structured_data_score"),
+            "authority": _avg_field(page_scores, "authority_score"),
+        }
+
+        # Load completed competitor audits
+        comp_audits = (
+            db.query(CompetitorAudit)
+            .filter(CompetitorAudit.parent_audit_id == audit_id)
+            .filter(CompetitorAudit.status == "completed")
+            .all()
+        )
+
+        competitors_data = []
+        for ca in comp_audits:
+            competitors_data.append({
+                "name": ca.competitor_name,
+                "url": ca.competitor_url,
+                "optimization_score": ca.optimization_score,
+                "crawlability": ca.crawlability_avg,
+                "content_structure": ca.content_structure_avg,
+                "structured_data": ca.structured_data_avg,
+                "authority": ca.authority_avg,
+            })
+
+        return {
+            "site": site_data,
+            "competitors": competitors_data,
         }
 
     # ------------------------------------------------------------------
