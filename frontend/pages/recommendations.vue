@@ -21,36 +21,53 @@
       </button>
     </div>
 
-    <!-- No audit state -->
-    <div v-if="!loading && !auditId" class="bg-white rounded-lg border border-gray-200 p-8 text-center">
-      <p class="text-gray-500">No recommendations generated. Run an audit to get started.</p>
+    <!-- Loading skeleton -->
+    <div v-if="loading" class="space-y-4">
+      <div
+        v-for="i in 4"
+        :key="i"
+        class="bg-white rounded-xl border border-gray-200 p-5 animate-pulse"
+      >
+        <div class="flex items-center gap-3 mb-3">
+          <div class="h-5 w-16 bg-gray-200 rounded" />
+          <div class="h-4 bg-gray-200 rounded w-1/3" />
+        </div>
+        <div class="h-3 bg-gray-200 rounded w-full mb-2" />
+        <div class="h-3 bg-gray-200 rounded w-2/3" />
+      </div>
+    </div>
+
+    <!-- Error state -->
+    <div v-else-if="apiError" class="bg-white rounded-xl border border-gray-200 p-12 text-center">
+      <ExclamationTriangleIcon class="w-16 h-16 mx-auto text-warning-400" />
+      <h2 class="text-lg font-semibold text-gray-700 mt-4">Something went wrong</h2>
+      <p class="text-gray-500 mt-2 mb-6">{{ apiError }}</p>
+      <button @click="loadData" class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2">Try Again</button>
+    </div>
+
+    <!-- No audit state (empty) -->
+    <div v-else-if="!auditId" class="bg-white rounded-xl border border-gray-200 p-12 text-center">
+      <LightBulbIcon class="w-16 h-16 mx-auto text-gray-300" />
+      <h2 class="text-lg font-semibold text-gray-700 mt-4">No recommendations yet</h2>
+      <p class="text-gray-500 mt-2 mb-6">Complete an audit to get recommendations</p>
       <NuxtLink
         to="/audit"
-        class="inline-block mt-4 px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200"
+        class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2"
       >
         Start an Audit
       </NuxtLink>
     </div>
 
-    <!-- Loading -->
-    <div v-else-if="loading" class="bg-white rounded-lg border border-gray-200 p-8 text-center">
-      <div class="animate-spin h-8 w-8 border-4 border-primary-600 border-t-transparent rounded-full mx-auto" />
-      <p class="text-gray-500 mt-4">Loading recommendations...</p>
-    </div>
-
-    <!-- Error state -->
-    <div v-else-if="apiError" class="bg-red-50 border border-red-200 rounded-lg p-4">
-      <p class="text-sm text-red-700">{{ apiError }}</p>
-    </div>
-
     <!-- Recommendations loaded -->
     <template v-else-if="auditId">
       <!-- Empty state -->
-      <div v-if="recommendations.length === 0 && !loading" class="bg-white rounded-lg border border-gray-200 p-8 text-center">
-        <p class="text-gray-500">No recommendations generated. Run an audit to get started.</p>
+      <div v-if="recommendations.length === 0 && !loading" class="bg-white rounded-xl border border-gray-200 p-12 text-center">
+        <LightBulbIcon class="w-16 h-16 mx-auto text-gray-300" />
+        <h2 class="text-lg font-semibold text-gray-700 mt-4">No recommendations yet</h2>
+        <p class="text-gray-500 mt-2 mb-6">Complete an audit to get recommendations</p>
         <NuxtLink
           to="/audit"
-          class="inline-block mt-4 px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200"
+          class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2"
         >
           Start an Audit
         </NuxtLink>
@@ -217,6 +234,8 @@
 import {
   ArrowDownTrayIcon,
   ChevronRightIcon,
+  ExclamationTriangleIcon,
+  LightBulbIcon,
 } from '@heroicons/vue/24/outline'
 
 definePageMeta({

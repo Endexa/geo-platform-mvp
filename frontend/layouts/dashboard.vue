@@ -30,6 +30,7 @@
         >
           <component :is="item.icon" class="w-5 h-5 mr-3 shrink-0" />
           {{ item.label }}
+          <span v-if="item.comingSoon" class="ml-auto text-[10px] bg-gray-200 text-gray-500 px-1.5 py-0.5 rounded-full">Soon</span>
         </NuxtLink>
       </nav>
 
@@ -146,12 +147,12 @@ const route = useRoute()
 
 const navigation = [
   { path: '/dashboard', label: 'Dashboard', icon: HomeIcon },
-  { path: '/analyze', label: 'Analyze', icon: MagnifyingGlassIcon },
-  { path: '/audit', label: 'AI Audit', icon: ShieldCheckIcon },
+  { path: '/audit', label: 'New Audit', icon: ShieldCheckIcon },
   { path: '/competitors', label: 'Competitors', icon: UsersIcon },
   { path: '/brands', label: 'Brands', icon: BuildingOfficeIcon },
   { path: '/recommendations', label: 'Recommendations', icon: LightBulbIcon },
-  { path: '/brand-voice', label: 'Brand Voice', icon: MicrophoneIcon },
+  { path: '/analyze', label: 'Analyze', icon: MagnifyingGlassIcon },
+  { path: '/brand-voice', label: 'Brand Voice', icon: MicrophoneIcon, comingSoon: true },
   { path: '/settings', label: 'Settings', icon: Cog6ToothIcon },
 ]
 

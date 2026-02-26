@@ -94,6 +94,17 @@
       </div>
     </div>
 
+    <!-- Error state -->
+    <div
+      v-else-if="loadError"
+      class="bg-white rounded-xl border border-gray-200 p-12 text-center"
+    >
+      <ExclamationTriangleIcon class="w-16 h-16 mx-auto text-warning-400" />
+      <h2 class="text-lg font-semibold text-gray-700 mt-4">Something went wrong</h2>
+      <p class="text-gray-500 mt-2 mb-6">{{ loadError }}</p>
+      <button @click="loadBrands" class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2">Try Again</button>
+    </div>
+
     <!-- Empty state -->
     <div
       v-else-if="overviewBrands.length === 0 && !showCreateForm"
@@ -132,7 +143,7 @@
 </template>
 
 <script setup lang="ts">
-import { BuildingOfficeIcon, PlusIcon } from '@heroicons/vue/24/outline'
+import { BuildingOfficeIcon, PlusIcon, ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 
 definePageMeta({ layout: 'dashboard' })
 
@@ -152,6 +163,7 @@ interface BrandOverview {
 }
 
 const loading = ref(true)
+const loadError = ref('')
 const overviewBrands = ref<BrandOverview[]>([])
 const showCreateForm = ref(false)
 const editingBrand = ref<BrandOverview | null>(null)
@@ -171,11 +183,12 @@ onMounted(async () => {
 
 async function loadBrands() {
   loading.value = true
+  loadError.value = ''
   try {
     const data = await useApiFetch<{ brands: BrandOverview[]; total_brands: number }>('/brands/overview')
     overviewBrands.value = data.brands
-  } catch (e) {
-    console.error('Failed to fetch brand overview:', e)
+  } catch (e: any) {
+    loadError.value = e.data?.detail || e.message || 'Failed to load brands'
   } finally {
     loading.value = false
   }

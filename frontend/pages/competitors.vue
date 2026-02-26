@@ -5,34 +5,54 @@
       <p class="text-gray-600 mt-1">See which brands AI engines mention alongside yours</p>
     </div>
 
-    <!-- No audit state -->
-    <div v-if="!loading && !auditId" class="bg-white rounded-lg border border-gray-200 p-8 text-center">
-      <p class="text-gray-500">Run an audit first to discover competitors.</p>
+    <!-- Loading skeleton -->
+    <div v-if="loading" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div
+        v-for="i in 3"
+        :key="i"
+        class="bg-white rounded-xl border border-gray-200 p-6 h-40 animate-pulse"
+      >
+        <div class="h-4 bg-gray-200 rounded w-2/3 mb-4" />
+        <div class="h-3 bg-gray-200 rounded w-1/3 mb-3" />
+        <div class="h-8 bg-gray-200 rounded w-1/2 mb-3" />
+        <div class="h-3 bg-gray-200 rounded w-full" />
+      </div>
+    </div>
+
+    <!-- Error state -->
+    <div v-else-if="apiError" class="bg-white rounded-xl border border-gray-200 p-12 text-center">
+      <ExclamationTriangleIcon class="w-16 h-16 mx-auto text-warning-400" />
+      <h2 class="text-lg font-semibold text-gray-700 mt-4">Something went wrong</h2>
+      <p class="text-gray-500 mt-2 mb-6">{{ apiError }}</p>
+      <button @click="loadData" class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2">Try Again</button>
+    </div>
+
+    <!-- No audit state (empty) -->
+    <div v-else-if="!auditId" class="bg-white rounded-xl border border-gray-200 p-12 text-center">
+      <UsersIcon class="w-16 h-16 mx-auto text-gray-300" />
+      <h2 class="text-lg font-semibold text-gray-700 mt-4">No competitors discovered yet</h2>
+      <p class="text-gray-500 mt-2 mb-6">Run an audit to discover competitors</p>
       <NuxtLink
         to="/audit"
-        class="inline-block mt-4 px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200"
+        class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2"
       >
         Start an Audit
       </NuxtLink>
     </div>
 
-    <!-- Loading -->
-    <div v-else-if="loading" class="bg-white rounded-lg border border-gray-200 p-8 text-center">
-      <div class="animate-spin h-8 w-8 border-4 border-primary-600 border-t-transparent rounded-full mx-auto" />
-      <p class="text-gray-500 mt-4">Loading competitor data...</p>
-    </div>
-
-    <!-- Error state -->
-    <div v-else-if="apiError" class="bg-red-50 border border-red-200 rounded-lg p-4">
-      <p class="text-sm text-red-700">{{ apiError }}</p>
-    </div>
-
     <!-- Competitor data loaded -->
     <template v-else-if="leaderboard">
       <!-- Empty leaderboard -->
-      <div v-if="leaderboard.competitors.length === 0" class="bg-white rounded-lg border border-gray-200 p-8 text-center">
-        <p class="text-gray-500">No competitors found in AI responses.</p>
-        <p class="text-sm text-gray-400 mt-1">AI engines did not mention other brands for this audit's queries.</p>
+      <div v-if="leaderboard.competitors.length === 0" class="bg-white rounded-xl border border-gray-200 p-12 text-center">
+        <UsersIcon class="w-16 h-16 mx-auto text-gray-300" />
+        <h2 class="text-lg font-semibold text-gray-700 mt-4">No competitors discovered yet</h2>
+        <p class="text-gray-500 mt-2 mb-6">AI engines did not mention other brands for this audit's queries</p>
+        <NuxtLink
+          to="/audit"
+          class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2"
+        >
+          Run Another Audit
+        </NuxtLink>
       </div>
 
       <template v-else>
@@ -82,6 +102,8 @@
 </template>
 
 <script setup lang="ts">
+import { ExclamationTriangleIcon, UsersIcon } from '@heroicons/vue/24/outline'
+
 definePageMeta({
   layout: 'dashboard',
   middleware: ['auth'],

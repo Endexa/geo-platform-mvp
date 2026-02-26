@@ -36,6 +36,13 @@
             />
           </div>
 
+          <!-- Error display -->
+          <div v-if="analysisError" class="bg-white rounded-xl border border-gray-200 p-6 text-center">
+            <ExclamationTriangleIcon class="w-12 h-12 mx-auto text-warning-400" />
+            <p class="text-gray-700 font-medium mt-3">Analysis failed</p>
+            <p class="text-gray-500 text-sm mt-1">{{ analysisError }}</p>
+          </div>
+
           <button
             type="submit"
             class="btn-primary w-full py-3"
@@ -60,9 +67,7 @@
           <div v-for="(step, index) in steps" :key="index" class="flex items-center">
             <div class="flex-shrink-0">
               <div v-if="currentStep > index" class="w-8 h-8 bg-success-500 rounded-full flex items-center justify-center">
-                <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
+                <CheckIcon class="w-5 h-5 text-white" />
               </div>
               <div v-else-if="currentStep === index" class="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center">
                 <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -87,25 +92,25 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div class="card">
             <p class="text-sm text-gray-600">GEO Score</p>
-            <p class="text-3xl font-bold mt-2" :class="getScoreColor(results.geo_score)">
+            <p class="text-3xl font-bold font-mono mt-2" :class="getScoreColor(results.geo_score)">
               {{ results.geo_score }}
             </p>
           </div>
           <div class="card">
             <p class="text-sm text-gray-600">Visibility</p>
-            <p class="text-3xl font-bold text-primary-600 mt-2">
+            <p class="text-3xl font-bold font-mono text-primary-600 mt-2">
               {{ results.visibility_score }}
             </p>
           </div>
           <div class="card">
             <p class="text-sm text-gray-600">Readability</p>
-            <p class="text-3xl font-bold text-primary-600 mt-2">
+            <p class="text-3xl font-bold font-mono text-primary-600 mt-2">
               {{ results.readability_score }}
             </p>
           </div>
           <div class="card">
             <p class="text-sm text-gray-600">Authority</p>
-            <p class="text-3xl font-bold text-primary-600 mt-2">
+            <p class="text-3xl font-bold font-mono text-primary-600 mt-2">
               {{ results.authority_score }}
             </p>
           </div>
@@ -115,10 +120,10 @@
         <div class="card">
           <h3 class="font-semibold text-gray-900 mb-4">Next Steps</h3>
           <div class="flex gap-4">
-            <button @click="generateRecommendations" class="btn-primary">
+            <button @click="generateRecommendations" class="btn-primary cursor-pointer">
               Generate Recommendations
             </button>
-            <button @click="resetForm" class="btn-secondary">
+            <button @click="resetForm" class="btn-secondary cursor-pointer">
               Analyze Another URL
             </button>
           </div>
@@ -128,6 +133,8 @@
 </template>
 
 <script setup lang="ts">
+import { ExclamationTriangleIcon, CheckIcon } from '@heroicons/vue/24/outline'
+
 definePageMeta({ layout: 'dashboard' })
 const config = useRuntimeConfig()
 const url = ref('')
@@ -135,6 +142,7 @@ const keywordsInput = ref('')
 const analyzing = ref(false)
 const currentStep = ref(0)
 const results = ref(null)
+const analysisError = ref('')
 
 const steps = [
   'Crawling Site...',
@@ -147,6 +155,7 @@ const startAnalysis = async () => {
   analyzing.value = true
   currentStep.value = 0
   results.value = null
+  analysisError.value = ''
 
   try {
     const keywords = keywordsInput.value.split(',').map(k => k.trim()).filter(k => k)
@@ -193,30 +202,30 @@ const startAnalysis = async () => {
           analyzing.value = false
         } else if (statusData.status === 'failed') {
           clearInterval(pollInterval)
-          alert('Analysis failed. Please try again.')
+          analysisError.value = 'Analysis failed. Please try again.'
           analyzing.value = false
         } else if (pollAttempts >= maxPollAttempts) {
           clearInterval(pollInterval)
-          alert('Analysis timeout. Please try again.')
+          analysisError.value = 'Analysis timed out. Please try again.'
           analyzing.value = false
         }
-      } catch (pollError) {
+      } catch (pollError: any) {
         console.error('Polling error:', pollError)
         clearInterval(pollInterval)
-        alert('Error checking analysis status')
+        analysisError.value = pollError.message || 'Error checking analysis status'
         analyzing.value = false
       }
     }, 2000)
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Analysis error:', error)
-    alert(error.message || 'Failed to start analysis')
+    analysisError.value = error.message || 'Failed to start analysis'
     analyzing.value = false
   }
 }
 
 const generateRecommendations = () => {
-  navigateTo('/optimization')
+  navigateTo('/recommendations')
 }
 
 const resetForm = () => {
@@ -224,6 +233,7 @@ const resetForm = () => {
   keywordsInput.value = ''
   results.value = null
   currentStep.value = 0
+  analysisError.value = ''
 }
 
 const getScoreColor = (score: number) => {
