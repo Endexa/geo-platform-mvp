@@ -142,11 +142,11 @@ Plans:
   2. User can upload the output from running those prompts back into Endexa
   3. Endexa produces additional, code-specific recommendations based on the uploaded analysis output
   4. Generated prompts are useful for analysis but do not expose Endexa's proprietary scoring logic (users still need Endexa for interpretation)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 08-01: TBD
-- [ ] 08-02: TBD
+- [ ] 08-01-PLAN.md -- Backend: CodeAnalysis + CodeRecommendation models, migration 015, PromptGeneratorService (template-based, no LLM), CodeAnalysisService (LiteLLM structured output), Celery task, all 5 API endpoints
+- [ ] 08-02-PLAN.md -- Frontend: useCodeAnalysis composable, CodeAnalysisPrompts + CodeAnalysisUpload components, audit.vue integration, 22+ backend unit tests
 
 ## Progress
 
@@ -163,4 +163,4 @@ Note: Phases 3 and 4 can execute in parallel (independent dependencies).
 | 5. Reports + Exports | 2/2 | Complete | 2026-02-26 |
 | 6. Chat Assistant | 2/2 | Complete | 2026-02-26 |
 | 7. Dashboard + Frontend Polish | 3/3 | Complete | 2026-02-26 |
-| 8. Code Analysis | 0/2 | Not started | - |
+| 8. Code Analysis | 0/2 | Planned | - |
