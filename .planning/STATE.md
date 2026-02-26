@@ -9,10 +9,10 @@ See: .planning/PROJECT.md (updated 2026-02-26)
 
 ## Current Position
 
-Phase: 9 of 9 (Landing + Frontend Overhaul + Stripe) -- Not started
-Plan: 0 of TBD complete
-Status: Transitioning to Phase 9
-Last activity: 2026-02-26 -- Phase 8 complete, Phase 9 added to roadmap
+Phase: 9 of 9 (Landing + Frontend Overhaul + Stripe) -- In Progress
+Plan: 3 of TBD complete
+Status: Active
+Last activity: 2026-02-26 -- 09-03 complete: landing layout + Hero, Features, HowItWorks sections
 
 Progress: [████████░░] 89% (8/9 phases complete)
 
@@ -39,6 +39,7 @@ Progress: [████████░░] 89% (8/9 phases complete)
 **Recent Trend:**
 - Last 5 plans: 07-01 (7min), 07-02 (3min), 07-03 (8min), 08-01 (8min), 08-02 (7min)
 - Trend: Consistent
+| Phase 09-stripe-pricing-fix P02 | 4 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -102,6 +103,11 @@ Recent decisions affecting current work:
 - [08-02]: CodeRecommendationCard extracted as standalone component -- keeps CodeAnalysisUpload template manageable (single-responsibility)
 - [08-02]: Celery task unit tests use task.run() (not __wrapped__) to bypass Celery dispatch while respecting bind=True signature
 - [08-02]: IP protection test uses three regex patterns + forbidden words + score fractions -- comprehensive CODE-04 coverage
+- [09-01]: subscription-status uses status.in_(["active","trialing"]) to include trial users as pro tier
+- [09-01]: No rate limiting on subscription-status: read-only lightweight DB query, auth is sufficient guard
+- [Phase 09-02]: Monthly-only pricing: yearly toggle removed entirely per requirements
+- [Phase 09-02]: Stripe price ID read from config.public.stripePriceProMonthly — never hardcode Stripe IDs
+- [Phase 09-02]: Enterprise tier uses mailto:hello@endexa.com — no Stripe session for enterprise deals
 
 ### Pending Todos
 
@@ -119,5 +125,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed 08-02-PLAN.md (code analysis frontend + tests -- Phase 8 complete)
+Stopped at: Completed 09-03-PLAN.md (landing layout + Hero, Features, HowItWorks sections)
 Resume file: None
