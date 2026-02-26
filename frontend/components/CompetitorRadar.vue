@@ -21,7 +21,7 @@
           <tbody>
             <tr class="border-t border-gray-50">
               <td class="py-1.5">
-                <span class="inline-block w-2.5 h-2.5 rounded-full bg-[#1E40AF] mr-2" />
+                <span class="inline-block w-2.5 h-2.5 rounded-full bg-primary-800 mr-2" />
                 You
               </td>
               <td class="py-1.5 text-right font-medium">{{ userSov.toFixed(1) }}%</td>
@@ -62,6 +62,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js'
+import { chartColors, competitorColors, competitorBgColors } from '~/utils/chartColors'
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend)
 
@@ -83,14 +84,8 @@ const props = defineProps<{
   }>
 }>()
 
-const compColors = ['#EF4444', '#F59E0B', '#10B981', '#8B5CF6', '#EC4899']
-const compBgColors = [
-  'rgba(239,68,68,0.1)',
-  'rgba(245,158,11,0.1)',
-  'rgba(16,185,129,0.1)',
-  'rgba(139,92,246,0.1)',
-  'rgba(236,72,153,0.1)',
-]
+const compColors = competitorColors
+const compBgColors = competitorBgColors
 
 const userSov = computed(() => {
   const totalCompSov = props.competitors.reduce((sum, c) => sum + c.share_of_voice, 0)
@@ -110,9 +105,9 @@ const chartData = computed(() => ({
         props.userScores.schema,
         props.userScores.authority,
       ],
-      borderColor: '#1E40AF',
-      backgroundColor: 'rgba(30, 64, 175, 0.2)',
-      pointBackgroundColor: '#1E40AF',
+      borderColor: chartColors.primary[800],
+      backgroundColor: chartColors.primary.bg20,
+      pointBackgroundColor: chartColors.primary[800],
       pointRadius: 3,
     },
     ...props.competitors.map((comp, i) => ({

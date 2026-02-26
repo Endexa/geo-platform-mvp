@@ -8,7 +8,7 @@
       </div>
       <button
         @click="showCreateForm = true"
-        class="inline-flex items-center px-4 py-2 bg-[#1E40AF] text-white rounded-lg text-sm font-medium hover:bg-[#1E3A8A] transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-[#1E40AF] focus-visible:ring-offset-2"
+        class="inline-flex items-center px-4 py-2 bg-primary-800 text-white rounded-lg text-sm font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2"
       >
         <PlusIcon class="w-4 h-4 mr-2" />
         Create Brand
@@ -32,7 +32,7 @@
             type="text"
             required
             placeholder="My Brand"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus-visible:ring-2 focus-visible:ring-[#1E40AF] focus-visible:border-[#1E40AF] outline-none"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:border-primary-800 outline-none"
           />
         </div>
         <div>
@@ -43,7 +43,7 @@
             type="url"
             required
             placeholder="https://example.com"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus-visible:ring-2 focus-visible:ring-[#1E40AF] focus-visible:border-[#1E40AF] outline-none"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:border-primary-800 outline-none"
           />
         </div>
         <div>
@@ -53,7 +53,7 @@
             v-model="formData.description"
             rows="2"
             placeholder="Brief description of the brand"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus-visible:ring-2 focus-visible:ring-[#1E40AF] focus-visible:border-[#1E40AF] outline-none resize-none"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:border-primary-800 outline-none resize-none"
           />
         </div>
         <p v-if="formError" class="text-sm text-red-600">{{ formError }}</p>
@@ -61,7 +61,7 @@
           <button
             type="submit"
             :disabled="formSubmitting"
-            class="px-4 py-2 bg-[#1E40AF] text-white rounded-lg text-sm font-medium hover:bg-[#1E3A8A] transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-[#1E40AF] focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            class="px-4 py-2 bg-primary-800 text-white rounded-lg text-sm font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {{ formSubmitting ? 'Saving...' : (editingBrand ? 'Update Brand' : 'Create Brand') }}
           </button>
@@ -104,7 +104,7 @@
       <p class="text-gray-500 mt-2 mb-6">Create your first brand to start tracking multiple sites</p>
       <button
         @click="showCreateForm = true"
-        class="inline-flex items-center px-6 py-3 bg-[#1E40AF] text-white rounded-lg font-medium hover:bg-[#1E3A8A] transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-[#1E40AF] focus-visible:ring-offset-2"
+        class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2"
       >
         Create Brand
       </button>

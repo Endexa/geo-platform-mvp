@@ -3,7 +3,7 @@
     <!-- Combined GEO Score -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center">
       <div class="flex items-center justify-center mb-3">
-        <ChartBarIcon class="w-5 h-5 text-[#1E40AF] mr-2" />
+        <ChartBarIcon class="w-5 h-5 text-primary-800 mr-2" />
         <span class="text-sm font-medium text-gray-500 uppercase tracking-wide">Combined GEO Score</span>
       </div>
       <div
@@ -21,7 +21,7 @@
     <!-- Visibility Score -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center">
       <div class="flex items-center justify-center mb-3">
-        <EyeIcon class="w-5 h-5 text-[#3B82F6] mr-2" />
+        <EyeIcon class="w-5 h-5 text-primary-500 mr-2" />
         <span class="text-sm font-medium text-gray-500 uppercase tracking-wide">AI Visibility</span>
       </div>
       <div
@@ -41,7 +41,7 @@
     <!-- Optimization Score -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center">
       <div class="flex items-center justify-center mb-3">
-        <WrenchScrewdriverIcon class="w-5 h-5 text-[#F59E0B] mr-2" />
+        <WrenchScrewdriverIcon class="w-5 h-5 text-warning-500 mr-2" />
         <span class="text-sm font-medium text-gray-500 uppercase tracking-wide">Site Optimization</span>
       </div>
       <div

@@ -24,6 +24,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js'
+import { chartColors } from '~/utils/chartColors'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend)
 
@@ -56,19 +57,19 @@ const chartData = computed(() => ({
     {
       label: 'Combined GEO',
       data: brandsWithScores.value.map(b => b.combined_geo_score ?? 0),
-      backgroundColor: '#1E40AF',
+      backgroundColor: chartColors.primary[800],
       borderRadius: 4,
     },
     {
       label: 'Visibility',
       data: brandsWithScores.value.map(b => b.visibility_score ?? 0),
-      backgroundColor: '#60A5FA',
+      backgroundColor: 'rgb(96, 165, 250)',
       borderRadius: 4,
     },
     {
       label: 'Optimization',
       data: brandsWithScores.value.map(b => b.optimization_score ?? 0),
-      backgroundColor: '#F59E0B',
+      backgroundColor: chartColors.warning[500],
       borderRadius: 4,
     },
   ],

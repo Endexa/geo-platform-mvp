@@ -50,7 +50,7 @@
           <div
             class="max-w-[80%] rounded-lg px-3 py-2 text-sm"
             :class="msg.role === 'user'
-              ? 'bg-[#1E40AF] text-white'
+              ? 'bg-primary-800 text-white'
               : 'bg-slate-50 text-slate-800 border border-slate-200'"
             style="font-family: 'Fira Sans', sans-serif;"
           >

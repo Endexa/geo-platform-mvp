@@ -46,6 +46,7 @@ import {
   Filler,
 } from 'chart.js'
 import 'chartjs-adapter-date-fns'
+import { chartColors, engineColors } from '~/utils/chartColors'
 
 ChartJS.register(
   CategoryScale,
@@ -90,35 +91,35 @@ const overviewChartData = computed(() => ({
     {
       label: 'Combined GEO Score',
       data: props.history.map(h => ({ x: h.date, y: h.combined_score })),
-      borderColor: '#1E40AF',
-      backgroundColor: 'rgba(30, 64, 175, 0.1)',
+      borderColor: chartColors.primary[800],
+      backgroundColor: chartColors.primary.bg,
       fill: true,
       tension: 0.1,
       pointRadius: 5,
       pointHoverRadius: 7,
-      pointBackgroundColor: '#1E40AF',
+      pointBackgroundColor: chartColors.primary[800],
     },
     {
       label: 'Visibility',
       data: props.history.map(h => ({ x: h.date, y: h.visibility_score })),
-      borderColor: '#3B82F6',
+      borderColor: chartColors.primary[500],
       borderDash: [5, 5],
       fill: false,
       tension: 0.1,
       pointRadius: 5,
       pointHoverRadius: 7,
-      pointBackgroundColor: '#3B82F6',
+      pointBackgroundColor: chartColors.primary[500],
     },
     {
       label: 'Optimization',
       data: props.history.map(h => ({ x: h.date, y: h.optimization_score })),
-      borderColor: '#F59E0B',
+      borderColor: chartColors.warning[500],
       borderDash: [5, 5],
       fill: false,
       tension: 0.1,
       pointRadius: 5,
       pointHoverRadius: 7,
-      pointBackgroundColor: '#F59E0B',
+      pointBackgroundColor: chartColors.warning[500],
     },
   ],
 }))
@@ -128,55 +129,49 @@ const categoryChartData = computed(() => ({
     {
       label: 'Crawlability',
       data: props.history.map(h => ({ x: h.date, y: h.crawlability_avg ?? 0 })),
-      borderColor: '#059669',
+      borderColor: chartColors.success[600],
       backgroundColor: 'rgba(5, 150, 105, 0.1)',
       fill: false,
       tension: 0.1,
       pointRadius: 5,
       pointHoverRadius: 7,
-      pointBackgroundColor: '#059669',
+      pointBackgroundColor: chartColors.success[600],
     },
     {
       label: 'Content Structure',
       data: props.history.map(h => ({ x: h.date, y: h.content_structure_avg ?? 0 })),
-      borderColor: '#7C3AED',
+      borderColor: chartColors.violet,
       fill: false,
       tension: 0.1,
       pointRadius: 5,
       pointHoverRadius: 7,
-      pointBackgroundColor: '#7C3AED',
+      pointBackgroundColor: chartColors.violet,
     },
     {
       label: 'Structured Data',
       data: props.history.map(h => ({ x: h.date, y: h.structured_data_avg ?? 0 })),
-      borderColor: '#DC2626',
+      borderColor: chartColors.danger[600],
       fill: false,
       tension: 0.1,
       pointRadius: 5,
       pointHoverRadius: 7,
-      pointBackgroundColor: '#DC2626',
+      pointBackgroundColor: chartColors.danger[600],
     },
     {
       label: 'Authority',
       data: props.history.map(h => ({ x: h.date, y: h.authority_avg ?? 0 })),
-      borderColor: '#D97706',
+      borderColor: chartColors.amber,
       fill: false,
       tension: 0.1,
       pointRadius: 5,
       pointHoverRadius: 7,
-      pointBackgroundColor: '#D97706',
+      pointBackgroundColor: chartColors.amber,
     },
   ],
 }))
 
 const engineChartData = computed(() => {
   const engines = ['chatgpt', 'claude', 'perplexity', 'gemini']
-  const colors: Record<string, string> = {
-    chatgpt: '#10B981',
-    claude: '#8B5CF6',
-    perplexity: '#3B82F6',
-    gemini: '#F59E0B',
-  }
 
   return {
     datasets: engines.map(engine => ({
@@ -185,12 +180,12 @@ const engineChartData = computed(() => {
         x: h.date,
         y: h.per_engine_scores?.[engine] ?? 0,
       })),
-      borderColor: colors[engine],
+      borderColor: engineColors[engine],
       fill: false,
       tension: 0.1,
       pointRadius: 5,
       pointHoverRadius: 7,
-      pointBackgroundColor: colors[engine],
+      pointBackgroundColor: engineColors[engine],
     })),
   }
 })

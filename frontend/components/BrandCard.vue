@@ -4,7 +4,7 @@
     <div class="flex items-start justify-between mb-4">
       <div class="min-w-0 flex-1">
         <div class="flex items-center gap-2">
-          <BuildingOfficeIcon class="w-5 h-5 text-[#1E40AF] shrink-0" />
+          <BuildingOfficeIcon class="w-5 h-5 text-primary-800 shrink-0" />
           <h3 class="text-lg font-semibold text-gray-900 truncate">{{ brand.brand_name }}</h3>
         </div>
         <p class="text-sm text-gray-500 mt-1 truncate">{{ brand.brand_domain }}</p>
@@ -12,7 +12,7 @@
       <div class="flex items-center gap-1 shrink-0 ml-2">
         <button
           @click="$emit('edit', brand)"
-          class="p-1.5 text-gray-400 hover:text-[#1E40AF] rounded-lg hover:bg-gray-50 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-[#1E40AF]"
+          class="p-1.5 text-gray-400 hover:text-primary-800 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800"
           title="Edit brand"
         >
           <PencilIcon class="w-4 h-4" />
@@ -72,14 +72,14 @@
     <NuxtLink
       v-if="brand.latest_audit_id"
       :to="`/dashboard`"
-      class="block w-full text-center px-4 py-2 bg-[#1E40AF] text-white rounded-lg text-sm font-medium hover:bg-[#1E3A8A] transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-[#1E40AF] focus-visible:ring-offset-2"
+      class="block w-full text-center px-4 py-2 bg-primary-800 text-white rounded-lg text-sm font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2"
     >
       View Dashboard
     </NuxtLink>
     <NuxtLink
       v-else
       to="/audit"
-      class="block w-full text-center px-4 py-2 border border-[#1E40AF] text-[#1E40AF] rounded-lg text-sm font-medium hover:bg-[#1E40AF]/5 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-[#1E40AF] focus-visible:ring-offset-2"
+      class="block w-full text-center px-4 py-2 border border-primary-800 text-primary-800 rounded-lg text-sm font-medium hover:bg-primary-800/5 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2"
     >
       Start Audit
     </NuxtLink>

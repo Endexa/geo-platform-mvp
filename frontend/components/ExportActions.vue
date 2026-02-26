@@ -3,7 +3,7 @@
     <!-- PDF Export -->
     <button
       :disabled="exportingPdf"
-      class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium bg-[#1E40AF] text-white hover:bg-[#1E3A8A] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer focus-visible:ring-2 focus-visible:ring-[#1E40AF] focus-visible:ring-offset-2 transition-colors duration-200"
+      class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium bg-primary-800 text-white hover:bg-primary-900 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2 transition-colors duration-200"
       @click="downloadPdf"
     >
       <ArrowDownTrayIcon class="w-4 h-4 mr-1.5" />
@@ -14,7 +14,7 @@
     <!-- CSV Export -->
     <button
       :disabled="exportingCsv"
-      class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer focus-visible:ring-2 focus-visible:ring-[#1E40AF] focus-visible:ring-offset-2 transition-colors duration-200"
+      class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2 transition-colors duration-200"
       @click="downloadCsv"
     >
       <ArrowDownTrayIcon class="w-4 h-4 mr-1.5" />

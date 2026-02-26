@@ -9,6 +9,10 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        mono: ['"Fira Code"', 'ui-monospace', 'monospace'],
+        sans: ['"Fira Sans"', 'ui-sans-serif', 'sans-serif'],
+      },
       colors: {
         primary: {
           50: '#eff6ff',
