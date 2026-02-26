@@ -84,6 +84,17 @@
 - [x] **UI-03**: Responsive layout works on desktop and tablet
 - [x] **UI-04**: Loading states, error states, and empty states handled throughout
 
+### Landing Page + Frontend Overhaul
+
+- [ ] **LAND-01**: Professional landing page with Hero, Features, How It Works, Pricing, FAQ, Security/Trust, Footer sections
+- [ ] **LAND-02**: Pricing page with 3 tiers: Free (feature list), Pro $29/mo (Stripe checkout), Enterprise (contact form)
+- [ ] **LAND-03**: Stripe checkout works end-to-end — real price ID from env vars, webhook processes subscription
+- [ ] **LAND-04**: Coherent UI/UX across all app pages — consistent design system (typography, colors, spacing, components)
+- [ ] **LAND-05**: Paywall hardened — server-side gating, frontend upgrade prompts, subscription status rehydration on refresh
+- [ ] **LAND-06**: Settings page has Manage Subscription button (Stripe Customer Portal) for Pro users
+- [ ] **LAND-07**: Landing page content establishes credibility — about, security, trust signals (E-E-A-T)
+- [ ] **LAND-08**: All .env.example files document Stripe vars, frontend builds clean
+
 ## v2 Deferred (v3)
 
 ### Brand Signature
@@ -164,10 +175,18 @@
 | CODE-02 | Phase 8: Code Analysis | Complete |
 | CODE-03 | Phase 8: Code Analysis | Complete |
 | CODE-04 | Phase 8: Code Analysis | Complete |
+| LAND-01 | Phase 9: Landing + Frontend Overhaul + Stripe | Pending |
+| LAND-02 | Phase 9: Landing + Frontend Overhaul + Stripe | Pending |
+| LAND-03 | Phase 9: Landing + Frontend Overhaul + Stripe | Pending |
+| LAND-04 | Phase 9: Landing + Frontend Overhaul + Stripe | Pending |
+| LAND-05 | Phase 9: Landing + Frontend Overhaul + Stripe | Pending |
+| LAND-06 | Phase 9: Landing + Frontend Overhaul + Stripe | Pending |
+| LAND-07 | Phase 9: Landing + Frontend Overhaul + Stripe | Pending |
+| LAND-08 | Phase 9: Landing + Frontend Overhaul + Stripe | Pending |
 
 **Coverage:**
-- v2 requirements: 49 total
-- Mapped to phases: 49
+- v2 requirements: 57 total
+- Mapped to phases: 57
 - Unmapped: 0
 
 ---

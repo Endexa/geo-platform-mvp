@@ -20,6 +20,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 6: Chat Assistant** - SSE-streamed LLM chat grounded in user's actual audit data
 - [x] **Phase 7: Dashboard + Frontend Polish** - Real metrics dashboard with trend charts, audit history, multi-site management, and production-ready UI throughout
 - [x] **Phase 8: Code Analysis** - Prompt generation for user's codebase, output ingestion, enriched recommendations from code findings
+- [ ] **Phase 9: Landing Page + Frontend Overhaul + Stripe Production** - Professional landing page, coherent UI/UX across all pages, 3-tier pricing (Free/Pro/Enterprise), Stripe production wiring, paywall hardening
 
 ## Phase Details
 
@@ -148,10 +149,30 @@ Plans:
 - [x] 08-01-PLAN.md -- Backend: CodeAnalysis + CodeRecommendation models, migration 015, PromptGeneratorService (template-based, no LLM), CodeAnalysisService (LiteLLM structured output), Celery task, all 5 API endpoints
 - [x] 08-02-PLAN.md -- Frontend: useCodeAnalysis composable, CodeAnalysisPrompts + CodeAnalysisUpload components, audit.vue integration, 25 backend unit tests
 
+### Phase 9: Landing Page + Frontend Overhaul + Stripe Production
+**Goal**: Users land on a professional, polished marketing site that clearly communicates Endexa's value, can subscribe via working Stripe checkout, and experience a coherent, modern UI across all app pages
+**Depends on**: All previous phases (product must be feature-complete)
+**Requirements**: LAND-01, LAND-02, LAND-03, LAND-04, LAND-05, LAND-06, LAND-07, LAND-08
+**Success Criteria** (what must be TRUE):
+  1. Landing page has Hero, Features, How It Works, Testimonials/Social Proof, Pricing, FAQ, Security/Trust, and Footer sections — professional quality matching the Meridiane reference style
+  2. Pricing page displays 3 tiers: Free (with feature list), Pro $29/mo (Stripe checkout), Enterprise (contact form) — no yearly toggle
+  3. Stripe checkout actually works end-to-end with real test keys — price ID wired from env vars, webhook secret configured, subscription created in DB
+  4. All app pages (dashboard, audit, analyze, competitors, recommendations, settings, brand-voice) follow a coherent design system with consistent typography, colors, spacing, and component patterns
+  5. Paywall is hardened: server-side tier gating cannot be bypassed, frontend shows upgrade prompts for gated features, subscription status endpoint rehydrates tier on page refresh
+  6. Settings page has "Manage Subscription" button (Stripe Customer Portal) for Pro users
+  7. Frontend builds with no errors and passes visual coherence review
+  8. About/Security/Trust content on landing page establishes credibility (E-E-A-T signals)
+**Plans**: TBD
+
+Plans:
+- [ ] 09-01: TBD
+- [ ] 09-02: TBD
+- [ ] 09-03: TBD
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 Note: Phases 3 and 4 can execute in parallel (independent dependencies).
 
 | Phase | Plans Complete | Status | Completed |
@@ -164,3 +185,4 @@ Note: Phases 3 and 4 can execute in parallel (independent dependencies).
 | 6. Chat Assistant | 2/2 | Complete | 2026-02-26 |
 | 7. Dashboard + Frontend Polish | 3/3 | Complete | 2026-02-26 |
 | 8. Code Analysis | 2/2 | Complete | 2026-02-26 |
+| 9. Landing + Frontend Overhaul + Stripe | 0/3 | Not started | - |

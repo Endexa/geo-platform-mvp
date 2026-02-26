@@ -13,6 +13,7 @@ export default defineNuxtConfig({
     public: {
       apiUrl: process.env.NUXT_PUBLIC_API_URL || 'http://localhost:8000',
       stripePublishableKey: process.env.NUXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '',
+      stripePriceProMonthly: process.env.NUXT_PUBLIC_STRIPE_PRICE_PRO_MONTHLY || '',
     }
   },
 
