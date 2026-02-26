@@ -53,9 +53,7 @@
 
     <slot />
 
-    <footer class="py-8 border-t border-slate-200 text-center text-sm text-slate-500">
-      © 2025 Endexa. All rights reserved.
-    </footer>
+    <LandingFooter />
   </div>
 </template>
 

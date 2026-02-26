@@ -3,7 +3,10 @@
     <LandingHero />
     <LandingFeatures />
     <LandingHowItWorks />
-    <!-- LandingTestimonials, LandingPricing, LandingFAQ, LandingTrust added in plan 05 -->
+    <LandingTestimonials />
+    <LandingPricing />
+    <LandingFAQ />
+    <LandingTrust />
   </div>
 </template>
 
