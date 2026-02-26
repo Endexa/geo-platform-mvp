@@ -55,6 +55,13 @@ class SessionStatusResponse(BaseModel):
     customer_email: Optional[str] = None
 
 
+class SubscriptionStatusResponse(BaseModel):
+    """Response body for subscription tier rehydration on page load."""
+
+    tier: str
+    status: Optional[str] = None
+
+
 # --- Endpoints ---
 
 
@@ -166,6 +173,30 @@ async def session_status(
             status_code=status.HTTP_502_BAD_GATEWAY,
             detail="Payment service error",
         )
+
+
+@router.get("/subscription-status", response_model=SubscriptionStatusResponse)
+async def get_subscription_status(
+    current_user: Profile = Depends(get_current_active_user),
+    db: Session = Depends(get_db),
+):
+    """Return the current user's subscription tier for frontend rehydration on page load.
+
+    Authenticated. No rate limiting needed (read-only, lightweight DB query).
+    Returns tier='pro' if active or trialing subscription exists, else tier='free'.
+    """
+    sub = (
+        db.query(Subscription)
+        .filter(
+            Subscription.user_id == current_user.id,
+            Subscription.status.in_(["active", "trialing"]),
+        )
+        .first()
+    )
+    return SubscriptionStatusResponse(
+        tier="pro" if sub else "free",
+        status=sub.status if sub else None,
+    )
 
 
 @router.post("/webhook")

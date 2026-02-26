@@ -21,6 +21,7 @@
 
 | Date | Task | Area | Details |
 |------|------|------|---------|
+| 2026-02-26 | Phase 09-stripe: Subscription status endpoint + .env docs (09-01) | Backend/Docs | GET /payments/subscription-status endpoint returning {tier, status} from DB; SubscriptionStatusResponse schema; Backend .env.example expanded with 6 Stripe vars; Frontend .env.example expanded with 2 Stripe vars |
 | 2026-02-23 | Phase 9: TrendChart + audit history (09-03) | Frontend | TrendChart component (Chart.js Line chart with time axis), chartjs-adapter-date-fns installed, audit history integration in dashboard. Phase 9 complete |
 | 2026-02-23 | Phase 9: Dashboard page rewrite (09-02) | Frontend | DashboardHero (3 score cards), CompetitorRadar (Chart.js radar + SOV table), ExportActions (PDF/CSV blob download), dashboard.vue rewrite with audit selector, top issues, engine breakdown |
 | 2026-02-23 | Phase 9: Backend dashboard service + API + export (09-01) | Full-stack | DashboardService (aggregation + PDF/CSV export), 4 API endpoints (overview, history, export/pdf, export/csv), Jinja2 PDF template, WeasyPrint + system deps, Pydantic schemas, dashboard API rewrite |
