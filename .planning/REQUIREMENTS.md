@@ -63,11 +63,11 @@
 
 ### Payments & Freemium
 
-- [ ] **PAY-01**: Stripe Checkout Sessions for subscription purchase flow
-- [ ] **PAY-02**: Stripe webhook handling for subscription lifecycle (created, updated, cancelled, payment failed)
-- [ ] **PAY-03**: Free tier: partial audit (crawlability category + overall score + top 3 recommendations)
-- [ ] **PAY-04**: Paid tier: full audit across all categories + all recommendations + exports + chat + code analysis
-- [ ] **PAY-05**: Feature gating enforced via FastAPI dependencies checking subscription tier
+- [x] **PAY-01**: Stripe Checkout Sessions for subscription purchase flow
+- [x] **PAY-02**: Stripe webhook handling for subscription lifecycle (created, updated, cancelled, payment failed)
+- [x] **PAY-03**: Free tier: partial audit (crawlability category + overall score + top 3 recommendations)
+- [x] **PAY-04**: Paid tier: full audit across all categories + all recommendations + exports + chat + code analysis
+- [x] **PAY-05**: Feature gating enforced via FastAPI dependencies checking subscription tier
 
 ### Dashboard
 
@@ -80,9 +80,9 @@
 ### Frontend Polish
 
 - [x] **UI-01**: Production-ready UI following design system (Data-Dense Dashboard style)
-- [ ] **UI-02**: Audit results page shows dual scores, category breakdowns, and recommendations
+- [x] **UI-02**: Audit results page shows dual scores, category breakdowns, and recommendations
 - [x] **UI-03**: Responsive layout works on desktop and tablet
-- [ ] **UI-04**: Loading states, error states, and empty states handled throughout
+- [x] **UI-04**: Loading states, error states, and empty states handled throughout
 
 ## v2 Deferred (v3)
 
@@ -138,11 +138,11 @@
 | VIS-02 | Phase 3: AI Visibility Hardening | Complete |
 | VIS-03 | Phase 3: AI Visibility Hardening | Complete |
 | VIS-04 | Phase 3: AI Visibility Hardening | Complete |
-| PAY-01 | Phase 4: Payments + Freemium Gating | Pending |
-| PAY-02 | Phase 4: Payments + Freemium Gating | Pending |
-| PAY-03 | Phase 4: Payments + Freemium Gating | Pending |
-| PAY-04 | Phase 4: Payments + Freemium Gating | Pending |
-| PAY-05 | Phase 4: Payments + Freemium Gating | Pending |
+| PAY-01 | Phase 4: Payments + Freemium Gating | Complete |
+| PAY-02 | Phase 4: Payments + Freemium Gating | Complete |
+| PAY-03 | Phase 4: Payments + Freemium Gating | Complete |
+| PAY-04 | Phase 4: Payments + Freemium Gating | Complete |
+| PAY-05 | Phase 4: Payments + Freemium Gating | Complete |
 | RPT-01 | Phase 5: Reports + Exports | Complete |
 | RPT-02 | Phase 5: Reports + Exports | Complete |
 | RPT-03 | Phase 5: Reports + Exports | Complete |
@@ -157,9 +157,9 @@
 | DASH-04 | Phase 7: Dashboard + Frontend Polish | Complete |
 | DASH-05 | Phase 7: Dashboard + Frontend Polish | Complete |
 | UI-01 | Phase 7: Dashboard + Frontend Polish | Complete |
-| UI-02 | Phase 7: Dashboard + Frontend Polish | Pending |
+| UI-02 | Phase 7: Dashboard + Frontend Polish | Complete |
 | UI-03 | Phase 7: Dashboard + Frontend Polish | Complete |
-| UI-04 | Phase 7: Dashboard + Frontend Polish | Pending |
+| UI-04 | Phase 7: Dashboard + Frontend Polish | Complete |
 | CODE-01 | Phase 8: Code Analysis | Pending |
 | CODE-02 | Phase 8: Code Analysis | Pending |
 | CODE-03 | Phase 8: Code Analysis | Pending |
