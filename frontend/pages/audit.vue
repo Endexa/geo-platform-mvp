@@ -41,12 +41,20 @@
           >
             Export to Jira (CSV)
           </button>
+          <button
+            v-if="isProUser"
+            @click="chatOpen = true"
+            class="inline-flex items-center gap-2 px-4 py-2 border border-blue-800 text-blue-800 rounded-lg hover:bg-blue-50 cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-500 transition-colors duration-200"
+          >
+            <ChatBubbleLeftRightIcon class="w-5 h-5" />
+            Chat with AI
+          </button>
         </div>
 
         <!-- Free tier upgrade prompt -->
         <p v-if="!isProUser" class="mt-2 text-sm text-slate-500">
           <NuxtLink to="/pricing" class="text-amber-600 hover:text-amber-500 cursor-pointer">Upgrade to Pro</NuxtLink>
-          to download reports and export recommendations.
+          to download reports, export recommendations, and chat about your audit results.
         </p>
 
         <!-- Download error -->
@@ -172,11 +180,20 @@
       <div v-if="apiError" class="bg-red-50 border border-red-200 rounded-lg p-4">
         <p class="text-sm text-red-700">{{ apiError }}</p>
       </div>
+
+      <!-- Chat Panel (Pro users, completed audits only) -->
+      <ChatPanel
+        v-if="auditId && isCompleted"
+        :audit-id="auditId"
+        :is-open="chatOpen"
+        @close="chatOpen = false"
+      />
     </div>
 </template>
 
 <script setup lang="ts">
 import { useIntervalFn } from '@vueuse/core'
+import { ChatBubbleLeftRightIcon } from '@heroicons/vue/24/outline'
 
 definePageMeta({
   layout: 'dashboard',
@@ -325,6 +342,7 @@ const { isProUser, updateTierFromAudit } = useSubscription()
 const showCsvOptions = ref(false)
 const csvGrouping = ref('category')
 const csvEpicLink = ref('')
+const chatOpen = ref(false)
 
 function doExportCsv() {
   if (!auditId.value) return
