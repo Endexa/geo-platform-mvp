@@ -9,10 +9,10 @@ See: .planning/PROJECT.md (updated 2025-02-25)
 
 ## Current Position
 
-Phase: 4 of 8 (Payments + Freemium Gating) -- Ready to plan
-Plan: Not started
-Status: Phase 3 complete, transitioning to Phase 4
-Last activity: 2026-02-26 -- Phase 3 verified and marked complete
+Phase: 4 of 8 (Payments + Freemium Gating) -- Executing
+Plan: 04-01 complete, 04-02 next
+Status: Plan 04-01 (Stripe subscription backend) complete
+Last activity: 2026-02-26 -- Plan 04-01 executed (models, service, API, migration)
 
 Progress: [████░░░░░░] 38%
 
@@ -65,6 +65,10 @@ Recent decisions affecting current work:
 - [03-01]: Weighted-by-queries-sent scoring replaces equal-weight averaging for overall visibility score
 - [03-01]: Confidence thresholds: 0=not_measured, 1-4=low, 5-9=medium, 10+=high (no external deps)
 - [03-01]: Enriched JSONB coexistence: old {"openai": 75} and new {"openai": {...}} formats in same column
+- [04-01]: StripeClient instance pattern (not deprecated stripe.api_key global) -- SDK v14+
+- [04-01]: construct_event for webhook verification (returns full Event with data.object)
+- [04-01]: Upsert pattern in webhook handlers for out-of-order event tolerance
+- [04-01]: WebhookEvent table for idempotent deduplication (not Redis)
 
 ### Pending Todos
 
