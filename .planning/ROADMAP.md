@@ -110,11 +110,11 @@ Plans:
   2. Chat responses stream in real-time via SSE (not waiting for full response)
   3. Follow-up questions maintain conversation context -- the user can have a multi-turn discussion about their audit
   4. Chat responses reference specific scores, criteria, and recommendations from the user's audit (not generic advice)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 06-01: TBD
-- [ ] 06-02: TBD
+- [ ] 06-01-PLAN.md -- Backend: ChatSession model, migration, ChatService (context builder + LLM streaming), SSE endpoint with tier gating
+- [ ] 06-02-PLAN.md -- Frontend: useChat composable, ChatPanel slide-over component, audit page integration, unit tests
 
 ### Phase 7: Dashboard + Frontend Polish
 **Goal**: Users see a production-quality dashboard with real metrics, trend charts, and audit history -- and the entire application feels polished and professional
