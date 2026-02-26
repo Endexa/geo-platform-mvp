@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2025-02-25)
 ## Current Position
 
 Phase: 2 of 8 (Recommendations + Competitor Benchmarking) -- IN PROGRESS
-Plan: 1 of 3 in current phase
-Status: 02-01-PLAN.md complete -- continuing Phase 2
-Last activity: 2026-02-26 -- Completed 02-01-PLAN.md (vertical classifier + recommendation enhancements)
+Plan: 2 of 3 in current phase
+Status: 02-02-PLAN.md complete -- continuing Phase 2
+Last activity: 2026-02-26 -- Completed 02-02-PLAN.md (cross-audit competitor persistence)
 
-Progress: [██░░░░░░░░] 15%
+Progress: [██░░░░░░░░] 20%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: 3.3min
-- Total execution time: 0.17 hours
+- Total plans completed: 4
+- Average duration: 4.8min
+- Total execution time: 0.32 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-scoring-foundation | 2/2 | 5min | 2.5min |
-| 02-recommendations-competitor-benchmarking | 1/3 | 6min | 6min |
+| 02-recommendations-competitor-benchmarking | 2/3 | 14min | 7min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (2min), 01-02 (3min), 02-01 (6min)
+- Last 5 plans: 01-01 (2min), 01-02 (3min), 02-01 (6min), 02-02 (8min)
 - Trend: Consistent (fast execution)
 
 *Updated after each plan completion*
@@ -57,6 +57,10 @@ Recent decisions affecting current work:
 - [02-01]: Vertical exclusions use real criterion IDs (SD8=Product, SD10=ClaimReview) not research placeholder IDs
 - [02-01]: Impact delta uses linear estimate with 15-point cap and 0.8 multi-page adjustment -- sufficiently accurate for user-facing estimates
 - [02-01]: Content pattern matching can produce false positives but schema.org types take priority and resolve ambiguity
+- [02-02]: Brand linking uses 4-level priority: domain match > exact name > fuzzy name (>90 token_set_ratio) > create new
+- [02-02]: SOV trend joins DiscoveredCompetitor with Audit to get audit dates, ordered ascending
+- [02-02]: Score comparison reads site category scores from PageScore averages, not a JSONB field
+- [02-02]: Migration numbered 011 to chain after existing 010 from plan 02-01
 
 ### Pending Todos
 
@@ -72,5 +76,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed 02-01-PLAN.md
+Stopped at: Completed 02-02-PLAN.md
 Resume file: None

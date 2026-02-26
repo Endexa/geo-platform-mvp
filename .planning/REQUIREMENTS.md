@@ -28,10 +28,10 @@
 
 ### Competitor Benchmarking
 
-- [ ] **COMP-01**: Auto-discover competitor brands from AI engine responses via NER extraction
-- [ ] **COMP-02**: User can view side-by-side score comparison (their site vs discovered competitors)
-- [ ] **COMP-03**: Share of voice tracking: percentage of AI mentions per brand across engines over time
-- [ ] **COMP-04**: Competitor data persists across audits to show trends
+- [x] **COMP-01**: Auto-discover competitor brands from AI engine responses via NER extraction
+- [x] **COMP-02**: User can view side-by-side score comparison (their site vs discovered competitors)
+- [x] **COMP-03**: Share of voice tracking: percentage of AI mentions per brand across engines over time
+- [x] **COMP-04**: Competitor data persists across audits to show trends
 
 ### AI Visibility
 
@@ -130,10 +130,10 @@
 | REC-03 | Phase 2: Recommendations + Competitor Benchmarking | Complete |
 | REC-04 | Phase 2: Recommendations + Competitor Benchmarking | Complete |
 | REC-05 | Phase 2: Recommendations + Competitor Benchmarking | Complete |
-| COMP-01 | Phase 2: Recommendations + Competitor Benchmarking | Pending |
-| COMP-02 | Phase 2: Recommendations + Competitor Benchmarking | Pending |
-| COMP-03 | Phase 2: Recommendations + Competitor Benchmarking | Pending |
-| COMP-04 | Phase 2: Recommendations + Competitor Benchmarking | Pending |
+| COMP-01 | Phase 2: Recommendations + Competitor Benchmarking | Complete |
+| COMP-02 | Phase 2: Recommendations + Competitor Benchmarking | Complete |
+| COMP-03 | Phase 2: Recommendations + Competitor Benchmarking | Complete |
+| COMP-04 | Phase 2: Recommendations + Competitor Benchmarking | Complete |
 | VIS-01 | Phase 3: AI Visibility Hardening | Pending |
 | VIS-02 | Phase 3: AI Visibility Hardening | Pending |
 | VIS-03 | Phase 3: AI Visibility Hardening | Pending |
