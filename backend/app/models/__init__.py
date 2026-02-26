@@ -16,6 +16,7 @@ from app.models.competitor import DiscoveredCompetitor, CompetitorAudit
 from app.models.audit_recommendation import AuditRecommendation
 from app.models.mention_sentiment import MentionSentiment
 from app.models.brand import Brand
+from app.models.subscription import Subscription, WebhookEvent
 
 __all__ = [
     "Organization",
@@ -40,4 +41,6 @@ __all__ = [
     "AuditRecommendation",
     "MentionSentiment",
     "Brand",
+    "Subscription",
+    "WebhookEvent",
 ]

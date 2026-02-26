@@ -47,6 +47,11 @@ class Settings(BaseSettings):
     # Stripe
     STRIPE_SECRET_KEY: str = ""
     STRIPE_WEBHOOK_SECRET: str = ""
+    STRIPE_PUBLISHABLE_KEY: str = ""
+    STRIPE_PRICE_PRO_MONTHLY: str = ""
+    STRIPE_PRICE_PRO_YEARLY: str = ""
+    STRIPE_PORTAL_CONFIG_ID: str = ""  # bpc_xxx from Dashboard (optional)
+    FRONTEND_URL: str = "http://localhost:3000"
 
     # Jira
     JIRA_BASE_URL: str = ""
