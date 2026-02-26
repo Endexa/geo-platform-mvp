@@ -4,7 +4,7 @@ from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import JSONResponse
 from app.core.config import settings
-from app.api import analysis, optimization, brand_voice, dashboard, integrations, geo_datapoints, auth, audit, competitors, recommendations, brands, payments, reports
+from app.api import analysis, optimization, brand_voice, dashboard, integrations, geo_datapoints, auth, audit, competitors, recommendations, brands, payments, reports, chat
 from app.core.middleware import (
     SecurityHeadersMiddleware,
     RequestLoggingMiddleware,
@@ -155,6 +155,7 @@ app.include_router(
 app.include_router(competitors.router)
 app.include_router(recommendations.router)
 app.include_router(brands.router)
+app.include_router(chat.router, tags=["chat"])
 
 
 @app.on_event("startup")
