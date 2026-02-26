@@ -174,6 +174,11 @@ class AuditDetailResponse(AuditResponse):
     visibility_score: Optional[VisibilityScoreSchema] = None
     optimization_score: Optional[OptimizationScoreSchema] = None
     page_scores: list[PageScoreSchema] = []
+    # Freemium gating fields
+    is_limited: bool = False
+    upgrade_prompt: Optional[str] = None
+    total_recommendations: int = 0
+    recommendations_preview: list[dict] = []
 
 
 # --- Custom Query CRUD Schemas ---

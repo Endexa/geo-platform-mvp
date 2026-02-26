@@ -11,6 +11,7 @@ from loguru import logger
 from sqlalchemy.orm import Session, joinedload
 
 from app.core.database import get_db
+from app.core.dependencies import SubscriptionTier, get_user_tier
 from app.core.security import get_current_active_user
 from app.models import Profile
 from app.models.audit import Audit, AuditStatus
@@ -18,6 +19,7 @@ from app.models.brand import Brand
 from app.schemas.brand import normalize_domain
 from app.models.audit_query import AuditQuery
 from app.models.engine_response import EngineResponse
+from app.models.audit_recommendation import AuditRecommendation
 from app.models.page_score import PageScore
 from app.schemas.audit import (
     AuditCreate,
@@ -160,6 +162,7 @@ def get_audit(
     audit_id: str,
     db: Session = Depends(get_db),
     current_user: Profile = Depends(get_current_active_user),
+    user_tier: SubscriptionTier = Depends(get_user_tier),
 ):
     """Get audit details including queries, engine responses, mentions, visibility score, optimization score, and page scores.
 
@@ -283,6 +286,87 @@ def get_audit(
             "per_engine_breakdown": breakdown,
         }
         response_data["visibility_score"] = vs_data
+
+    # --- Tier-aware filtering ---
+    # Fetch recommendations for both tiers (count for free, full for pro)
+    all_recs = (
+        db.query(AuditRecommendation)
+        .filter(AuditRecommendation.audit_id == audit_id)
+        .order_by(
+            AuditRecommendation.priority,
+            AuditRecommendation.gap_score.desc(),
+        )
+        .all()
+    )
+    total_recommendations = len(all_recs)
+
+    if user_tier == SubscriptionTier.FREE:
+        # Free tier: crawlability only + overall score + top 3 recs
+        response_data["is_limited"] = True
+        response_data["upgrade_prompt"] = (
+            "Upgrade to Pro to see all categories and recommendations"
+        )
+        response_data["total_recommendations"] = total_recommendations
+
+        # Top 3 recommendations preview
+        top_3 = all_recs[:3]
+        response_data["recommendations_preview"] = [
+            {
+                "id": str(r.id),
+                "title": r.title,
+                "priority": r.priority,
+                "category": r.category,
+            }
+            for r in top_3
+        ]
+
+        # Filter optimization score to crawlability only
+        if optimization_score_schema:
+            response_data["optimization_score"] = OptimizationScoreSchema(
+                overall_score=optimization_score_schema.overall_score,
+                crawlability_avg=optimization_score_schema.crawlability_avg,
+                content_structure_avg=0,
+                structured_data_avg=0,
+                authority_avg=0,
+                pages_scored=optimization_score_schema.pages_scored,
+                pages_discovered=optimization_score_schema.pages_discovered,
+            )
+
+        # Filter page scores to crawlability criteria only
+        filtered_page_scores = []
+        for ps in page_scores_list:
+            filtered_criteria = [
+                cr for cr in (ps.criterion_results or [])
+                if cr.category == "crawlability"
+            ]
+            # Create a dict representation with filtered criteria
+            ps_dict = {
+                "page_url": ps.page_url,
+                "page_title": ps.page_title,
+                "crawlability_score": ps.crawlability_score,
+                "content_structure_score": None,
+                "structured_data_score": None,
+                "authority_score": None,
+                "overall_page_score": ps.overall_page_score,
+                "internal_link_count": ps.internal_link_count,
+                "was_scored": ps.was_scored,
+                "criterion_results": filtered_criteria,
+            }
+            filtered_page_scores.append(ps_dict)
+        response_data["page_scores"] = filtered_page_scores
+    else:
+        # Pro tier: full access
+        response_data["is_limited"] = False
+        response_data["total_recommendations"] = total_recommendations
+        response_data["recommendations_preview"] = [
+            {
+                "id": str(r.id),
+                "title": r.title,
+                "priority": r.priority,
+                "category": r.category,
+            }
+            for r in all_recs
+        ]
 
     return AuditDetailResponse.model_validate(response_data, from_attributes=True)
 

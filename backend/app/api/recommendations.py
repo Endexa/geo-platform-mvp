@@ -15,6 +15,7 @@ from loguru import logger
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
+from app.core.dependencies import SubscriptionTier, require_tier
 from app.core.security import get_current_active_user
 from app.models import Profile
 from app.models.audit import Audit
@@ -64,7 +65,11 @@ def _verify_audit_ownership(
     return audit
 
 
-@router.get("/{audit_id}", response_model=RecommendationListResponse)
+@router.get(
+    "/{audit_id}",
+    response_model=RecommendationListResponse,
+    dependencies=[Depends(require_tier(SubscriptionTier.PRO))],
+)
 def get_recommendations(
     audit_id: str,
     page_url: str | None = None,
@@ -219,7 +224,10 @@ def get_content_gaps(
     return ContentGapListResponse(gaps=gaps, total=len(gaps))
 
 
-@router.get("/{audit_id}/export/markdown")
+@router.get(
+    "/{audit_id}/export/markdown",
+    dependencies=[Depends(require_tier(SubscriptionTier.PRO))],
+)
 def export_markdown(
     audit_id: str,
     page_url: str | None = None,
