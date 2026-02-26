@@ -112,7 +112,7 @@ import {
 } from '@heroicons/vue/24/outline'
 
 const { isLoggedIn, user, logout, fetchUser } = useAuth()
-const { isProUser } = useSubscription()
+const { isProUser, fetchTierOnMount } = useSubscription()
 
 // Responsive sidebar
 const isDesktop = useMediaQuery('(min-width: 1024px)')
@@ -141,6 +141,8 @@ onMounted(async () => {
   }
   // Initialize sidebar state based on current viewport
   sidebarOpen.value = isDesktop.value
+  // Rehydrate subscription tier from backend (handles page refresh)
+  await fetchTierOnMount()
 })
 
 const route = useRoute()

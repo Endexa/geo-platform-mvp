@@ -27,5 +27,21 @@ export const useSubscription = () => {
     tier.value = newTier
   }
 
-  return { tier, isProUser, updateTierFromAudit, setTier }
+  /**
+   * Fetch current subscription tier from backend.
+   * Called on dashboard mount to rehydrate tier after page refresh.
+   * Silently fails — defaults to 'free' if request errors (user just won't see Pro UI).
+   */
+  const fetchTierOnMount = async () => {
+    try {
+      const data = await useApiFetch<{ tier: string; status: string | null }>('/payments/subscription-status')
+      if (data && data.tier) {
+        tier.value = data.tier
+      }
+    } catch {
+      // Silent fail — defaults to 'free'
+    }
+  }
+
+  return { tier, isProUser, updateTierFromAudit, setTier, fetchTierOnMount }
 }
