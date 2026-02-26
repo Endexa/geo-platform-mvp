@@ -90,8 +90,8 @@
 - [x] **LAND-02**: Pricing page with 3 tiers: Free (feature list), Pro $29/mo (Stripe checkout), Enterprise (contact form)
 - [x] **LAND-03**: Stripe checkout works end-to-end — real price ID from env vars, webhook processes subscription
 - [ ] **LAND-04**: Coherent UI/UX across all app pages — consistent design system (typography, colors, spacing, components)
-- [ ] **LAND-05**: Paywall hardened — server-side gating, frontend upgrade prompts, subscription status rehydration on refresh
-- [ ] **LAND-06**: Settings page has Manage Subscription button (Stripe Customer Portal) for Pro users
+- [x] **LAND-05**: Paywall hardened — server-side gating, frontend upgrade prompts, subscription status rehydration on refresh
+- [x] **LAND-06**: Settings page has Manage Subscription button (Stripe Customer Portal) for Pro users
 - [ ] **LAND-07**: Landing page content establishes credibility — about, security, trust signals (E-E-A-T)
 - [ ] **LAND-08**: All .env.example files document Stripe vars, frontend builds clean
 
@@ -179,8 +179,8 @@
 | LAND-02 | Phase 9: Landing + Frontend Overhaul + Stripe | Complete |
 | LAND-03 | Phase 9: Landing + Frontend Overhaul + Stripe | Complete |
 | LAND-04 | Phase 9: Landing + Frontend Overhaul + Stripe | Pending |
-| LAND-05 | Phase 9: Landing + Frontend Overhaul + Stripe | Pending |
-| LAND-06 | Phase 9: Landing + Frontend Overhaul + Stripe | Pending |
+| LAND-05 | Phase 9: Landing + Frontend Overhaul + Stripe | Complete |
+| LAND-06 | Phase 9: Landing + Frontend Overhaul + Stripe | Complete |
 | LAND-07 | Phase 9: Landing + Frontend Overhaul + Stripe | Pending |
 | LAND-08 | Phase 9: Landing + Frontend Overhaul + Stripe | Pending |
 

@@ -40,6 +40,7 @@ Progress: [████████░░] 89% (8/9 phases complete)
 - Last 5 plans: 07-01 (7min), 07-02 (3min), 07-03 (8min), 08-01 (8min), 08-02 (7min)
 - Trend: Consistent
 | Phase 09-stripe-pricing-fix P02 | 4 | 1 tasks | 1 files |
+| Phase 09 P04 | 8 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -112,6 +113,8 @@ Recent decisions affecting current work:
 - [09-03]: useScrollFadeIn fires once then unobserves (0.1 threshold) -- avoids re-triggering on scroll up
 - [09-03]: Footer in landing.vue is inline placeholder -- full LandingFooter component created in plan 05
 - [09-03]: Landing components live in frontend/components/landing/ subdirectory
+- [Phase 09]: fetchTierOnMount silently fails to avoid breaking dashboard load on subscription status errors
+- [Phase 09]: portalLoading only resets on error since redirect navigates away on success
 
 ### Pending Todos
 
