@@ -35,6 +35,7 @@ class Audit(Base):
     crawl_data = Column(JSONB, nullable=True)
     error_message = Column(String, nullable=True)
     optimization_score = Column(Integer, nullable=True)  # Final 0-100 score after scoring
+    vertical = Column(String, nullable=True)  # Detected site vertical (saas, ecommerce, etc.)
     content_gaps = Column(JSONB, nullable=True)  # List of content gap dicts from gap analysis
     brand_id = Column(
         UUID(as_uuid=True), ForeignKey("brands.id"), nullable=True, index=True

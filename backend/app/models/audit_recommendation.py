@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, Numeric, String, Text
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import relationship
 
@@ -49,6 +49,9 @@ class AuditRecommendation(Base):
     recommendation_hash = Column(
         String(16), nullable=False, index=True
     )  # SHA-256 truncated for cross-audit tracking
+    estimated_score_delta = Column(
+        Numeric(4, 1), nullable=True
+    )  # Estimated optimization score improvement if this criterion is fixed
     status = Column(
         String, nullable=False, default="open"
     )  # "open", "done", "dismissed"
