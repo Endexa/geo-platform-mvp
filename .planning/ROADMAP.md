@@ -126,12 +126,12 @@ Plans:
   3. Per-engine AI visibility breakdown and per-category score breakdown are displayed on the dashboard
   4. Agencies can manage multiple client sites from one account (multi-site management)
   5. The entire application follows the design system (Data-Dense Dashboard style), with proper loading states, error states, empty states, and responsive layout on desktop and tablet
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 07-01: TBD
-- [ ] 07-02: TBD
-- [ ] 07-03: TBD
+- [ ] 07-01-PLAN.md -- Design system foundation (Fira fonts, color token standardization) and responsive sidebar layout
+- [ ] 07-02-PLAN.md -- Dashboard data quality (category breakdown, trend chart improvements, engine display names) and multi-site brand selector
+- [ ] 07-03-PLAN.md -- Systematic loading/error/empty states across all pages, audit results polish, navigation cleanup
 
 ### Phase 8: Code Analysis
 **Goal**: Users can get deeper, code-level recommendations by running Endexa-generated prompts on their codebase and uploading the results
