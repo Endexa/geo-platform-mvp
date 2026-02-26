@@ -65,11 +65,11 @@ Plans:
   2. Per-engine breakdown displays separate visibility scores for each active engine (ChatGPT, Claude, Perplexity, Gemini)
   3. Engines without API keys are gracefully skipped, and the overall score adjusts to reflect only engines that were actually queried
   4. Running the same audit twice within the cache TTL produces consistent results (not random fluctuation)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
+- [ ] 03-01-PLAN.md -- Backend: enhanced VisibilityScore model, Alembic migration, enriched ScoringService with per-engine statistical breakdown, API schema with backward compatibility
+- [ ] 03-02-PLAN.md -- Frontend: per-engine cards with confidence badges and skipped-engine display + integration tests for enhanced scoring pipeline
 
 ### Phase 4: Payments + Freemium Gating
 **Goal**: Users can start with a free partial audit and upgrade to a paid subscription for full access, with Stripe handling the payment flow
@@ -158,7 +158,7 @@ Note: Phases 3 and 4 can execute in parallel (independent dependencies).
 |-------|----------------|--------|-----------|
 | 1. Scoring Foundation | 2/2 | Complete    | 2026-02-26 |
 | 2. Recommendations + Competitor Benchmarking | 0/3 | Planning complete | - |
-| 3. AI Visibility Hardening | 0/2 | Not started | - |
+| 3. AI Visibility Hardening | 0/2 | Planning complete | - |
 | 4. Payments + Freemium Gating | 0/2 | Not started | - |
 | 5. Reports + Exports | 0/2 | Not started | - |
 | 6. Chat Assistant | 0/2 | Not started | - |
