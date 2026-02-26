@@ -1,8 +1,8 @@
 <template>
   <div class="max-w-5xl mx-auto space-y-6">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900">AI Brand Visibility Audit</h1>
-        <p class="text-gray-600 mt-1">See how AI engines perceive and mention your brand</p>
+        <h1 class="text-3xl font-bold text-slate-900">AI Brand Visibility Audit</h1>
+        <p class="text-slate-600 mt-1">See how AI engines perceive and mention your brand</p>
       </div>
 
       <!-- Phase 1: URL Input (no audit started) -->
@@ -15,7 +15,7 @@
       <AuditResults v-else-if="isCompleted && audit" :audit="audit" />
 
       <!-- Download & Export Section -->
-      <div v-if="isCompleted && auditId" class="bg-white rounded-lg border border-gray-200 p-6">
+      <div v-if="isCompleted && auditId" class="bg-white rounded-lg border border-slate-200 p-6">
         <h3 class="text-lg font-semibold font-mono text-slate-800 mb-4">
           Download &amp; Export
         </h3>
@@ -59,7 +59,7 @@
 
         <!-- Code Analysis section (below export buttons, Pro users only) -->
         <!-- CodeAnalysisPrompts + CodeAnalysisUpload rendered when isProUser and isCompleted -->
-        <div class="mt-6 border-t border-gray-200 pt-6">
+        <div class="mt-6 border-t border-slate-200 pt-6">
           <!-- Pro users: show CodeAnalysisPrompts for prompt download and CodeAnalysisUpload for results upload -->
           <template v-if="isProUser">
             <CodeAnalysisPrompts :audit-id="auditId!" />
@@ -107,11 +107,11 @@
       </div>
 
       <!-- Competitor Preview (shown when audit completed and competitors discovered) -->
-      <div v-if="isCompleted && competitorLeaderboard && competitorLeaderboard.competitors.length > 0" class="bg-white rounded-lg border border-gray-200">
-        <div class="p-6 border-b border-gray-200 flex items-center justify-between">
+      <div v-if="isCompleted && competitorLeaderboard && competitorLeaderboard.competitors.length > 0" class="bg-white rounded-lg border border-slate-200">
+        <div class="p-6 border-b border-slate-200 flex items-center justify-between">
           <div>
-            <h3 class="text-lg font-semibold text-gray-900">Discovered Competitors</h3>
-            <p class="text-sm text-gray-500 mt-1">Top brands mentioned by AI alongside yours</p>
+            <h3 class="text-lg font-semibold text-slate-900">Discovered Competitors</h3>
+            <p class="text-sm text-slate-500 mt-1">Top brands mentioned by AI alongside yours</p>
           </div>
           <NuxtLink
             :to="`/competitors?audit_id=${auditId}`"
@@ -127,11 +127,11 @@
       </div>
 
       <!-- Recommendation Preview (shown when audit completed and recommendations exist) -->
-      <div v-if="isCompleted && recProgress && recProgress.total > 0" class="bg-white rounded-lg border border-gray-200">
-        <div class="p-6 border-b border-gray-200 flex items-center justify-between">
+      <div v-if="isCompleted && recProgress && recProgress.total > 0" class="bg-white rounded-lg border border-slate-200">
+        <div class="p-6 border-b border-slate-200 flex items-center justify-between">
           <div>
-            <h3 class="text-lg font-semibold text-gray-900">Recommendations</h3>
-            <p class="text-sm text-gray-500 mt-1">Top fixes to improve your AI visibility</p>
+            <h3 class="text-lg font-semibold text-slate-900">Recommendations</h3>
+            <p class="text-sm text-slate-500 mt-1">Top fixes to improve your AI visibility</p>
           </div>
           <NuxtLink
             :to="`/recommendations?auditId=${auditId}`"
@@ -149,16 +149,16 @@
             <div
               v-for="rec in topRecommendations"
               :key="rec.id"
-              class="border border-gray-200 rounded-lg p-4"
+              class="border border-slate-200 rounded-lg p-4"
             >
               <div class="flex items-center gap-2 mb-1">
                 <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-red-100 text-red-700">
                   HIGH
                 </span>
-                <span class="text-sm font-semibold text-gray-900 truncate">{{ rec.criterion_name }}</span>
+                <span class="text-sm font-semibold text-slate-900 truncate">{{ rec.criterion_name }}</span>
               </div>
-              <p class="text-sm text-gray-600">{{ rec.summary }}</p>
-              <div class="mt-1 flex items-center gap-3 text-xs text-gray-500">
+              <p class="text-sm text-slate-600">{{ rec.summary }}</p>
+              <div class="mt-1 flex items-center gap-3 text-xs text-slate-500">
                 <span>Impact: {{ rec.impact_label }}</span>
                 <span>Gap: {{ rec.gap_score }}pts</span>
               </div>
@@ -184,10 +184,10 @@
       />
 
       <!-- Error State -->
-      <div v-else-if="isFailed" class="bg-white rounded-xl border border-gray-200 p-12 text-center">
+      <div v-else-if="isFailed" class="bg-white rounded-xl border border-slate-200 p-12 text-center">
         <ExclamationTriangleIcon class="w-16 h-16 mx-auto text-warning-400" />
-        <h2 class="text-lg font-semibold text-gray-700 mt-4">Audit failed</h2>
-        <p class="text-gray-500 mt-2 mb-6">{{ audit?.error_message || 'An unexpected error occurred.' }}</p>
+        <h2 class="text-lg font-semibold text-slate-700 mt-4">Audit failed</h2>
+        <p class="text-slate-500 mt-2 mb-6">{{ audit?.error_message || 'An unexpected error occurred.' }}</p>
         <button
           @click="resetAudit"
           class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2"
@@ -197,10 +197,10 @@
       </div>
 
       <!-- API Error State -->
-      <div v-if="apiError" class="bg-white rounded-xl border border-gray-200 p-12 text-center">
+      <div v-if="apiError" class="bg-white rounded-xl border border-slate-200 p-12 text-center">
         <ExclamationTriangleIcon class="w-16 h-16 mx-auto text-warning-400" />
-        <h2 class="text-lg font-semibold text-gray-700 mt-4">Something went wrong</h2>
-        <p class="text-gray-500 mt-2 mb-6">{{ apiError }}</p>
+        <h2 class="text-lg font-semibold text-slate-700 mt-4">Something went wrong</h2>
+        <p class="text-slate-500 mt-2 mb-6">{{ apiError }}</p>
         <button @click="resetAudit" class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2">Try Again</button>
       </div>
 
@@ -222,6 +222,7 @@ definePageMeta({
   layout: 'dashboard',
   middleware: ['auth'],
 })
+useHead({ title: 'New Audit — Endexa' })
 
 interface AuditDetail {
   id: string

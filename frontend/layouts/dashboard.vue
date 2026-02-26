@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-slate-50">
     <!-- Mobile overlay backdrop -->
     <div
       v-if="!isDesktop && sidebarOpen"
@@ -9,13 +9,13 @@
 
     <!-- Sidebar -->
     <aside
-      class="fixed inset-y-0 left-0 w-64 bg-white border-r border-gray-200 flex flex-col z-30 transition-transform duration-200"
+      class="fixed inset-y-0 left-0 w-64 bg-white border-r border-slate-200 flex flex-col z-30 transition-transform duration-200"
       :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
     >
       <!-- Logo -->
-      <div class="p-6 border-b border-gray-200">
-        <h1 class="text-2xl font-bold text-primary-600">GEO Platform</h1>
-        <p class="text-sm text-gray-500">Optimization Suite</p>
+      <div class="p-6 border-b border-slate-200">
+        <h1 class="text-2xl font-bold font-mono text-primary-800">Endexa</h1>
+        <p class="text-sm text-slate-500">GEO Optimization Suite</p>
       </div>
 
       <!-- Navigation -->
@@ -25,12 +25,12 @@
           :key="item.path"
           :to="item.path"
           class="flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 cursor-pointer"
-          :class="isActive(item.path) ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-100'"
+          :class="isActive(item.path) ? 'bg-primary-50 text-primary-700' : 'text-slate-700 hover:bg-slate-100'"
           @click="closeSidebarOnMobile"
         >
           <component :is="item.icon" class="w-5 h-5 mr-3 shrink-0" />
           {{ item.label }}
-          <span v-if="item.comingSoon" class="ml-auto text-[10px] bg-gray-200 text-gray-500 px-1.5 py-0.5 rounded-full">Soon</span>
+          <span v-if="item.comingSoon" class="ml-auto text-[10px] bg-slate-200 text-slate-500 px-1.5 py-0.5 rounded-full">Soon</span>
         </NuxtLink>
       </nav>
 
@@ -53,12 +53,12 @@
       :class="sidebarOpen && isDesktop ? 'lg:ml-64' : 'ml-0'"
     >
       <!-- Top Bar -->
-      <header class="bg-white border-b border-gray-200 px-4 py-4 lg:px-6">
+      <header class="bg-white border-b border-slate-200 px-4 py-4 lg:px-6">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-3">
             <!-- Hamburger toggle (visible on non-desktop) -->
             <button
-              class="lg:hidden p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-500"
+              class="lg:hidden p-2 rounded-lg text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-500"
               @click="sidebarOpen = !sidebarOpen"
               aria-label="Toggle sidebar"
             >
@@ -67,18 +67,18 @@
 
             <!-- Breadcrumbs -->
             <div class="flex items-center space-x-2 text-sm">
-              <span class="text-gray-500 hidden sm:inline">Dashboard</span>
-              <span class="text-gray-400 hidden sm:inline">/</span>
-              <span class="text-gray-900 font-medium">{{ currentPageTitle }}</span>
+              <span class="text-slate-500 hidden sm:inline">Dashboard</span>
+              <span class="text-slate-400 hidden sm:inline">/</span>
+              <span class="text-slate-900 font-medium">{{ currentPageTitle }}</span>
             </div>
           </div>
 
           <!-- User Menu -->
           <div class="flex items-center space-x-4">
-            <span class="text-sm text-gray-600 hidden sm:inline">{{ user?.email }}</span>
+            <span class="text-sm text-slate-600 hidden sm:inline">{{ user?.email }}</span>
             <button
               @click="logout"
-              class="text-sm text-gray-500 hover:text-gray-700 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-500 rounded px-2 py-1 transition-colors duration-200"
+              class="text-sm text-slate-500 hover:text-slate-700 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-500 rounded px-2 py-1 transition-colors duration-200"
             >
               Sign Out
             </button>

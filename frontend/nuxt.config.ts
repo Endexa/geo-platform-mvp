@@ -19,11 +19,11 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: 'GEO Platform - Generative Engine Optimization',
+      title: 'Endexa — AI Search Optimization Platform',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'Optimize your presence in AI search engines with GEO Platform' }
+        { name: 'description', content: 'Endexa analyzes 61 criteria across crawlability, content structure, schema, and authority to optimize your presence in AI search engines.' }
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },

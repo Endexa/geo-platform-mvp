@@ -3,15 +3,15 @@
     <!-- Header row: title + audit selector + export buttons -->
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
-        <p class="text-sm text-gray-500">GEO performance overview</p>
+        <h1 class="text-2xl font-bold text-slate-900">Dashboard</h1>
+        <p class="text-sm text-slate-500">GEO performance overview</p>
       </div>
       <div class="flex flex-col items-end gap-1">
         <div class="flex items-center gap-4">
           <select
             v-if="filteredAudits.length > 0"
             v-model="selectedAuditId"
-            class="text-sm border border-gray-300 rounded-lg px-3 py-2 focus-visible:ring-2 focus-visible:ring-primary-800 cursor-pointer"
+            class="text-sm border border-slate-300 rounded-lg px-3 py-2 focus-visible:ring-2 focus-visible:ring-primary-800 cursor-pointer"
           >
             <option v-for="a in filteredAudits" :key="a.id" :value="a.id">
               {{ a.domain }} -- {{ formatDate(a.completed_at || a.created_at) }}
@@ -23,7 +23,7 @@
             :domain="overview.domain"
           />
         </div>
-        <p v-if="lastAuditedDate" class="text-xs text-gray-400">
+        <p v-if="lastAuditedDate" class="text-xs text-slate-400">
           Last audited: {{ formatDate(lastAuditedDate) }}
         </p>
       </div>
@@ -33,7 +33,7 @@
     <div v-if="brands.length > 1" class="flex items-center gap-2 flex-wrap">
       <button
         class="px-3 py-1.5 text-sm font-medium rounded-lg transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2"
-        :class="!selectedBrandId ? 'bg-primary-800 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+        :class="!selectedBrandId ? 'bg-primary-800 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'"
         @click="selectBrand(null)"
       >
         All Sites
@@ -42,7 +42,7 @@
         v-for="brand in brands"
         :key="brand.brand_id"
         class="px-3 py-1.5 text-sm font-medium rounded-lg transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2"
-        :class="selectedBrandId === brand.brand_id ? 'bg-primary-800 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+        :class="selectedBrandId === brand.brand_id ? 'bg-primary-800 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'"
         @click="selectBrand(brand.brand_id)"
       >
         {{ brand.brand_name }}
@@ -52,22 +52,22 @@
     <!-- Loading skeleton -->
     <div v-if="loading" class="space-y-6">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div v-for="i in 3" :key="i" class="bg-white rounded-xl border border-gray-200 p-6 h-40 animate-pulse">
-          <div class="h-4 bg-gray-200 rounded w-1/2 mb-4" />
-          <div class="h-16 bg-gray-200 rounded w-1/3 mx-auto" />
+        <div v-for="i in 3" :key="i" class="bg-white rounded-xl border border-slate-200 p-6 h-40 animate-pulse">
+          <div class="h-4 bg-slate-200 rounded w-1/2 mb-4" />
+          <div class="h-16 bg-slate-200 rounded w-1/3 mx-auto" />
         </div>
       </div>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div class="bg-white rounded-xl border border-gray-200 p-6 h-64 animate-pulse" />
-        <div class="bg-white rounded-xl border border-gray-200 p-6 h-64 animate-pulse" />
+        <div class="bg-white rounded-xl border border-slate-200 p-6 h-64 animate-pulse" />
+        <div class="bg-white rounded-xl border border-slate-200 p-6 h-64 animate-pulse" />
       </div>
     </div>
 
     <!-- Error state -->
-    <div v-else-if="error" class="bg-white rounded-xl border border-gray-200 p-12 text-center">
+    <div v-else-if="error" class="bg-white rounded-xl border border-slate-200 p-12 text-center">
       <ExclamationTriangleIcon class="w-16 h-16 mx-auto text-amber-400" />
-      <h2 class="text-lg font-semibold text-gray-700 mt-4">Something went wrong</h2>
-      <p class="text-gray-500 mt-2 mb-6">{{ error }}</p>
+      <h2 class="text-lg font-semibold text-slate-700 mt-4">Something went wrong</h2>
+      <p class="text-slate-500 mt-2 mb-6">{{ error }}</p>
       <button
         class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2"
         @click="retryLoad"
@@ -79,11 +79,11 @@
     <!-- Empty state -->
     <div
       v-else-if="!overview"
-      class="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center"
+      class="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center"
     >
-      <ShieldCheckIcon class="w-16 h-16 mx-auto text-gray-300" />
-      <h2 class="text-lg font-semibold text-gray-700 mt-4">No completed audits yet</h2>
-      <p class="text-gray-500 mt-2 mb-6">Run your first AI audit to see your GEO performance.</p>
+      <ShieldCheckIcon class="w-16 h-16 mx-auto text-slate-300" />
+      <h2 class="text-lg font-semibold text-slate-700 mt-4">No completed audits yet</h2>
+      <p class="text-slate-500 mt-2 mb-6">Run your first AI audit to see your GEO performance.</p>
       <NuxtLink
         to="/audit"
         class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2"
@@ -109,13 +109,13 @@
       <!-- Two-column: Top Issues + Per-Engine Breakdown -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Top Issues -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 class="text-lg font-semibold text-gray-900 mb-4">Top Issues to Fix</h3>
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <h3 class="text-lg font-semibold text-slate-900 mb-4">Top Issues to Fix</h3>
           <div v-if="overview.top_issues.length > 0" class="space-y-3">
             <div
               v-for="issue in overview.top_issues"
               :key="issue.id"
-              class="flex items-start gap-3 p-3 rounded-lg bg-gray-50"
+              class="flex items-start gap-3 p-3 rounded-lg bg-slate-50"
             >
               <span
                 class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold shrink-0 mt-0.5"
@@ -124,12 +124,12 @@
                 {{ issue.priority.toUpperCase() }}
               </span>
               <div class="min-w-0">
-                <p class="text-sm font-medium text-gray-900 truncate">{{ issue.summary }}</p>
-                <p class="text-xs text-gray-500">{{ issue.category.replace('_', ' ') }} | Gap: {{ issue.gap_score }}</p>
+                <p class="text-sm font-medium text-slate-900 truncate">{{ issue.summary }}</p>
+                <p class="text-xs text-slate-500">{{ issue.category.replace('_', ' ') }} | Gap: {{ issue.gap_score }}</p>
               </div>
             </div>
           </div>
-          <p v-else class="text-sm text-gray-400 py-4 text-center">No open high-priority issues</p>
+          <p v-else class="text-sm text-slate-400 py-4 text-center">No open high-priority issues</p>
           <NuxtLink
             to="/recommendations"
             class="mt-4 block text-center text-sm font-medium text-primary-800 hover:text-primary-900 cursor-pointer"
@@ -139,21 +139,21 @@
         </div>
 
         <!-- Per-Engine Breakdown -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 class="text-lg font-semibold text-gray-900 mb-4">AI Engine Breakdown</h3>
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <h3 class="text-lg font-semibold text-slate-900 mb-4">AI Engine Breakdown</h3>
           <div v-if="perEngineList.length > 0" class="space-y-4">
             <div v-for="item in perEngineList" :key="item.engine" class="flex items-center gap-3">
-              <span class="text-sm font-medium text-gray-700 w-24 shrink-0">{{ item.displayName }}</span>
-              <div class="flex-1 bg-gray-200 rounded-full h-2.5">
+              <span class="text-sm font-medium text-slate-700 w-24 shrink-0">{{ item.displayName }}</span>
+              <div class="flex-1 bg-slate-200 rounded-full h-2.5">
                 <div
                   class="h-2.5 rounded-full bg-primary-800 transition-all duration-300"
                   :style="{ width: Math.min(item.score, 100) + '%' }"
                 />
               </div>
-              <span class="text-sm font-semibold text-gray-900 w-8 text-right">{{ item.score }}</span>
+              <span class="text-sm font-semibold text-slate-900 w-8 text-right">{{ item.score }}</span>
             </div>
           </div>
-          <p v-else class="text-sm text-gray-400 py-4 text-center">No engine data available</p>
+          <p v-else class="text-sm text-slate-400 py-4 text-center">No engine data available</p>
         </div>
       </div>
 
@@ -177,32 +177,32 @@
       />
       <div
         v-else-if="historyLoading"
-        class="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
+        class="bg-white rounded-xl shadow-sm border border-slate-200 p-6"
       >
-        <div class="h-64 bg-gray-100 rounded animate-pulse" />
+        <div class="h-64 bg-slate-100 rounded animate-pulse" />
       </div>
 
       <!-- Recommendation Progress -->
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
         <div class="flex items-center justify-between mb-3">
-          <h3 class="text-lg font-semibold text-gray-900">Recommendation Progress</h3>
-          <span class="text-sm text-gray-500">
+          <h3 class="text-lg font-semibold text-slate-900">Recommendation Progress</h3>
+          <span class="text-sm text-slate-500">
             {{ overview.recommendation_progress.done + overview.recommendation_progress.dismissed }}/{{ overview.recommendation_progress.total }} addressed
           </span>
         </div>
-        <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+        <div class="w-full bg-slate-200 rounded-full h-2.5 overflow-hidden">
           <div
             class="bg-green-500 h-2.5 rounded-full transition-all duration-300"
             :style="{ width: recProgressPercent + '%' }"
           />
         </div>
-        <div class="mt-2 flex items-center gap-4 text-xs text-gray-500">
+        <div class="mt-2 flex items-center gap-4 text-xs text-slate-500">
           <span>
             <span class="inline-block w-2 h-2 rounded-full bg-green-400 mr-1" />
             Done: {{ overview.recommendation_progress.done }}
           </span>
           <span>
-            <span class="inline-block w-2 h-2 rounded-full bg-gray-400 mr-1" />
+            <span class="inline-block w-2 h-2 rounded-full bg-slate-400 mr-1" />
             Dismissed: {{ overview.recommendation_progress.dismissed }}
           </span>
           <span>
@@ -225,6 +225,7 @@
 import { ShieldCheckIcon, ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 
 definePageMeta({ layout: 'dashboard' })
+useHead({ title: 'Dashboard — Endexa' })
 
 interface DashboardOverview {
   audit_id: string

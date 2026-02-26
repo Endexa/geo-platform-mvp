@@ -3,8 +3,8 @@
     <!-- Header -->
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-bold text-gray-900">Brands</h1>
-        <p class="text-sm text-gray-500">Manage brands and compare GEO performance</p>
+        <h1 class="text-2xl font-bold text-slate-900">Brands</h1>
+        <p class="text-sm text-slate-500">Manage brands and compare GEO performance</p>
       </div>
       <button
         @click="showCreateForm = true"
@@ -18,42 +18,42 @@
     <!-- Create/Edit form modal -->
     <div
       v-if="showCreateForm"
-      class="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
+      class="bg-white rounded-xl shadow-sm border border-slate-200 p-6"
     >
-      <h3 class="text-lg font-semibold text-gray-900 mb-4">
+      <h3 class="text-lg font-semibold text-slate-900 mb-4">
         {{ editingBrand ? 'Edit Brand' : 'Create Brand' }}
       </h3>
       <form @submit.prevent="handleSubmit" class="space-y-4">
         <div>
-          <label for="brand-name" class="block text-sm font-medium text-gray-700 mb-1">Brand Name</label>
+          <label for="brand-name" class="block text-sm font-medium text-slate-700 mb-1">Brand Name</label>
           <input
             id="brand-name"
             v-model="formData.name"
             type="text"
             required
             placeholder="My Brand"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:border-primary-800 outline-none"
+            class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:border-primary-800 outline-none"
           />
         </div>
         <div>
-          <label for="brand-url" class="block text-sm font-medium text-gray-700 mb-1">URL</label>
+          <label for="brand-url" class="block text-sm font-medium text-slate-700 mb-1">URL</label>
           <input
             id="brand-url"
             v-model="formData.url"
             type="url"
             required
             placeholder="https://example.com"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:border-primary-800 outline-none"
+            class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:border-primary-800 outline-none"
           />
         </div>
         <div>
-          <label for="brand-desc" class="block text-sm font-medium text-gray-700 mb-1">Description (optional)</label>
+          <label for="brand-desc" class="block text-sm font-medium text-slate-700 mb-1">Description (optional)</label>
           <textarea
             id="brand-desc"
             v-model="formData.description"
             rows="2"
             placeholder="Brief description of the brand"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:border-primary-800 outline-none resize-none"
+            class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:border-primary-800 outline-none resize-none"
           />
         </div>
         <p v-if="formError" class="text-sm text-red-600">{{ formError }}</p>
@@ -68,7 +68,7 @@
           <button
             type="button"
             @click="resetForm"
-            class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-gray-400"
+            class="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-slate-400"
           >
             Cancel
           </button>
@@ -81,38 +81,38 @@
       <div
         v-for="i in 3"
         :key="i"
-        class="bg-white rounded-xl border border-gray-200 p-6 h-56 animate-pulse"
+        class="bg-white rounded-xl border border-slate-200 p-6 h-56 animate-pulse"
       >
-        <div class="h-4 bg-gray-200 rounded w-1/2 mb-4" />
-        <div class="h-3 bg-gray-200 rounded w-1/3 mb-6" />
+        <div class="h-4 bg-slate-200 rounded w-1/2 mb-4" />
+        <div class="h-3 bg-slate-200 rounded w-1/3 mb-6" />
         <div class="grid grid-cols-3 gap-3 mb-4">
-          <div class="h-12 bg-gray-200 rounded" />
-          <div class="h-12 bg-gray-200 rounded" />
-          <div class="h-12 bg-gray-200 rounded" />
+          <div class="h-12 bg-slate-200 rounded" />
+          <div class="h-12 bg-slate-200 rounded" />
+          <div class="h-12 bg-slate-200 rounded" />
         </div>
-        <div class="h-8 bg-gray-200 rounded" />
+        <div class="h-8 bg-slate-200 rounded" />
       </div>
     </div>
 
     <!-- Error state -->
     <div
       v-else-if="loadError"
-      class="bg-white rounded-xl border border-gray-200 p-12 text-center"
+      class="bg-white rounded-xl border border-slate-200 p-12 text-center"
     >
       <ExclamationTriangleIcon class="w-16 h-16 mx-auto text-warning-400" />
-      <h2 class="text-lg font-semibold text-gray-700 mt-4">Something went wrong</h2>
-      <p class="text-gray-500 mt-2 mb-6">{{ loadError }}</p>
+      <h2 class="text-lg font-semibold text-slate-700 mt-4">Something went wrong</h2>
+      <p class="text-slate-500 mt-2 mb-6">{{ loadError }}</p>
       <button @click="loadBrands" class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2">Try Again</button>
     </div>
 
     <!-- Empty state -->
     <div
       v-else-if="overviewBrands.length === 0 && !showCreateForm"
-      class="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center"
+      class="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center"
     >
-      <BuildingOfficeIcon class="w-16 h-16 mx-auto text-gray-300" />
-      <h2 class="text-lg font-semibold text-gray-700 mt-4">No brands yet</h2>
-      <p class="text-gray-500 mt-2 mb-6">Create your first brand to start tracking multiple sites</p>
+      <BuildingOfficeIcon class="w-16 h-16 mx-auto text-slate-300" />
+      <h2 class="text-lg font-semibold text-slate-700 mt-4">No brands yet</h2>
+      <p class="text-slate-500 mt-2 mb-6">Create your first brand to start tracking multiple sites</p>
       <button
         @click="showCreateForm = true"
         class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2"
@@ -146,6 +146,7 @@
 import { BuildingOfficeIcon, PlusIcon, ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 
 definePageMeta({ layout: 'dashboard' })
+useHead({ title: 'Brands — Endexa' })
 
 interface BrandOverview {
   brand_id: string

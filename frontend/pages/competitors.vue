@@ -1,8 +1,8 @@
 <template>
   <div class="max-w-6xl mx-auto space-y-6">
     <div>
-      <h1 class="text-3xl font-bold text-gray-900">Competitor Discovery</h1>
-      <p class="text-gray-600 mt-1">See which brands AI engines mention alongside yours</p>
+      <h1 class="text-3xl font-bold text-slate-900">Competitor Discovery</h1>
+      <p class="text-slate-600 mt-1">See which brands AI engines mention alongside yours</p>
     </div>
 
     <!-- Loading skeleton -->
@@ -10,28 +10,28 @@
       <div
         v-for="i in 3"
         :key="i"
-        class="bg-white rounded-xl border border-gray-200 p-6 h-40 animate-pulse"
+        class="bg-white rounded-xl border border-slate-200 p-6 h-40 animate-pulse"
       >
-        <div class="h-4 bg-gray-200 rounded w-2/3 mb-4" />
-        <div class="h-3 bg-gray-200 rounded w-1/3 mb-3" />
-        <div class="h-8 bg-gray-200 rounded w-1/2 mb-3" />
-        <div class="h-3 bg-gray-200 rounded w-full" />
+        <div class="h-4 bg-slate-200 rounded w-2/3 mb-4" />
+        <div class="h-3 bg-slate-200 rounded w-1/3 mb-3" />
+        <div class="h-8 bg-slate-200 rounded w-1/2 mb-3" />
+        <div class="h-3 bg-slate-200 rounded w-full" />
       </div>
     </div>
 
     <!-- Error state -->
-    <div v-else-if="apiError" class="bg-white rounded-xl border border-gray-200 p-12 text-center">
+    <div v-else-if="apiError" class="bg-white rounded-xl border border-slate-200 p-12 text-center">
       <ExclamationTriangleIcon class="w-16 h-16 mx-auto text-warning-400" />
-      <h2 class="text-lg font-semibold text-gray-700 mt-4">Something went wrong</h2>
-      <p class="text-gray-500 mt-2 mb-6">{{ apiError }}</p>
+      <h2 class="text-lg font-semibold text-slate-700 mt-4">Something went wrong</h2>
+      <p class="text-slate-500 mt-2 mb-6">{{ apiError }}</p>
       <button @click="loadData" class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2">Try Again</button>
     </div>
 
     <!-- No audit state (empty) -->
-    <div v-else-if="!auditId" class="bg-white rounded-xl border border-gray-200 p-12 text-center">
-      <UsersIcon class="w-16 h-16 mx-auto text-gray-300" />
-      <h2 class="text-lg font-semibold text-gray-700 mt-4">No competitors discovered yet</h2>
-      <p class="text-gray-500 mt-2 mb-6">Run an audit to discover competitors</p>
+    <div v-else-if="!auditId" class="bg-white rounded-xl border border-slate-200 p-12 text-center">
+      <UsersIcon class="w-16 h-16 mx-auto text-slate-300" />
+      <h2 class="text-lg font-semibold text-slate-700 mt-4">No competitors discovered yet</h2>
+      <p class="text-slate-500 mt-2 mb-6">Run an audit to discover competitors</p>
       <NuxtLink
         to="/audit"
         class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2"
@@ -43,10 +43,10 @@
     <!-- Competitor data loaded -->
     <template v-else-if="leaderboard">
       <!-- Empty leaderboard -->
-      <div v-if="leaderboard.competitors.length === 0" class="bg-white rounded-xl border border-gray-200 p-12 text-center">
-        <UsersIcon class="w-16 h-16 mx-auto text-gray-300" />
-        <h2 class="text-lg font-semibold text-gray-700 mt-4">No competitors discovered yet</h2>
-        <p class="text-gray-500 mt-2 mb-6">AI engines did not mention other brands for this audit's queries</p>
+      <div v-if="leaderboard.competitors.length === 0" class="bg-white rounded-xl border border-slate-200 p-12 text-center">
+        <UsersIcon class="w-16 h-16 mx-auto text-slate-300" />
+        <h2 class="text-lg font-semibold text-slate-700 mt-4">No competitors discovered yet</h2>
+        <p class="text-slate-500 mt-2 mb-6">AI engines did not mention other brands for this audit's queries</p>
         <NuxtLink
           to="/audit"
           class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2"
@@ -71,12 +71,12 @@
         <!-- Crawl trigger -->
         <div
           v-if="uncrawledCount > 0"
-          class="bg-white rounded-lg border border-gray-200 p-6"
+          class="bg-white rounded-lg border border-slate-200 p-6"
         >
           <div class="flex items-center justify-between">
             <div>
-              <h3 class="text-sm font-semibold text-gray-700">Score Competitors</h3>
-              <p class="text-xs text-gray-500 mt-1">
+              <h3 class="text-sm font-semibold text-slate-700">Score Competitors</h3>
+              <p class="text-xs text-slate-500 mt-1">
                 {{ uncrawledCount }} competitor{{ uncrawledCount !== 1 ? 's' : '' }} with resolved URLs ready to be scored.
               </p>
             </div>
@@ -92,7 +92,7 @@
               <span v-else>Score Competitors</span>
             </button>
           </div>
-          <p v-if="crawling" class="text-xs text-gray-400 mt-3">
+          <p v-if="crawling" class="text-xs text-slate-400 mt-3">
             Scoring competitor sites... This may take 30-60 seconds.
           </p>
         </div>
@@ -108,6 +108,7 @@ definePageMeta({
   layout: 'dashboard',
   middleware: ['auth'],
 })
+useHead({ title: 'Competitors — Endexa' })
 
 interface CompetitorLeaderboardEntry {
   entity_name: string

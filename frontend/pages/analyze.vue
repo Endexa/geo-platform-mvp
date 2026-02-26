@@ -2,15 +2,15 @@
   <div class="max-w-4xl mx-auto space-y-6">
       <!-- Header -->
       <div>
-        <h1 class="text-3xl font-bold text-gray-900">Analyze Website</h1>
-        <p class="text-gray-600 mt-1">Get instant GEO insights for any URL</p>
+        <h1 class="text-3xl font-bold text-slate-900">Analyze Website</h1>
+        <p class="text-slate-600 mt-1">Get instant GEO insights for any URL</p>
       </div>
 
       <!-- Input Form -->
       <div class="card">
         <form @submit.prevent="startAnalysis" class="space-y-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">
+            <label class="block text-sm font-medium text-slate-700 mb-2">
               Website URL
             </label>
             <input
@@ -24,7 +24,7 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">
+            <label class="block text-sm font-medium text-slate-700 mb-2">
               Target Keywords (comma separated)
             </label>
             <input
@@ -37,10 +37,10 @@
           </div>
 
           <!-- Error display -->
-          <div v-if="analysisError" class="bg-white rounded-xl border border-gray-200 p-6 text-center">
+          <div v-if="analysisError" class="bg-white rounded-xl border border-slate-200 p-6 text-center">
             <ExclamationTriangleIcon class="w-12 h-12 mx-auto text-warning-400" />
-            <p class="text-gray-700 font-medium mt-3">Analysis failed</p>
-            <p class="text-gray-500 text-sm mt-1">{{ analysisError }}</p>
+            <p class="text-slate-700 font-medium mt-3">Analysis failed</p>
+            <p class="text-slate-500 text-sm mt-1">{{ analysisError }}</p>
           </div>
 
           <button
@@ -62,7 +62,7 @@
 
       <!-- Progress Stepper -->
       <div v-if="analyzing" class="card">
-        <h3 class="font-semibold text-gray-900 mb-4">Analysis Progress</h3>
+        <h3 class="font-semibold text-slate-900 mb-4">Analysis Progress</h3>
         <div class="space-y-4">
           <div v-for="(step, index) in steps" :key="index" class="flex items-center">
             <div class="flex-shrink-0">
@@ -75,10 +75,10 @@
                   <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
               </div>
-              <div v-else class="w-8 h-8 bg-gray-200 rounded-full"></div>
+              <div v-else class="w-8 h-8 bg-slate-200 rounded-full"></div>
             </div>
             <div class="ml-4">
-              <p class="text-sm font-medium" :class="currentStep >= index ? 'text-gray-900' : 'text-gray-500'">
+              <p class="text-sm font-medium" :class="currentStep >= index ? 'text-slate-900' : 'text-slate-500'">
                 {{ step }}
               </p>
             </div>
@@ -91,25 +91,25 @@
         <!-- Score Cards -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div class="card">
-            <p class="text-sm text-gray-600">GEO Score</p>
+            <p class="text-sm text-slate-600">GEO Score</p>
             <p class="text-3xl font-bold font-mono mt-2" :class="getScoreColor(results.geo_score)">
               {{ results.geo_score }}
             </p>
           </div>
           <div class="card">
-            <p class="text-sm text-gray-600">Visibility</p>
+            <p class="text-sm text-slate-600">Visibility</p>
             <p class="text-3xl font-bold font-mono text-primary-600 mt-2">
               {{ results.visibility_score }}
             </p>
           </div>
           <div class="card">
-            <p class="text-sm text-gray-600">Readability</p>
+            <p class="text-sm text-slate-600">Readability</p>
             <p class="text-3xl font-bold font-mono text-primary-600 mt-2">
               {{ results.readability_score }}
             </p>
           </div>
           <div class="card">
-            <p class="text-sm text-gray-600">Authority</p>
+            <p class="text-sm text-slate-600">Authority</p>
             <p class="text-3xl font-bold font-mono text-primary-600 mt-2">
               {{ results.authority_score }}
             </p>
@@ -118,7 +118,7 @@
 
         <!-- Actions -->
         <div class="card">
-          <h3 class="font-semibold text-gray-900 mb-4">Next Steps</h3>
+          <h3 class="font-semibold text-slate-900 mb-4">Next Steps</h3>
           <div class="flex gap-4">
             <button @click="generateRecommendations" class="btn-primary cursor-pointer">
               Generate Recommendations
@@ -136,6 +136,7 @@
 import { ExclamationTriangleIcon, CheckIcon } from '@heroicons/vue/24/outline'
 
 definePageMeta({ layout: 'dashboard' })
+useHead({ title: 'Code Analysis — Endexa' })
 const config = useRuntimeConfig()
 const url = ref('')
 const keywordsInput = ref('')

@@ -3,8 +3,8 @@
     <!-- Header -->
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-3xl font-bold text-gray-900">Recommendations</h1>
-        <p class="text-gray-600 mt-1">Evidence-based fixes to improve your AI visibility</p>
+        <h1 class="text-3xl font-bold text-slate-900">Recommendations</h1>
+        <p class="text-slate-600 mt-1">Evidence-based fixes to improve your AI visibility</p>
       </div>
       <button
         v-if="recommendations.length > 0"
@@ -26,30 +26,30 @@
       <div
         v-for="i in 4"
         :key="i"
-        class="bg-white rounded-xl border border-gray-200 p-5 animate-pulse"
+        class="bg-white rounded-xl border border-slate-200 p-5 animate-pulse"
       >
         <div class="flex items-center gap-3 mb-3">
-          <div class="h-5 w-16 bg-gray-200 rounded" />
-          <div class="h-4 bg-gray-200 rounded w-1/3" />
+          <div class="h-5 w-16 bg-slate-200 rounded" />
+          <div class="h-4 bg-slate-200 rounded w-1/3" />
         </div>
-        <div class="h-3 bg-gray-200 rounded w-full mb-2" />
-        <div class="h-3 bg-gray-200 rounded w-2/3" />
+        <div class="h-3 bg-slate-200 rounded w-full mb-2" />
+        <div class="h-3 bg-slate-200 rounded w-2/3" />
       </div>
     </div>
 
     <!-- Error state -->
-    <div v-else-if="apiError" class="bg-white rounded-xl border border-gray-200 p-12 text-center">
+    <div v-else-if="apiError" class="bg-white rounded-xl border border-slate-200 p-12 text-center">
       <ExclamationTriangleIcon class="w-16 h-16 mx-auto text-warning-400" />
-      <h2 class="text-lg font-semibold text-gray-700 mt-4">Something went wrong</h2>
-      <p class="text-gray-500 mt-2 mb-6">{{ apiError }}</p>
+      <h2 class="text-lg font-semibold text-slate-700 mt-4">Something went wrong</h2>
+      <p class="text-slate-500 mt-2 mb-6">{{ apiError }}</p>
       <button @click="loadData" class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2">Try Again</button>
     </div>
 
     <!-- No audit state (empty) -->
-    <div v-else-if="!auditId" class="bg-white rounded-xl border border-gray-200 p-12 text-center">
-      <LightBulbIcon class="w-16 h-16 mx-auto text-gray-300" />
-      <h2 class="text-lg font-semibold text-gray-700 mt-4">No recommendations yet</h2>
-      <p class="text-gray-500 mt-2 mb-6">Complete an audit to get recommendations</p>
+    <div v-else-if="!auditId" class="bg-white rounded-xl border border-slate-200 p-12 text-center">
+      <LightBulbIcon class="w-16 h-16 mx-auto text-slate-300" />
+      <h2 class="text-lg font-semibold text-slate-700 mt-4">No recommendations yet</h2>
+      <p class="text-slate-500 mt-2 mb-6">Complete an audit to get recommendations</p>
       <NuxtLink
         to="/audit"
         class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2"
@@ -61,10 +61,10 @@
     <!-- Recommendations loaded -->
     <template v-else-if="auditId">
       <!-- Empty state -->
-      <div v-if="recommendations.length === 0 && !loading" class="bg-white rounded-xl border border-gray-200 p-12 text-center">
-        <LightBulbIcon class="w-16 h-16 mx-auto text-gray-300" />
-        <h2 class="text-lg font-semibold text-gray-700 mt-4">No recommendations yet</h2>
-        <p class="text-gray-500 mt-2 mb-6">Complete an audit to get recommendations</p>
+      <div v-if="recommendations.length === 0 && !loading" class="bg-white rounded-xl border border-slate-200 p-12 text-center">
+        <LightBulbIcon class="w-16 h-16 mx-auto text-slate-300" />
+        <h2 class="text-lg font-semibold text-slate-700 mt-4">No recommendations yet</h2>
+        <p class="text-slate-500 mt-2 mb-6">Complete an audit to get recommendations</p>
         <NuxtLink
           to="/audit"
           class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2"
@@ -81,8 +81,8 @@
         />
 
         <!-- Tab navigation -->
-        <div class="bg-white rounded-lg border border-gray-200">
-          <div class="border-b border-gray-200">
+        <div class="bg-white rounded-lg border border-slate-200">
+          <div class="border-b border-slate-200">
             <nav class="flex -mb-px">
               <button
                 v-for="tab in tabs"
@@ -91,7 +91,7 @@
                 class="px-4 py-3 text-sm font-medium border-b-2 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-inset"
                 :class="activeTab === tab.id
                   ? 'border-primary-600 text-primary-700'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                  : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'"
               >
                 {{ tab.label }}
               </button>
@@ -99,12 +99,12 @@
           </div>
 
           <!-- Filter row (visible on By Priority and By Page tabs) -->
-          <div v-if="activeTab === 'priority' || activeTab === 'page'" class="p-4 border-b border-gray-100 flex items-center gap-4">
+          <div v-if="activeTab === 'priority' || activeTab === 'page'" class="p-4 border-b border-slate-100 flex items-center gap-4">
             <div>
-              <label class="text-xs font-medium text-gray-500 mr-2">Category</label>
+              <label class="text-xs font-medium text-slate-500 mr-2">Category</label>
               <select
                 v-model="filterCategory"
-                class="text-sm border border-gray-300 rounded-md px-3 py-1.5 bg-white cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
+                class="text-sm border border-slate-300 rounded-md px-3 py-1.5 bg-white cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
               >
                 <option value="">All</option>
                 <option value="crawlability">Crawlability</option>
@@ -114,10 +114,10 @@
               </select>
             </div>
             <div>
-              <label class="text-xs font-medium text-gray-500 mr-2">Status</label>
+              <label class="text-xs font-medium text-slate-500 mr-2">Status</label>
               <select
                 v-model="filterStatus"
-                class="text-sm border border-gray-300 rounded-md px-3 py-1.5 bg-white cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
+                class="text-sm border border-slate-300 rounded-md px-3 py-1.5 bg-white cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
               >
                 <option value="">All</option>
                 <option value="open">Open</option>
@@ -143,7 +143,7 @@
                     @update-status="handleStatusUpdate"
                   />
                 </div>
-                <p v-else class="text-sm text-gray-400 italic">
+                <p v-else class="text-sm text-slate-400 italic">
                   No {{ level.key }} priority recommendations
                 </p>
               </div>
@@ -155,7 +155,7 @@
               <div v-if="siteWideRecs.length > 0">
                 <button
                   @click="togglePageGroup('site-wide')"
-                  class="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-500 rounded px-1 py-0.5"
+                  class="flex items-center gap-2 text-sm font-semibold text-slate-900 mb-3 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-500 rounded px-1 py-0.5"
                 >
                   <ChevronRightIcon
                     class="w-4 h-4 transition-transform duration-200"
@@ -177,7 +177,7 @@
               <div v-for="group in pageGroups" :key="group.url">
                 <button
                   @click="togglePageGroup(group.url)"
-                  class="flex items-center gap-2 text-sm font-semibold text-gray-900 mb-3 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-500 rounded px-1 py-0.5"
+                  class="flex items-center gap-2 text-sm font-semibold text-slate-900 mb-3 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-500 rounded px-1 py-0.5"
                 >
                   <ChevronRightIcon
                     class="w-4 h-4 transition-transform duration-200"
@@ -195,7 +195,7 @@
                 </div>
               </div>
 
-              <p v-if="filteredRecs.length === 0" class="text-sm text-gray-400 italic">
+              <p v-if="filteredRecs.length === 0" class="text-sm text-slate-400 italic">
                 No recommendations match the current filters
               </p>
             </div>
@@ -209,7 +209,7 @@
                   :gap="gap"
                 />
               </div>
-              <p v-else class="text-sm text-gray-400 italic">
+              <p v-else class="text-sm text-slate-400 italic">
                 No content gaps identified -- your brand is mentioned in all query topics
               </p>
             </div>
@@ -219,7 +219,7 @@
               <div v-if="sentimentData">
                 <SentimentBreakdown :engine-sentiments="sentimentData.engine_sentiments" />
               </div>
-              <p v-else class="text-sm text-gray-400 italic">
+              <p v-else class="text-sm text-slate-400 italic">
                 No sentiment data available. Run an audit to generate sentiment analysis.
               </p>
             </div>
@@ -242,6 +242,7 @@ definePageMeta({
   layout: 'dashboard',
   middleware: ['auth'],
 })
+useHead({ title: 'Recommendations — Endexa' })
 
 interface Recommendation {
   id: string
