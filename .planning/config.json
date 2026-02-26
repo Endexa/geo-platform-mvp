@@ -8,6 +8,7 @@
     "research": true,
     "plan_check": true,
     "verifier": true,
-    "auto_advance": true
+    "auto_advance": true,
+    "skip_discuss_on_auto_advance": true
   }
 }

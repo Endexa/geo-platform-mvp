@@ -71,22 +71,41 @@ class DispatchResult:
 
 
 class DispatchService:
-    """Dispatches audit queries to all three AI engines in parallel."""
+    """Dispatches audit queries to all AI engines in parallel."""
 
     def __init__(self, db: Session):
         self.db = db
+        # Pre-compute which engines have valid API keys (once, not per-query)
+        self._active_engines = {}
+        for name, config in ENGINE_CONFIG.items():
+            api_key = getattr(settings, config["api_key_setting"], "")
+            if api_key:
+                self._active_engines[name] = config
+            else:
+                logger.info(f"Engine {name} skipped: no API key configured")
+        if not self._active_engines:
+            logger.warning("No AI engines have API keys configured!")
 
     def dispatch_all_queries(
         self, audit_id: UUID, queries: list[AuditQuery]
     ) -> DispatchResult:
-        """Dispatch all queries to all three engines.
+        """Dispatch all queries to engines that have valid API keys.
 
-        Iterates through queries, dispatching each to all engines in parallel.
+        Iterates through queries, dispatching each to active engines in parallel.
         Checks budget before each query. Stops if budget is exceeded.
         """
         total_responses = 0
         total_failures = 0
         budget_exceeded = False
+
+        if not self._active_engines:
+            logger.warning(f"No active engines for audit {audit_id}, skipping dispatch")
+            return DispatchResult(
+                total_queries=len(queries),
+                total_responses=0,
+                total_failures=0,
+                budget_exceeded=False,
+            )
 
         for idx, query in enumerate(queries):
             # Budget check before each query dispatch
@@ -140,7 +159,7 @@ class DispatchService:
                 executor.submit(
                     self._call_engine, engine_name, audit_id, query
                 ): engine_name
-                for engine_name in ENGINE_CONFIG
+                for engine_name in self._active_engines
             }
 
             # Collect results with a generous timeout above per-engine timeout
