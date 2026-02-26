@@ -95,11 +95,11 @@ Plans:
   2. User can download an HTML version of the same report that renders correctly in a browser
   3. User can export recommendations as a Jira-compatible CSV with customizable fields (grouping, priority, epic link) that imports cleanly into Jira
   4. Report downloads are gated by subscription tier (paid users only)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 05-01: TBD
-- [ ] 05-02: TBD
+- [ ] 05-01-PLAN.md -- ReportService (HTML/PDF generation, CSV export) with tier-gated API endpoints
+- [ ] 05-02-PLAN.md -- Frontend download buttons, CSV export options, unit tests
 
 ### Phase 6: Chat Assistant
 **Goal**: Users can ask questions about their audit results in natural language and receive accurate, contextual answers
