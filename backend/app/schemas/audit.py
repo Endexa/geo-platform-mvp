@@ -65,16 +65,44 @@ class DispatchSummary(BaseModel):
     engines_used: list[str]
 
 
+ENGINE_DISPLAY_NAMES = {
+    "openai": "ChatGPT",
+    "anthropic": "Claude",
+    "perplexity": "Perplexity",
+    "gemini": "Gemini",
+}
+
+
+class PerEngineBreakdown(BaseModel):
+    """Statistical breakdown for a single AI engine."""
+
+    engine_key: str  # "openai", "anthropic", etc.
+    display_name: str  # "ChatGPT", "Claude", etc.
+    score: int
+    queries_sent: int
+    queries_with_mentions: int
+    mention_rate: float
+    total_mentions: int
+    avg_confidence: int
+    confidence_level: str  # high/medium/low/not_measured
+    skipped: bool
+    skip_reason: Optional[str] = None
+
+
 class VisibilityScoreSchema(BaseModel):
     """Schema for the audit's visibility score."""
 
     model_config = ConfigDict(from_attributes=True)
 
     overall_score: int  # 0-100
-    per_engine_scores: dict  # {"openai": 75, "anthropic": 60, ...}
+    per_engine_scores: dict  # raw JSONB (old: {"openai": 75}, new: {"openai": {...}})
     mention_count: int
     query_mention_rate: float  # percentage
     algorithm_version: str
+    confidence_level: str = "low"
+    engines_queried: int = 0
+    engines_skipped: int = 0
+    per_engine_breakdown: list[PerEngineBreakdown] = []  # computed at serialization time
 
 
 class CriterionResultSchema(BaseModel):

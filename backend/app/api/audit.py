@@ -26,6 +26,7 @@ from app.schemas.audit import (
     CreateCustomQueryRequest,
     CustomQueryResponse,
     DispatchSummary,
+    ENGINE_DISPLAY_NAMES,
     OptimizationScoreSchema,
     UpdateCustomQueryRequest,
     VisibilityScoreSchema,
@@ -33,6 +34,40 @@ from app.schemas.audit import (
 from app.tasks.audit_tasks import run_crawl_and_generate
 
 router = APIRouter(prefix="/audit", tags=["audit"])
+
+
+def _build_per_engine_breakdown(per_engine_scores: dict) -> list[dict]:
+    """Build structured per-engine breakdown from JSONB data.
+
+    Handles both legacy format ({"openai": 75}) and
+    new enriched format ({"openai": {"score": 75, ...}}).
+    """
+    breakdown = []
+    for engine_key, data in per_engine_scores.items():
+        if isinstance(data, dict):
+            # New enriched format
+            entry = {
+                "engine_key": engine_key,
+                "display_name": ENGINE_DISPLAY_NAMES.get(engine_key, engine_key),
+                **data,
+            }
+        else:
+            # Legacy format: data is just an integer score
+            entry = {
+                "engine_key": engine_key,
+                "display_name": ENGINE_DISPLAY_NAMES.get(engine_key, engine_key),
+                "score": int(data),
+                "queries_sent": 0,
+                "queries_with_mentions": 0,
+                "mention_rate": 0,
+                "total_mentions": 0,
+                "avg_confidence": 0,
+                "confidence_level": "unknown",
+                "skipped": False,
+                "skip_reason": None,
+            }
+        breakdown.append(entry)
+    return breakdown
 
 
 @router.post("/", response_model=AuditResponse, status_code=status.HTTP_202_ACCEPTED)
@@ -235,7 +270,19 @@ def get_audit(
     vs = audit.visibility_score
     if vs:
         score_obj = vs[0] if isinstance(vs, list) else vs
-        response_data["visibility_score"] = score_obj
+        breakdown = _build_per_engine_breakdown(score_obj.per_engine_scores or {})
+        vs_data = {
+            "overall_score": score_obj.overall_score,
+            "per_engine_scores": score_obj.per_engine_scores,
+            "mention_count": score_obj.mention_count,
+            "query_mention_rate": float(score_obj.query_mention_rate),
+            "algorithm_version": score_obj.algorithm_version,
+            "confidence_level": getattr(score_obj, "confidence_level", "low"),
+            "engines_queried": getattr(score_obj, "engines_queried", 0),
+            "engines_skipped": getattr(score_obj, "engines_skipped", 0),
+            "per_engine_breakdown": breakdown,
+        }
+        response_data["visibility_score"] = vs_data
 
     return AuditDetailResponse.model_validate(response_data, from_attributes=True)
 
