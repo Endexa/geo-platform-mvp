@@ -108,6 +108,10 @@ Recent decisions affecting current work:
 - [Phase 09-02]: Monthly-only pricing: yearly toggle removed entirely per requirements
 - [Phase 09-02]: Stripe price ID read from config.public.stripePriceProMonthly — never hardcode Stripe IDs
 - [Phase 09-02]: Enterprise tier uses mailto:hello@endexa.com — no Stripe session for enterprise deals
+- [09-03]: Landing layout isolation -- marketing pages use layouts/landing.vue (no sidebar), dashboard pages keep layouts/dashboard.vue
+- [09-03]: useScrollFadeIn fires once then unobserves (0.1 threshold) -- avoids re-triggering on scroll up
+- [09-03]: Footer in landing.vue is inline placeholder -- full LandingFooter component created in plan 05
+- [09-03]: Landing components live in frontend/components/landing/ subdirectory
 
 ### Pending Todos
 
