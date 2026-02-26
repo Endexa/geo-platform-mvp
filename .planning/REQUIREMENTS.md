@@ -79,9 +79,9 @@
 
 ### Frontend Polish
 
-- [ ] **UI-01**: Production-ready UI following design system (Data-Dense Dashboard style)
+- [x] **UI-01**: Production-ready UI following design system (Data-Dense Dashboard style)
 - [ ] **UI-02**: Audit results page shows dual scores, category breakdowns, and recommendations
-- [ ] **UI-03**: Responsive layout works on desktop and tablet
+- [x] **UI-03**: Responsive layout works on desktop and tablet
 - [ ] **UI-04**: Loading states, error states, and empty states handled throughout
 
 ## v2 Deferred (v3)
@@ -156,9 +156,9 @@
 | DASH-03 | Phase 7: Dashboard + Frontend Polish | Complete |
 | DASH-04 | Phase 7: Dashboard + Frontend Polish | Complete |
 | DASH-05 | Phase 7: Dashboard + Frontend Polish | Complete |
-| UI-01 | Phase 7: Dashboard + Frontend Polish | Pending |
+| UI-01 | Phase 7: Dashboard + Frontend Polish | Complete |
 | UI-02 | Phase 7: Dashboard + Frontend Polish | Pending |
-| UI-03 | Phase 7: Dashboard + Frontend Polish | Pending |
+| UI-03 | Phase 7: Dashboard + Frontend Polish | Complete |
 | UI-04 | Phase 7: Dashboard + Frontend Polish | Pending |
 | CODE-01 | Phase 8: Code Analysis | Pending |
 | CODE-02 | Phase 8: Code Analysis | Pending |

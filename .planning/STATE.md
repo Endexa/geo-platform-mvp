@@ -39,6 +39,7 @@ Progress: [███████░░░] 75% (6/8 phases complete)
 - Trend: Consistent (fast execution)
 
 *Updated after each plan completion*
+| Phase 07 P01 | 7min | 2 tasks | 13 files |
 
 ## Accumulated Context
 
@@ -92,6 +93,9 @@ Recent decisions affecting current work:
 - [07-02]: CategoryBreakdown receives data from latest audit history entry rather than a separate API call
 - [07-02]: Brand selector hidden for single-brand users (brands.length <= 1)
 - [07-02]: TrendChart tension reduced to 0.1 to avoid implying interpolation between sparse audit snapshots
+- [Phase 07-01]: Chart.js colors centralized in chartColors.ts utility using rgb() format instead of hex
+- [Phase 07-01]: Sidebar uses two states only (full open / fully hidden) -- no icon-only collapsed mode
+- [Phase 07-01]: Upgrade CTA conditionally hidden for pro users via useSubscription composable
 
 ### Pending Todos
 
@@ -109,5 +113,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed 07-02-PLAN.md
+Stopped at: Completed 07-01-PLAN.md (design system + responsive sidebar)
 Resume file: None
