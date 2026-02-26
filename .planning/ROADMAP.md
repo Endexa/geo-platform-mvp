@@ -20,7 +20,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 6: Chat Assistant** - SSE-streamed LLM chat grounded in user's actual audit data
 - [x] **Phase 7: Dashboard + Frontend Polish** - Real metrics dashboard with trend charts, audit history, multi-site management, and production-ready UI throughout
 - [x] **Phase 8: Code Analysis** - Prompt generation for user's codebase, output ingestion, enriched recommendations from code findings
-- [ ] **Phase 9: Landing Page + Frontend Overhaul + Stripe Production** - Professional landing page, coherent UI/UX across all pages, 3-tier pricing (Free/Pro/Enterprise), Stripe production wiring, paywall hardening
+- [x] **Phase 9: Landing Page + Frontend Overhaul + Stripe Production** - Professional landing page, coherent UI/UX across all pages, 3-tier pricing (Free/Pro/Enterprise), Stripe production wiring, paywall hardening
 
 ## Phase Details
 
@@ -165,12 +165,12 @@ Plans:
 **Plans**: 6 plans
 
 Plans:
-- [ ] 09-01-PLAN.md — Backend subscription-status endpoint + .env.example Stripe vars documentation
-- [ ] 09-02-PLAN.md — pricing.vue rewrite: 3 tiers, no yearly toggle, env-var price ID
-- [ ] 09-03-PLAN.md — Landing page layout isolation + Hero, Features, How It Works sections
-- [ ] 09-04-PLAN.md — Subscription rehydration (fetchTierOnMount) + settings Manage Subscription button
-- [ ] 09-05-PLAN.md — Remaining landing sections: Testimonials, Pricing, FAQ, Trust, Footer
-- [ ] 09-06-PLAN.md — Design system token sweep (gray→slate), Endexa branding, page titles + visual verification
+- [x] 09-01-PLAN.md — Backend subscription-status endpoint + .env.example Stripe vars documentation
+- [x] 09-02-PLAN.md — pricing.vue rewrite: 3 tiers, no yearly toggle, env-var price ID
+- [x] 09-03-PLAN.md — Landing page layout isolation + Hero, Features, How It Works sections
+- [x] 09-04-PLAN.md — Subscription rehydration (fetchTierOnMount) + settings Manage Subscription button
+- [x] 09-05-PLAN.md — Remaining landing sections: Testimonials, Pricing, FAQ, Trust, Footer
+- [x] 09-06-PLAN.md — Design system token sweep (gray→slate), Endexa branding, page titles + visual verification
 
 ## Progress
 
@@ -188,4 +188,4 @@ Note: Phases 3 and 4 can execute in parallel (independent dependencies).
 | 6. Chat Assistant | 2/2 | Complete | 2026-02-26 |
 | 7. Dashboard + Frontend Polish | 3/3 | Complete | 2026-02-26 |
 | 8. Code Analysis | 2/2 | Complete | 2026-02-26 |
-| 9. Landing + Frontend Overhaul + Stripe | 3/6 | In Progress|  |
+| 9. Landing + Frontend Overhaul + Stripe | 6/6 | Complete | 2026-02-26 |
