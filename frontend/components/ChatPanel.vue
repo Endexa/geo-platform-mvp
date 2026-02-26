@@ -14,7 +14,7 @@
     >
       <!-- Header -->
       <div class="flex items-center justify-between px-4 py-3 border-b border-slate-200">
-        <h3 class="text-base font-semibold text-slate-800" style="font-family: 'Fira Code', monospace;">
+        <h3 class="text-base font-semibold font-mono text-slate-800">
           Ask about your audit
         </h3>
         <button

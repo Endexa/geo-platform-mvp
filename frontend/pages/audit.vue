@@ -16,7 +16,7 @@
 
       <!-- Download & Export Section -->
       <div v-if="isCompleted && auditId" class="bg-white rounded-lg border border-gray-200 p-6">
-        <h3 class="text-lg font-semibold text-slate-800 mb-4" style="font-family: 'Fira Code', monospace;">
+        <h3 class="text-lg font-semibold font-mono text-slate-800 mb-4">
           Download &amp; Export
         </h3>
         <div class="flex flex-wrap gap-3">
@@ -165,20 +165,24 @@
       />
 
       <!-- Error State -->
-      <div v-else-if="isFailed" class="bg-white rounded-lg border border-gray-200 p-8 text-center">
-        <p class="text-red-600 font-medium">Audit failed</p>
-        <p class="text-gray-600 mt-2">{{ audit?.error_message || 'An unexpected error occurred.' }}</p>
+      <div v-else-if="isFailed" class="bg-white rounded-xl border border-gray-200 p-12 text-center">
+        <ExclamationTriangleIcon class="w-16 h-16 mx-auto text-warning-400" />
+        <h2 class="text-lg font-semibold text-gray-700 mt-4">Audit failed</h2>
+        <p class="text-gray-500 mt-2 mb-6">{{ audit?.error_message || 'An unexpected error occurred.' }}</p>
         <button
           @click="resetAudit"
-          class="mt-4 px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200"
+          class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2"
         >
           Try Again
         </button>
       </div>
 
       <!-- API Error State -->
-      <div v-if="apiError" class="bg-red-50 border border-red-200 rounded-lg p-4">
-        <p class="text-sm text-red-700">{{ apiError }}</p>
+      <div v-if="apiError" class="bg-white rounded-xl border border-gray-200 p-12 text-center">
+        <ExclamationTriangleIcon class="w-16 h-16 mx-auto text-warning-400" />
+        <h2 class="text-lg font-semibold text-gray-700 mt-4">Something went wrong</h2>
+        <p class="text-gray-500 mt-2 mb-6">{{ apiError }}</p>
+        <button @click="resetAudit" class="inline-flex items-center px-6 py-3 bg-primary-800 text-white rounded-lg font-medium hover:bg-primary-900 transition-colors duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary-800 focus-visible:ring-offset-2">Try Again</button>
       </div>
 
       <!-- Chat Panel (Pro users, completed audits only) -->
@@ -193,7 +197,7 @@
 
 <script setup lang="ts">
 import { useIntervalFn } from '@vueuse/core'
-import { ChatBubbleLeftRightIcon } from '@heroicons/vue/24/outline'
+import { ChatBubbleLeftRightIcon, ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 
 definePageMeta({
   layout: 'dashboard',

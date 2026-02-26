@@ -30,13 +30,13 @@
             Impact: <span class="font-medium text-gray-700">{{ recommendation.impact_label }}</span>
           </span>
           <span>
-            Gap: <span class="font-medium text-gray-700">{{ recommendation.gap_score }}pts</span>
+            Gap: <span class="font-medium font-mono text-gray-700">{{ recommendation.gap_score }}pts</span>
           </span>
           <span>
-            Competitor avg: <span class="font-medium text-gray-700">{{ recommendation.competitor_avg ?? 'N/A' }}</span>
+            Competitor avg: <span class="font-medium font-mono text-gray-700">{{ recommendation.competitor_avg ?? 'N/A' }}</span>
           </span>
           <span>
-            Your score: <span class="font-medium text-gray-700">{{ recommendation.user_score }}</span>
+            Your score: <span class="font-medium font-mono text-gray-700">{{ recommendation.user_score }}</span>
           </span>
         </div>
       </div>

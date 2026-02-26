@@ -61,7 +61,7 @@
             <!-- Share of voice with bar -->
             <td class="px-4 py-3">
               <div class="flex items-center space-x-2">
-                <span class="text-sm font-semibold text-gray-900 w-12 text-right">
+                <span class="text-sm font-semibold font-mono text-gray-900 w-12 text-right">
                   {{ entry.share_of_voice.toFixed(1) }}%
                 </span>
                 <div class="flex-1 max-w-[120px] h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -75,7 +75,7 @@
             </td>
 
             <!-- Mention count -->
-            <td class="px-4 py-3 text-center text-sm text-gray-700">
+            <td class="px-4 py-3 text-center text-sm font-mono text-gray-700">
               {{ entry.mention_count }}
             </td>
 

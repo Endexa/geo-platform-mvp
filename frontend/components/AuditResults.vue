@@ -14,7 +14,7 @@
         class="inline-flex items-center justify-center w-28 h-28 rounded-full border-4 mb-3"
         :class="scoreColor.border"
       >
-        <span class="text-4xl font-bold" :class="scoreColor.text">
+        <span class="text-4xl font-bold font-mono" :class="scoreColor.text">
           {{ overallScore }}
         </span>
       </div>
@@ -62,23 +62,23 @@
     <!-- Summary Stats Row -->
     <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
       <div class="bg-white rounded-lg border border-gray-200 p-4 text-center">
-        <p class="text-2xl font-bold text-gray-900">{{ audit.visibility_score?.mention_count ?? 0 }}</p>
+        <p class="text-2xl font-bold font-mono text-gray-900">{{ audit.visibility_score?.mention_count ?? 0 }}</p>
         <p class="text-xs text-gray-500 mt-1">Brand Mentions</p>
       </div>
       <div class="bg-white rounded-lg border border-gray-200 p-4 text-center">
-        <p class="text-2xl font-bold text-gray-900">{{ mentionRateFormatted }}</p>
+        <p class="text-2xl font-bold font-mono text-gray-900">{{ mentionRateFormatted }}</p>
         <p class="text-xs text-gray-500 mt-1">Mention Rate</p>
       </div>
       <div class="bg-white rounded-lg border border-gray-200 p-4 text-center">
-        <p class="text-2xl font-bold text-gray-900">{{ audit.dispatch_summary?.total_queries ?? 0 }}</p>
+        <p class="text-2xl font-bold font-mono text-gray-900">{{ audit.dispatch_summary?.total_queries ?? 0 }}</p>
         <p class="text-xs text-gray-500 mt-1">Queries Sent</p>
       </div>
       <div class="bg-white rounded-lg border border-gray-200 p-4 text-center">
-        <p class="text-2xl font-bold text-gray-900">{{ audit.dispatch_summary?.total_responses ?? 0 }}</p>
+        <p class="text-2xl font-bold font-mono text-gray-900">{{ audit.dispatch_summary?.total_responses ?? 0 }}</p>
         <p class="text-xs text-gray-500 mt-1">Responses Received</p>
       </div>
       <div class="bg-white rounded-lg border border-gray-200 p-4 text-center">
-        <p class="text-2xl font-bold text-gray-900">
+        <p class="text-2xl font-bold font-mono text-gray-900">
           {{ audit.visibility_score?.engines_queried ?? '—' }}
           <span class="text-sm text-gray-400 font-normal">/ {{ (audit.visibility_score?.engines_queried ?? 0) + (audit.visibility_score?.engines_skipped ?? 0) }}</span>
         </p>
