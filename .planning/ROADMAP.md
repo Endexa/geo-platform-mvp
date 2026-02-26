@@ -80,11 +80,11 @@ Plans:
   2. Clicking "Upgrade" initiates a Stripe Checkout Session that successfully processes a test payment and creates a subscription
   3. Stripe webhooks correctly handle subscription lifecycle events (created, updated, cancelled, payment failed) and the user's access level updates accordingly
   4. Feature gating is enforced server-side via FastAPI dependencies -- accessing a paid endpoint without a subscription returns a clear "upgrade required" response
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 04-01: TBD
-- [ ] 04-02: TBD
+- [ ] 04-01-PLAN.md -- Subscription model, StripeService, payments API (checkout, portal, webhook, session-status)
+- [ ] 04-02-PLAN.md -- Feature gating dependencies, tier-aware audit/recommendation endpoints, pricing page, checkout flow, tests
 
 ### Phase 5: Reports + Exports
 **Goal**: Users can download professional audit reports and export recommendations to their project management tools
@@ -159,7 +159,7 @@ Note: Phases 3 and 4 can execute in parallel (independent dependencies).
 | 1. Scoring Foundation | 2/2 | Complete    | 2026-02-26 |
 | 2. Recommendations + Competitor Benchmarking | 0/3 | Planning complete | - |
 | 3. AI Visibility Hardening | 0/2 | Planning complete | - |
-| 4. Payments + Freemium Gating | 0/2 | Not started | - |
+| 4. Payments + Freemium Gating | 0/2 | Planning complete | - |
 | 5. Reports + Exports | 0/2 | Not started | - |
 | 6. Chat Assistant | 0/2 | Not started | - |
 | 7. Dashboard + Frontend Polish | 0/3 | Not started | - |
