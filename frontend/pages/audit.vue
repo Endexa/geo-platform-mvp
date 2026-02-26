@@ -57,6 +57,25 @@
           to download reports, export recommendations, and chat about your audit results.
         </p>
 
+        <!-- Code Analysis section (below export buttons, Pro users only) -->
+        <!-- CodeAnalysisPrompts + CodeAnalysisUpload rendered when isProUser and isCompleted -->
+        <div class="mt-6 border-t border-gray-200 pt-6">
+          <!-- Pro users: show CodeAnalysisPrompts for prompt download and CodeAnalysisUpload for results upload -->
+          <template v-if="isProUser">
+            <CodeAnalysisPrompts :audit-id="auditId!" />
+            <div class="mt-6">
+              <CodeAnalysisUpload :audit-id="auditId!" />
+            </div>
+          </template>
+          <!-- Free users: upgrade prompt for code analysis -->
+          <template v-else>
+            <p class="text-sm text-slate-500">
+              <NuxtLink to="/pricing" class="text-amber-600 hover:text-amber-500 cursor-pointer">Upgrade to Pro</NuxtLink>
+              to get code-level recommendations for your audit.
+            </p>
+          </template>
+        </div>
+
         <!-- Download error -->
         <p v-if="reportError" class="mt-2 text-sm text-red-600">{{ reportError }}</p>
 
