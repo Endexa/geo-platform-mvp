@@ -273,21 +273,29 @@ class DispatchService:
                     )
                 except litellm.AuthenticationError as auth_err:
                     logger.warning(f"Engine {engine_name} auth failed (invalid/expired key): {auth_err}")
+                    self._active_engines.pop(engine_name, None)
                     error_resp = EngineResponse(
-                        audit_query_id=query.id,
-                        engine=engine_name,
-                        model_version=model,
-                        response_text="",
-                        prompt_tokens=0,
-                        completion_tokens=0,
+                        audit_query_id=query.id, engine=engine_name, model_version=model,
+                        response_text="", prompt_tokens=0, completion_tokens=0,
                         cost_usd=Decimal("0"),
                         error_message=f"Authentication failed: invalid or expired API key for {engine_name}",
                     )
                     thread_db.add(error_resp)
                     thread_db.commit()
                     thread_db.refresh(error_resp)
-                    # Remove this engine from active engines so we don't retry on next query
+                    return error_resp
+                except litellm.RateLimitError as rate_err:
+                    logger.warning(f"Engine {engine_name} rate limited — removing from pool: {rate_err}")
                     self._active_engines.pop(engine_name, None)
+                    error_resp = EngineResponse(
+                        audit_query_id=query.id, engine=engine_name, model_version=model,
+                        response_text="", prompt_tokens=0, completion_tokens=0,
+                        cost_usd=Decimal("0"),
+                        error_message=f"Rate limited: {engine_name} quota exhausted",
+                    )
+                    thread_db.add(error_resp)
+                    thread_db.commit()
+                    thread_db.refresh(error_resp)
                     return error_resp
 
                 # Extract metadata
