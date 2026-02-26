@@ -5,32 +5,33 @@
 See: .planning/PROJECT.md (updated 2025-02-25)
 
 **Core value:** A user enters a URL, gets a real, trustworthy score with actionable recommendations they can immediately act on.
-**Current focus:** Phase 1: Scoring Foundation
+**Current focus:** Phase 2: Recommendations + Competitor Benchmarking
 
 ## Current Position
 
-Phase: 1 of 8 (Scoring Foundation) -- COMPLETE
-Plan: 2 of 2 in current phase (all plans complete)
-Status: Phase complete -- ready for Phase 2
-Last activity: 2026-02-26 -- Completed 01-02-PLAN.md (scoring pipeline integration tests)
+Phase: 2 of 8 (Recommendations + Competitor Benchmarking) -- IN PROGRESS
+Plan: 1 of 3 in current phase
+Status: 02-01-PLAN.md complete -- continuing Phase 2
+Last activity: 2026-02-26 -- Completed 02-01-PLAN.md (vertical classifier + recommendation enhancements)
 
-Progress: [█░░░░░░░░░] 10%
+Progress: [██░░░░░░░░] 15%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
-- Average duration: 2.5min
-- Total execution time: 0.08 hours
+- Total plans completed: 3
+- Average duration: 3.3min
+- Total execution time: 0.17 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-scoring-foundation | 2/2 | 5min | 2.5min |
+| 02-recommendations-competitor-benchmarking | 1/3 | 6min | 6min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (2min), 01-02 (3min)
+- Last 5 plans: 01-01 (2min), 01-02 (3min), 02-01 (6min)
 - Trend: Consistent (fast execution)
 
 *Updated after each plan completion*
@@ -53,6 +54,9 @@ Recent decisions affecting current work:
 - [01-02]: stripe_crawl_data.json fixture exercises all 4 scorers with Organization + Article schemas, 5 sameAs links, FAQ section, author bio, 25+ internal links
 - [01-02]: All scorer tests mock external HTTP calls -- no network dependencies, no API keys required
 - [01-02]: Dual-score display (Visibility + Optimization) confirmed correct in AuditResults.vue and OptimizationScore.vue -- no changes needed
+- [02-01]: Vertical exclusions use real criterion IDs (SD8=Product, SD10=ClaimReview) not research placeholder IDs
+- [02-01]: Impact delta uses linear estimate with 15-point cap and 0.8 multi-page adjustment -- sufficiently accurate for user-facing estimates
+- [02-01]: Content pattern matching can produce false positives but schema.org types take priority and resolve ambiguity
 
 ### Pending Todos
 
@@ -68,5 +72,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed 01-02-PLAN.md (Phase 1 complete)
+Stopped at: Completed 02-01-PLAN.md
 Resume file: None

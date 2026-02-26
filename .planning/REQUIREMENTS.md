@@ -20,11 +20,11 @@
 
 ### Recommendations Engine
 
-- [ ] **REC-01**: Deterministic gap analysis generates priority-ordered recommendations from scoring results
-- [ ] **REC-02**: Each recommendation includes impact estimate (estimated score improvement if fixed)
-- [ ] **REC-03**: Recommendations are industry-aware — vertical classification (e-commerce, SaaS, local, media) affects advice relevance
-- [ ] **REC-04**: Recommendations grouped by category (Crawlability, Content, Schema, Authority) with severity levels
-- [ ] **REC-05**: Each recommendation has a clear action description users can understand and act on
+- [x] **REC-01**: Deterministic gap analysis generates priority-ordered recommendations from scoring results
+- [x] **REC-02**: Each recommendation includes impact estimate (estimated score improvement if fixed)
+- [x] **REC-03**: Recommendations are industry-aware — vertical classification (e-commerce, SaaS, local, media) affects advice relevance
+- [x] **REC-04**: Recommendations grouped by category (Crawlability, Content, Schema, Authority) with severity levels
+- [x] **REC-05**: Each recommendation has a clear action description users can understand and act on
 
 ### Competitor Benchmarking
 
@@ -125,11 +125,11 @@
 | SCORE-08 | Phase 1: Scoring Foundation | Complete |
 | SCORE-09 | Phase 1: Scoring Foundation | Complete |
 | SCORE-10 | Phase 1: Scoring Foundation | Complete |
-| REC-01 | Phase 2: Recommendations + Competitor Benchmarking | Pending |
-| REC-02 | Phase 2: Recommendations + Competitor Benchmarking | Pending |
-| REC-03 | Phase 2: Recommendations + Competitor Benchmarking | Pending |
-| REC-04 | Phase 2: Recommendations + Competitor Benchmarking | Pending |
-| REC-05 | Phase 2: Recommendations + Competitor Benchmarking | Pending |
+| REC-01 | Phase 2: Recommendations + Competitor Benchmarking | Complete |
+| REC-02 | Phase 2: Recommendations + Competitor Benchmarking | Complete |
+| REC-03 | Phase 2: Recommendations + Competitor Benchmarking | Complete |
+| REC-04 | Phase 2: Recommendations + Competitor Benchmarking | Complete |
+| REC-05 | Phase 2: Recommendations + Competitor Benchmarking | Complete |
 | COMP-01 | Phase 2: Recommendations + Competitor Benchmarking | Pending |
 | COMP-02 | Phase 2: Recommendations + Competitor Benchmarking | Pending |
 | COMP-03 | Phase 2: Recommendations + Competitor Benchmarking | Pending |
