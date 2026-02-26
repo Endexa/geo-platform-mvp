@@ -20,10 +20,13 @@ class VisibilityScore(Base):
         index=True,
     )
     overall_score = Column(Integer, nullable=False)  # 0-100
-    per_engine_scores = Column(JSONB, nullable=False)  # {"openai": 75, "anthropic": 60}
+    per_engine_scores = Column(JSONB, nullable=False)  # {"openai": {...}, "anthropic": {...}}
     mention_count = Column(Integer, nullable=False, default=0)
     query_mention_rate = Column(Numeric(5, 2), nullable=False)  # percentage of queries with mentions
-    algorithm_version = Column(String, nullable=False, default="v1")
+    algorithm_version = Column(String, nullable=False, default="v2")
+    confidence_level = Column(String, nullable=False, server_default="low")  # high/medium/low/not_measured
+    engines_queried = Column(Integer, nullable=False, server_default="0")
+    engines_skipped = Column(Integer, nullable=False, server_default="0")
     created_at = Column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
     )
