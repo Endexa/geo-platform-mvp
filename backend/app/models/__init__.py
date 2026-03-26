@@ -19,6 +19,9 @@ from app.models.brand import Brand
 from app.models.subscription import Subscription, WebhookEvent
 from app.models.chat_session import ChatSession
 from app.models.code_analysis import CodeAnalysis, CodeRecommendation
+from app.models.citability_score import CitabilityScore, PageCitabilityAnalysis
+from app.models.llms_txt import LlmsTxtAnalysis
+from app.models.platform_presence import PlatformPresence, BrandScan
 
 __all__ = [
     "Organization",
@@ -48,4 +51,9 @@ __all__ = [
     "ChatSession",
     "CodeAnalysis",
     "CodeRecommendation",
+    "CitabilityScore",
+    "PageCitabilityAnalysis",
+    "LlmsTxtAnalysis",
+    "PlatformPresence",
+    "BrandScan",
 ]

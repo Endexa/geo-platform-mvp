@@ -55,3 +55,15 @@ class Audit(Base):
         foreign_keys="AuditCostLedger.audit_id",
     )
     brand = relationship("Brand", back_populates="audits")
+    citability_scores = relationship(
+        "CitabilityScore", back_populates="audit", cascade="all, delete-orphan"
+    )
+    page_citability_analyses = relationship(
+        "PageCitabilityAnalysis", back_populates="audit", cascade="all, delete-orphan"
+    )
+    llms_txt_analyses = relationship(
+        "LlmsTxtAnalysis", back_populates="audit", cascade="all, delete-orphan"
+    )
+    brand_scans = relationship(
+        "BrandScan", back_populates="audit", cascade="all, delete-orphan"
+    )
