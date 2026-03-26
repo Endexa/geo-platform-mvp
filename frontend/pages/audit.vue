@@ -215,8 +215,8 @@
 </template>
 
 <script setup lang="ts">
-import { useIntervalFn } from '@vueuse/core'
 import { ChatBubbleLeftRightIcon, ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
+import type { AuditDetail } from '~/composables/useAudit'
 
 definePageMeta({
   layout: 'dashboard',
@@ -224,80 +224,13 @@ definePageMeta({
 })
 useHead({ title: 'New Audit — Endexa' })
 
-interface AuditDetail {
-  id: string
-  url: string
-  domain: string
-  status: string
-  error_message: string | null
-  visibility_score: {
-    overall_score: number
-    per_engine_scores: Record<string, number>
-    mention_count: number
-    query_mention_rate: number
-    algorithm_version: string
-  } | null
-  optimization_score: {
-    overall_score: number
-    crawlability_avg: number
-    content_structure_avg: number
-    structured_data_avg: number
-    authority_avg: number
-    pages_scored: number
-    pages_discovered: number
-  } | null
-  queries: Array<{
-    id: string
-    category: string
-    query_text: string
-    sort_order: number
-    is_custom: boolean
-    engine_responses: Array<{
-      id: string
-      engine: string
-      model_version: string
-      response_text: string
-      error_message: string | null
-      mentions: Array<{
-        id: string
-        matched_text: string
-        match_type: string
-        confidence: number
-        char_offset: number
-        context_quote: string
-      }>
-    }>
-  }>
-  dispatch_summary: {
-    total_queries: number
-    total_responses: number
-    total_failures: number
-    engines_used: string[]
-  } | null
-  page_scores: Array<{
-    page_url: string
-    page_title: string | null
-    crawlability_score: number | null
-    content_structure_score: number | null
-    structured_data_score: number | null
-    authority_score: number | null
-    overall_page_score: number | null
-    internal_link_count: number
-    was_scored: boolean
-    criterion_results: Array<{
-      criterion_id: string
-      criterion_name: string
-      category: string
-      score: number
-      max_score: number
-      is_binary: boolean
-      human_summary: string
-      technical_detail: string
-      evidence: Record<string, unknown> | null
-      checked: boolean
-    }>
-  }>
-}
+const route = useRoute()
+
+const {
+  auditId, audit, creating, apiError,
+  isRunning, isCompleted, isPending, isFailed,
+  startAudit, resetAudit, refreshAudit, resumePolling, loadHistory, loadAuditById,
+} = useAudit()
 
 interface CompetitorLeaderboardEntry {
   entity_name: string
@@ -351,10 +284,6 @@ interface RecListResponse {
   progress: { done: number; dismissed: number; open: number; total: number }
 }
 
-const auditId = ref<string | null>(null)
-const audit = ref<AuditDetail | null>(null)
-const creating = ref(false)
-const apiError = ref('')
 const competitorLeaderboard = ref<LeaderboardResponse | null>(null)
 const recProgress = ref<{ done: number; dismissed: number; open: number; total: number } | null>(null)
 const topRecommendations = ref<RecommendationPreview[]>([])
@@ -376,15 +305,6 @@ function doExportCsv() {
   })
   showCsvOptions.value = false
 }
-
-const isRunning = computed(() => {
-  const s = audit.value?.status
-  return s && !['completed', 'failed'].includes(s)
-})
-
-const isCompleted = computed(() => audit.value?.status === 'completed')
-const isPending = computed(() => audit.value?.status === 'pending')
-const isFailed = computed(() => audit.value?.status === 'failed')
 
 // Top 5 competitors for preview on audit page
 const topCompetitors = computed(() => {
@@ -418,51 +338,11 @@ const allEngineResponses = computed(() => {
   return responses
 })
 
-// Polling with useIntervalFn -- called at top level for proper cleanup
-const { pause, resume } = useIntervalFn(async () => {
-  if (!auditId.value) return
-  try {
-    const data = await useApiFetch<AuditDetail>(`/audit/${auditId.value}`)
-    audit.value = data
-    if (data.status === 'completed' || data.status === 'failed') {
-      pause()
-      if (data.status === 'completed') {
-        updateTierFromAudit(data as any)
-        loadCompetitors(auditId.value!)
-        loadRecommendations(auditId.value!)
-      }
-    }
-  } catch (err: any) {
-    console.error('Polling error:', err)
-    pause()
-  }
-}, 3000, { immediate: false })
-
-async function startAudit(url: string) {
-  creating.value = true
-  apiError.value = ''
-
-  try {
-    const data = await useApiFetch<{ id: string }>('/audit/', {
-      method: 'POST',
-      body: { url },
-    })
-    auditId.value = data.id
-    audit.value = { id: data.id, url, domain: '', status: 'pending', error_message: null, visibility_score: null, optimization_score: null, queries: [], dispatch_summary: null, page_scores: [] }
-    resume()
-  } catch (err: any) {
-    apiError.value = err.data?.detail || err.message || 'Failed to start audit'
-  } finally {
-    creating.value = false
-  }
-}
-
 async function loadCompetitors(id: string) {
   try {
     const data = await useApiFetch<LeaderboardResponse>(`/competitors/${id}/leaderboard`)
     competitorLeaderboard.value = data
   } catch {
-    // Competitor data is supplementary -- do not block audit experience
     competitorLeaderboard.value = null
   }
 }
@@ -472,7 +352,6 @@ async function loadRecommendations(id: string) {
     const data = await useApiFetch<RecListResponse>(`/recommendations/${id}`)
     recProgress.value = data.progress
 
-    // Compute open counts per priority
     const openCounts = { high: 0, medium: 0, low: 0 }
     for (const rec of data.recommendations) {
       if (rec.status === 'open' && openCounts[rec.priority as keyof typeof openCounts] !== undefined) {
@@ -481,36 +360,44 @@ async function loadRecommendations(id: string) {
     }
     recOpenByPriority.value = openCounts
 
-    // Top 5 high-priority open recommendations for preview
     topRecommendations.value = data.recommendations
       .filter(r => r.priority === 'high' && r.status === 'open')
       .slice(0, 5)
   } catch {
-    // Recommendation data is supplementary -- do not block audit experience
     recProgress.value = null
     topRecommendations.value = []
   }
 }
 
-async function refreshAudit() {
-  if (!auditId.value) return
-  try {
-    const data = await useApiFetch<AuditDetail>(`/audit/${auditId.value}`)
-    audit.value = data
-    if (data.status === 'completed') {
-      updateTierFromAudit(data as any)
-      loadCompetitors(auditId.value!)
-      loadRecommendations(auditId.value!)
-    }
-  } catch (err: any) {
-    console.error('Refresh error:', err)
+function loadPageSpecificData() {
+  if (auditId.value && isCompleted.value) {
+    updateTierFromAudit(audit.value as any)
+    loadCompetitors(auditId.value)
+    loadRecommendations(auditId.value)
   }
 }
 
-function resetAudit() {
-  auditId.value = null
-  audit.value = null
-  apiError.value = ''
-  pause()
-}
+// When audit completes (either from polling or navigation back), load page-specific data
+watch(isCompleted, (completed) => {
+  if (completed) {
+    loadPageSpecificData()
+  }
+})
+
+onMounted(async () => {
+  const queryId = route.query.id as string | undefined
+  if (queryId) {
+    // Load a specific audit from URL param
+    await loadAuditById(queryId)
+    loadPageSpecificData()
+  } else if (auditId.value && isRunning.value) {
+    // Returning to page with active running audit — resume polling
+    resumePolling()
+  } else if (auditId.value && isCompleted.value) {
+    // Returning to page with completed audit — load supplementary data
+    loadPageSpecificData()
+  }
+  // Refresh history in background
+  loadHistory()
+})
 </script>

@@ -34,6 +34,11 @@
         </NuxtLink>
       </nav>
 
+      <!-- Audit History Widget -->
+      <div class="px-4 mb-4">
+        <AuditHistoryWidget />
+      </div>
+
       <!-- Upgrade CTA (hidden for pro users) -->
       <div v-if="!isProUser" class="p-4 m-4 bg-gradient-to-r from-primary-600 to-primary-700 rounded-lg text-white">
         <h3 class="font-semibold mb-1">Upgrade to Pro</h3>
