@@ -210,6 +210,9 @@ def run_crawl_and_generate(self, audit_id: str, url: str):
             "Audit {}: visibility score = {}/100", audit_id, score.overall_score
         )
 
+        # Extract visibility data for SomScorer injection in Stage 5
+        visibility_score_data = {"per_engine_scores": score.per_engine_scores}
+
         # Stage 5: SCORING -- multi-page crawl, per-page scoring, aggregation
         logger.info("Audit {}: starting scoring stage", audit_id)
         audit.status = AuditStatus.SCORING.value
@@ -241,10 +244,17 @@ def run_crawl_and_generate(self, audit_id: str, url: str):
             orchestrator.register_scorer("authority", AuthorityScorer())
         except ImportError:
             logger.warning("AuthorityScorer not yet available, skipping")
+        try:
+            from app.services.scoring.som_scorer import SomScorer
+            orchestrator.register_scorer("ai_visibility", SomScorer())
+        except ImportError:
+            logger.warning("SomScorer not yet available, skipping")
 
-        visibility_score_value = score.overall_score if score else 0
         scoring_result = asyncio.run(
-            orchestrator.score_audit(audit_id, audit.crawl_data, visibility_score_value)
+            orchestrator.score_audit(
+                audit_id, audit.crawl_data,
+                visibility_score_data=visibility_score_data,
+            )
         )
 
         # Cleanup Playwright browser to prevent chromium process leaks in Celery workers

@@ -4,12 +4,14 @@
 
 ## Current Status
 
-**Phase:** Phases 1-9 complete. Ready for Phase 10 (Scale & Agency).
+**Phase:** Phases 1-9 complete. Next: Phase 10 — Score architecture redesign + missing GEO signals.
 
-- **Working:** Full audit pipeline (crawl, query gen, AI dispatch, mention detection, scoring, competitor discovery, recommendations, dashboard), JWT auth, cost tracking, AI response cache, rate limiter, Celery, dual-score dashboard (Visibility + Optimization), competitive radar chart, PDF/CSV export, audit history trends, 61 scoring criteria across 4 categories
-- **Partial:** Brand Signature Engine (layers 1+3 of 4 working)
-- **Not working:** 103 legacy data point stubs (replaced by Phase 6 scoring), brand signature layers 2+4, payments
-- **Last updated:** 2026-02-23
+- **Working (pipeline):** 8-stage Celery audit pipeline — crawl (BeautifulSoup + extruct), site vertical classification, LLM query generation (GPT-4o-mini, 10-15 queries in 5 categories), multi-LLM dispatch (OpenAI/Anthropic/Perplexity/Gemini/Mistral via LiteLLM, ThreadPoolExecutor), brand mention detection (exact regex + RapidFuzz fuzzy, context quotes), visibility scoring (40% mention_rate + 30% position + 30% prominence, per-engine), AI-readiness scoring (61 criteria, 4 scorers, weakest-link aggregation, multi-page crawl), competitor discovery (spaCy NER + RapidFuzz dedup + URL resolution + Phase 6 crawl/score), LLM sentiment analysis (Mistral-small, JSON mode), recommendation engine (deterministic gap analysis, code snippets, estimated deltas, content gaps), JWT auth, cost tracking ($1.00 cap), Redis cache (SHA-256, 24h TTL), per-provider rate limiter
+- **Working (frontend):** Dual-score dashboard (Visibility + Optimization), per-engine breakdown, CategoryBreakdown, CriterionDrilldown, CompetitorRadar (Chart.js), TrendChart (audit history), ExportActions (PDF/CSV), audit progress stepper (8 stages), brand voice checker (layers 1+3)
+- **Partial:** Brand Signature Engine (Layer 1 rules + Layer 3 pgvector cosine working; Layer 2 statistical fingerprint + Layer 4 LLM deep analysis not built)
+- **Stub/Broken:** `/geo-datapoints` endpoints (legacy system deleted, all imports are None), Stripe payments (skeleton only), Jira integration (skeleton only)
+- **Architecture gap:** Visibility Score (true GEO) and Optimization Score (technical readiness) are blended 85/15 instead of presented as independent dimensions. See `docs/RedwaneNextDirection.md`.
+- **Last updated:** 2026-03-29
 
 ## Known Issues
 

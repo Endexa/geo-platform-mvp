@@ -65,14 +65,15 @@ class ScoringOrchestrator:
         logger.info("Registered scorer for category: {}", category)
 
     async def score_audit(
-        self, audit_id: str, crawl_data: dict, visibility_score: int
+        self, audit_id: str, crawl_data: dict, *, visibility_score_data: dict | None = None
     ) -> dict:
         """Main entry point: discover pages, crawl, score, persist, aggregate.
 
         Args:
             audit_id: UUID of the audit being scored.
             crawl_data: Initial crawl result dict (from CrawlerService.crawl()).
-            visibility_score: Overall visibility score (0-100) from mention analysis.
+            visibility_score_data: Optional audit-level visibility data for SomScorer.
+                Dict with "per_engine_scores" key. Injected into each page_data.
 
         Returns:
             Dict with optimization_score, page_count, pages_scored, pages_discovered.
@@ -129,6 +130,10 @@ class ScoringOrchestrator:
         for page_data in crawled_pages:
             page_url = page_data.get("url", "")
             page_title = page_data.get("title", "")
+
+            # Inject audit-level visibility data for SomScorer
+            if visibility_score_data is not None:
+                page_data["visibility_score_data"] = visibility_score_data
 
             # Run all registered scorers
             category_results = await self._score_page(page_data)
@@ -209,10 +214,8 @@ class ScoringOrchestrator:
 
         self.db.flush()
 
-        # Step 6: Compute final optimization score
-        optimization_score = self.compute_optimization_score(
-            page_category_scores, visibility_score
-        )
+        # Step 6: Compute final optimization score (pure technical, no visibility blend)
+        optimization_score = self.compute_optimization_score(page_category_scores)
 
         logger.info(
             "Audit {}: optimization_score={}, pages_scored={}, pages_discovered={}",
@@ -329,36 +332,32 @@ class ScoringOrchestrator:
         return normalized
 
     def compute_optimization_score(
-        self, page_category_scores: list[dict], visibility_score: int
+        self, page_category_scores: list[dict]
     ) -> int:
-        """Compute weighted optimization score with weakest-link aggregation.
+        """Compute pure technical readiness score with weakest-link aggregation.
 
         Formula:
         1. For each page, compute weighted category score
            (crawlability*0.25 + content_structure*0.25 + structured_data*0.20 + authority*0.15)
+           normalized to 0-100 by dividing by active weight sum.
         2. Aggregate across pages: weakest_link = 0.6 * mean + 0.4 * min
-        3. Add AI visibility: site_technical_score + visibility_score * 0.15
-        4. Clamp to 0-100, return rounded int
+        3. Clamp to 0-100, return rounded int
 
         Args:
             page_category_scores: List of dicts, each mapping category -> score (0-100).
-            visibility_score: Overall visibility score (0-100).
 
         Returns:
-            Final optimization score as int (0-100).
+            Pure technical optimization score as int (0-100).
         """
         if not page_category_scores:
-            # No pages scored -- return visibility contribution only
-            return max(0, min(100, round(visibility_score * 0.15)))
+            return 0
 
-        # Technical category weights (excluding ai_visibility which uses visibility_score)
         technical_weights = {
             "crawlability": 0.25,
             "content_structure": 0.25,
             "structured_data": 0.20,
             "authority": 0.15,
         }
-        total_technical_weight = sum(technical_weights.values())  # 0.85
 
         page_scores: list[float] = []
         for page_cats in page_category_scores:
@@ -370,7 +369,7 @@ class ScoringOrchestrator:
                     active_weight += weight
             if active_weight > 0:
                 # Normalize by active weight so missing categories don't penalize
-                page_scores.append(weighted_sum / active_weight * total_technical_weight)
+                page_scores.append(weighted_sum / active_weight)
             else:
                 page_scores.append(0.0)
 
@@ -382,7 +381,4 @@ class ScoringOrchestrator:
         else:
             site_technical_score = 0.0
 
-        # Add AI visibility contribution
-        final_score = site_technical_score + visibility_score * 0.15
-
-        return max(0, min(100, round(final_score)))
+        return max(0, min(100, round(site_technical_score)))

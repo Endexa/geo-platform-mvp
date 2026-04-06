@@ -1,11 +1,13 @@
-# CLAUDE.md - GEO Platform MVP Guide
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 > **Read this file first.** It contains everything needed to understand, develop, and contribute to this project without re-exploring the codebase.
 > **Then read [`docs/quickstart-your-claude.md`](docs/quickstart-your-claude.md)** for workflow rules, finding tasks, commit flow, and autopilot guidance.
 
 ## Project Overview
 
-**GEO Platform** is a Generative Engine Optimization platform that analyzes websites against 108 data points measuring how well they're optimized for AI language models (ChatGPT, Claude, Perplexity, etc.). It scores websites 0-100 across 7 modules and generates AI-powered optimization recommendations.
+**GEO Platform** is a Generative Engine Optimization platform that analyzes websites against 61 criteria (across 5 categories) measuring how well they're optimized for AI language models (ChatGPT, Claude, Perplexity, etc.). It produces a dual score — Visibility (are LLMs mentioning you?) + Optimization (is your site technically ready to be cited?) — and generates AI-powered optimization recommendations.
 
 **Core thesis:** As LLMs become search engines, websites need new optimization strategies beyond traditional SEO.
 
@@ -13,25 +15,43 @@
 
 ## Current State (Honest Assessment)
 
-**Architecture: Production-ready. Features: ~5% complete.**
+**Architecture: Production-ready. Features: ~40% complete.**
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| URL Analysis + Basic Scoring | Working | Visibility/Readability/Authority scores |
-| Dashboard Stats | Working | Queries DB, displays results |
-| GEO Data Points (5/108) | Working | GPTBot, ClaudeBot, Schema Org, Response Time, Title Tag |
-| GEO Data Points (103 remaining) | Scripts exist, return 0 | Need real implementation |
-| AI-Readiness Scoring (Phase 6) | **Working** | 61 criteria across 4 categories, dual-score UI (Visibility + Optimization), criterion drill-down |
-| Recommendation Engine | Stub | Optimizer service exists but no LLM integration |
-| Brand Signature Engine | Partial | 2 of 4 layers working (rules + pgvector similarity). Missing: statistical fingerprint + LLM deep analysis. See architecture below. |
-| Stripe Payments | Stub | Endpoints exist, untested |
-| Jira Integration | Stub | Endpoints exist, needs recommendations to function |
-| Authentication | **Enabled** | PyJWT + pwdlib, register/login/me endpoints, all protected endpoints enforced |
-| Cost Tracking | **Working** | AuditCostLedger model, $1.00/audit budget cap, per-call cost recording |
-| AI Response Cache | **Working** | Redis-based, SHA-256 keys, 24h TTL, fail-open |
-| Outbound Rate Limiter | **Working** | Per-AI-provider (asyncio semaphore + token bucket) |
-| Celery Task Queue | **Working** | Redis broker, JSON serialization, task routing |
-| Alembic Migrations | **Working** | 2 migrations (auth fields, cost ledger) |
+| Authentication | ✅ Working | PyJWT + pwdlib/bcrypt, register/login/me, all protected endpoints enforced |
+| Full Audit Pipeline | ✅ Working | 8-stage Celery pipeline: crawl → query gen → dispatch → mentions → scoring → competitors → sentiment → recommendations |
+| Multi-LLM Dispatch | ✅ Working | LiteLLM routing to OpenAI/Anthropic/Perplexity/Gemini/Mistral in parallel (ThreadPoolExecutor) |
+| AI Response Cache | ✅ Working | Redis SHA-256 keys, 24h TTL, fail-open |
+| Cost Tracking | ✅ Working | AuditCostLedger per call, $1.00/audit budget cap, pre-query budget check |
+| Outbound Rate Limiter | ✅ Working | asyncio semaphore + token bucket per provider |
+| Query Generator | ✅ Working | LLM generates 10-15 queries in 5 categories (industry/brand_direct/comparison/problem/recommendation) |
+| Brand Mention Detection | ✅ Working | Exact regex + RapidFuzz fuzzy fallback, context_quote extraction, brand variant generation |
+| Visibility Score | ✅ Working | 40% mention_rate + 30% position + 30% prominence, per-engine breakdown |
+| AI-Readiness Scoring (61 criteria) | ✅ Working | CrawlabilityScorer (C1-C12), ContentStructureScorer (CS1-CS13), StructuredDataScorer (SD1-SD13), AuthorityScorer (A1-A8 + S1-S15) |
+| Scoring: External APIs | ✅ Working | Knowledge Graph, Wikidata, Wikipedia, PageSpeed Insights — graceful degradation |
+| Weakest-link Aggregation | ✅ Working | score = 0.6×mean + 0.4×min per page, then across pages |
+| Site Vertical Classifier | ✅ Working | Detects saas/ecommerce/local_business/media_blog/healthcare/legal/finance/generic |
+| Competitor Discovery | ✅ Working | spaCy NER on LLM responses → entity dedup (RapidFuzz) → URL resolution (citation URL > domain heuristic > KG API) |
+| Competitor Crawl + Scoring | ✅ Working | Top competitors crawled and scored with Phase 6 pipeline, CompetitorAudit per-category averages |
+| Share-of-Voice tracking | ✅ Working | DiscoveredCompetitor.queries_mentioned_in[], linked to Brand records across audits |
+| Sentiment Analysis | ✅ Working | Mistral-small via LiteLLM, JSON mode, positive/negative/neutral per mention |
+| Recommendation Engine | ✅ Working | Deterministic gap analysis: criterion score vs competitor avg vs research benchmarks, priority HIGH/MEDIUM/LOW, code snippets, estimated_score_delta |
+| Content Gaps | ✅ Working | Queries where competitors mentioned but brand is not → mini brief per gap |
+| Markdown Fix Plan Export | ✅ Working | Structured PLAN.md format exportable per page or full site |
+| Dashboard | ✅ Working | DashboardHero (score cards), CompetitorRadar (Chart.js), ExportActions, TrendChart, audit history |
+| PDF/CSV Export | ✅ Working | WeasyPrint PDF, CSV via DashboardService, Jinja2 template |
+| Citability Scoring | ✅ Working | Scores how citable a page is for LLMs. DB models + migration in place |
+| llms.txt Generation | ✅ Working | Auto-generates llms.txt / llms-full.txt files for AI crawler discovery |
+| Brand Scanning | ✅ Working | Scans LLM responses for brand presence across platforms |
+| Chat Assistant | ✅ Working | SSE streaming chat via LiteLLM, ChatPanel component, chat sessions persisted |
+| Code Analysis | ✅ Working | Analyze code snippets for GEO optimization patterns |
+| Report Generation | ✅ Working | Full audit reports via ReportService, exportable |
+| Brand Signature Engine | ⚠️ Partial | Layer 1 (rules/regex) + Layer 3 (pgvector cosine similarity) working. Layer 2 (statistical fingerprint) + Layer 4 (LLM deep analysis) not built. |
+| geo_datapoints/ legacy system | ❌ Deleted | 108-script system removed. Replaced by Phase 6 scoring (61 criteria). `/geo-datapoints` endpoints return null. |
+| Stripe Payments | ❌ Stub | Endpoints exist, webhook handler skeleton, no real logic |
+| Jira Integration | ❌ Stub | Endpoint exists, no implementation |
+| Alembic Migrations | ✅ Working | 16 versioned migrations covering all current models |
 
 ## Git & Commit Rules
 
@@ -55,6 +75,8 @@
 - **docs/API-REFERENCE.md** - All API endpoints, schemas, auth requirements.
 - **docs/TESTING-STRATEGY.md** - Testing tiers and scope matrix.
 - **docs/SECURITY.md** - Security implementation details.
+- **docs/RedwaneNextDirection.md** - 5-axis roadmap for score architecture redesign, Share of Model KPI, score delta, Brand Signature L2/L4, and new GEO modules. **Read before touching scoring or the audit pipeline.**
+- **docs/GEO-DATA-POINTS-CLASSIFICATION.md** - Classification of 109 GEO data points (priority P0-P5, full implementation spec per point).
 - **docs/archive/** - Historical docs. See `docs/archive/README.md` for index.
 
 ## Tech Stack
@@ -85,67 +107,39 @@
 ```
 geo-platform-mvp/
 ├── CLAUDE.md                          # This file
-├── README.md                          # Public-facing project intro
-├── docker-compose.yml                 # PostgreSQL + Redis + Backend + Celery + Frontend
-├── .env.example                       # Environment template
+├── start.sh                           # One-command dev launcher
+├── docker-compose.yml                 # Redis + optional full Docker dev setup
 ├── docs/                              # All project documentation
 │
 ├── backend/                           # FastAPI Python Backend
 │   ├── app/
-│   │   ├── main.py                   # App entry point + middleware stack
-│   │   ├── api/                      # API routers
-│   │   │   ├── analysis.py           # POST /analyze, GET /{id}
-│   │   │   ├── optimization.py       # POST /generate, GET /recommendations
-│   │   │   ├── brand_voice.py        # POST /check, POST /config, POST /upload
-│   │   │   ├── dashboard.py          # GET /stats, GET /recent
-│   │   │   ├── integrations.py       # Stripe webhooks, Jira tickets
-│   │   │   └── geo_datapoints.py     # POST /run, GET /{id}, GET /summary
-│   │   ├── models/                   # SQLAlchemy models
-│   │   ├── services/                 # Business logic
-│   │   │   ├── analyzer.py           # URL crawling + scoring
-│   │   │   ├── optimizer.py          # Recommendation generation (stub)
-│   │   │   ├── brand_voice.py        # Brand voice checking
-│   │   │   └── jira_service.py       # Jira integration
-│   │   ├── core/                     # Config, DB, security, middleware
-│   │   │   ├── config.py             # Settings class (Pydantic)
-│   │   │   ├── database.py           # SQLAlchemy engine + session
-│   │   │   ├── security.py           # JWT auth, password hashing
-│   │   │   ├── middleware.py         # 7 custom middlewares
-│   │   │   └── rate_limiter.py       # Per-tier rate limiting
+│   │   ├── main.py                   # App entry + middleware stack (9 middlewares)
+│   │   ├── api/                      # 16 API routers (audit, auth, analysis, brands, brand_voice,
+│   │   │                             #   chat, code_analysis, competitors, dashboard, geo_datapoints,
+│   │   │                             #   integrations, optimization, payments, recommendations, reports)
+│   │   ├── models/                   # 25 SQLAlchemy models
+│   │   ├── services/                 # Business logic (~27 service files)
+│   │   │   └── scoring/             # Scoring subsystem (critical path)
+│   │   │       ├── base_scorer.py           # ABC for all scorers
+│   │   │       ├── scoring_orchestrator.py  # Runs all scorers, weakest-link aggregation
+│   │   │       ├── crawlability_scorer.py   # C1-C12
+│   │   │       ├── content_structure_scorer.py # CS1-CS13
+│   │   │       ├── structured_data_scorer.py   # SD1-SD13
+│   │   │       └── authority_scorer.py      # A1-A8 + S1-S15
+│   │   ├── core/                     # Config, DB, security, middleware, rate limiting
 │   │   ├── schemas/                  # Pydantic request/response schemas
-│   │   └── tasks/                    # Celery background tasks
-│   ├── requirements.txt              # Python dependencies
-│   └── Dockerfile
+│   │   └── tasks/                    # Celery tasks (audit_tasks.py is the main pipeline)
+│   ├── tests/                        # pytest tests (~20 test files)
+│   ├── alembic/                      # 16 versioned migrations
+│   └── requirements.txt
 │
-├── frontend/                          # Nuxt 3 Frontend
-│   ├── pages/                        # Auto-routed Vue pages
-│   │   ├── index.vue                 # Home/dashboard
-│   │   ├── analyze.vue               # URL analysis (core feature)
-│   │   ├── dashboard.vue             # Dashboard metrics
-│   │   ├── optimization.vue          # Recommendations (placeholder)
-│   │   ├── brand-voice.vue           # Brand voice checker
-│   │   ├── settings.vue              # Settings
-│   │   └── login.vue                 # Login
-│   ├── components/                   # Reusable Vue components
-│   ├── composables/                  # Vue composables (hooks)
-│   ├── layouts/                      # Layout templates
-│   ├── nuxt.config.ts                # Nuxt configuration
-│   ├── package.json
-│   └── Dockerfile
-│
-└── geo_data_points/                   # 108 GEO Measurement Scripts
-    ├── measurements/                  # Individual measurement scripts
-    │   ├── wi_*.py                   # Web Infrastructure (31)
-    │   ├── cnt_*.py                  # Content (24)
-    │   ├── bv_*.py                   # Brand Visibility (15)
-    │   ├── seo_*.py                  # SEO (12)
-    │   ├── ux_*.py                   # UX (8)
-    │   ├── comp_*.py                 # Competitive (8)
-    │   └── leg_*.py                  # Legal (5)
-    ├── orchestrator/run_all.py       # Runs all measurements for a URL
-    ├── utils/                        # Shared utilities (HTTP, HTML, NLP)
-    ├── data_points.json              # 108 data point definitions
-    └── README.md                     # Module documentation
+└── frontend/                          # Nuxt 3 Frontend (SPA mode)
+    ├── pages/                        # 12 auto-routed pages (index, analyze, audit, dashboard,
+    │                                 #   brands, competitors, recommendations, brand-voice,
+    │                                 #   optimization, pricing, settings, login)
+    ├── components/                   # ~36 Vue components + landing/ subdirectory
+    ├── composables/                  # 10 composables (useAuth, useAudit, useApiFetch, etc.)
+    └── nuxt.config.ts                # Modules: @nuxtjs/tailwindcss, @pinia/nuxt
 ```
 
 ## Environment Variables
@@ -161,13 +155,16 @@ SECRET_KEY=your-secret-key        # openssl rand -hex 32
 OPENAI_API_KEY=your-openai-key
 ANTHROPIC_API_KEY=your-anthropic-key
 GEMINI_API_KEY=your-gemini-key
+MISTRAL_API_KEY=your-mistral-key    # Used for sentiment analysis (Mistral-small via LiteLLM)
 ```
 
 ### Frontend (.env)
 ```env
-NUXT_PUBLIC_API_BASE=http://localhost:8000/api/v1
+NUXT_PUBLIC_API_URL=http://localhost:8000      # Note: NOT _API_BASE — see nuxt.config.ts
 NUXT_PUBLIC_SUPABASE_URL=https://PROJECT_REF.supabase.co
 NUXT_PUBLIC_SUPABASE_KEY=your-anon-key
+NUXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_... # Optional, for payments
+NUXT_PUBLIC_STRIPE_PRICE_PRO_MONTHLY=price_... # Optional, for payments
 ```
 
 ## Commands
@@ -187,7 +184,12 @@ cd backend && source venv/bin/activate
 alembic upgrade head                # Run migrations against Supabase
 
 # Testing
-cd frontend && npx playwright test  # E2E tests (45 tests, mocked API)
+cd backend && source venv/bin/activate && pytest                          # All backend tests
+cd backend && source venv/bin/activate && pytest tests/test_analysis.py   # Single test file
+cd backend && source venv/bin/activate && pytest tests/test_analysis.py -k "test_name" # Single test
+cd frontend && npm run test:e2e     # E2E tests (Playwright, mocked API)
+cd frontend && npm run test:e2e:ui  # E2E with interactive UI
+cd frontend && npm run lint         # ESLint
 cd frontend && npm run build        # Build check
 
 # Access points
@@ -210,46 +212,57 @@ Before marking any task as done:
 ## Core User Journey
 
 ```
-User enters URL + keywords on /analyze
-  -> Frontend POSTs to /api/v1/analysis/analyze
-  -> Backend creates Analysis record (status=pending)
-  -> Celery worker runs AnalyzerService:
-     1. Crawls URL (BeautifulSoup)
-     2. Calculates Visibility (keywords in H1/H2)
-     3. Calculates Readability (Flesch-Kincaid)
-     4. Calculates Authority (domain-based mock)
-     5. Computes GEO Score = (Vis*0.4 + Read*0.3 + Auth*0.3)
-  -> Frontend polls GET /api/v1/analysis/{id} every 2s
-  -> Results displayed as score cards
+User enters URL on /analyze
+  -> Frontend POSTs to /api/v1/audit/
+  -> Backend creates Audit record (status=CRAWLING)
+  -> Celery worker runs run_crawl_and_generate():
+     1. CRAWLING          — BeautifulSoup + extruct crawl; vertical classification (spaCy)
+     2. GENERATING_QUERIES — LLM generates 10-15 queries in 5 categories (GPT-4o-mini)
+     3. DISPATCHING       — Queries sent to 5 AI engines in parallel (ThreadPoolExecutor)
+     4. ANALYZING         — Brand mention detection (regex + RapidFuzz); Visibility Score computed
+     5. SCORING           — Multi-page crawl; 4 scorers run per page; weakest-link aggregation
+     6. DISCOVERING_COMPETITORS — spaCy NER on responses; URL resolution; competitor crawl+score
+     7. RECOMMENDING      — Gap analysis vs competitors; sentiment analysis (Mistral)
+     8. COMPLETED
+  -> Frontend polls GET /api/v1/audit/{id} every 2s
+  -> Results: dual-score display (Visibility + Optimization), per-engine breakdown,
+     CategoryBreakdown, CriterionDrilldown, CompetitorRadar, recommendations
 ```
 
 ## Scoring System
 
 ### Dual-Score Architecture (Phase 6 Complete)
 
-The audit produces two complementary scores:
+The audit produces two complementary scores displayed side by side in the UI:
 
-- **Visibility Score (0-100):** AI mention-based analysis from phases 4-5. Measures how often AI engines mention your brand when asked industry-relevant queries. Per-engine breakdown (ChatGPT, Claude, Perplexity, Gemini).
+**Score #1 — Visibility Score (0-100)**
+Measures how often AI engines *actually* mention your brand when asked real industry queries.
+- Source: Brand mentions detected in LLM responses (Stage 4)
+- Formula: `40% mention_rate + 30% position_score + 30% prominence_score`
+- Per-engine breakdown: OpenAI / Anthropic / Perplexity / Gemini / Mistral
+- This is the **true GEO metric** — did the LLMs mention you or not?
 
-- **Optimization Score (0-100):** Page-level criteria scoring from phase 6. Evaluates how AI-ready your site is across 61 criteria in 4 categories. Uses research-backed weights and strict grading (most sites score 30-60).
+**Score #2 — Optimization Score (0-100)**
+Measures how technically ready the site is to *be* cited by AI engines.
+- Source: 61 criteria evaluated page by page (Stage 5)
+- This is a **readiness proxy**, not a direct GEO measurement
 
-**Weighted Formula:** Crawlability 25% + Content Structure 25% + Structured Data 20% + Authority 15% + AI Visibility 15%
+**Final weighted formula:**
+```
+optimization_score = (crawlability×0.25 + content_structure×0.25 + structured_data×0.20 + authority×0.15 + ai_visibility×0.15) per page
+page_score = 0.6×mean(criteria) + 0.4×min(criteria)   ← weakest-link per page
+final_score = 0.6×mean(pages) + 0.4×min(pages)         ← weakest-link across pages
+```
+The two scores (Visibility + Optimization) are stored separately. See `docs/RedwaneNextDirection.md` for the planned UI redesign to surface them as independent dimensions.
 
 **Categories:**
-| Category | Criteria | Weight | Key Signals |
-|----------|----------|--------|-------------|
-| Crawlability | C1-C12 | 25% | AI bot access (robots.txt), SSR, TTFB, HTTP status |
-| Content Structure | CS1-CS13 | 25% | Headings, lists, word count, readability, citations |
-| Structured Data | SD1-SD13 | 20% | JSON-LD, FAQPage, HowTo, schema types, llms.txt |
-| Authority | A1-A8, S1-S15 | 15% | E-E-A-T (author, dates, KG, Wikidata), SEO fundamentals |
-
-**Aggregation:** Weakest-link: 0.6 * mean + 0.4 * min across pages, penalizing inconsistency.
-
-### Legacy (Original MVP)
-- **Visibility:** keywords found in H1/H2 / total keywords * 100
-- **Readability:** Flesch-Kincaid score (0-100)
-- **Authority:** Mock -- .edu/.gov = 85, others = random 40-70
-- **GEO Score:** (Visibility * 0.4) + (Readability * 0.3) + (Authority * 0.3)
+| Category | Criteria | Weight | Key Signals | Implementation |
+|----------|----------|--------|-------------|----------------|
+| Crawlability | C1-C12 | 25% | 8 AI bot robots.txt checks, SSR detection (Playwright), TTFB, HTTP status, resource blockage | `crawlability_scorer.py` |
+| Content Structure | CS1-CS13 | 25% | Headings, answer-first, paragraph length, data density, FAQ, content length, readability (textstat), citations, freshness, statistics, quotations, entity density, sentence variety | `content_structure_scorer.py` |
+| Structured Data | SD1-SD13 | 20% | JSON-LD Organization/sameAs/FAQPage/Article/HowTo/Breadcrumb/Product/Person/ClaimReview, validity, coverage, llms.txt, llms-full.txt | `structured_data_scorer.py` |
+| Authority | A1-A8 + S1-S15 | 15% | E-E-A-T (author bios, dates, KG API, Wikidata SPARQL, Wikipedia API, reviews, brand signal, composite), SSL, canonical, meta, sitemap, OG, mobile, internal links, backlink proxy, CWV (PageSpeed API), URL structure, alt text, broken links, orphan pages | `authority_scorer.py` |
+| AI Visibility | COMP1+ | 15% | Share of Model per engine (queries_with_mentions / queries_sent); data sourced from VisibilityScore table | `som_scorer.py` (planned — see `docs/RedwaneNextDirection.md` Axe 5) |
 
 ## Brand Signature Engine (4-Layer Architecture)
 
@@ -302,91 +315,29 @@ See `docs/ARCHITECTURE.md` for the full design.
 
 ## Installed Development Tools
 
-Three tools are installed that enforce quality and accelerate development. **Read this section carefully — these tools change how you work.**
+Three plugins are installed that change how you work. They activate automatically — read this to understand the workflow they enforce.
 
 ### 1. Superpowers (Workflow Enforcement)
 
-**What it is:** A skills library that auto-enforces brainstorming → planning → TDD → code review into every session. Installed as a Claude Code plugin — activates automatically on session start.
-
-**How it works:** On every session start, the `using-superpowers` skill loads into your context. Before writing any code, you MUST:
-1. **Brainstorm first** — explore context, ask clarifying questions, propose 2-3 approaches
-2. **Write a plan** — save to `docs/plans/YYYY-MM-DD-<feature>-design.md` with exact file paths and code
-3. **Use TDD** — write the failing test first, verify it fails, then write minimal code to pass
-4. **Request code review** — spec compliance check, then code quality check
-
-**Iron Laws (non-negotiable):**
-- NO production code without a failing test first. If code was written before the test: delete it, start over.
-- NO completion claims without fresh verification evidence. Run the command, read the output, THEN claim the result.
-- NO skipping the design phase. Design doc must be saved before implementation begins.
-
-**Available skills:** `brainstorming`, `writing-plans`, `test-driven-development`, `subagent-driven-development`, `executing-plans`, `systematic-debugging`, `verification-before-completion`, `requesting-code-review`, `receiving-code-review`, `using-git-worktrees`, `finishing-a-development-branch`, `dispatching-parallel-agents`, `writing-skills`
+Auto-activates on session start. Enforces: brainstorm → plan (save to `docs/plans/`) → TDD (failing test first) → code review. Design doc required before implementation. No production code without a failing test first.
 
 **Location:** `~/.claude/plugins/cache/superpowers/superpowers/unknown/skills/`
 
 ### 2. GSD — Get Shit Done (Spec-Driven Development)
 
-**What it is:** A spec-driven development framework that interviews the user, builds a phased plan with requirements tracking, then executes phase by phase with verification. Installed as Claude Code slash commands.
+Slash commands for phased development with requirements tracking. Use for non-trivial features.
 
-**When to use it:** For any non-trivial feature or redesign. Especially for:
-- The 108 data points pipeline redesign (Gatherer → Artifact → Auditor)
-- New features spanning multiple files
-- Any task requiring architectural decisions
+**Key commands:** `/gsd:new-project` (full lifecycle), `/gsd:plan-phase N`, `/gsd:execute-phase N`, `/gsd:quick` (small tasks), `/gsd:debug`
 
-**Key commands:**
-- `/gsd:new-project` — Full interview → research → requirements → roadmap → phases
-- `/gsd:map-codebase` — Analyze existing code for brownfield projects
-- `/gsd:discuss-phase N` — Lock in user preferences before planning
-- `/gsd:plan-phase N` — Generate executable plans with frontmatter contracts
-- `/gsd:execute-phase N` — Wave-based parallel execution with verification
-- `/gsd:verify-work N` — UAT session + auto gap closure
-- `/gsd:debug` — Structured debugging workflow
-- `/gsd:quick` — Lightweight plan for small tasks
-- `/gsd:help` — Full command reference
-
-**Key patterns:**
-- **REQ-IDs** track every requirement from definition → plan → implementation → verification
-- **Goal-backward verification:** Check "does it score correctly?" not just "does the file exist?"
-- **3-level artifact check:** (1) File exists, (2) Substantive (not a stub), (3) Wired (imported and used)
-- **Vertical slices:** Build one complete pipeline end-to-end before starting the next
-- **Wave-based execution:** Independent tasks run in parallel, dependent tasks wait
-
-**Artifacts location:** `.planning/` directory (created on first use)
+**Artifacts:** `.planning/` directory
 
 ### 3. UI/UX Pro Max (Design System)
 
-**What it is:** An AI design intelligence skill with 67 UI styles, 96 color palettes, 57 font pairings, 99 UX rules, and stack-specific guidelines for Nuxt 3 + Tailwind CSS. Auto-activates when you work on UI/frontend code.
+Auto-activates on frontend work. Enforces the design system at `design-system/endexa-geo-platform/MASTER.md`.
 
-**How it works:** When any UI/frontend task is detected, the skill auto-activates and:
-1. Detects project type (analytics dashboard) and applies the matching design reasoning rule
-2. Selects appropriate style, colors, typography from its CSV databases
-3. Enforces the design system from `design-system/endexa-geo-platform/MASTER.md`
-4. Checks against the pre-delivery checklist (contrast, cursors, hover states, focus rings, etc.)
+**Design tokens:** Primary `#1E40AF`, Secondary `#3B82F6`, CTA `#F59E0B`, Background `#F8FAFC`, Text `#1E3A8A`. Typography: Fira Code (headings/data) + Fira Sans (body/UI).
 
-**Our design system** (already generated):
-- **Style:** Data-Dense Dashboard
-- **Colors:** Primary `#1E40AF`, Secondary `#3B82F6`, CTA `#F59E0B`, Background `#F8FAFC`, Text `#1E3A8A`
-- **Typography:** Fira Code (headings/data) + Fira Sans (body/UI)
-- **Reference:** `design-system/endexa-geo-platform/MASTER.md`
-
-**Manual search commands:**
-```bash
-# Generate page-specific design
-python3 .claude/skills/ui-ux-pro-max/scripts/search.py "dashboard data visualization" --design-system --persist -p "Endexa GEO Platform" --page "dashboard"
-
-# Get Nuxt 3 guidelines
-python3 .claude/skills/ui-ux-pro-max/scripts/search.py "data fetching SSR composables" --stack nuxtjs
-
-# Get Tailwind guidelines
-python3 .claude/skills/ui-ux-pro-max/scripts/search.py "responsive cards grid dark mode" --stack html-tailwind
-```
-
-**Anti-patterns enforced:**
-- No emoji icons — use Heroicons/Lucide SVG only
-- No `z-[9999]` — use defined z-index scale (z-10, z-20, z-30, z-50)
-- No `duration-1000` transitions — cap at 300ms
-- No missing `cursor-pointer` on clickable elements
-- No missing focus rings — use `focus-visible:ring-2`
-- Minimum 4.5:1 contrast ratio for all text
+**Rules:** No emoji icons (use Heroicons/Lucide SVG), no `z-[9999]`, transitions cap 300ms, `cursor-pointer` on clickables, `focus-visible:ring-2`, min 4.5:1 contrast.
 
 **Location:** `.claude/skills/ui-ux-pro-max/`
 
@@ -394,19 +345,7 @@ python3 .claude/skills/ui-ux-pro-max/scripts/search.py "responsive cards grid da
 
 ## Available Subagents
 
-Located in `.claude/awesome-claude-code-subagents/categories/`:
-
-| Category | Relevant Agents |
-|----------|----------------|
-| 01-core-development | frontend-developer, backend-developer, fullstack-developer, ui-designer, api-designer |
-| 02-language-specialists | python-pro, vue-expert, typescript-pro, javascript-pro, sql-pro |
-| 03-infrastructure | database-administrator, deployment-engineer, security-engineer |
-| 04-quality-security | code-reviewer, test-automator, accessibility-tester, performance-engineer, security-auditor, debugger, error-detective |
-| 05-data-ai | ai-engineer, prompt-engineer, llm-architect |
-| 06-developer-experience | documentation-engineer, refactoring-specialist, dx-optimizer |
-| 07-specialized-domains | seo-specialist |
-
-Also available as built-in Task subagent_types: frontend-developer, ui-ux-designer, code-reviewer, test-automator, security-auditor, debugger, performance-engineer, python-pro, fastapi-pro, etc.
+Located in `.claude/awesome-claude-code-subagents/categories/` (01-core-development through 07-specialized-domains). Also available as Task subagent_types: `frontend-developer`, `backend-developer`, `code-reviewer`, `test-automator`, `security-auditor`, `debugger`, `python-pro`, `fastapi-pro`, `vue-expert`, etc.
 
 ## Agent-Invented Tasks
 

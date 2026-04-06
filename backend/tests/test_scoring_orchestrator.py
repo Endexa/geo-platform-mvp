@@ -34,20 +34,15 @@ class TestWeakestLinkAggregation:
 
         Given:
           crawlability=80, content_structure=70, structured_data=60, authority=50
-          visibility_score=40
 
         Technical weights: crawlability=0.25, content_structure=0.25, structured_data=0.20, authority=0.15
-        Total technical weight = 0.85
-
         weighted_sum = 80*0.25 + 70*0.25 + 60*0.20 + 50*0.15
                      = 20 + 17.5 + 12 + 7.5 = 57.0
         active_weight = 0.25 + 0.25 + 0.20 + 0.15 = 0.85
-        page_score = (57.0 / 0.85) * 0.85 = 57.0
+        page_score = 57.0 / 0.85 = 67.06
 
-        With 1 page: mean = 57.0, min = 57.0
-        site_technical_score = 0.6 * 57.0 + 0.4 * 57.0 = 57.0
-
-        final = 57.0 + 40 * 0.15 = 57.0 + 6.0 = 63.0
+        With 1 page: mean = min = 67.06
+        site_technical_score = 0.6 * 67.06 + 0.4 * 67.06 = 67.06 -> 67
         """
         orchestrator = _make_orchestrator()
         page_scores = [
@@ -59,8 +54,8 @@ class TestWeakestLinkAggregation:
             }
         ]
 
-        result = orchestrator.compute_optimization_score(page_scores, visibility_score=40)
-        assert result == 63, f"Expected 63, got {result}"
+        result = orchestrator.compute_optimization_score(page_scores)
+        assert result == 67, f"Expected 67, got {result}"
 
     def test_weakest_link_multi_page(self):
         """Two pages with different scores. Weaker page drags the score down.
@@ -68,21 +63,16 @@ class TestWeakestLinkAggregation:
         Page 1: crawl=90, content=80, structured=70, authority=60
           weighted_sum = 90*0.25 + 80*0.25 + 70*0.20 + 60*0.15
                        = 22.5 + 20 + 14 + 9 = 65.5
-          page_score = (65.5 / 0.85) * 0.85 = 65.5
+          page_score = 65.5 / 0.85 = 77.06
 
         Page 2: crawl=40, content=30, structured=20, authority=10
           weighted_sum = 40*0.25 + 30*0.25 + 20*0.20 + 10*0.15
                        = 10 + 7.5 + 4 + 1.5 = 23.0
-          page_score = (23.0 / 0.85) * 0.85 = 23.0
+          page_score = 23.0 / 0.85 = 27.06
 
-        mean = (65.5 + 23.0) / 2 = 44.25
-        min = 23.0
-        site_technical = 0.6 * 44.25 + 0.4 * 23.0 = 26.55 + 9.2 = 35.75
-
-        visibility_score = 50
-        final = 35.75 + 50 * 0.15 = 35.75 + 7.5 = 43.25 -> 43
-
-        Verify weak page drags score down (should be < single-page score of page 1 alone).
+        mean = (77.06 + 27.06) / 2 = 52.06
+        min = 27.06
+        site_technical = 0.6 * 52.06 + 0.4 * 27.06 = 31.24 + 10.82 = 42.06 -> 42
         """
         orchestrator = _make_orchestrator()
         page_scores = [
@@ -100,26 +90,20 @@ class TestWeakestLinkAggregation:
             },
         ]
 
-        result = orchestrator.compute_optimization_score(page_scores, visibility_score=50)
-        assert result == 43, f"Expected 43, got {result}"
+        result = orchestrator.compute_optimization_score(page_scores)
+        assert result == 42, f"Expected 42, got {result}"
 
         # Verify the weak page drags the score down: single page 1 would score higher
-        single_page = orchestrator.compute_optimization_score(
-            [page_scores[0]], visibility_score=50
-        )
+        single_page = orchestrator.compute_optimization_score([page_scores[0]])
         assert result < single_page, (
             f"Multi-page score ({result}) should be < single strong page ({single_page})"
         )
 
     def test_weakest_link_empty_pages(self):
-        """No pages scored. Should return visibility contribution only.
-
-        visibility_score = 80
-        result = clamp(80 * 0.15) = clamp(12) = 12
-        """
+        """No pages scored. Should return 0."""
         orchestrator = _make_orchestrator()
-        result = orchestrator.compute_optimization_score([], visibility_score=80)
-        assert result == 12, f"Expected 12, got {result}"
+        result = orchestrator.compute_optimization_score([])
+        assert result == 0, f"Expected 0, got {result}"
 
     def test_weakest_link_missing_categories(self):
         """Page missing some categories. Normalization by active weight.
@@ -127,10 +111,9 @@ class TestWeakestLinkAggregation:
         Page with only crawlability=90 and content_structure=80:
           weighted_sum = 90*0.25 + 80*0.25 = 42.5
           active_weight = 0.25 + 0.25 = 0.50
-          page_score = (42.5 / 0.50) * 0.85 = 85 * 0.85 = 72.25
+          page_score = 42.5 / 0.50 = 85.0
 
-        site_technical = 0.6 * 72.25 + 0.4 * 72.25 = 72.25 (single page)
-        final = 72.25 + 0 * 0.15 = 72.25 -> 72
+        site_technical = 85.0 -> 85
         """
         orchestrator = _make_orchestrator()
         page_scores = [
@@ -140,8 +123,8 @@ class TestWeakestLinkAggregation:
             }
         ]
 
-        result = orchestrator.compute_optimization_score(page_scores, visibility_score=0)
-        assert result == 72, f"Expected 72, got {result}"
+        result = orchestrator.compute_optimization_score(page_scores)
+        assert result == 85, f"Expected 85, got {result}"
 
     def test_score_clamped_0_100(self):
         """Verify result is always in 0-100 range even with extreme inputs."""
@@ -156,10 +139,10 @@ class TestWeakestLinkAggregation:
                 "authority": 0,
             }
         ]
-        result_zero = orchestrator.compute_optimization_score(page_scores, visibility_score=0)
+        result_zero = orchestrator.compute_optimization_score(page_scores)
         assert 0 <= result_zero <= 100
 
-        # All-max scores with max visibility
+        # All-max scores
         page_scores_max = [
             {
                 "crawlability": 100,
@@ -168,22 +151,17 @@ class TestWeakestLinkAggregation:
                 "authority": 100,
             }
         ]
-        result_max = orchestrator.compute_optimization_score(page_scores_max, visibility_score=100)
+        result_max = orchestrator.compute_optimization_score(page_scores_max)
+        assert result_max == 100
         assert 0 <= result_max <= 100
 
-        # Negative visibility (edge case)
-        result_neg = orchestrator.compute_optimization_score(page_scores_max, visibility_score=-100)
-        assert 0 <= result_neg <= 100
-
     def test_weakest_link_all_perfect_scores(self):
-        """All categories at 100, visibility at 100.
+        """All categories at 100.
 
-        weighted_sum = 100*0.25 + 100*0.25 + 100*0.20 + 100*0.15
-                     = 25 + 25 + 20 + 15 = 85
-        page_score = (85 / 0.85) * 0.85 = 85
-
-        site_technical = 0.6 * 85 + 0.4 * 85 = 85
-        final = 85 + 100 * 0.15 = 85 + 15 = 100
+        weighted_sum = 100*0.25 + 100*0.25 + 100*0.20 + 100*0.15 = 85
+        page_score = 85 / 0.85 = 100
+        site_technical = 100
+        result = 100
         """
         orchestrator = _make_orchestrator()
         page_scores = [
@@ -195,7 +173,7 @@ class TestWeakestLinkAggregation:
             }
         ]
 
-        result = orchestrator.compute_optimization_score(page_scores, visibility_score=100)
+        result = orchestrator.compute_optimization_score(page_scores)
         assert result == 100, f"Expected 100, got {result}"
 
 
@@ -284,3 +262,69 @@ class TestDiscoverInternalLinks:
         )
 
         assert links == []
+
+
+# ===========================================================================
+# Test: CATEGORY_WEIGHTS — structure validation
+# ===========================================================================
+
+class TestCategoryWeights:
+    """CATEGORY_WEIGHTS must reflect the full 5-category scoring architecture."""
+
+    def test_category_weights_contains_ai_visibility(self):
+        """CATEGORY_WEIGHTS must include 'ai_visibility' (SomScorer target category).
+
+        Added in docs/RedwaneNextDirection.md Axe 5.
+        """
+        orchestrator = _make_orchestrator()
+        assert "ai_visibility" in orchestrator.CATEGORY_WEIGHTS, (
+            "ai_visibility must be in CATEGORY_WEIGHTS to enable SomScorer registration"
+        )
+
+    def test_category_weights_ai_visibility_value(self):
+        """ai_visibility weight must be 0.15 as specified in the architecture."""
+        orchestrator = _make_orchestrator()
+        assert orchestrator.CATEGORY_WEIGHTS["ai_visibility"] == pytest.approx(0.15)
+
+    def test_category_weights_sum_to_1(self):
+        """All CATEGORY_WEIGHTS must sum to exactly 1.0."""
+        orchestrator = _make_orchestrator()
+        total = sum(orchestrator.CATEGORY_WEIGHTS.values())
+        assert total == pytest.approx(1.0), (
+            f"CATEGORY_WEIGHTS sum to {total:.3f}, expected 1.0"
+        )
+
+    def test_category_weights_contains_all_five_categories(self):
+        """CATEGORY_WEIGHTS must have exactly 5 categories."""
+        orchestrator = _make_orchestrator()
+        expected = {"crawlability", "content_structure", "structured_data", "authority", "ai_visibility"}
+        actual = set(orchestrator.CATEGORY_WEIGHTS.keys())
+        assert actual == expected, (
+            f"Expected categories {expected}, got {actual}"
+        )
+
+    def test_compute_optimization_score_excludes_ai_visibility(self):
+        """compute_optimization_score uses technical_weights only (no ai_visibility).
+
+        This is intentional: the optimization score is a pure technical readiness
+        proxy. ai_visibility (Share of Model) is tracked separately as geo_visibility_score.
+        Adding ai_visibility to page_category_scores must not change the result.
+        """
+        orchestrator = _make_orchestrator()
+
+        # Page with technical categories only
+        page_scores_without_som = [
+            {"crawlability": 80, "content_structure": 70, "structured_data": 60, "authority": 50}
+        ]
+        # Same page with ai_visibility added
+        page_scores_with_som = [
+            {"crawlability": 80, "content_structure": 70, "structured_data": 60, "authority": 50, "ai_visibility": 20}
+        ]
+
+        score_without = orchestrator.compute_optimization_score(page_scores_without_som)
+        score_with = orchestrator.compute_optimization_score(page_scores_with_som)
+
+        assert score_without == score_with, (
+            f"ai_visibility ({score_with}) changed optimization score vs without ({score_without}). "
+            "compute_optimization_score must use technical_weights only."
+        )

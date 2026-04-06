@@ -1,0 +1,16 @@
+# Acme Analytics
+
+> AI-powered business intelligence platform for data-driven teams.
+
+Acme Analytics provides real-time dashboards, predictive analytics, and automated reporting. We integrate with 200+ data sources and use machine learning to detect patterns and anomalies.
+
+## Key Pages
+
+- Homepage: http://localhost:9999/
+- About: http://localhost:9999/about.html
+- Pricing: http://localhost:9999/pricing.html
+
+## Contact
+
+- Email: hello@acmeanalytics.com
+- Website: http://localhost:9999
