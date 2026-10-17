@@ -1,6 +1,16 @@
 # GEO Platform MVP
 
-A Generative Engine Optimization (GEO) platform that analyzes how well websites are optimized for AI language models (ChatGPT, Claude, Perplexity, Gemini). Scores websites 0-100 across 61 criteria and generates optimization recommendations.
+A Generative Engine Optimization (GEO) platform that analyzes how well websites are optimized for AI language models (ChatGPT, Claude, Perplexity, Gemini, Mistral). Scores websites 0-100 across 61 criteria and generates optimization recommendations.
+
+## Features
+
+- **Site audits**: crawl a URL, score it on crawlability, structured data, content structure and authority
+- **AI visibility**: query multiple AI engines and measure brand mentions, citations and sentiment
+- **Competitor tracking** and brand linking
+- **Citability scoring**, **llms.txt generation** and **brand scanning**
+- **Recommendations** with Jira CSV export
+- **Code analysis** flow and an **AI chat assistant** for audit results
+- **PDF/HTML reports**, **Stripe** subscriptions and tiered rate limiting
 
 ## Quick Start
 
@@ -87,7 +97,8 @@ Open **http://localhost:3000**, register an account, run an audit.
 | Backend | FastAPI + SQLAlchemy + Pydantic v2 |
 | Database | Supabase PostgreSQL + pgvector |
 | Task Queue | Celery + Redis |
-| AI Engines | LiteLLM (ChatGPT, Claude, Perplexity, Gemini) |
+| AI Engines | LiteLLM (ChatGPT, Claude, Perplexity, Gemini, Mistral) |
+| Payments | Stripe |
 | Auth | JWT (PyJWT + pwdlib/bcrypt) |
 
 ## Project Structure
@@ -99,16 +110,18 @@ geo-platform-mvp/
 │   ├── app/
 │   │   ├── api/           # API endpoints
 │   │   ├── core/          # Config, security, middleware
-│   │   ├── models/        # SQLAlchemy models (22 tables)
-│   │   ├── services/      # Business logic + scoring
+│   │   ├── models/        # SQLAlchemy models
+│   │   ├── services/      # Business logic (scoring/, citability, llmstxt, chat, ...)
 │   │   └── tasks/         # Celery background tasks
-│   ├── alembic/           # Database migrations
+│   ├── alembic/           # Database migrations (16)
+│   ├── tests/             # pytest suite
 │   └── requirements.txt
 ├── frontend/              # Nuxt 3 frontend
 │   ├── components/        # Vue components
 │   ├── pages/             # Route pages
 │   ├── composables/       # Reusable logic
 │   └── tests/e2e/         # Playwright E2E tests (45 tests)
+├── docs/                  # Architecture, API reference, security, incidents
 └── docker-compose.yml     # Redis + optional Docker dev setup
 ```
 
@@ -124,7 +137,12 @@ SECRET_KEY=your-secret-key
 OPENAI_API_KEY=...
 ANTHROPIC_API_KEY=...
 GEMINI_API_KEY=...
+PERPLEXITYAI_API_KEY=...
+MISTRAL_API_KEY=...
+# Optional: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, JIRA_*
 ```
+
+See `backend/.env.example` for the full list.
 
 ### Frontend (`frontend/.env`)
 ```env
@@ -136,6 +154,9 @@ NUXT_PUBLIC_SUPABASE_KEY=your-anon-key
 ## Testing
 
 ```bash
+# Backend tests
+cd backend && source venv/bin/activate && pytest
+
 # E2E tests (Playwright — mocked API, no backend needed)
 cd frontend && npx playwright test
 
@@ -151,6 +172,10 @@ cd frontend && npm run build
 Once the backend is running:
 - **Swagger UI**: http://localhost:8000/api/v1/docs
 - **Health**: http://localhost:8000/health
+
+## Documentation
+
+See [`docs/`](docs/): `ARCHITECTURE.md`, `API-REFERENCE.md`, `SECURITY.md`, `TESTING-STRATEGY.md`, `INCIDENTS.md`. Contributors should start with [`CLAUDE.md`](CLAUDE.md).
 
 ## License
 
