@@ -42,6 +42,21 @@ A Generative Engine Optimization (GEO) platform that analyzes how well websites 
 
 Each criterion returns a score, a human-readable reason and a status. Criteria that cannot be evaluated are marked *not checked* rather than scored 0.
 
+### Competitive intelligence
+
+The platform answers "who do AI engines recommend *instead of me*, and why?".
+
+- **Automatic competitor discovery.** Competitors are not typed in by hand. Entities mentioned in AI answers are extracted from every engine response, classified by type, and ranked by mention count. For each one the platform stores its share of voice, which engines mentioned it, and which queries triggered it.
+- **Competitor leaderboard.** Your brand and every discovered competitor are ranked side by side by mentions and share of voice, with a per-engine breakdown.
+- **Automatic URL resolution and crawl.** The top competitors (up to 5) have their website URL resolved, then are crawled and scored with the same 61-criteria engine as your own site. The comparison is like for like.
+- **Side-by-side score comparison.** Optimization score plus Crawlability, Content Structure, Structured Data and Authority averages, for you vs. each competitor.
+- **Content-gap detection.** The queries where a competitor is cited by AI and you are not are flagged. Each gap comes with a content brief (target query, competitors who win it) so you know what to write.
+- **Competitor-aware recommendations.** Gap scores and impact estimates are computed against competitor averages, so priorities reflect where you are actually losing ground.
+- **Share-of-voice trend.** Competitors are linked to persistent brand records across audits, so each audit adds a point to their share-of-voice curve (`/brands/{id}/sov-trend`). A multi-brand overview lets agencies follow several clients and their rivals.
+- **Cross-audit persistence.** Duplicate or empty competitor domains are handled safely, and a competitor discovered in one audit is recognized in the next.
+
+**Continuous monitoring status:** trend tracking is based on audits you run. There is no scheduler yet that re-runs audits automatically or sends alerts when a competitor overtakes you. This is the next planned step (see Roadmap).
+
 ### Extra analysis tools
 
 - **Citability scoring**: scores passages for how likely an AI is to cite them. Weights: answer-block quality 30%, self-containment 25% (optimal passage length is about 134-167 words), structural readability 20%, statistical density 15%, uniqueness signals 10%.
@@ -246,6 +261,12 @@ cd frontend && npm run build
 Once the backend is running:
 - **Swagger UI**: http://localhost:8000/api/v1/docs
 - **Health**: http://localhost:8000/health
+
+## Roadmap
+
+- Scheduled re-audits (Celery beat) and competitor monitoring with alerts on score or share-of-voice changes
+- Brand Voice layers 2 (statistical fingerprint) and 4 (LLM deep analysis)
+- Live platform checks for the brand mention scanner (YouTube, Reddit APIs)
 
 ## Documentation
 
