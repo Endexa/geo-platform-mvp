@@ -31,14 +31,32 @@ A Generative Engine Optimization (GEO) platform that analyzes how well websites 
 **Optimization weights:** Crawlability 25% + Content Structure 25% + Structured Data 20% + Authority 15% + AI Visibility 15%.
 **Aggregation across pages ("weakest link"):** `0.6 * mean + 0.4 * min`, so inconsistent sites are penalized. Categories that could not be checked are excluded and the remaining weights are normalized, so a missing category never drags the score down.
 
-### The 61 scoring criteria
+### What gets checked: the 61 criteria
 
-| Category | IDs | Criteria |
-|----------|-----|----------|
-| **Crawlability** (12) | C1-C12 | AI-bot access in robots.txt for GPTBot, ClaudeBot, PerplexityBot, OAI-SearchBot, Claude-SearchBot, Bingbot, CCBot, Google-Extended; HTTP status; resource blockage; response time (TTFB); server-side rendering |
-| **Content Structure** (13) | CS1-CS13 | Answer-first format, heading hierarchy, paragraph length, FAQ section, content length, readability, sentence-length variety, entity density, data density, statistics density, quotations, citations/references, content freshness |
-| **Structured Data** (13) | SD1-SD13 | JSON-LD validation, Organization, Article, Person/Author, FAQPage, HowTo, Product/Offer, BreadcrumbList, ClaimReview, `sameAs` entity links, structured-data coverage, `llms.txt`, `llms-full.txt` |
-| **Authority** (23) | A1-A8, S1-S15 | E-E-A-T composite, author bios with credentials, published/modified dates, Knowledge Graph, Wikidata QID, Wikipedia, review platform profiles, brand search signal, backlink / referring-domain proxies, plus SEO fundamentals: meta title and description, Open Graph, canonical tags, SSL/HTTPS, XML sitemap, mobile friendliness, Core Web Vitals (LCP), image alt text, internal linking, broken links, orphan pages, URL structure |
+**Crawlability (25%)**: can AI read your site at all?
+- C1-C8: robots.txt access for **GPTBot**, **ClaudeBot**, **PerplexityBot**, **OAI-SearchBot**, **Claude-SearchBot**, **Bingbot** (Copilot), **CCBot** (Common Crawl), **Google-Extended** (Gemini)
+- C9 Server-side rendering | C10 Response time (TTFB) | C11 HTTP status code | C12 Resource blockage
+
+**Content Structure (25%)**: is the content easy to extract and cite?
+- CS1 Heading hierarchy | CS2 Answer-first format | CS3 Paragraph length | CS4 Data density
+- CS5 FAQ section | CS6 Content length | CS7 Readability | CS8 Citations and references
+- CS9 Content freshness | CS10 Statistics density | CS11 Quotations | CS12 Entity density | CS13 Sentence-length variety
+
+**Structured Data (20%)**: does the site describe itself in machine-readable form?
+- SD1 Organization schema | SD2 `sameAs` entity links | SD3 FAQPage | SD4 Article | SD5 HowTo
+- SD6 BreadcrumbList | SD7 JSON-LD validation | SD8 Product/Offer | SD9 Person/Author | SD10 ClaimReview
+- SD11 Structured-data coverage | SD12 `llms.txt` | SD13 `llms-full.txt`
+
+**Authority (15%)**: trust and E-E-A-T signals, plus SEO fundamentals
+- A1 Author bios with credentials | A2 Published/modified dates | A3 Google Knowledge Graph presence | A4 Wikidata QID linkage
+- A5 Wikipedia page and backlinks | A6 Review-platform profiles | A7 Brand search volume signal | A8 E-E-A-T composite score
+- S1 SSL/HTTPS | S2 Canonical tags | S3 Meta title | S4 Meta description | S5 XML sitemap | S6 Open Graph tags
+- S7 Mobile friendliness | S8 Internal linking | S9 Backlink profile proxy | S10 Referring-domains proxy
+- S11 Core Web Vitals (LCP) | S12 URL structure | S13 Image alt-text coverage | S14 Broken links | S15 Orphan pages
+
+**AI Visibility (15%)**: what the AI engines actually say about you
+- Brand mention rate across generated queries, per engine (ChatGPT, Claude, Perplexity, Gemini, Mistral)
+- Citations of your domain in answers, share of voice vs. competitors, sentiment of each mention, confidence level of each measurement
 
 Each criterion returns a score, a human-readable reason and a status. Criteria that cannot be evaluated are marked *not checked* rather than scored 0.
 
